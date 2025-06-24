@@ -1,0 +1,29 @@
+/* CSS Footer */
+.footer{
+    color: var(--Neutral-Gray-800, #262626);
+
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; 
+    padding: 16px 24px;
+}
+
+.footer-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.footer-text span {
+    color: var(--Text-Secondary, #666666);
+    font-family: Poppins;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+}
+
+.sidebar-footer {
+    flex-shrink: 0; 
+}

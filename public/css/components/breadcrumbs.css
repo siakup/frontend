@@ -1,0 +1,45 @@
+/* CSS breadcrumbs */
+.breadcrumb-container {
+    padding: 16px 24px;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcrumb-item {
+    display: flex;
+    align-items: center;
+    color: var(--Text-Secondary, #666666);
+    font-family: Poppins;
+    font-size: 14px;
+}
+
+.breadcrumb-item:not(:last-child)::after {
+    content: '/';
+    margin-left: 8px;
+    color: var(--Text-Secondary, #666666);
+}
+
+.breadcrumb-item a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--Red-Red-500, #E62129);
+    text-decoration: none;
+}
+
+.breadcrumb-item.active {
+    color: var(--Text-Primary, #333333);
+    font-weight: 500;
+}
+
+.breadcrumb-icon {
+    width: 16px;
+    height: 16px;
+}

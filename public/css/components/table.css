@@ -1,0 +1,82 @@
+/* CSS table */
+.table-responsive {
+    max-height: 580px;
+    overflow-y: auto;
+    border-radius: 12px;
+    margin: 16px 16px 16px ;
+    background: #FFFFFF;
+    border-radius: 12px 12px 12px 12px;
+    border: 1px solid var(--Surface-Border-Primary, #D9D9D9);
+}
+
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #F5F5F5;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #D9D9D9;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #BDBDBD;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px 12px 0px 0px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: linear-gradient(90deg, #FFF 0%, #FFECED 100%);
+    border-radius: 0px 0px 0 0;
+    width: 100%;
+    border-bottom: 1px solid var(--Surface-Border-Primary, #D9D9D9);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table thead tr {
+    display: flex;
+    width: 100%;
+}
+
+.table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1.5fr 1fr 1fr 1fr;
+    width: 100%;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.table th {
+    color: var(--Neutral-Gray-800, #262626);
+    text-align: center;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 20px; 
+    padding: 20px;
+    flex: 1;    
+    align-items: center;
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+    padding: 12px;
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 400;
+    border-bottom: 1px solid var(--Surface-Border-Primary);
+}
