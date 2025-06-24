@@ -109,9 +109,36 @@
     }
 
     /* Highlight hovered option in dropdown with red background */
-    .modal-custom-content select.form-control option:hover {
+    .modal-custom-content select.form-control option:hover,
+    .modal-custom-content select.form-control option:focus,
+    .modal-custom-content select.form-control option:active {
         background: var(--Red-Red-500, #E62129) !important;
         color: #fff !important;
+    }
+
+    .dropdown-item{
+        padding: 12px 16px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-family: Poppins;
+        font-size: 14px;
+        font-weight: 400;
+        transition: background 0.15s;
+    }
+    .dropdown-item strong {
+        margin-right: 8px;
+        font-weight: 600;
+    }
+    .dropdown-item:hover {
+        background: var(--Red-Red-500, #E62129);
+        color: #fff;
+    }
+    .dropdown-item:hover strong {
+        color: #fff;
     }
 
     @media (max-width: 900px) {
@@ -268,9 +295,23 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.classList.contains('dropdown-item')) {
             nipInput.value = e.target.getAttribute('data-nip');
             namaInput.value = e.target.getAttribute('data-nama');
-            usernameInput.value = e.target.getAttribute('data-username');
             emailInput.value = e.target.getAttribute('data-email');
             nipDropdown.style.display = 'none';
+            // Call backend to generate username
+            fetch(`/users/generate-username?name=${encodeURIComponent(e.target.getAttribute('data-nama'))}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.data) {
+                        usernameInput.value = data.data;
+                    } else {
+                        usernameInput.value = '';
+                    }
+                    updateTambahPeranButtonState(); 
+                })
+                .catch(() => {
+                    usernameInput.value = '';
+                    updateTambahPeranButtonState(); 
+                });
         }
     });
 
@@ -280,38 +321,153 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Enable/disable Tambah Peran button in main form based on input values
-    // const btnShowModal = document.getElementById('btnShowModal');
-    // const nipInput = document.getElementById('nip');
-    // const namaLengkapInput = document.getElementById('nama_lengkap');
-    // const usernameInput = document.getElementById('username');
-    // const emailInput = document.getElementById('email');
+    function updateTambahPeranButtonState() {
+        const allFilled =
+            nipInput.value.trim() &&
+            namaInput.value.trim() &&
+            usernameInput.value.trim() &&
+            emailInput.value.trim();
+        if (allFilled) {
+            btnShowModal.disabled = false;
+            btnShowModal.classList.remove('button-radius');
+            btnShowModal.classList.add('button-outline');
+            // Auto activate toggle if not already active
+            if (!isActive) {
+                isActive = true;
+                toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
+                toggleInfo.textContent = "Aktif";
+                statusValue.value = "true";
+            }
+        } else {
+            btnShowModal.disabled = true;
+            btnShowModal.classList.remove('button-outline');
+            btnShowModal.classList.add('button-radius');
+            // Optionally, auto deactivate toggle if you want
+            isActive = false;
+            toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
+            toggleInfo.textContent = "Tidak Aktif";
+            statusValue.value = "false";
+        }
+    }
+    nipInput.addEventListener('input', updateTambahPeranButtonState);
+    namaInput.addEventListener('input', updateTambahPeranButtonState);
+    usernameInput.addEventListener('input', updateTambahPeranButtonState);
+    emailInput.addEventListener('input', updateTambahPeranButtonState);
+    updateTambahPeranButtonState();
 
-    // function updateTambahPeranButtonState() {
-    //     if (
-    //         nipInput.value.trim() &&
-    //         namaLengkapInput.value.trim() &&
-    //         usernameInput.value.trim() &&
-    //         emailInput.value.trim()
-    //     ) {
-    //         btnShowModal.disabled = false;
-    //         btnShowModal.classList.remove('button-radius');
-    //         btnShowModal.classList.add('button-outline');
-    //     } else {
-    //         btnShowModal.disabled = true;
-    //         btnShowModal.classList.remove('button-outline');
-    //         btnShowModal.classList.add('button-radius');
+    // btnTambahModal.addEventListener('click', function() {
+    //     if (!btnTambahModal.disabled) {
+    //         window.location.href = "{{ route('users.edit', ['username' => 'lmawati']) }}";
     //     }
-    // }
-    // nipInput.addEventListener('input', updateTambahPeranButtonState);
-    // namaLengkapInput.addEventListener('input', updateTambahPeranButtonState);
-    // usernameInput.addEventListener('input', updateTambahPeranButtonState);
-    // emailInput.addEventListener('input', updateTambahPeranButtonState);
-    // updateTambahPeranButtonState();
+    // });
 
+    // Add role and institusi to Daftar Peran table when Tambah clicked
     btnTambahModal.addEventListener('click', function() {
-        if (!btnTambahModal.disabled) {
-            window.location.href = "{{ route('users.edit', ['username' => 'lmawati']) }}";
+        if (btnTambahModal.disabled) return;
+        const roleText = roleSelect.options[roleSelect.selectedIndex].textContent;
+        const institusiText = institusiSelect.options[institusiSelect.selectedIndex].textContent;
+        const now = new Date();
+        const createdAt = now.toLocaleString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const tbody = document.querySelector('.table tbody');
+        // Remove empty rows if present
+        tbody.querySelectorAll('tr').forEach(tr => {
+            if ([...tr.children].every(td => td.textContent.trim() === '')) tr.remove();
+        });
+        // Insert new row
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${roleText}</td>
+                        <td>${institusiText}</td>
+                        <td>${createdAt}</td>
+                        <td style="display: flex; justify-content: center; align-items: center;">
+                                <button class=" btnHapusPeran btn-icon btn-hapus" title="Hapus">
+                                    <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
+                                    <span>Hapus</span>
+                                </button>
+                        </td>`;
+        tbody.appendChild(tr);
+        
+        modal.style.display = 'none';
+        
+        roleSelect.value = '';
+        institusiSelect.innerHTML = '<option value="" selected disabled hidden>Pilih Institusi</option>';
+        institusiSelect.disabled = true;
+        updateTambahButtonState();
+    });
+    
+    document.querySelector('.table tbody').addEventListener('click', function(e) {
+        if (e.target.classList.contains('btnHapusPeran')) {
+            e.target.closest('tr').remove();
+            // If table is empty, add back empty rows
+            const tbody = this;
+            if (tbody.querySelectorAll('tr').length === 0) {
+                tbody.innerHTML = `<tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr>`;
+            }
+        }
+    });
+
+    function updateDaftarPeranActionsVisibility() {
+        const tbody = document.querySelector('.table tbody');
+        const actions = document.getElementById('daftarPeranActions');
+        // Show if there is at least one non-empty row
+        const hasData = Array.from(tbody.querySelectorAll('tr')).some(tr =>
+            Array.from(tr.children).some(td => td.textContent.trim() !== '')
+        );
+        actions.style.display = hasData ? 'flex' : 'none';
+    }
+    // Call after adding/removing peran
+    const origAddPeran = btnTambahModal.onclick;
+    btnTambahModal.addEventListener('click', function() {
+        setTimeout(updateDaftarPeranActionsVisibility, 10);
+    });
+    document.querySelector('.table tbody').addEventListener('click', function(e) {
+        if (e.target.classList.contains('btnHapusPeran')) {
+            setTimeout(updateDaftarPeranActionsVisibility, 10);
+        }
+    });
+
+    document.getElementById('btnBatalDaftarPeran').addEventListener('click', function() {
+        window.location.href = "{{ route('users.index') }}";
+    });
+    
+    document.getElementById('btnSimpanDaftarPeran').addEventListener('click', function() {
+        document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
+    });
+
+    document.getElementById('btnCekKembali').addEventListener('click', function() {
+        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+    });
+
+    document.getElementById('btnYaSimpan').addEventListener('click', function() {
+        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+        
+        function showToast() {
+            Swal.fire({
+                toast: true,
+                position: 'top',
+                title: '<span class="swal2-title-custom">Berhasil disimpan</span>',
+                html: '', 
+                showConfirmButton: true,
+                confirmButtonText: 'Oke',
+                background: '#222',
+                color: '#fff',
+                customClass: {
+                    popup: 'swal2-toast-custom',
+                    confirmButton: 'button button-outline',
+                    title: 'swal2-title-custom'
+                },
+                buttonsStyling: false,
+                timer: 5000,
+                timerProgressBar: true,
+                icon: undefined // explicitly remove icon
+            });
+        }
+        if (typeof Swal === 'undefined') {
+            var script = document.createElement('script');
+            script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+            script.onload = showToast;
+            document.head.appendChild(script);
+        } else {
+            showToast();
         }
     });
 });
@@ -365,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             </div>
             <div class="right">
-                <button class="button button-radius" style="margin-top: 16px;" id="btnShowModal">Tambah Peran</button>
+                <button class="button button-radius" style="margin-top: 16px;" id="btnShowModal" disabled>Tambah Peran</button>
             </div>
         </div>
     </div>
@@ -397,6 +553,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 </tbody>
             </table>
         </div>
+        <div class="daftar-peran-actions" id="daftarPeranActions" style="display:none; flex; gap: 12px; margin-top: 18px; justify-content: flex-end;">
+            <button type="button" class="button button-clean" id="btnBatalDaftarPeran">Batal</button>
+            <button type="button" class="button button-outline" id="btnSimpanDaftarPeran">Simpan</button>
+        </div>
     </div>
 
     <div id="modalTambahPeran" class="modal-custom" style="display:none;">
@@ -426,6 +586,22 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="modal-custom-footer">
                 <button type="button" class="button button-clean" id="btnBatalModal">Batal</button>
                 <button type="button" class="button button-radius" id="btnTambahModal" disabled>Tambah</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
+        <div class="modal-custom-backdrop"></div>
+        <div class="modal-custom-content">
+            <div class="modal-custom-header">
+                <span class="text-lg-bd">Tunggu Sebentar</span>
+            </div>
+            <div class="modal-custom-body">
+                <div>Apakah anda yakin informasi anda sudah benar?</div>
+            </div>
+            <div class="modal-custom-footer">
+                <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
+                <button type="button" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
             </div>
         </div>
     </div>

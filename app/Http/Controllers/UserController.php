@@ -100,7 +100,30 @@ class UserController extends Controller
             $params['search'] = $search;
         }
 
-        $url = UserService::getInstance()->searchStaff($search);
+        $url = UserService::getInstance()->searchStaff();
+        $response = getCurl($url, $params, getHeaders());
+        $data = json_decode(json_encode($response), true);
+        if ($request->ajax()) {
+            if (!isset($response->data)) {
+                return $this->errorResponse($response->message);
+            }
+            
+            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+        }
+        else{
+            if (!isset($response->data)) {
+                return $this->errorResponse($response->message);
+            }
+            
+            return $this->successResponse($response->data , 'Berhasil mendapatkan data');
+        }
+    }
+
+    public function generateUsername(Request $request)
+    {
+        $params['name'] = $request->name;
+        $params['type'] = 'staff';
+        $url = UserService::getInstance()->generateUsername();
         $response = getCurl($url, $params, getHeaders());
         $data = json_decode(json_encode($response), true);
         if ($request->ajax()) {

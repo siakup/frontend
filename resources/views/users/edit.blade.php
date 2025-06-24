@@ -53,19 +53,6 @@
         align-self: stretch;
     }
 
-    /* .modal-custom-title {
-        font-size: 24px;
-        font-weight: 700;
-        color: #222;
-        display: block;
-        text-align: center;
-        width: 100%;
-    } */
-
-    /* .modal-custom-body {
-        margin-bottom: 24px;
-    } */
-
     .modal-custom-footer {
         display: flex;
         justify-content: flex-start;
@@ -294,16 +281,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Admin Sistem</td>
-                        <td>Universitas Pertamina</td>
-                        <td>Jigeum</td>
-                        <td>fddfdf</td>
+                        <td class="table-gray">Admin Sistem</td>
+                        <td  class="table-gray">Universitas Pertamina</td>
+                        <td  class="table-gray">Jigeum</td>
+                        <td style="display: flex; justify-content: center; align-items: center;" class="table-gray">
+                            <button class="btn-icon btn-hapus btnHapusPeran" title="Hapus">
+                                <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
+                                <span>Hapus</span>
+                            </button>
+                        </td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>Admin Prodi</td>
+                        <td>Universitas Pertamina</td>
+                        <td>Jigeum</td>
+                        <td style="display: flex; justify-content: center; align-items: center;">
+                            <button class="btn-icon btn-hapus btnHapusPeran" title="Hapus">
+                                <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
+                                <span>Hapus</span>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

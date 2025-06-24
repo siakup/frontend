@@ -147,3 +147,26 @@
 .toggle-info {
     padding-left: 16px;
 }
+
+.btn-icon.btn-hapus {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border: none;
+    background: transparent;
+    color: var(--Red-Red-500, #E62129);
+    font-family: Poppins;
+    font-size: 14px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btn-icon.btn-hapus:hover {
+    background: var(--Background-Disable-Red, #ffb9b3);
+    border-radius: 8px;
+}
+.btn-icon.btn-hapus img {
+    width: 18px;
+    height: 18px;
+}

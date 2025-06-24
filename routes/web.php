@@ -15,6 +15,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/create', [UserController::class, 'create'])->name('users.create');
         Route::get('/edit/{username}', [UserController::class, 'edit'])->name('users.edit');
         Route::get('/search-by-nip', [UserController::class, 'searchByNip'])->name('users.search-nip');
+        Route::get('/generate-username', [UserController::class, 'generateUsername'])->name('users.generate-username');
     });
 
     Route::group(['prefix' => 'institutions'], function () {

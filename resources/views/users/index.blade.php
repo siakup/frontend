@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     <!-- <div class="content-card"> -->
         <div class="table-responsive">
-            <table class="table">
+            <table class="table" style="--table-cols:7">
                 <thead>
                     <tr>
                         <th>NIP/NIM</th>
@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>{{ $user->nomor_induk }}</td>
                         <td>{{ $user->nama }}</td>
                         <td>{{ $user->username }}</td>
-                        <td class="text-gray-12">26-05-2024, 08:00 WIB</td>
+                        <td class="text-gray-12">{{ \Carbon\Carbon::parse($user->created_at)->format('d-m-Y, H:i:s') }} WIB</td>
                         <td>
                             @if ($user->status === 'active')
                                 <span class="badge badge-active">Aktif</span>

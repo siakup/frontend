@@ -55,9 +55,14 @@ class UserService
         return $this->url() . 'institutions/list-by-role/' . $role;
     }
 
-    public function searchStaff($params)
+    public function searchStaff()
     {
         return $this->url() . 'staff/search/';
+    }
+
+    public function generateUsername()
+    {
+        return $this->url() . 'users/generate-username/';
     }
 }
 

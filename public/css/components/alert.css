@@ -1,0 +1,49 @@
+/* SweetAlert2 custom toast styles for inline, no-icon toast */
+.swal2-toast-custom {
+    border-radius: 12px !important;
+    min-width: 700px;
+    max-width: 700px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 24px 0 18px !important;
+    height: 48px !important;
+}
+.swal2-title-custom {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: left;
+    margin: 0;
+    flex: 1;
+    color: #fff;
+    line-height: 48px;
+}
+.swal2-toast .swal2-confirm.button-outline {
+    margin-left: 24px;
+    margin-right: 0;
+    background: transparent !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 500;
+    font-size: 1.1rem;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    height: 48px;
+    line-height: 48px;
+    padding: 0 0 0 0 !important;
+    cursor: pointer;
+    transition: text-decoration 0.15s;
+    text-align: right;
+}
+.swal2-toast .swal2-confirm.button-outline:hover,
+.swal2-toast .swal2-confirm.button-outline:focus {
+    text-decoration: underline;
+    outline: none;
+}
+.swal2-timer-progress-bar {
+    background: #fff !important;
+    height: 2px !important;
+}
