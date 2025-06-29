@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         data.data.forEach(function(inst) {
                             const opt = document.createElement('option');
                             opt.value = inst.id;
-                            opt.textContent = inst.nama_institusi;
+                            opt.textContent = inst.nama;
                             institusiSelect.appendChild(opt);
                         });
                         institusiSelect.disabled = false;
@@ -364,8 +364,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add role and institusi to Daftar Peran table when Tambah clicked
     btnTambahModal.addEventListener('click', function() {
         if (btnTambahModal.disabled) return;
+        const roleId = roleSelect.value;
         const roleText = roleSelect.options[roleSelect.selectedIndex].textContent;
+        const institusiId = institusiSelect.value;
         const institusiText = institusiSelect.options[institusiSelect.selectedIndex].textContent;
+        if (!roleId || !institusiId || institusiId === 'undefined') {
+            alert('Pilih peran dan institusi yang valid.');
+            return;
+        }
         const now = new Date();
         const createdAt = now.toLocaleString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
         const tbody = document.querySelector('.table tbody');
@@ -373,8 +379,10 @@ document.addEventListener('DOMContentLoaded', function () {
         tbody.querySelectorAll('tr').forEach(tr => {
             if ([...tr.children].every(td => td.textContent.trim() === '')) tr.remove();
         });
-        // Insert new row
+        // Insert new row with data attributes for IDs
         const tr = document.createElement('tr');
+        tr.setAttribute('data-role-id', roleId);
+        tr.setAttribute('data-institusi-id', institusiId);
         tr.innerHTML = `<td>${roleText}</td>
                         <td>${institusiText}</td>
                         <td>${createdAt}</td>
@@ -439,36 +447,86 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('btnYaSimpan').addEventListener('click', function() {
         document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-        
-        function showToast() {
-            Swal.fire({
-                toast: true,
-                position: 'top',
-                title: '<span class="swal2-title-custom">Berhasil disimpan</span>',
-                html: '', 
-                showConfirmButton: true,
-                confirmButtonText: 'Oke',
-                background: '#222',
-                color: '#fff',
-                customClass: {
-                    popup: 'swal2-toast-custom',
-                    confirmButton: 'button button-outline',
-                    title: 'swal2-title-custom'
-                },
-                buttonsStyling: false,
-                timer: 5000,
-                timerProgressBar: true,
-                icon: undefined // explicitly remove icon
-            });
-        }
-        if (typeof Swal === 'undefined') {
-            var script = document.createElement('script');
-            script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
-            script.onload = showToast;
-            document.head.appendChild(script);
-        } else {
-            showToast();
-        }
+
+        // Collect form data
+        const nip = document.getElementById('nip').value.trim();
+        const nama_lengkap = document.getElementById('nama_lengkap').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const status = document.getElementById('statusValue').value;
+
+        // Collect Daftar Peran table data
+        const peran = [];
+        document.querySelectorAll('.table tbody tr').forEach(tr => {
+            const tds = tr.querySelectorAll('td');
+            if (tds.length >= 4 && tds[0].textContent.trim() && tds[1].textContent.trim()) {
+                peran.push({
+                    role_id: tr.getAttribute('data-role-id'),
+                    institusi_id: tr.getAttribute('data-institusi-id'),
+                    role: tds[0].textContent.trim(),
+                    institusi: tds[1].textContent.trim(),
+                    created_at: tds[2].textContent.trim()
+                });
+            }
+        });
+
+        const data = {
+            nip,
+            nama_lengkap,
+            username,
+            email,
+            status,
+            peran
+        };
+
+        fetch("{{ route('users.store') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(data)
+        })
+        .then(async response => {
+            const result = await response.json();
+            console.log($result);
+            if (response.ok && result.success) {
+                function showToast() {
+                    Swal.fire({
+                        toast: true,
+                        position: 'top',
+                        title: '<span class="swal2-title-custom">Berhasil disimpan</span>',
+                        html: '',
+                        showConfirmButton: true,
+                        confirmButtonText: 'Oke',
+                        background: '#222',
+                        color: '#fff',
+                        customClass: {
+                            popup: 'swal2-toast-custom',
+                            confirmButton: 'button button-outline',
+                            title: 'swal2-title-custom'
+                        },
+                        buttonsStyling: false,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        icon: undefined
+                    });
+                }
+                if (typeof Swal === 'undefined') {
+                    var script = document.createElement('script');
+                    script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
+                    script.onload = showToast;
+                    document.head.appendChild(script);
+                } else {
+                    showToast();
+                }
+            } else {
+                alert(result.message || 'Gagal menyimpan data.');
+            }
+        })
+        .catch(() => {
+            alert('Gagal menyimpan data.');
+        });
     });
 });
 </script>
@@ -605,4 +663,6 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         </div>
     </div>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection

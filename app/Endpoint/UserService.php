@@ -64,5 +64,10 @@ class UserService
     {
         return $this->url() . 'users/generate-username/';
     }
+
+    public function store()
+    {
+        return $this->url() . 'users/';
+    }
 }
 

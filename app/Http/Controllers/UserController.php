@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 
 use App\Traits\ApiResponse;
 use App\Endpoint\UserService;
+use function PHPUnit\Framework\throwException;
 
 class UserController extends Controller
 {
@@ -59,11 +60,47 @@ class UserController extends Controller
     {
         $url = UserService::getInstance()->getListAllRoles();
         $roles = getCurl($url, null, getHeaders());
+        if (!$roles || !isset($roles->data) || empty($roles->data)) {
+            abort(500, 'Roles not found or response invalid.');
+        }
         return view('users.create', get_defined_vars());
     }
 
+
     public function store(Request $request)
     {
+        $userData = [
+            'nip' => $request->input('nip'),
+            'nama_lengkap' => $request->input('nama_lengkap'),
+            'username' => $request->input('username'),
+            'email' => $request->input('email'),
+            'status' => $request->input('status'),
+            'peran' => $request->input('peran'),
+            'type' => 'staff'
+        ];
+
+        logger()->info('User store debug', $userData);
+
+        // send userData to API to create user and roles
+        $url = UserService::getInstance()->store();
+        $response = postCurl($url, $userData, getHeaders());
+
+        if ($request->ajax()) {
+            if (isset($response['success']) && $response['success']) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'User berhasil disimpan',
+                    'data' => $response['data'] ?? null
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => $response['message'] ?? 'Gagal menyimpan user',
+                    'data' => null
+                ], 422);
+            }
+        }
+        // If classic POST, redirect
         return redirect()->route('users.index');
     }
 

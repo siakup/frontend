@@ -201,6 +201,7 @@ if (!function_exists('getToken')) {
 }
 
 if (!function_exists('getHeaders')) {
+
     function getHeaders()
     {
         $headers = [
