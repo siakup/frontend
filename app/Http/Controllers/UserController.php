@@ -2,9 +2,16 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Storage;
+
 use App\Traits\ApiResponse;
 use App\Endpoint\UserService;
-use function PHPUnit\Framework\throwException;
+
+use Exception;
 
 class UserController extends Controller
 {
@@ -13,11 +20,16 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $sort = $request->input('sort', 'nama,asc');
+        $page = $request->input('page', 1);
+        $limit = $request->input('limit', 10);
 
-        $params = [];
-        if ($search) {
-            $params['search'] = $search;
-        }
+        $params = [
+            'search' => $search,
+            'page' => $page,
+            'sort' => $sort,
+            'limit' => $limit,
+        ];
         
         $url = UserService::getInstance()->getListAllUsers();
         $response = getCurl($url, $params, getHeaders());
@@ -66,7 +78,6 @@ class UserController extends Controller
         return view('users.create', get_defined_vars());
     }
 
-
     public function store(Request $request)
     {
         $userData = [
@@ -86,28 +97,31 @@ class UserController extends Controller
         $response = postCurl($url, $userData, getHeaders());
 
         if ($request->ajax()) {
-            if (isset($response['success']) && $response['success']) {
+            if ($response && isset($response->success) && $response->success) {
                 return response()->json([
                     'success' => true,
                     'message' => 'User berhasil disimpan',
-                    'data' => $response['data'] ?? null
+                    'data' => $response->data ?? null,
+                    'redirect_uri' => route('users.index')
                 ]);
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => $response['message'] ?? 'Gagal menyimpan user',
+                    'message' => $response->message ?? 'Gagal menyimpan user',
                     'data' => null
                 ], 422);
             }
+        } else {
+            return redirect()->route('users.index');
         }
-        // If classic POST, redirect
-        return redirect()->route('users.index');
+
     }
 
     public function edit($username)
     {
         $url = UserService::getInstance()->getUserByUsername($username);
         $response = getCurl($url, null, getHeaders());
+        
         return view('users.edit', get_defined_vars());
     }
 

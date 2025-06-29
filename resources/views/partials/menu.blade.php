@@ -32,21 +32,27 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-profile.svg') }}" alt="Profile Icon" class="menu-icon">
-                    <span>Profil</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-profile.svg') }}" alt="Profile Icon" class="menu-icon">
+                        <span>Profil</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-pesan.svg') }}" alt="Message Icon" class="menu-icon">
-                    <span>Pesan</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-pesan.svg') }}" alt="Message Icon" class="menu-icon">
+                        <span>Pesan</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-pengumuman.svg') }}" alt="News Icon" class="menu-icon">
-                    <span>Pengumuman</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-pengumuman.svg') }}" alt="News Icon" class="menu-icon">
+                        <span>Pengumuman</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item has-submenu">
@@ -64,63 +70,79 @@
                         </a>
                     </li>
                     <li class="submenu-item">
-                        <a href="/config/academic" class="{{ Request::is('config/academic') ? 'active' : '' }}">
+                        <a href="{{ route('roles.index') }}" class="{{ Request::is('roles*') ? 'active' : '' }}">
                             <span>Manajemen Peran</span>
                         </a>
                     </li>
                     <li class="submenu-item">
-                        <a href="/config/users" class="{{ Request::is('config/users') ? 'active' : '' }}">
+                        <a href="{{ route('academics.index') }}" class="{{ Request::is('academics*') ? 'active' : '' }}">
                             <span>Akademik</span>
                         </a>
                     </li>
                 </ul>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-prodi.svg') }}" alt="Staff Icon" class="menu-icon">
-                    <span>Manajemen Staf Pengajar</span>
+                <a href="{{ route('lectures.index') }}" class="menu-link {{ Request::is('lectures*') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-prodi.svg') }}" alt="Staff Icon" class="menu-icon">
+                        <span>Manajemen Staf Pengajar</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
                     <img src="{{ asset('icons/base/icon-masukan-komplain.svg') }}" alt="Research Icon" class="menu-icon">
                     <span>Penelitian</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-pembayaran.svg') }}" alt="Payment Icon" class="menu-icon">
-                    <span>Pembayaran (Mahasiswa)</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-pembayaran.svg') }}" alt="Payment Icon" class="menu-icon">
+                        <span>Pembayaran (Mahasiswa)</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-file.svg') }}" alt="Report Icon" class="menu-icon">
-                    <span>Laporan</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-file.svg') }}" alt="Report Icon" class="menu-icon">
+                        <span>Laporan</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-ekuivalensi.svg') }}" alt="Survey Icon" class="menu-icon">
-                    <span>Manajemen Survei</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-ekuivalensi.svg') }}" alt="Survey Icon" class="menu-icon">
+                        <span>Manajemen Survei</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-pesan.svg') }}" alt="Faq Icon" class="menu-icon">
-                    <span>Manajemen FAQ</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-pesan.svg') }}" alt="Faq Icon" class="menu-icon">
+                        <span>Manajemen FAQ</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-document-book.svg') }}" alt="Guide Icon" class="menu-icon">
-                    <span>Petunjuk Penggunaan</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-document-book.svg') }}" alt="Guide Icon" class="menu-icon">
+                        <span>Petunjuk Penggunaan</span>
+                    </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="/home">
-                    <img src="{{ asset('icons/base/icon-lock.svg') }}" alt="Password Icon" class="menu-icon">
-                    <span>Ganti Password</span>
+                <a href="/home" class="menu-link">
+                    <div class="menu-content">
+                        <img src="{{ asset('icons/base/icon-lock.svg') }}" alt="Password Icon" class="menu-icon">
+                        <span>Ganti Password</span>
+                    </div>
                 </a>
             </li>
         </ul>

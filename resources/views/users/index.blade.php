@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
         dropdown.appendChild(loadingIndicator);
         dropdown.style.display = 'block';
         $.ajax({
-            url: `/users`,
+            url: `{{ route('users.index') }}`,
             method: 'GET',
             data: { search: keyword },
             dataType: 'json',
@@ -64,12 +64,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function refreshTable(username) {
         $.ajax({
-            url: '/users',
+            url: '{{ route('users.index') }}',
             method: 'GET',
             data: { search: username },
             headers: { 'X-Requested-With': 'XMLHttpRequest' },
-            success: function(html) {
-                window.location.href = '/users?search=' + encodeURIComponent(username);
+            success: function(response) {
+                window.location.href = '{{ route('users.index') }}' + '?search=' + encodeURIComponent(username);
+            },
+            error: function() {
+                $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
+            }
+        });
+    }
+
+    document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
+        item.addEventListener('click', function () {
+            sortDropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+            const sortKey = this.getAttribute('data-sort');
+            this.classList.add('active');
+            sortDropdown.style.display = 'none';
+            sortTable(sortKey); // Panggil AJAX sortTable
+        });
+    });
+
+    function sortTable(value) {
+        $.ajax({
+            url: '{{ route('users.index') }}',
+            method: 'GET',
+            data: { 
+                sort: value 
+            },
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function(response) {
+                window.location.href = '{{ route('users.index') }}' + '?sort=' + encodeURIComponent(value);
             },
             error: function() {
                 $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
@@ -83,7 +110,6 @@ document.addEventListener('DOMContentLoaded', function () {
             dropdown.style.display = 'none';
         }
     });
-
 
     // sort dropdown
     const sortBtn = document.getElementById('sortButton');
@@ -111,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.classList.add('active');
             sortDropdown.style.display = 'none';
         });
-    });
+    }); 
 });
 </script>
 @endsection
@@ -128,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <div class="card-header">
             <div class="search-section">
                 <div class="search-container">
-                    <input type="text" placeholder="Username / Nama / Status" class="search-input"  id="searchInput" autocomplete="off">
+                    <input type="text" placeholder="Username / Nama / Status" class="search-filter" id="searchInput" autocomplete="off" value="{{ $search }}">
                     <img src="{{ asset('icons/search-left.svg') }}" alt="search" class="search-icon-right">
                     <div class="search-dropdown" id="searchDropdown"></div>
                 </div>
@@ -139,19 +165,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     <img src="{{ asset('icons/icon-filter.svg') }}" alt="Filter">
                 </button>
                 <div id="sortDropdown" class="sort-dropdown" style="display: none;">
-                    <div class="dropdown-item" data-sort="nama">Aktif</div>
-                    <div class="dropdown-item" data-sort="username">Tidak Aktif</div>
-                    <div class="dropdown-item" data-sort="asc">A-Z</div>
-                    <div class="dropdown-item" data-sort="desc">Z-A</div>
-                    <div class="dropdown-item" data-sort="newest">Terbaru</div>
-                    <div class="dropdown-item" data-sort="oldest">Terlama</div>
+                    <div class="dropdown-item" data-sort="active">Aktif</div>
+                    <div class="dropdown-item" data-sort="inactive">Tidak Aktif</div>
+                    <div class="dropdown-item" data-sort="nama,asc">A-Z</div>
+                    <div class="dropdown-item" data-sort="nama,desc">Z-A</div>
+                    <div class="dropdown-item" data-sort="created_at,desc">Terbaru</div>
+                    <div class="dropdown-item" data-sort="created_at,asc">Terlama</div>
                 </div>
             </div>
         </div>
     </div>
     <!-- <div class="content-card"> -->
         <div class="table-responsive">
-            <table class="table" style="--table-cols:7">
+            <table class="table" id="list-user" style="--table-cols:7">
                 <thead>
                     <tr>
                         <th>NIP/NIM</th>
@@ -169,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>{{ $user->nomor_induk }}</td>
                         <td>{{ $user->nama }}</td>
                         <td>{{ $user->username }}</td>
-                        <td class="text-gray-12">{{ \Carbon\Carbon::parse($user->created_at)->format('d-m-Y, H:i:s') }} WIB</td>
+                        <td class="text-gray-12">{{ formatDateTime($user->created_at) }}</td>
                         <td>
                             @if ($user->status === 'active')
                                 <span class="badge badge-active">Aktif</span>

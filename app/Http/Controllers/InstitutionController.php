@@ -2,8 +2,16 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Storage;
+
 use App\Traits\ApiResponse;
 use App\Endpoint\UserService;
+
+use Exception;
 
 class InstitutionController extends Controller
 {

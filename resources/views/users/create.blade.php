@@ -479,53 +479,29 @@ document.addEventListener('DOMContentLoaded', function () {
             peran
         };
 
-        fetch("{{ route('users.store') }}", {
-            method: 'POST',
+        $.ajax({
+            url: "{{ route('users.store') }}",
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
             headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            body: JSON.stringify(data)
-        })
-        .then(async response => {
-            const result = await response.json();
-            console.log($result);
-            if (response.ok && result.success) {
-                function showToast() {
-                    Swal.fire({
-                        toast: true,
-                        position: 'top',
-                        title: '<span class="swal2-title-custom">Berhasil disimpan</span>',
-                        html: '',
-                        showConfirmButton: true,
-                        confirmButtonText: 'Oke',
-                        background: '#222',
-                        color: '#fff',
-                        customClass: {
-                            popup: 'swal2-toast-custom',
-                            confirmButton: 'button button-outline',
-                            title: 'swal2-title-custom'
-                        },
-                        buttonsStyling: false,
-                        timer: 5000,
-                        timerProgressBar: true,
-                        icon: undefined
-                    });
+            success: function(response) {
+                console.log('AJAX Response:', response);
+                localStorage.setItem('flash_type', response.success ? 'success' : 'error');
+                localStorage.setItem('flash_message', response.message || 'Pengguna berhasil dibuat');
+                window.location.href = response.redirect_uri;
+            },
+            error: function(xhr, status, error) {
+                let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
                 }
-                if (typeof Swal === 'undefined') {
-                    var script = document.createElement('script');
-                    script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';
-                    script.onload = showToast;
-                    document.head.appendChild(script);
-                } else {
-                    showToast();
-                }
-            } else {
-                alert(result.message || 'Gagal menyimpan data.');
+
+                errorToast(errorMessage);
+                console.error('AJAX Error:', error);
             }
-        })
-        .catch(() => {
-            alert('Gagal menyimpan data.');
         });
     });
 });

@@ -100,6 +100,19 @@ if (!function_exists('tanggal')) {
     }
 }
 
+if (!function_exists('formatDateTime')) {
+    function formatDateTime($dateTime) {
+        $returnValue = '';
+
+        $date = tanggal(date('Y-m-d', strtotime($dateTime)));
+        $time = date('H:i', strtotime($dateTime));
+
+        $returnValue = $date . ", " . $time . ' WIB';
+
+        return $returnValue;
+    }
+}
+
 
 if (!function_exists('hari')) {
     function hari($tanggal = null) {

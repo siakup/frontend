@@ -1,0 +1,16 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::group(['prefix' => 'users'], function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('show/{username}', [UserController::class, 'getUser'])->name('users.getUser');
+        Route::get('create', [UserController::class, 'create'])->name('users.create');
+        Route::get('edit/{username}', [UserController::class, 'edit'])->name('users.edit');
+        Route::get('search-by-nip', [UserController::class, 'searchByNip'])->name('users.search-nip');
+        Route::get('generate-username', [UserController::class, 'generateUsername'])->name('users.generate-username');
+        Route::post('/', [UserController::class, 'store'])->name('users.store');
+    });
+});
