@@ -138,6 +138,19 @@ document.addEventListener('DOMContentLoaded', function () {
             sortDropdown.style.display = 'none';
         });
     }); 
+
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-view-user');
+        if (btn) {
+            const nomorInduk = btn.getAttribute('data-nomor-induk');
+            if (nomorInduk) {
+                $.get("{{ route('users.detail') }}", { nomor_induk: nomorInduk }, function(html) {
+                    $('#userDetailModalContainer').html(html);
+                    $('#modalDetailPengguna').show();
+                });
+            }
+        }
+    });
 });
 </script>
 @endsection
@@ -206,12 +219,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td><a href="#" class="link-blue">Reset Password</a></td>
                         <td>
                             <div class="action-buttons">
-                                <button class="btn-icon" title="View">
+                                <button class="btn-icon btn-view-user" data-nomor-induk="{{ $user->nomor_induk }}" title="View" type="button">
                                     <img src="{{ asset('icons/button-view.svg') }}" alt="View">
                                 </button>
-                                <button class="btn-icon" title="Edit">
+                                <a class="btn-icon" title="Edit" href="{{ route('users.edit', ['nomor_induk' => $user->nomor_induk]) }}">
                                     <img src="{{ asset('icons/button-edit.svg') }}" alt="Edit">
-                                </button>
+                                </a>
                             </div>
                         </td>
                     </tr>
@@ -220,4 +233,6 @@ document.addEventListener('DOMContentLoaded', function () {
             </table>
         </div>
     <!-- </div> -->
+
+    <div id="userDetailModalContainer"></div>
 @endsection

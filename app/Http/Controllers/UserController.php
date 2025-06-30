@@ -58,14 +58,12 @@ class UserController extends Controller
     public function detail(Request $request)
     {
         $nomor_induk = $request->input('nomor_induk');
-
-        $params = [];
-        if ($nomor_induk) {
-            $params['search'] = $nomor_induk;
-        }
-
         $url = UserService::getInstance()->getUserDetail($nomor_induk);
-        $response = getCurl($url, $params, getHeaders());
+        $response = getCurl($url, null, getHeaders());
+        if ($request->ajax()) {
+            return view('users._modal-view', get_defined_vars())->render();
+        }
+        return view('users.view', get_defined_vars());
     }
 
     public function create(Request $request)
@@ -117,11 +115,16 @@ class UserController extends Controller
 
     }
 
-    public function edit($username)
+    public function edit($nomor_induk)
     {
-        $url = UserService::getInstance()->getUserByUsername($username);
+        $url = UserService::getInstance()->getUserDetail($nomor_induk);
         $response = getCurl($url, null, getHeaders());
-        
+
+        $urlRoles = UserService::getInstance()->getListAllRoles();
+        $roles = getCurl($urlRoles, null, getHeaders());
+        if (!$roles || !isset($roles->data) || empty($roles->data)) {
+            abort(500, 'Roles not found or response invalid.');
+        }
         return view('users.edit', get_defined_vars());
     }
 

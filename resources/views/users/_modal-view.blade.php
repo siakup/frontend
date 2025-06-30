@@ -1,13 +1,3 @@
-@extends('layouts.main')
-
-@section('title', 'Detail Pengguna')
-
-@section('breadcrumbs')
-    <div class="breadcrumb-item">Manajemen Pengguna</div>
-    <div class="breadcrumb-item active">Detail Pengguna</div>
-@endsection
-
-@section('css')
 <style>
     .modal-custom {
         position: fixed;
@@ -103,9 +93,7 @@
         left: -20px;
     }
 </style>
-@endsection
 
-@section('content')
 <div id="modalDetailPengguna" class="modal-custom" style="display:block;">
     <div class="modal-custom-backdrop"></div>
     <div class="modal-custom-content">
@@ -184,4 +172,3 @@ function toggleSection(section) {
     }
 }
 </script>
-@endsection

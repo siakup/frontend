@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
         institusiSelect.innerHTML = '<option value="" selected disabled hidden>Pilih Institusi</option>';
         institusiSelect.disabled = true;
         if (roleId) {
-            fetch(`/institutions/by-role?role=${roleId}`)
+            fetch(`/institutions/role?role=${roleId}`)
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.data && data.data.length > 0) {

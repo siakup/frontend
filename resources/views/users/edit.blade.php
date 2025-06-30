@@ -3,7 +3,7 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item"><a href="{{ url('/users/') }}">Manajemen Pengguna</a></div>
+    <div class="breadcrumb-item"><a href="{{ route('users.index') }}">Manajemen Pengguna</a></div>
     <div class="breadcrumb-item active">Edit Informasi</div>
 @endsection
 
@@ -166,8 +166,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const btnShowModal = document.getElementById('btnShowModal');
     if (btnShowModal && modal) {
         btnShowModal.addEventListener('click', function(e) {
-            e.preventDefault(); // Prevent default action if inside a form
-            modal.style.display = 'flex'; // Show modal
+            e.preventDefault(); 
+            modal.style.display = 'flex'; 
         });
     }
 
@@ -176,9 +176,9 @@ document.addEventListener('DOMContentLoaded', function () {
     btnBatalModal.addEventListener('click', function() {
         modal.style.display = 'none';
     });
+
     // Hide modal when click outside modal-custom-content only
     modal.addEventListener('mousedown', function(e) {
-        // Only close if click is on the backdrop, not on modal-custom-content or its children
         if (e.target === modal) {
             modal.style.display = 'none';
         }
@@ -196,7 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateColor();
     });
 
-    // Enable/disable Tambah button based on select values
     const roleSelect = document.getElementById('roleSelect');
     const institusiSelect = document.getElementById('institusiSelect');
     const btnTambahModal = document.getElementById('btnTambahModal');
@@ -215,6 +214,91 @@ document.addEventListener('DOMContentLoaded', function () {
     roleSelect.addEventListener('change', updateTambahButtonState);
     institusiSelect.addEventListener('change', updateTambahButtonState);
     updateTambahButtonState();
+
+    // Chained dropdown for institusi by role
+    roleSelect.addEventListener('change', function() {
+        const roleId = this.value;
+        institusiSelect.innerHTML = '<option value="" selected disabled hidden>Pilih Institusi</option>';
+        institusiSelect.disabled = true;
+        if (roleId) {
+            fetch(`/institutions/role?role=${roleId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.data && data.data.length > 0) {
+                        data.data.forEach(function(inst) {
+                            const opt = document.createElement('option');
+                            opt.value = inst.id;
+                            opt.textContent = inst.nama;
+                            institusiSelect.appendChild(opt);
+                        });
+                        institusiSelect.disabled = false;
+                    } else {
+                        institusiSelect.disabled = true;
+                    }
+                })
+                .catch(() => {
+                    institusiSelect.disabled = true;
+                });
+        }
+    });
+
+    function formatDateTime(dateTimeStr) {
+        const date = new Date(dateTimeStr);
+
+        const formattedDate = date.toLocaleDateString('id-ID', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+
+        const formattedTime = date.toLocaleTimeString('id-ID', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+
+        return `${formattedDate}, ${formattedTime} WIB`;
+    }
+
+    btnTambahModal.addEventListener('click', function() {
+        if (btnTambahModal.disabled) return;
+        const roleId = roleSelect.value;
+        const roleText = roleSelect.options[roleSelect.selectedIndex].textContent;
+        const institusiId = institusiSelect.value;
+        const institusiText = institusiSelect.options[institusiSelect.selectedIndex].textContent;
+        if (!roleId || !institusiId || institusiId === 'undefined') {
+            alert('Pilih peran dan institusi yang valid.');
+            return;
+        }
+        const now = new Date();
+        const createdAt = now.toLocaleString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+        const tbody = document.querySelector('.table tbody');
+        // Remove empty rows if present
+        tbody.querySelectorAll('tr').forEach(tr => {
+            if ([...tr.children].every(td => td.textContent.trim() === '')) tr.remove();
+        });
+        // Insert new row with data attributes for IDs
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-role-id', roleId);
+        tr.setAttribute('data-institusi-id', institusiId);
+        tr.innerHTML = `<td>${roleText}</td>
+                        <td>${institusiText}</td>
+                        <td>${formatDateTime(now)}</td>
+                        <td style="display: flex; justify-content: center; align-items: center;">
+                                <button class=" btnHapusPeran btn-icon btn-hapus" title="Hapus">
+                                    <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
+                                    <span>Hapus</span>
+                                </button>
+                        </td>`;
+        tbody.appendChild(tr);
+        
+        modal.style.display = 'none';
+        
+        roleSelect.value = '';
+        institusiSelect.innerHTML = '<option value="" selected disabled hidden>Pilih Institusi</option>';
+        institusiSelect.disabled = true;
+        updateTambahButtonState();
+    });
 });
 </script>
 @endsection
@@ -233,18 +317,18 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="form-group">
                 <label for="nip">NIP</label>
                 <div class="input-by-search">
-                    <input type="text" id="nip" class="form-control" value="{{ $response->data->nomor_induk ?? '' }}" readonly>
+                    <input type="text" id="nip" class="form-control" value="{{ $response->data->user->nomor_induk ?? '' }}" readonly>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="nama_lengkap">Nama Lengkap</label>
-                <input type="text" id="nama_lengkap" class="form-control" value="{{ $response->data->nama ?? '' }}"readonly>
+                <input type="text" id="nama_lengkap" class="form-control" value="{{ $response->data->user->nama ?? '' }}"readonly>
             </div>
 
             <div class="form-group">
                 <label for="username">Username</label>
-                <input type="text" id="username" class="form-control" value="{{ $response->data->username ?? '' }}" readonly>
+                <input type="text" id="username" class="form-control" value="{{ $response->data->user->username ?? '' }}" readonly>
             </div>
 
             <div class="form-group">
@@ -254,13 +338,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             <div class="form-group">
                 <label for="status">Status</label>
-                <div class="toggle-row"></div>
-                    <button id="toggleButton" class="btn-toggle">
-                        <img src="{{ asset(($response->data->status ?? false) ? 'components/toggle-on-disabled-false.svg' : 'components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
-                        <span class="toggle-info text-sm-bd">{{ ($response->data->status ?? false) ? 'Aktif' : 'Tidak Aktif' }}</span>
-                    </button>
-                    <input type="hidden" name="status" id="statusValue" value="{{ ($response->data->status ?? false) ? 'true' : 'false' }}">
-                </div>
+                <button id="toggleButton" class="btn-toggle" type="button">
+                    <img src="{{ asset(($response->data->user->status ?? false) ? 'components/toggle-on-disabled-false.svg' : 'components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
+                    <span class="toggle-info text-sm-bd">{{ ($response->data->user->status ?? false) ? 'Aktif' : 'Tidak Aktif' }}</span>
+                </button>
+                <input type="hidden" name="status" id="statusValue" value="{{ ($response->data->user->status ?? false) ? 'true' : 'false' }}">
             </div>
             <div class="right">
                 <button type="button" class="button button-outline" style="margin-top: 16px;" id="btnShowModal">Tambah Peran</button>
@@ -280,10 +362,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     </tr>
                 </thead>
                 <tbody>
+                @foreach($response->data->roles as $role)
                     <tr>
-                        <td class="table-gray">Admin Sistem</td>
-                        <td  class="table-gray">Universitas Pertamina</td>
-                        <td  class="table-gray">Jigeum</td>
+                        <td class="table-gray">{{ $role->role->nama_role }}</td>
+                        <td  class="table-gray">{{ $role->institusi->nama_institusi }}</td>
+                        <td  class="table-gray">{{ formatDateTime($role->created_at) }}</td>
                         <td style="display: flex; justify-content: center; align-items: center;" class="table-gray">
                             <button class="btn-icon btn-hapus btnHapusPeran" title="Hapus">
                                 <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
@@ -291,17 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             </button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Admin Prodi</td>
-                        <td>Universitas Pertamina</td>
-                        <td>Jigeum</td>
-                        <td style="display: flex; justify-content: center; align-items: center;">
-                            <button class="btn-icon btn-hapus btnHapusPeran" title="Hapus">
-                                <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
-                                <span>Hapus</span>
-                            </button>
-                        </td>
-                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
@@ -322,20 +395,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     <label for="roleSelect">Nama Peran</label>
                     <select id="roleSelect" class="form-control">
                         <option value="" selected disabled hidden>Pilih Peran</option>
-                        <option value="admin">Admin Sistem</option>
-                        <option value="admin-fakultas">Admin Fakultas</option>
-                        <option value="admin-prodi">Admin Program Studi</option>
-                        <option value="admin-dirdik">Admin Direktorat Pendidikan</option>
+                        @foreach($roles->data as $role)
+                            <option value="{{ $role->id }}">{{ $role->nama }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="institusiSelect">Nama Institusi</label>
-                    <select id="institusiSelect" class="form-control">
+                    <select id="institusiSelect" class="form-control" disabled>
                         <option value="" selected disabled hidden>Pilih Institusi</option>
-                        <option value="universitas">Universitas Pertamina</option>
-                        <option value="fsk">Fakultas Sains dan Ilmu Komputer</option>
-                        <option value="kimia">Kimia</option>
-                        <option value="ilkom">Ilmu Komputer</option>
                     </select>
                 </div>
             </div>
