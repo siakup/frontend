@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const toggleButton = document.getElementById('toggleButton');
     const toggleIcon = document.getElementById('toggleIcon');
     const toggleInfo = document.querySelector('.toggle-info');
-    let isActive = {{ $response->data->status ?? 'false' }} === 'true';
+    let isActive = "{{ $response->data->user->status ?? 'inactive' }}" === "active";
 
     // Set initial state based on server value
     toggleIcon.src = isActive ? "{{ asset('components/toggle-on-disabled-false.svg') }}" : "{{ asset('components/toggle-off-disabled-true.svg') }}";
@@ -294,21 +294,115 @@ document.addEventListener('DOMContentLoaded', function () {
         institusiSelect.disabled = true;
         updateTambahButtonState();
     });
+
+    let rowToDelete = null;
+
+    document.querySelector('.table tbody').addEventListener('click', function(e) {
+        const btn = e.target.closest('.btnHapusPeran');
+        if (btn) {
+            rowToDelete = btn.closest('tr');
+            document.getElementById('modalKonfirmasiHapus').style.display = 'flex';
+        }
+    });
+
+    document.getElementById('btnYaHapus').addEventListener('click', function() {
+        if (rowToDelete) {
+            rowToDelete.remove();
+            rowToDelete = null;
+            // If table is empty, add back empty rows
+            const tbody = document.querySelector('.table tbody');
+            if (tbody.querySelectorAll('tr').length === 0) {
+                tbody.innerHTML = `<tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr>`;
+            }
+        }
+        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
+    });
+
+    document.getElementById('btnBatalHapus').addEventListener('click', function() {
+        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
+    });
+
+    document.getElementById('btnBatalDaftarPeran').addEventListener('click', function() {
+        window.location.href = "{{ route('users.index') }}";
+    });
+
+    document.getElementById('btnSimpan').addEventListener('click', function() {
+        document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
+    });
+
+    document.getElementById('btnCekKembali').addEventListener('click', function() {
+        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+    });
+
+    document.getElementById('btnYaSimpan').addEventListener('click', function() {
+        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+
+        // Collect form data
+        const userId = document.getElementById('user_id').value;
+        const nip = document.getElementById('nip').value.trim();
+        const status = document.getElementById('statusValue').value;
+
+        // Collect Daftar Peran table data
+        const peran = [];
+        document.querySelectorAll('.table tbody tr').forEach(tr => {
+            const tds = tr.querySelectorAll('td');
+            if (tds.length >= 4 && tds[0].textContent.trim() && tds[1].textContent.trim()) {
+                peran.push({
+                    role_id: tr.getAttribute('data-role-id'),
+                    institusi_id: tr.getAttribute('data-institusi-id'),
+                    role: tds[0].textContent.trim(),
+                    institusi: tds[1].textContent.trim(),
+                    created_at: tds[2].textContent.trim()
+                });
+            }
+        });
+
+        const data = {
+            nip,
+            status,
+            peran
+        };
+
+        $.ajax({
+            url: "/users/" + userId,
+            type: 'PUT',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                console.log('AJAX Response:', response);
+                localStorage.setItem('flash_type', response.success ? 'success' : 'error');
+                localStorage.setItem('flash_message', response.message || 'Pengguna berhasil diubah');
+                window.location.href = response.redirect_uri;
+            },
+            error: function(xhr, status, error) {
+                let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
+                errorToast(errorMessage);
+                console.error('AJAX Error:', error);
+            }
+        });
+    });
 });
 </script>
 @endsection
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Edit Informasi</div>
+        <div class="page-title-text">Ubah Informasi</div>
     </div>
     
     <a href="{{ route('users.index') }}" class="button-no-outline-left">
         <img src="{{ asset('icons/active/icon-arrow-left.svg') }}" alt="Kembali"> Manajemen Pengguna
     </a>
     <div class="content-card">
-        <div class="form-title-text">Edit Informasi Data Pengguna</div>
+        <div class="form-title-text">Ubah Informasi Data Pengguna</div>
         <div class="form-section">
+            <input type="hidden" id="user_id" value="{{ $response->data->user->id }}">
             <div class="form-group">
                 <label for="nip">NIP</label>
                 <div class="input-by-search">
@@ -331,13 +425,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 <input type="text" id="email" class="form-control" value="{{ 'email@universitaspertamina.ac.id' }}" readonly>
             </div>
 
+            @php
+                $isActive = ($response->data->user->status ?? 'inactive') === 'active';
+            @endphp
             <div class="form-group">
                 <label for="status">Status</label>
                 <button id="toggleButton" class="btn-toggle" type="button">
-                    <img src="{{ asset(($response->data->user->status ?? false) ? 'components/toggle-on-disabled-false.svg' : 'components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
-                    <span class="toggle-info text-sm-bd">{{ ($response->data->user->status ?? false) ? 'Aktif' : 'Tidak Aktif' }}</span>
+                    <img src="{{ asset($isActive ? 'components/toggle-on-disabled-false.svg' : 'components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
+                    <span class="toggle-info text-sm-bd">{{ $isActive ? 'Aktif' : 'Tidak Aktif' }}</span>
                 </button>
-                <input type="hidden" name="status" id="statusValue" value="{{ ($response->data->user->status ?? false) ? 'true' : 'false' }}">
+                <input type="hidden" name="status" id="statusValue" value="{{ $isActive ? 'true' : 'false' }}">
             </div>
             <div class="right">
                 <button type="button" class="button button-outline" style="margin-top: 16px;" id="btnShowModal">Tambah Peran</button>
@@ -374,8 +471,8 @@ document.addEventListener('DOMContentLoaded', function () {
             </table>
         </div>
         <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-            <button type="button" class="button button-clean">Batal</button>
-            <button type="button" class="button button-outline">Simpan</button>
+            <button type="button" class="button button-clean" id="btnBatalDaftarPeran">Batal</button>
+            <button type="button" class="button button-outline" id="btnSimpan">Simpan</button>
         </div>
     </div>
 
@@ -409,4 +506,37 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
         </div>
     </div>
+
+    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
+        <div class="modal-custom-backdrop"></div>
+        <div class="modal-custom-content">
+            <div class="modal-custom-header">
+                <span class="text-lg-bd">Tunggu Sebentar</span>
+            </div>
+            <div class="modal-custom-body">
+                <div>Apakah anda yakin informasi anda sudah benar?</div>
+            </div>
+            <div class="modal-custom-footer">
+                <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
+                <button type="button" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalKonfirmasiHapus" class="modal-custom" style="display:none;">
+        <div class="modal-custom-backdrop"></div>
+        <div class="modal-custom-content">
+            <div class="modal-custom-header">
+                <span class="text-lg-bd">Hapus Peran Pengguna</span>
+            </div>
+            <div class="modal-custom-body">
+                <div>Apakah anda yakin ingin menghapus?</div>
+            </div>
+            <div class="modal-custom-footer">
+                <button type="button" class="button button-clean" id="btnBatalHapus">Batal</button>
+                <button type="button" class="button button-outline" id="btnYaHapus">Hapus</button>
+            </div>
+        </div>
+    </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection

@@ -119,7 +119,6 @@ class UserController extends Controller
     {
         $url = UserService::getInstance()->getUserDetail($nomor_induk);
         $response = getCurl($url, null, getHeaders());
-
         $urlRoles = UserService::getInstance()->getListAllRoles();
         $roles = getCurl($urlRoles, null, getHeaders());
         if (!$roles || !isset($roles->data) || empty($roles->data)) {
@@ -128,9 +127,10 @@ class UserController extends Controller
         return view('users.edit', get_defined_vars());
     }
 
-    public function update(Request $request, $username)
+    public function update(Request $request, $id)
     {
-        return redirect()->back();
+        return $id;
+        // return redirect()->back();
     }
 
     public function getInstitutionsByRole(Request $request)

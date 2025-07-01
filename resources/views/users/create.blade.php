@@ -392,8 +392,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     
     document.querySelector('.table tbody').addEventListener('click', function(e) {
-        if (e.target.classList.contains('btnHapusPeran')) {
-            e.target.closest('tr').remove();
+        const btn = e.target.closest('.btnHapusPeran');
+        if (btn) {
+            btn.closest('tr').remove();
             // If table is empty, add back empty rows
             const tbody = this;
             if (tbody.querySelectorAll('tr').length === 0) {
