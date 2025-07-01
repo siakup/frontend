@@ -2,11 +2,6 @@
 
 @section('title', 'Manajemen Pengguna')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item"><a href="{{ route('users.index') }}">Manajemen Pengguna</a></div>
-    <div class="breadcrumb-item active">Edit Informasi</div>
-@endsection
-
 @section('css')
 <style>
     .modal-custom {

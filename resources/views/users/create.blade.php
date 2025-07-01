@@ -2,11 +2,6 @@
 
 @section('title', 'Manajemen Pengguna')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item"><a href="{{ route('users.index') }}">Manajemen Pengguna</a></div>
-    <div class="breadcrumb-item active">Tambah Pengguna Baru</div>
-@endsection
-
 @section('css')
 <style>
     .modal-custom {
@@ -354,12 +349,6 @@ document.addEventListener('DOMContentLoaded', function () {
     usernameInput.addEventListener('input', updateTambahPeranButtonState);
     emailInput.addEventListener('input', updateTambahPeranButtonState);
     updateTambahPeranButtonState();
-
-    // btnTambahModal.addEventListener('click', function() {
-    //     if (!btnTambahModal.disabled) {
-    //         window.location.href = "{{ route('users.edit', ['username' => 'lmawati']) }}";
-    //     }
-    // });
 
     // Add role and institusi to Daftar Peran table when Tambah clicked
     btnTambahModal.addEventListener('click', function() {

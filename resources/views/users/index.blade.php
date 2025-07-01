@@ -2,10 +2,6 @@
 
 @section('title', 'Manajemen Pengguna')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Manajemen Pengguna</div>
-@endsection
-
 @section('css')
 
 @endsection

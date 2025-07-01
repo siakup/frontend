@@ -29,7 +29,13 @@ class Menu
                                 'url' => '/users/create',
                                 'parent' => 'users.index',
                                 'isExpandable' => false
-                            ]
+                            ],
+                            'edit' => [
+                                'name' => 'Ubah Informasi',
+                                'url' => '/users/edit/*',
+                                'parent' => 'users.index',
+                                'isExpandable' => false
+                            ],
                         ],
                     ],
                 ]
@@ -76,8 +82,18 @@ class Menu
         // Helper function to find menu item by URL path
         $findMenuByPath = function($items, $targetPath) use (&$findMenuByPath) {
             foreach ($items as $key => $item) {
-                if (isset($item['url']) && trim($item['url'], '/') === trim($targetPath, '/')) {
-                    return [$item];
+                if (isset($item['url'])) {
+                    $menuUrl = trim($item['url'], '/');
+                    $target = trim($targetPath, '/');
+                    // Cek wildcard
+                    if (strpos($menuUrl, '*') !== false) {
+                        $pattern = '#^' . str_replace('\*', '.*', preg_quote($menuUrl, '#')) . '$#';
+                        if (preg_match($pattern, $target)) {
+                            return [$item];
+                        }
+                    } elseif ($menuUrl === $target) {
+                        return [$item];
+                    }
                 }
                 if (isset($item['children'])) {
                     $result = $findMenuByPath($item['children'], $targetPath);
