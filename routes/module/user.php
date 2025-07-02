@@ -14,5 +14,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('generate-username', [UserController::class, 'generateUsername'])->name('users.generate-username');
         Route::post('/', [UserController::class, 'store'])->name('users.store');
         Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::put('/{id}/status', [UserController::class, 'updateStatus'])->name('users.updateStatus');
     });
 });

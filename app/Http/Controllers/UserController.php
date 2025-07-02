@@ -129,8 +129,31 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        return $id;
-        // return redirect()->back();
+        return redirect()->back();
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $status = [
+            'status' => $request->input('status')
+        ];
+        $url = UserService::getInstance()->updateStatus($id);
+        $response = putCurl($url, $status, header: getHeaders());
+        \Log::info('PUT URL: ' . $url, $status);
+        \Log::info('API Response:', (array)$response);
+        if (isset($response->success) && $response->success) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Status berhasil diperbarui',
+                'data' => $response->data ?? null
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => $response->message ?? 'Gagal memperbarui status',
+                'data' => null
+            ], 422);
+        }
     }
 
     public function getInstitutionsByRole(Request $request)

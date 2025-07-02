@@ -137,11 +137,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const toggleIcon = document.getElementById('toggleIcon');
     const toggleInfo = document.querySelector('.toggle-info');
     let isActive = "{{ $response->data->user->status ?? 'inactive' }}" === "active";
+    const statusValue = isActive ? 'active' : 'inactive';
 
     // Set initial state based on server value
     toggleIcon.src = isActive ? "{{ asset('components/toggle-on-disabled-false.svg') }}" : "{{ asset('components/toggle-off-disabled-true.svg') }}";
     toggleInfo.textContent = isActive ? "Aktif" : "Tidak Aktif";
-    document.getElementById('statusValue').value = isActive ? "true" : "false";
+    document.getElementById('statusValue').value = isActive ? "active" : "inactive";
 
     toggleButton.addEventListener('click', function (e) {
         e.preventDefault();
@@ -149,12 +150,29 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isActive) {
             toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
             toggleInfo.textContent = "Aktif";
-            statusValue.value = "true";
         } else {
             toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
             toggleInfo.textContent = "Tidak Aktif";
-            statusValue.value = "false";
         }
+        
+        document.getElementById('statusValue').value = isActive ? "active" : "inactive";
+
+        const userId = document.getElementById('user_id').value;
+        $.ajax({
+            url: `/users/${userId}/status`,
+            type: 'PUT',
+            data: JSON.stringify({ status: document.getElementById('statusValue').value}),
+            contentType: 'application/json',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                successToast(response.message);
+            },
+            error: function(xhr) {
+                errorToast(errorMessage);
+            }
+        });
     });
 
     const modal = document.getElementById('modalTambahPeran');
@@ -434,7 +452,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <img src="{{ asset($isActive ? 'components/toggle-on-disabled-false.svg' : 'components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
                     <span class="toggle-info text-sm-bd">{{ $isActive ? 'Aktif' : 'Tidak Aktif' }}</span>
                 </button>
-                <input type="hidden" name="status" id="statusValue" value="{{ $isActive ? 'true' : 'false' }}">
+                <input type="hidden" name="status" id="statusValue" value="{{ $isActive ? 'active' : 'inactive' }}">
             </div>
             <div class="right">
                 <button type="button" class="button button-outline" style="margin-top: 16px;" id="btnShowModal">Tambah Peran</button>

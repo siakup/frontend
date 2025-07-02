@@ -69,5 +69,10 @@ class UserService
     {
         return $this->url() . 'users/';
     }
+
+    public function updateStatus($id)
+    {
+        return $this->url() . 'users/' . $id . '/status';
+    }
 }
 
