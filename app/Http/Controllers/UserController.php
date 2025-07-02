@@ -129,7 +129,33 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        return redirect()->back();
+        $userData = [
+            'nip' => $request->input('nip'),
+            'nama_lengkap' => $request->input('nama_lengkap'),
+            'username' => $request->input('username'),
+            'email' => $request->input('email'),
+            'status' => $request->input('status'),
+            'peran' => $request->input('peran'),
+        ];
+
+        logger()->info( 'User update debug', $userData);
+
+        $url = UserService::getInstance()->updateStatus($id);
+        $response = putCurl($url, $userData, header: getHeaders());
+        if (isset($response->success) && $response->success) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Status berhasil diperbarui',
+                'data' => $response->data ?? null
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => $response->message ?? 'Gagal memperbarui status',
+                'data' => null
+            ], 422);
+        }
+        // return redirect()->back();
     }
 
     public function updateStatus(Request $request, $id)
@@ -139,8 +165,6 @@ class UserController extends Controller
         ];
         $url = UserService::getInstance()->updateStatus($id);
         $response = putCurl($url, $status, header: getHeaders());
-        \Log::info('PUT URL: ' . $url, $status);
-        \Log::info('API Response:', (array)$response);
         if (isset($response->success) && $response->success) {
             return response()->json([
                 'success' => true,

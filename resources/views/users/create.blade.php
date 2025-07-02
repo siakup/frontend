@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <span>Hapus</span>
                                 </button>
                         </td>`;
-        tbody.appendChild(tr);
+        tbody.insertBefore(tr, tbody.firstChild); 
         
         modal.style.display = 'none';
         

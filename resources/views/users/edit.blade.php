@@ -150,29 +150,31 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isActive) {
             toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
             toggleInfo.textContent = "Aktif";
+            statusValue.value = "active";
         } else {
             toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
             toggleInfo.textContent = "Tidak Aktif";
+            statusValue.value = "inactive";
         }
         
         document.getElementById('statusValue').value = isActive ? "active" : "inactive";
 
-        const userId = document.getElementById('user_id').value;
-        $.ajax({
-            url: `/users/${userId}/status`,
-            type: 'PUT',
-            data: JSON.stringify({ status: document.getElementById('statusValue').value}),
-            contentType: 'application/json',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                successToast(response.message);
-            },
-            error: function(xhr) {
-                errorToast(errorMessage);
-            }
-        });
+        // const userId = document.getElementById('user_id').value;
+        // $.ajax({
+        //     url: `/users/${userId}/status`,
+        //     type: 'PUT',
+        //     data: JSON.stringify({ status: document.getElementById('statusValue').value}),
+        //     contentType: 'application/json',
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     },
+        //     success: function(response) {
+        //         successToast(response.message);
+        //     },
+        //     error: function(xhr) {
+        //         errorToast(errorMessage);
+        //     }
+        // });
     });
 
     const modal = document.getElementById('modalTambahPeran');
@@ -303,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <span>Hapus</span>
                                 </button>
                         </td>`;
-        tbody.appendChild(tr);
+        tbody.insertBefore(tr, tbody.firstChild); 
         
         modal.style.display = 'none';
         
@@ -325,6 +327,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('btnYaHapus').addEventListener('click', function() {
         if (rowToDelete) {
+            successToast("Berhasil dihapus");
             rowToDelete.remove();
             rowToDelete = null;
             // If table is empty, add back empty rows
@@ -358,6 +361,9 @@ document.addEventListener('DOMContentLoaded', function () {
         // Collect form data
         const userId = document.getElementById('user_id').value;
         const nip = document.getElementById('nip').value.trim();
+        const nama_lengkap = document.getElementById('nama_lengkap').value.trim();
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
         const status = document.getElementById('statusValue').value;
 
         // Collect Daftar Peran table data
@@ -377,12 +383,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const data = {
             nip,
+            nama_lengkap,
+            username,
+            email,
             status,
             peran
         };
 
         $.ajax({
-            url: "/users/" + userId,
+            url: `/users/${userId}/status`,
             type: 'PUT',
             data: JSON.stringify(data),
             contentType: 'application/json',
@@ -390,20 +399,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
-                console.log('AJAX Response:', response);
-                localStorage.setItem('flash_type', response.success ? 'success' : 'error');
-                localStorage.setItem('flash_message', response.message || 'Pengguna berhasil diubah');
-                window.location.href = response.redirect_uri;
+                successToast(response.message);
             },
-            error: function(xhr, status, error) {
-                let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMessage = xhr.responseJSON.message;
-                }
+            error: function(xhr) {
                 errorToast(errorMessage);
-                console.error('AJAX Error:', error);
             }
         });
+
+        // $.ajax({
+        //     url: "/users/" + userId,
+        //     type: 'PUT',
+        //     data: JSON.stringify(data),
+        //     contentType: 'application/json',
+        //     headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //     },
+        //     success: function(response) {
+        //         console.log('AJAX Response:', response);
+        //         localStorage.setItem('flash_type', response.success ? 'success' : 'error');
+        //         localStorage.setItem('flash_message', response.message || 'Pengguna berhasil diubah');
+        //         window.location.href = response.redirect_uri;
+        //     },
+        //     error: function(xhr, status, error) {
+        //         let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
+        //         if (xhr.responseJSON && xhr.responseJSON.message) {
+        //             errorMessage = xhr.responseJSON.message;
+        //         }
+        //         errorToast(errorMessage);
+        //         console.error('AJAX Error:', error);
+        //     }
+        // });
     });
 });
 </script>
