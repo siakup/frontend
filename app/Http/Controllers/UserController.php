@@ -242,4 +242,40 @@ class UserController extends Controller
             return $this->successResponse($response->data , 'Berhasil mendapatkan data');
         }
     }
+
+    public function resetPassword(Request $request)
+    {
+        $nomor_induk = $request->input('nomor_induk');
+        $url = UserService::getInstance()->getUserDetail($nomor_induk);
+        $response = getCurl($url, null, getHeaders());
+        if ($request->ajax()) {
+            return view('users._modal-resetpass', get_defined_vars())->render();
+        }
+    }
+
+    public function updatePassword($id)
+    {
+        $url = UserService::getInstance()->updatePassword($id);
+        Log::info('Reset password URL', ['url' => $url]);
+        Log::info('Headers', getHeaders());
+        Log::info('Data yang dikirim', []);
+        
+        $response = postCurl($url, [], header: getHeaders());
+
+        Log::info('Response dari postCurl', (array) $response);
+        
+        if (isset($response->success) && $response->success) {
+            return response()->json([
+                'success' => true,
+                'message' => $response->message,
+                'data' => $response->data ?? null
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => $response->message ?? 'Gagal reset password',
+                'data' => null
+            ], 422);
+        }
+    }
 }

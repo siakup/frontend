@@ -15,5 +15,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/', [UserController::class, 'store'])->name('users.store');
         Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
         Route::put('/{id}/status', [UserController::class, 'updateStatus'])->name('users.updateStatus');
+        Route::get('/reset-password', [UserController::class, 'resetPassword'])->name('users.resetPassword');
+        Route::post('/{id}/update-password', [UserController::class, 'updatePassword'])->name('users.updatePassword');
     });
 });

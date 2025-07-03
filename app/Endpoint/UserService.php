@@ -74,5 +74,10 @@ class UserService
     {
         return $this->url() . 'users/' . $id . '/status';
     }
+
+    public function updatePassword($id)
+    {
+        return $this->url() . 'users/' . $id . '/reset-password';
+    }
 }
 

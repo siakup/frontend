@@ -147,10 +147,38 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
+
+    document.addEventListener('click', function(e) {
+        const btn = e.target.closest('.btn-reset-pass');
+        if (btn) {
+            e.preventDefault(); 
+            const nomorInduk = btn.getAttribute('data-nomor-induk');
+            if (nomorInduk) {
+                $.get("{{ route('users.resetPassword') }}", { nomor_induk: nomorInduk }, function(html) {
+                    $('#userDetailModalContainer').html(html);
+                    $('#modalResetPassword').show();
+                });
+            }
+        }
+    });
+
+    function showSuccessModal(message) {
+        document.getElementById('successModalMessage').textContent = message;
+        document.getElementById('successModal').style.display = 'block';
+    }
+
+    function closeSuccessModal() {
+        document.getElementById('successModal').style.display = 'none';
+    }
+
+    @if(request('success'))
+        showSuccessModal(@json(request('success')));
+        window.history.replaceState(null, '', window.location.pathname);
+    @endif
 });
+
 </script>
 @endsection
-
 @section('content')
     <div class="page-header">
         <div class="page-title-text">Manajemen Pengguna</div>
@@ -212,7 +240,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <span class="badge badge-inactive">Tidak Aktif</span>
                             @endif
                         </td>
-                        <td><a href="#" class="link-blue">Reset Password</a></td>
+                        <td>
+                            <a href="#" class="link-blue btn-reset-pass" data-nomor-induk="{{ $user->nomor_induk }}">Reset Password</a></td>
                         <td>
                             <div class="action-buttons">
                                 <button class="btn-icon btn-view-user" data-nomor-induk="{{ $user->nomor_induk }}" title="View" type="button">
@@ -231,4 +260,6 @@ document.addEventListener('DOMContentLoaded', function () {
     <!-- </div> -->
 
     <div id="userDetailModalContainer"></div>
+    
+    @include('partials.success-modal')
 @endsection
