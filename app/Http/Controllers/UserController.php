@@ -140,22 +140,26 @@ class UserController extends Controller
 
         logger()->info( 'User update debug', $userData);
 
-        $url = UserService::getInstance()->updateStatus($id);
+        $url = UserService::getInstance()->update($id);
         $response = putCurl($url, $userData, header: getHeaders());
-        if (isset($response->success) && $response->success) {
-            return response()->json([
-                'success' => true,
-                'message' => 'Status berhasil diperbarui',
-                'data' => $response->data ?? null
-            ]);
+        if ($request->ajax()) {
+            if ($response && isset($response->success) && $response->success) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Berhasil disimpan',
+                    'data' => $response->data ?? null,
+                    'redirect_uri' => route('users.index')
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => $response->message ?? 'Gagal menyimpan',
+                    'data' => null
+                ], 422);
+            }
         } else {
-            return response()->json([
-                'success' => false,
-                'message' => $response->message ?? 'Gagal memperbarui status',
-                'data' => null
-            ], 422);
+            return redirect()->route('users.index');
         }
-        // return redirect()->back();
     }
 
     public function updateStatus(Request $request, $id)

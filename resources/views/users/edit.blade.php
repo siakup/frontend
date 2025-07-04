@@ -391,7 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         $.ajax({
-            url: `/users/${userId}/status`,
+            url: "/users/" + userId,
             type: 'PUT',
             data: JSON.stringify(data),
             contentType: 'application/json',
@@ -399,36 +399,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
-                successToast(response.message);
+                console.log('AJAX Response:', response);
+                localStorage.setItem('flash_type', response.success ? 'success' : 'error');
+                localStorage.setItem('flash_message', response.message || 'Pengguna berhasil diubah');
+                window.location.href = response.redirect_uri;
             },
-            error: function(xhr) {
+            error: function(xhr, status, error) {
+                let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                }
                 errorToast(errorMessage);
+                console.error('AJAX Error:', error);
             }
         });
-
-        // $.ajax({
-        //     url: "/users/" + userId,
-        //     type: 'PUT',
-        //     data: JSON.stringify(data),
-        //     contentType: 'application/json',
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     },
-        //     success: function(response) {
-        //         console.log('AJAX Response:', response);
-        //         localStorage.setItem('flash_type', response.success ? 'success' : 'error');
-        //         localStorage.setItem('flash_message', response.message || 'Pengguna berhasil diubah');
-        //         window.location.href = response.redirect_uri;
-        //     },
-        //     error: function(xhr, status, error) {
-        //         let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
-        //         if (xhr.responseJSON && xhr.responseJSON.message) {
-        //             errorMessage = xhr.responseJSON.message;
-        //         }
-        //         errorToast(errorMessage);
-        //         console.error('AJAX Error:', error);
-        //     }
-        // });
     });
 });
 </script>
@@ -498,9 +482,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 </thead>
                 <tbody>
                 @foreach($response->data->roles as $role)
-                    <tr>
-                        <td class="table-gray">{{ $role->role->nama_role }}</td>
-                        <td  class="table-gray">{{ $role->institusi->nama_institusi }}</td>
+                    <tr data-role-id="{{ $role->id_role }}" data-institusi-id="{{ $role->id_institusi }}">
+                        <td class="table-gray">{{ $role->role?->nama_role ?? '-' }}</td>
+                        <td  class="table-gray">{{ $role->institusi?->nama_institusi ?? '-' }}</td>
                         <td  class="table-gray">{{ formatDateTime($role->created_at) }}</td>
                         <td style="display: flex; justify-content: center; align-items: center;" class="table-gray">
                             <button class="btn-icon btn-hapus btnHapusPeran" title="Hapus">
