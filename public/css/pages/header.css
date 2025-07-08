@@ -6,7 +6,7 @@
     justify-content: space-between;
     align-items: center;
     /* padding: 1rem 1.5rem; */
-    background-color: white;
+    background: white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     /* width: 1146px; */
     width: 100%;
@@ -33,6 +33,7 @@
     display: inline-flex;
     padding: 0;
     margin: 0;
+    background: linear-gradient(to right, #fff, #ffeced)
 }
 
 .header-right-bg {
