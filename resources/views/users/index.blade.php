@@ -258,7 +258,11 @@ document.addEventListener('DOMContentLoaded', function () {
             </table>
         </div>
     <!-- </div> -->
-
+        @include('partials.pagination', [
+          "currentPage" => $data['pagination']['current_page'],
+          "lastPage" => $data['pagination']['last_page'],
+          "limit" => $limit
+        ])
     <div id="userDetailModalContainer"></div>
     
     @include('partials.success-modal')

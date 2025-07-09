@@ -22,7 +22,7 @@ class UserController extends Controller
         $search = $request->input('search');
         $sort = $request->input('sort', 'nama,asc');
         $page = $request->input('page', 1);
-        $limit = $request->input('limit', 10);
+        $limit = $request->input('limit', 5);
 
         $params = [
             'search' => $search,
@@ -34,6 +34,7 @@ class UserController extends Controller
         $url = UserService::getInstance()->getListAllUsers();
         $response = getCurl($url, $params, getHeaders());
         $data = json_decode(json_encode($response), true);
+        // dd($response);
 
         if ($request->ajax()) {
             // Tambahan pengecekan jika response tidak valid
