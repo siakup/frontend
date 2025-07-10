@@ -16,30 +16,30 @@
   <div class="paginate-navigation">
     @for($i = 1; $i <= $lastPage; $i++)
       @if($i === $currentPage || $i === $currentPage - 1 || $i === $currentPage + 1 || $i === 1 || $i === $lastPage)
-        <a href="{{route('users.index')."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit']."&" : '')."page=".$i}}" class="paginate-items {{($currentPage === $i) ? "active" : ""}}">{{ $i }}</a>
+        <a href="{{$routes."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit']."&" : '')."page=".$i}}" class="paginate-items {{($currentPage === $i) ? "active" : ""}}">{{ $i }}</a>
       @elseif($i === $lastPage - 1 || $i === 2)
         <span class="paginate-items {{($currentPage === $i) ? "active" : ""}}">...</span>
       @endif
     @endfor
   </div>
   @if($currentPage > 1)
-    <div class="paginate-button">
+    <a href="{{$routes."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit']."&" : '')."page=".((int)$currentPage-1)}}" class="paginate-button">
       <img src="{{ asset('icons/icon-arrow-right-black-12.svg')}}" alt="previous-icon" class="paginate-icon">
       <span>Sebelumnya</span>
-    </div>
+    </a>
   @endif
   @if($currentPage < $lastPage)
-    <div class="paginate-button">
+    <a href="{{$routes."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit']."&" : '')."page=".((int)$currentPage+1)}}" class="paginate-button">
       <span>Selanjutnya</span>
       <img src="{{ asset('icons/icon-arrow-right-black-12.svg')}}" alt="next-icon" class="paginate-icon">
-    </div>
+    </a>
   @endif
   <div class="paginate-search">
     <div class="paginate-button">
       <img src="{{ asset('icons/icon-search.svg')}}" alt="search-icon" class="paginate-icon">
       <span>Cari</span>
     </div>
-    <form action="{{route('users.index')."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit'] : '')}}" method="GET">
+    <form action="{{$routes."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit'] : '')}}" method="GET">
       <input type="text" name="page" placeholder="Mulai ketik" />
       <input type="hidden" name="limit" value="{{$limit}}" placeholder="Mulai ketik" />
     </form>
@@ -69,7 +69,5 @@
       const input = document.querySelector('.paginate-search form input');
       input.value = "";
     });
-
-
   </script>
 </div>

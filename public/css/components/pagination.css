@@ -23,6 +23,7 @@
   font-size: 16px;
   border-radius: 16px;
   padding: 9px 12px;
+  font-family: Poppins;
 }
 
 .paginate-navigation {
@@ -64,6 +65,7 @@
   padding-left: 12px;
   border: none;
   font-size: 16px;
+  font-family: Poppins;
 }
 
 .paginate-search form input:focus,
@@ -82,6 +84,7 @@
   border: solid 2px #E62129;
   border-radius: 4px;
   gap: 4px;
+  text-decoration: none;
 }
 
 .paginate-search .paginate-remove-search-text {
@@ -95,6 +98,9 @@
 }
 
 .paginate-icon {
-  transform: rotate(90deg);
   filter: invert(27%) sepia(91%) saturate(2576%) hue-rotate(335deg) brightness(89%) contrast(97%);
+}
+
+img.paginate-icon[alt="previous-icon"] {
+  transform: rotate(180deg);
 }
