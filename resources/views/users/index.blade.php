@@ -261,7 +261,9 @@ document.addEventListener('DOMContentLoaded', function () {
         @include('partials.pagination', [
           "currentPage" => $data['pagination']['current_page'],
           "lastPage" => $data['pagination']['last_page'],
-          "limit" => $limit
+          // "lastPage" => 10,
+          "limit" => $limit,
+          "routes" => route('users.index')
         ])
     <div id="userDetailModalContainer"></div>
     
