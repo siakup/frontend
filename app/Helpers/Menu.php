@@ -39,7 +39,56 @@ class Menu
                         ],
                     ],
                 ]
+            ],
+            'academics' => [
+              'name' => 'Konfigurasi',
+              'url' => '#',
+              'parent' => null,
+              'isExpandable' => true,
+              'children' => [
+                'index' => [
+                        'name' => 'Akademik',
+                        'url' => '/academics',
+                        'parent' => 'academics',
+                        'isExpandable' => false,
+                        'children' => [
+                            'event-akademik' => [
+                              'name' => 'Event Akademik',
+                              'url' => '/academics/event',
+                              'parent' => 'academics-event.index',
+                              'isExpandeble' => false,
+                              'children' => [
+                                'edit-event-akademik' => [
+                                  'name' => 'Edit Event Akademik',
+                                  'url' => '/academics/event/edit/*',
+                                  'parent' => 'academics-event.edit',
+                                  'isExpandeble' => false,
+                                ]
+                              ]
+                            ],
+                            'periode-akademik' => [
+                              'name' => 'Periode Akademik',
+                              'url' => '/academics/periode',
+                              'parent' => 'academics-periode.index',
+                              'isExpandeble' => false,
+                            ],
+                            // 'create' => [
+                            //     'name' => 'Tambah Pengguna',
+                            //     'url' => '/users/create',
+                            //     'parent' => 'users.index',
+                            //     'isExpandable' => false
+                            // ],
+                            // 'edit' => [
+                            //     'name' => 'Ubah Informasi',
+                            //     'url' => '/users/edit/*',
+                            //     'parent' => 'users.index',
+                            //     'isExpandable' => false
+                            // ],
+                        ],
+                    ],
+              ]
             ]
+
         ];
     }
 

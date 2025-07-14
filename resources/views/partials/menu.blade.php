@@ -75,7 +75,7 @@
                         </a>
                     </li>
                     <li class="submenu-item">
-                        <a href="{{ route('academics.index') }}" class="{{ Request::is('academics*') ? 'active' : '' }}">
+                        <a href="{{ route('academics-periode.index') }}" class="{{ Request::is('academics*') ? 'active' : '' }}">
                             <span>Akademik</span>
                         </a>
                     </li>
