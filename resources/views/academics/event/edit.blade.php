@@ -207,7 +207,7 @@
   </div>
 
   <a href="{{ route('academics-event.index') }}" class="button-no-outline-left">
-      <img src="{{ asset('icons/active/icon-arrow-left.svg') }}" alt="Kembali"> Event Akademik
+      <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Event Akademik
   </a>
   
   <div class="content-card">

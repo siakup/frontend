@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${formatDateTime(now)}</td>
                         <td style="display: flex; justify-content: center; align-items: center;">
                                 <button class=" btnHapusPeran btn-icon btn-hapus" title="Hapus">
-                                    <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
+                                    <img src="{{ asset('assets/active/icon-delete.svg') }}" alt="Delete">
                                     <span>Hapus</span>
                                 </button>
                         </td>`;
@@ -424,7 +424,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     
     <a href="{{ route('users.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('icons/active/icon-arrow-left.svg') }}" alt="Kembali"> Manajemen Pengguna
+        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Manajemen Pengguna
     </a>
     <div class="content-card">
         <div class="form-title-text">Ubah Informasi Data Pengguna</div>
@@ -488,7 +488,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td  class="table-gray">{{ formatDateTime($role->created_at) }}</td>
                         <td style="display: flex; justify-content: center; align-items: center;" class="table-gray">
                             <button class="btn-icon btn-hapus btnHapusPeran" title="Hapus">
-                                <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
+                                <img src="{{ asset('assets/active/icon-delete.svg') }}" alt="Delete">
                                 <span>Hapus</span>
                             </button>
                         </td>

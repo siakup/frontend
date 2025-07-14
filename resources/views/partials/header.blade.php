@@ -8,7 +8,7 @@
                 </div>
                 <div class="search-section">
                     <div class="search-container">
-                        <img src="{{ asset('icons/search-left.svg') }}" alt="search" class="search-icon-left">
+                        <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-left">
                         <input type="text" placeholder="Cari" class="search-input">
                     </div>
                 </div>
@@ -21,7 +21,7 @@
             <div class="profile-container">
                 <div class="profile-header">
                     <div class="name-section">
-                        <img src="{{ asset('icons/women.svg') }}" alt="Profile" width="40">
+                        <img src="{{ asset('assets/women.svg') }}" alt="Profile" width="40">
                         <div class="text-black-16">{{ session('nama') }}</div>
                     </div>
                     <div class="profile-info">
@@ -30,8 +30,8 @@
                     </div>
                 </div>
                 <div class="profile-icons">
-                    <img src="{{ asset('icons/bell.svg') }}" alt="Notifikasi" width="20">
-                    <img src="{{ asset('icons/settings.svg') }}" alt="Pengaturan" width="20">
+                    <img src="{{ asset('assets/bell.svg') }}" alt="Notifikasi" width="20">
+                    <img src="{{ asset('assets/settings.svg') }}" alt="Pengaturan" width="20">
                 </div>
             </div>
         </div>
