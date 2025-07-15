@@ -197,7 +197,7 @@
   </div>
 
   <a href="{{ route('academics-event.index') }}" class="button-no-outline-left">
-      <img src="{{ asset('icons/active/icon-arrow-left.svg') }}" alt="Kembali"> Event Akademik
+      <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Event Akademik
   </a>
   
   <div class="content-card">
@@ -264,7 +264,7 @@
       <div class="modal-custom-content">
         <div class="modal-custom-header">
           <span class="text-lg-bd">Tunggu Sebentar</span>
-          <img src="{{ asset('icons/base/icon-caution.svg')}}" alt="ikon peringatan">
+          <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="ikon peringatan">
         </div>
         <div class="modal-custom-body">
           <div>Apakah anda yakin informasi anda sudah benar?</div>

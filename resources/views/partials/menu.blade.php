@@ -24,7 +24,7 @@
             <li class="menu-item">
                 <a href="{{ route('home') }}" class="menu-link {{ Request::is('home') ? 'active' : '' }}">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-home.svg') }}" 
+                        <img src="{{ asset('assets/base/icon-home.svg') }}" 
                             alt="Home Icon" 
                             class="menu-icon">
                         <span>Beranda</span>
@@ -34,7 +34,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-profile.svg') }}" alt="Profile Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-profile.svg') }}" alt="Profile Icon" class="menu-icon">
                         <span>Profil</span>
                     </div>
                 </a>
@@ -42,7 +42,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-pesan.svg') }}" alt="Message Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-pesan.svg') }}" alt="Message Icon" class="menu-icon">
                         <span>Pesan</span>
                     </div>
                 </a>
@@ -50,7 +50,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-pengumuman.svg') }}" alt="News Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-pengumuman.svg') }}" alt="News Icon" class="menu-icon">
                         <span>Pengumuman</span>
                     </div>
                 </a>
@@ -58,10 +58,10 @@
             <li class="menu-item has-submenu">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-admin.svg') }}" alt="Settings Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-admin.svg') }}" alt="Settings Icon" class="menu-icon">
                         <span>Konfigurasi</span>
                     </div>
-                    <img src="{{ asset('icons/base/icon-arrow-down.svg') }}" alt="Expand" class="arrow-icon">
+                    <img src="{{ asset('assets/base/icon-arrow-down.svg') }}" alt="Expand" class="arrow-icon">
                 </a>
                 <ul class="submenu">
                     <li class="submenu-item">
@@ -84,7 +84,7 @@
             <li class="menu-item">
                 <a href="{{ route('lectures.index') }}" class="menu-link {{ Request::is('lectures*') ? 'active' : '' }}">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-prodi.svg') }}" alt="Staff Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-prodi.svg') }}" alt="Staff Icon" class="menu-icon">
                         <span>Manajemen Staf Pengajar</span>
                     </div>
                 </a>
@@ -92,7 +92,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                    <img src="{{ asset('icons/base/icon-masukan-komplain.svg') }}" alt="Research Icon" class="menu-icon">
+                    <img src="{{ asset('assets/base/icon-masukan-komplain.svg') }}" alt="Research Icon" class="menu-icon">
                     <span>Penelitian</span>
                     </div>
                 </a>
@@ -100,7 +100,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-pembayaran.svg') }}" alt="Payment Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-pembayaran.svg') }}" alt="Payment Icon" class="menu-icon">
                         <span>Pembayaran (Mahasiswa)</span>
                     </div>
                 </a>
@@ -108,7 +108,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-file.svg') }}" alt="Report Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-file.svg') }}" alt="Report Icon" class="menu-icon">
                         <span>Laporan</span>
                     </div>
                 </a>
@@ -116,7 +116,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-ekuivalensi.svg') }}" alt="Survey Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-ekuivalensi.svg') }}" alt="Survey Icon" class="menu-icon">
                         <span>Manajemen Survei</span>
                     </div>
                 </a>
@@ -124,7 +124,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-pesan.svg') }}" alt="Faq Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-pesan.svg') }}" alt="Faq Icon" class="menu-icon">
                         <span>Manajemen FAQ</span>
                     </div>
                 </a>
@@ -132,7 +132,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-document-book.svg') }}" alt="Guide Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-document-book.svg') }}" alt="Guide Icon" class="menu-icon">
                         <span>Petunjuk Penggunaan</span>
                     </div>
                 </a>
@@ -140,7 +140,7 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('icons/base/icon-lock.svg') }}" alt="Password Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-lock.svg') }}" alt="Password Icon" class="menu-icon">
                         <span>Ganti Password</span>
                     </div>
                 </a>

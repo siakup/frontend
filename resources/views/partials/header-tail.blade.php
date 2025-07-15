@@ -21,14 +21,14 @@
 
     <!-- Right Section -->
     <div class="flex items-center gap-4 px-10 py-6 border-y border-[#D9D9D9] bg-gradient-to-r from-white to-[#FFECED]">
-      <img src="{{ asset('icons/women.svg') }}" alt="Profile" class="w-10 h-10" />
+      <img src="{{ asset('assets/women.svg') }}" alt="Profile" class="w-10 h-10" />
       <div class="flex flex-col">
         <span class="text-[#262626] text-[16px] font-semibold font-poppins">Karla Suswono</span>
         <span class="text-[#262626] text-[14px] font-bold font-poppins">Periode Akademik 2024–2025</span>
         <span class="text-[#595959] text-[10px] font-poppins">(Admin – Universitas Pertamina)</span>
       </div>
-      <img src="{{ asset('icons/bell.svg') }}" alt="Notifikasi" class="w-5 h-5" />
-      <img src="{{ asset('icons/settings.svg') }}" alt="Pengaturan" class="w-5 h-5" />
+      <img src="{{ asset('assets/bell.svg') }}" alt="Notifikasi" class="w-5 h-5" />
+      <img src="{{ asset('assets/settings.svg') }}" alt="Pengaturan" class="w-5 h-5" />
     </div>
     
   </div>

@@ -24,19 +24,19 @@
   </div>
   @if($currentPage > 1)
     <a href="{{$routes."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit']."&" : '')."page=".((int)$currentPage-1)}}" class="paginate-button">
-      <img src="{{ asset('icons/icon-arrow-right-black-12.svg')}}" alt="previous-icon" class="paginate-icon">
+      <img src="{{ asset('assets/icon-arrow-right-black-12.svg')}}" alt="previous-icon" class="paginate-icon">
       <span>Sebelumnya</span>
     </a>
   @endif
   @if($currentPage < $lastPage)
     <a href="{{$routes."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit']."&" : '')."page=".((int)$currentPage+1)}}" class="paginate-button">
       <span>Selanjutnya</span>
-      <img src="{{ asset('icons/icon-arrow-right-black-12.svg')}}" alt="next-icon" class="paginate-icon">
+      <img src="{{ asset('assets/icon-arrow-right-black-12.svg')}}" alt="next-icon" class="paginate-icon">
     </a>
   @endif
   <div class="paginate-search">
     <div class="paginate-button">
-      <img src="{{ asset('icons/icon-search.svg')}}" alt="search-icon" class="paginate-icon">
+      <img src="{{ asset('assets/icon-search.svg')}}" alt="search-icon" class="paginate-icon">
       <span>Cari</span>
     </div>
     <form action="{{$routes."?".(isset(request()->query()['limit']) ? "limit=".request()->query()['limit'] : '')}}" method="GET">
@@ -44,7 +44,7 @@
       <input type="hidden" name="limit" value="{{$limit}}" placeholder="Mulai ketik" />
     </form>
     <button class="paginate-remove-search-text">
-      <img src="{{ asset('icons/icon-remove-text-input.svg') }}" alt="remove-text-button">
+      <img src="{{ asset('assets/icon-remove-text-input.svg') }}" alt="remove-text-button">
     </button>
   </div>
   <script>

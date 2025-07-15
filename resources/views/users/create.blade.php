@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>${createdAt}</td>
                         <td style="display: flex; justify-content: center; align-items: center;">
                                 <button class=" btnHapusPeran btn-icon btn-hapus" title="Hapus">
-                                    <img src="{{ asset('icons/active/icon-delete.svg') }}" alt="Delete">
+                                    <img src="{{ asset('assets/active/icon-delete.svg') }}" alt="Delete">
                                     <span>Hapus</span>
                                 </button>
                         </td>`;
@@ -504,7 +504,7 @@ document.addEventListener('DOMContentLoaded', function () {
     </div>
     
     <a href="{{ route('users.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('icons/active/icon-arrow-left.svg') }}" alt="Kembali"> Manajemen Pengguna
+        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Manajemen Pengguna
     </a>
     <div class="content-card">
         <div class="form-title-text">Pengguna Baru</div>
@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <label for="nip">NIP</label>
                 <div class="input-by-search" style="position: relative;">
                     <input type="text" id="nip" class="form-control" placeholder="Pilih NIP dari daftar Staf/Pengajar" autocomplete="off">
-                    <img src="{{ asset('icons/search-left.svg') }}" alt="search" class="input-search-icon">
+                    <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="input-search-icon">
                     <div id="nip-dropdown" class="dropdown-menu" style="display:none; position:absolute; left:0; right:0; top:100%; z-index:10; background:#fff; border:1px solid #ddd; border-radius:0 0 8px 8px; max-height:220px; overflow-y:auto;"></div>
                 </div>
                 <div id="nip-error" class="form-error-message" style="display:none;">error</div>

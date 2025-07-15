@@ -192,14 +192,14 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="search-section">
                 <div class="search-container">
                     <input type="text" placeholder="Username / Nama / Status" class="search-filter" id="searchInput" autocomplete="off" value="{{ $search }}">
-                    <img src="{{ asset('icons/search-left.svg') }}" alt="search" class="search-icon-right">
+                    <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
                     <div class="search-dropdown" id="searchDropdown"></div>
                 </div>
             </div>
             <div class="filter-box">
                 <button class="button-clean" id="sortButton">
                     Urutkan
-                    <img src="{{ asset('icons/icon-filter.svg') }}" alt="Filter">
+                    <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
                 </button>
                 <div id="sortDropdown" class="sort-dropdown" style="display: none;">
                     <div class="dropdown-item" data-sort="active">Aktif</div>
@@ -245,10 +245,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         <td>
                             <div class="action-buttons">
                                 <button class="btn-icon btn-view-user" data-nomor-induk="{{ $user->nomor_induk }}" title="View" type="button">
-                                    <img src="{{ asset('icons/button-view.svg') }}" alt="View">
+                                    <img src="{{ asset('assets/button-view.svg') }}" alt="View">
                                 </button>
                                 <a class="btn-icon" title="Edit" href="{{ route('users.edit', ['nomor_induk' => $user->nomor_induk]) }}">
-                                    <img src="{{ asset('icons/button-edit.svg') }}" alt="Edit">
+                                    <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
                                 </a>
                             </div>
                         </td>

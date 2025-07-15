@@ -119,7 +119,7 @@
             <div class="expandable-section" id="section-detail">
                 <div class="expandable-header" onclick="toggleSection('detail')">
                     <span class="text-md-bd">Informasi Detail Pengguna</span>
-                    <img id="icon-detail" class="expand-icon" src="{{ asset('icons/icon-arrow-up-black-16.svg') }}"  />
+                    <img id="icon-detail" class="expand-icon" src="{{ asset('assets/icon-arrow-up-black-16.svg') }}"  />
                 </div>
                 <div class="expandable-content" id="content-detail" style="display:block;">
                     <div class="form-group">
@@ -144,7 +144,7 @@
             <div class="expandable-section" id="section-role" style="margin-top:18px;">
                 <div class="expandable-header" onclick="toggleSection('role')">
                     <span class="text-md-bd">Peran Pengguna</span>
-                    <img id="icon-role" class="expand-icon" src="{{ asset('icons/icon-arrow-up-black-16.svg') }}"/>
+                    <img id="icon-role" class="expand-icon" src="{{ asset('assets/icon-arrow-up-black-16.svg') }}"/>
                 </div>
                 <div class="expandable-content" id="content-role" style="display:block;">
                     <div class="table-responsive">
@@ -177,10 +177,10 @@ function toggleSection(section) {
     const icon = document.getElementById('icon-' + section);
     if (content.style.display === 'none') {
         content.style.display = 'block';
-        icon.src = "{{ asset('icons/icon-arrow-down-black-16.svg') }}";
+        icon.src = "{{ asset('assets/icon-arrow-down-black-16.svg') }}";
     } else {
         content.style.display = 'none';
-        icon.src = "{{ asset('icons/icon-arrow-down-black-16.svg') }}";
+        icon.src = "{{ asset('assets/icon-arrow-down-black-16.svg') }}";
     }
 }
 </script>
