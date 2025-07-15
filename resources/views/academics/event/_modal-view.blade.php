@@ -139,7 +139,7 @@
     <div class="modal-custom-content">
         <div class="modal-custom-header">
             <span class="text-lg-bd">Lihat Event Akademik</span>
-            <button type="button" class="modal-close-btn" onclick="document.getElementById('modalDetailEvent').style.display='none'">
+            <button type="button" class="modal-close-btn" onclick="document.getElementById('modalDetailEvent').remove();document.getElementById('eventDetailModalContainer').innerHTML=''">
                 &times;
             </button>
         </div>
