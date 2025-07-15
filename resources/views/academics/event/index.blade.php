@@ -194,7 +194,6 @@
       <button class="button-clean" id="sortButton">
           Upload Event Akademik
           <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
-          <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
       </button>
       <button class="button-outline" id="sortButton">
           Tambah Periode Akademik
@@ -206,14 +205,12 @@
             <div class="search-container">
                 <input type="text" placeholder="Nama Event" class="search-filter" id="searchInput" autocomplete="off" value="">
                 <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
-                <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
                 <div class="search-dropdown" id="searchDropdown"></div>
             </div>
         </div>
         <div class="filter-box">
           <button class="button-clean" id="sortButton">
               Urutkan
-              <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
               <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
           </button>
           <div id="sortDropdown" class="sort-dropdown" style="display: none;">
@@ -256,8 +253,6 @@
                   <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
                   <span>Lihat</span>
               </button>
-              <a class="btn-icon" title="Edit" href="{{ route('academics-event.edit', ['id' => 1]) }}">
-                  <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
               <a class="btn-icon" title="Edit" href="{{ route('academics-event.edit', ['id' => 1]) }}">
                   <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
               </a>
