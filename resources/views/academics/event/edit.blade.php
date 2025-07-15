@@ -28,130 +28,120 @@
     accent-color: #E62129;
     border-radius: 3px;
   }
-
   .modal-custom {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .modal-custom-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.25); 
-        z-index: 1;
-    }
-
-    .modal-custom-content {
-        position: relative;
-        background: #fff;
-        border-radius: 14px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-        /* padding: 32px 32px 24px 32px; */
-        width: 40vw; 
-        min-width: 340px;
-        max-width: 600px;
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .modal-custom-header {
-        border-radius: 12px 12px 0px 0px;
-        border: 1px solid var(--Surface-Border-Primary, #D9D9D9);
-        background: var(--Background-Disable-White, #F5F5F5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        /* gap: 10px; */
-        align-self: stretch;
-    }
-
-    .modal-custom-footer {
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    /* Custom dropdown style for modal select */
-    .modal-custom-content select.form-control {
-        width: 100%;
-        padding: 10px 36px 10px 16px;
-        border: 1px solid var(--Surface-Border-Secondary, #BFBFBF);
-        border-radius: 8px;
-        font-family: Poppins;
-        font-size: 14px;
-        font-weight: 400;
-        color: var(--Surface-Border-Secondary, #BFBFBF); /* grey for placeholder */
-        background: var(--Neutral-Gray-50, #FFF) url('/icons/icon-arrow-down-grey-24.svg') no-repeat right 16px center/18px 18px;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        box-sizing: border-box;
-        outline: none;
-        transition: border 0.2s;
-        height: 40px;
-    }
-
-    .modal-custom-content select.form-control:focus {
-        border-color: var(--Red-Red-500, #E62129);
-    }
-
-    .modal-custom-content select.form-control option {
-        color: #222;
-    }
-
-    .modal-custom-content select.form-control option[value=""] {
-        color: var(--Surface-Border-Secondary, #BFBFBF) !important;
-    }
-
-    .modal-custom-content select.form-control option[disabled][hidden] {
-        color: var(--Surface-Border-Secondary, #BFBFBF) !important;
-    }
-
-    .modal-custom-content select.form-control:not(:focus):not([value=""]):not(:invalid) {
-        color: #222;
-    }
-
-    .modal-custom-content select.form-control:focus:not([value=""]):not(:invalid) {
-        color: #222;
-    }
-
-    /* Highlight selected option in dropdown with red background */
-    .modal-custom-content select.form-control option:checked {
-        background: var(--Red-Red-500, #E62129) !important;
-        color: #fff !important;
-    }
-
-    /* Highlight hovered option in dropdown with red background */
-    .modal-custom-content select.form-control option:hover {
-        background: var(--Red-Red-500, #E62129) !important;
-        color: #fff !important;
-    }
-
-    input.form-control[readonly] {
-        background: var(--Neutral-Gray-200, #F5F5F5);
-        color: var(--Neutral-Gray-600, #8C8C8C);
-        border-color: var(--Neutral-Gray-300, #E8E8E8);
-        cursor: not-allowed;
-        opacity: 1;
-    }
-
-    @media (max-width: 900px) {
-        .modal-custom-content {
-            width: 90vw;
-            min-width: unset;
-            max-width: 98vw;
-            padding: 16px;
-        }
-
-        .modal-custom-title { font-size: 18px; }
-    }
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  .modal-custom-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.25); 
+      z-index: 1;
+  }
+  .modal-custom-content {
+      position: relative;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+      /* padding: 32px 32px 24px 32px; */
+      width: 40vw; 
+      min-width: 340px;
+      max-width: 600px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+  }
+  .modal-custom-header {
+      border-radius: 12px 12px 0px 0px;
+      border: 1px solid var(--Surface-Border-Primary, #D9D9D9);
+      background: var(--Background-Disable-White, #F5F5F5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      align-self: stretch;
+  }
+  .modal-custom-header span {
+    margin-right: auto;
+    text-align: center;
+    width: 100%;
+  }
+  .modal-custom-header img {
+    margin-left: auto;
+  }
+  .modal-custom-footer {
+      display: flex;
+      justify-content: flex-start;
+  }
+  /* Custom dropdown style for modal select */
+  .modal-custom-content select.form-control {
+      width: 100%;
+      padding: 10px 36px 10px 16px;
+      border: 1px solid var(--Surface-Border-Secondary, #BFBFBF);
+      border-radius: 8px;
+      font-family: Poppins;
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--Surface-Border-Secondary, #BFBFBF); /* grey for placeholder */
+      background: var(--Neutral-Gray-50, #FFF) url('/icons/icon-arrow-down-grey-24.svg') no-repeat right 16px center/18px 18px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      box-sizing: border-box;
+      outline: none;
+      transition: border 0.2s;
+      height: 40px;
+  }
+  .modal-custom-content select.form-control:focus {
+      border-color: var(--Red-Red-500, #E62129);
+  }
+  .modal-custom-content select.form-control option {
+      color: #222;
+  }
+  .modal-custom-content select.form-control option[value=""] {
+      color: var(--Surface-Border-Secondary, #BFBFBF) !important;
+  }
+  .modal-custom-content select.form-control option[disabled][hidden] {
+      color: var(--Surface-Border-Secondary, #BFBFBF) !important;
+  }
+  .modal-custom-content select.form-control:not(:focus):not([value=""]):not(:invalid) {
+      color: #222;
+  }
+  .modal-custom-content select.form-control:focus:not([value=""]):not(:invalid) {
+      color: #222;
+  }
+  /* Highlight selected option in dropdown with red background */
+  .modal-custom-content select.form-control option:checked {
+      background: var(--Red-Red-500, #E62129) !important;
+      color: #fff !important;
+  }
+  /* Highlight hovered option in dropdown with red background */
+  .modal-custom-content select.form-control option:hover {
+      background: var(--Red-Red-500, #E62129) !important;
+      color: #fff !important;
+  }
+  input.form-control[readonly] {
+      background: var(--Neutral-Gray-200, #F5F5F5);
+      color: var(--Neutral-Gray-600, #8C8C8C);
+      border-color: var(--Neutral-Gray-300, #E8E8E8);
+      cursor: not-allowed;
+      opacity: 1;
+  }
+  @media (max-width: 900px) {
+      .modal-custom-content {
+          width: 90vw;
+          min-width: unset;
+          max-width: 98vw;
+          padding: 16px;
+      }
+      .modal-custom-title { font-size: 18px; }
+  }
 </style>
 @endsection
 
@@ -274,6 +264,7 @@
       <div class="modal-custom-content">
         <div class="modal-custom-header">
           <span class="text-lg-bd">Tunggu Sebentar</span>
+          <img src="{{ asset('icons/base/icon-caution.svg')}}" alt="ikon peringatan">
         </div>
         <div class="modal-custom-body">
           <div>Apakah anda yakin informasi anda sudah benar?</div>
@@ -283,6 +274,6 @@
           <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
         </div>
       </div>
-  </div>
+    </div>
 </form>
 @endsection
