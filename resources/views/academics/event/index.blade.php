@@ -194,6 +194,7 @@
       <button class="button-clean" id="sortButton">
           Upload Event Akademik
           <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
+          <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
       </button>
       <button class="button-outline" id="sortButton">
           Tambah Periode Akademik
@@ -205,12 +206,14 @@
             <div class="search-container">
                 <input type="text" placeholder="Nama Event" class="search-filter" id="searchInput" autocomplete="off" value="">
                 <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
+                <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
                 <div class="search-dropdown" id="searchDropdown"></div>
             </div>
         </div>
         <div class="filter-box">
           <button class="button-clean" id="sortButton">
               Urutkan
+              <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
               <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
           </button>
           <div id="sortDropdown" class="sort-dropdown" style="display: none;">
@@ -248,15 +251,18 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>
-              <button class="btn-icon btn-view-event-academic" data-nomor-induk="" title="View" type="button">
-                  <img src="{{ asset('assets/button-view.svg') }}" alt="View">
+            <td class="center">
+              <button class="btn-icon btn-view-event-academic" data-nomor-induk="d" title="View" type="button">
+                  <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
+                  <span>Lihat</span>
               </button>
+              <a class="btn-icon" title="Edit" href="{{ route('academics-event.edit', ['id' => 1]) }}">
+                  <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
               <a class="btn-icon" title="Edit" href="{{ route('academics-event.edit', ['id' => 1]) }}">
                   <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
               </a>
               <button class="btn-icon btn-delete-event-academic" data-nomor-induk="d" title="Delete" type="button">
-                  <img src="{{ asset('icons/icon-delete-gray-600.svg') }}" alt="Delete">
+                  <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Delete">
                   <span>Hapus</span>
               </button>
             </td>
@@ -279,7 +285,7 @@
     <div class="modal-custom-content">
       <div class="modal-custom-header">
         <span class="text-lg-bd">Tunggu Sebentar</span>
-        <img src="{{ asset('icons/icon-delete-gray-800.svg')}}" alt="ikon peringatan">
+        <img src="{{ asset('assets/icon-delete-gray-800.svg')}}" alt="ikon peringatan">
       </div>
       <div class="modal-custom-body">
         <div>Apakah anda yakin informasi anda sudah benar?</div>
