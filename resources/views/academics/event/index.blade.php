@@ -11,7 +11,7 @@
   .center {
     display: flex;
     align-items: center;
-    gap: 0px;
+    gap: 24px;
   }
 
   .center * {
@@ -20,7 +20,7 @@
     justify-items: center;
     text-decoration: none;
     gap: 2px;
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .center .btn-delete-event-academic {
@@ -314,15 +314,15 @@
         <table class="table" id="list-user" style="--table-cols:7">
             <thead>
                 <tr>
-                    <th>Nama Event</th>
-                    <th>Event Nilai</th>
-                    <th>Event IRS</th>
-                    <th>Event Registrasi</th>
-                    <th>Event Yudisium</th>
-                    <th>Event Survei</th>
-                    <th>Event Dosen</th>
-                    <th>Event Status</th>
-                    <th>Aksi</th>
+                    <th style="width: 50%;">Nama Event</th>
+                    <th style="width: 40%;">Event Nilai</th>
+                    <th style="width: 40%;">Event IRS</th>
+                    <th style="width: 40%;">Event Registrasi</th>
+                    <th style="width: 40%;">Event Yudisium</th>
+                    <th style="width: 40%;">Event Survei</th>
+                    <th style="width: 40%;">Event Dosen</th>
+                    <th style="width: 40%;">Event Status</th>
+                    <th style="width: 60%;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
