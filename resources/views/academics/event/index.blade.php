@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Akademik')
+@section('title', 'Event Akademik')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Akademik</div>
@@ -360,7 +360,7 @@
     "lastPage" => 10,
     // "limit" => $limit,
     "limit" => 5,
-    "routes" => route('academics-periode.index')
+    "routes" => route('academics-event.index')
   ])
   <div id="eventDetailModalContainer"></div>
   <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
