@@ -148,6 +148,70 @@
 @section('javascript')
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('searchInput');
+    const dropdown = document.getElementById('searchDropdown');
+    
+    // Create loading indicator
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'dropdown-item text-center';
+    loadingIndicator.innerHTML = 'Sedang mencari...';
+
+    input.addEventListener('input', function () {
+        const keyword = this.value.trim();
+        if (keyword.length < 1) {
+            dropdown.style.display = 'none';
+            return;
+        }
+        dropdown.innerHTML = '';
+        dropdown.appendChild(loadingIndicator);
+        dropdown.style.display = 'block';
+        $.ajax({
+            url: `{{ route('academics-event.index') }}`,
+            method: 'GET',
+            data: { search: keyword },
+            dataType: 'json',
+            success: function(data) {
+                if (!data.success || !Array.isArray(data.data) || data.data.length === 0) {
+                    dropdown.innerHTML = '<div class="dropdown-item text-center">Tidak ada hasil ditemukan</div>';
+                    return;
+                }
+                dropdown.innerHTML = '';
+                data.data.forEach(user => {
+                    const item = document.createElement('div');
+                    item.className = 'dropdown-item';
+                    item.textContent = user.username;
+                    item.onclick = () => {
+                        dropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                        input.value = user.username;
+                        dropdown.style.display = 'none';
+                        refreshTable(user.username);
+                    };
+                    dropdown.appendChild(item);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                dropdown.innerHTML = '<div class="dropdown-item text-center text-danger">Terjadi kesalahan, silakan coba lagi</div>';
+            }
+        });
+    });
+
+    function refreshTable(username) {
+        $.ajax({
+            url: '{{ route('users.index') }}',
+            method: 'GET',
+            data: { search: username },
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function(response) {
+                window.location.href = '{{ route('users.index') }}' + '?search=' + encodeURIComponent(username);
+            },
+            error: function() {
+                $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
+            }
+        });
+    }
+
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-view-event-academic');
         if (btn) {
@@ -182,6 +246,16 @@
       document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-nomor-induk');
       document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
     });
+
+    // sort dropdown
+    const sortBtn = document.getElementById('sortButton');
+    const sortDropdown = document.getElementById('sortDropdown');
+
+    // Toggle dropdown on button click
+    sortBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        sortDropdown.style.display = (sortDropdown.style.display === 'block') ? 'none' : 'block';
+    });
   })
 </script>
 @endsection
@@ -191,11 +265,11 @@
   @include('academics.layouts.navbar-academic')
   <div class="academics-slicing-content content-card">
     <div class="academics-menu">
-      <button class="button-clean" id="sortButton">
+      <button class="button-clean" id="">
           Upload Event Akademik
           <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
       </button>
-      <button class="button-outline" id="sortButton">
+      <button class="button-outline" id="">
           Tambah Periode Akademik
       </button>
     </div>
@@ -203,7 +277,7 @@
       <div class="card-header">
         <div class="search-section">
             <div class="search-container">
-                <input type="text" placeholder="Nama Event" class="search-filter" id="searchInput" autocomplete="off" value="">
+                <input type="text" placeholder="Nama Event" class="search-filter" id="searchInput" autocomplete="off" value="{{ $search }}">
                 <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
                 <div class="search-dropdown" id="searchDropdown"></div>
             </div>

@@ -54,11 +54,9 @@ class AcademicController extends Controller
         $data = json_decode(json_encode($response), true);
 
         if ($request->ajax()) {
-          
             if (!isset($response->data)) {
                 return $this->errorResponse($response->message);
             }
-            
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
 
