@@ -29,5 +29,11 @@ class EventAcademicService
     {
       return $this->url() . 'events/detail';
     }
+
+    public function getListAllPeriode()
+    {
+      
+      return $this->url() . 'periode/list';
+    }
 }
 
