@@ -58,14 +58,14 @@
                             <input type="text" name="search" placeholder="Tahun/Semester/Tahun Akademik/Status"
                                 class="search-filter" id="searchInput" autocomplete="off" value="{{ $search }}"
                                 style="width: 400px;">
-                            <img src="{{ asset('icons/search-left.svg') }}" alt="search" class="search-icon-right">
+                            <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
                             <div class="search-dropdown" id="searchDropdown"></div>
                         </div>
                     </div>
                     <div class="filter-box">
                         <button class="button-clean sort-toggle-btn" id="toggleSortDropdown">
                             Urutkan
-                            <img src="{{ asset('icons/icon-filter.svg') }}" alt="Filter">
+                            <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
                         </button>
                         <div id="sortDropdown" class="sort-dropdown" style="display: none;">
                             <div class="dropdown-item" data-sort="active">Aktif</div>
@@ -98,17 +98,23 @@
                         <td>Ganjil</td>
                         <td>2019/2020</td>
                         <td><span class="badge badge-active">Aktif</span></td>
-                        <td>
-                            <button class="btn-icon btn-view-periode-academic" data-nomor-induk="" title="View"
-                                type="button">
-                                <img src="{{ asset('icons/button-view.svg') }}" alt="View">
+                        <td class="center">
+                            <button type="button" class="btn-icon btn-view-periode-academic" data-nomor-induk="d"
+                                title="Lihat">
+                                <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
+                                <span style="font-size: 14px;">Lihat</span>
                             </button>
-                            <a class="btn-icon" title="Ubah Data" href="#" style="margin-right: 8px;">
-                                <img src="{{ asset('icons/button-edit.svg') }}" alt="Ubah">
+                            <a class="btn-icon" title="Edit" href="{{ route('academics-periode.edit', ['id' => 1]) }}"
+                                style="text-decoration: none; color: inherit;">
+                                <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
+                                <span>Ubah</span>
                             </a>
-                            <a class="btn-icon" title="Hapus Data" href="#">
-                                <img src="{{ asset('icons/button-delete.svg') }}" alt="Hapus">
-                            </a>
+
+                            <button type="button" class="btn-icon btn-delete-event-academic" data-nomor-induk="d"
+                                title="Hapus">
+                                <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+                                <span style="font-size: 14px;">Hapus</span>
+                            </button>
                         </td>
                     </tbody>
                     <tbody>
@@ -117,17 +123,23 @@
                         <td>2023/2024</td>
                         <td><span class="badge badge-inactive">Tidak
                                 Aktif</span></td>
-                        <td>
-                            <button class="btn-icon btn-view-event-academic" title="Lihat Data" type="button"
-                                style="margin-right: 8px;">
-                                <img src="{{ asset('icons/button-view.svg') }}" alt="Lihat">
+                        <td class="center">
+                            <button type="button" class="btn-icon btn-view-periode-academic" data-nomor-induk="d"
+                                title="Lihat">
+                                <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
+                                <span style="font-size: 14px;">Lihat</span>
                             </button>
-                            <a class="btn-icon" title="Ubah Data" href="#" style="margin-right: 8px;">
-                                <img src="{{ asset('icons/button-edit.svg') }}" alt="Ubah">
+                            <a class="btn-icon" title="Edit" href="{{ route('academics-periode.edit', ['id' => 1]) }}"
+                                style="text-decoration: none; color: inherit;">
+                                <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
+                                <span>Ubah</span>
                             </a>
-                            <a class="btn-icon" title="Hapus Data" href="#">
-                                <img src="{{ asset('icons/button-delete.svg') }}" alt="Hapus">
-                            </a>
+
+                            <button type="button" class="btn-icon btn-delete-event-academic" data-nomor-induk="d"
+                                title="Hapus">
+                                <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+                                <span style="font-size: 14px;">Hapus</span>
+                            </button>
                         </td>
                     </tbody>
                 </table>
