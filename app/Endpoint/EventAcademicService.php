@@ -17,17 +17,17 @@ class EventAcademicService
 
     private function url()
     {
-        return config('endpoint.academics.url') . '/api/';
+        return config('endpoint.academics.url') . '/api/events';
     }
 
     public function getListAllEvents()
     {
-      return $this->url() . 'events/list';
+      return $this->url() . '/';
     }
 
-    public function getEventDetails()
+    public function eventUrl($id)
     {
-      return $this->url() . 'events/detail';
+      return $this->url() . '/' . $id;
     }
 }
 

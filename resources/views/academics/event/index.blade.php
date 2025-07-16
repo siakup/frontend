@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Akademik')
+@section('title', 'Event Akademik')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Akademik</div>
@@ -11,7 +11,7 @@
   .center {
     display: flex;
     align-items: center;
-    gap: 0px;
+    gap: 24px;
   }
 
   .center * {
@@ -20,7 +20,7 @@
     justify-items: center;
     text-decoration: none;
     gap: 2px;
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .center .btn-delete-event-academic {
@@ -133,6 +133,18 @@
       background: var(--Red-Red-500, #E62129) !important;
       color: #fff !important;
   }
+  .active-lable {
+    background-color: #D0DE68;
+    border-radius: 2px;
+    padding: 2px 27px;
+  }
+
+  .inactive-lable {
+    background-color: #FAFBEE;
+    color: #98A725;
+    border-radius: 2px;
+    padding: 2px 27px;
+  }
   @media (max-width: 900px) {
       .modal-custom-content {
           width: 90vw;
@@ -148,6 +160,70 @@
 @section('javascript')
 <script>
   document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('searchInput');
+    const dropdown = document.getElementById('searchDropdown');
+    
+    // Create loading indicator
+    const loadingIndicator = document.createElement('div');
+    loadingIndicator.className = 'dropdown-item text-center';
+    loadingIndicator.innerHTML = 'Sedang mencari...';
+
+    input.addEventListener('input', function () {
+        const keyword = this.value.trim();
+        if (keyword.length < 1) {
+            dropdown.style.display = 'none';
+            return;
+        }
+        dropdown.innerHTML = '';
+        dropdown.appendChild(loadingIndicator);
+        dropdown.style.display = 'block';
+        $.ajax({
+            url: `{{ route('academics-event.index') }}`,
+            method: 'GET',
+            data: { search: keyword },
+            dataType: 'json',
+            success: function(data) {
+                if (!data.success || !Array.isArray(data.data) || data.data.length === 0) {
+                    dropdown.innerHTML = '<div class="dropdown-item text-center">Tidak ada hasil ditemukan</div>';
+                    return;
+                }
+                dropdown.innerHTML = '';
+                data.data.forEach(user => {
+                    const item = document.createElement('div');
+                    item.className = 'dropdown-item';
+                    item.textContent = user.username;
+                    item.onclick = () => {
+                        dropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+                        item.classList.add('active');
+                        input.value = user.username;
+                        dropdown.style.display = 'none';
+                        refreshTable(user.username);
+                    };
+                    dropdown.appendChild(item);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+                dropdown.innerHTML = '<div class="dropdown-item text-center text-danger">Terjadi kesalahan, silakan coba lagi</div>';
+            }
+        });
+    });
+
+    function refreshTable(username) {
+        $.ajax({
+            url: '{{ route('users.index') }}',
+            method: 'GET',
+            data: { search: username },
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function(response) {
+                window.location.href = '{{ route('users.index') }}' + '?search=' + encodeURIComponent(username);
+            },
+            error: function() {
+                $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
+            }
+        });
+    }
+
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-view-event-academic');
         if (btn) {
@@ -182,6 +258,16 @@
       document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-nomor-induk');
       document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
     });
+
+    // sort dropdown
+    const sortBtn = document.getElementById('sortButton');
+    const sortDropdown = document.getElementById('sortDropdown');
+
+    // Toggle dropdown on button click
+    sortBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        sortDropdown.style.display = (sortDropdown.style.display === 'block') ? 'none' : 'block';
+    });
   })
 </script>
 @endsection
@@ -191,11 +277,11 @@
   @include('academics.layouts.navbar-academic')
   <div class="academics-slicing-content content-card">
     <div class="academics-menu">
-      <button class="button-clean" id="sortButton">
+      <button class="button-clean" id="">
           Upload Event Akademik
           <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
       </button>
-      <button class="button-outline" id="sortButton">
+      <button class="button-outline" id="">
           Tambah Periode Akademik
       </button>
     </div>
@@ -203,7 +289,7 @@
       <div class="card-header">
         <div class="search-section">
             <div class="search-container">
-                <input type="text" placeholder="Nama Event" class="search-filter" id="searchInput" autocomplete="off" value="">
+                <input type="text" placeholder="Nama Event" class="search-filter" id="searchInput" autocomplete="off" value="{{ $search }}">
                 <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
                 <div class="search-dropdown" id="searchDropdown"></div>
             </div>
@@ -228,26 +314,28 @@
         <table class="table" id="list-user" style="--table-cols:7">
             <thead>
                 <tr>
-                    <th>Nama Event</th>
-                    <th>Event Nilai</th>
-                    <th>Event IRS</th>
-                    <th>Event Registrasi</th>
-                    <th>Event Yudisium</th>
-                    <th>Event Survei</th>
-                    <th>Event Dosen</th>
-                    <th>Event Status</th>
-                    <th>Aksi</th>
+                    <th style="width: 50%;">Nama Event</th>
+                    <th style="width: 40%;">Event Nilai</th>
+                    <th style="width: 40%;">Event IRS</th>
+                    <th style="width: 40%;">Event Registrasi</th>
+                    <th style="width: 40%;">Event Yudisium</th>
+                    <th style="width: 40%;">Event Survei</th>
+                    <th style="width: 40%;">Event Dosen</th>
+                    <th style="width: 40%;">Event Status</th>
+                    <th style="width: 60%;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>Perkuliahan Semester Pendek</td>
+            <td>Ya</td>
+            <td>Ya</td>
+            <td>Tidak</td>
+            <td>Tidak</td>
+            <td>Tidak</td>
+            <td>Tidak</td>
+            <td>
+              <span class="inactive-lable">Aktif</span>
+            </td>
             <td class="center">
               <button class="btn-icon btn-view-event-academic" data-nomor-induk="d" title="View" type="button">
                   <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
@@ -272,7 +360,7 @@
     "lastPage" => 10,
     // "limit" => $limit,
     "limit" => 5,
-    "routes" => route('academics-periode.index')
+    "routes" => route('academics-event.index')
   ])
   <div id="eventDetailModalContainer"></div>
   <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">

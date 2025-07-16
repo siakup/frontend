@@ -54,11 +54,9 @@ class AcademicController extends Controller
         $data = json_decode(json_encode($response), true);
 
         if ($request->ajax()) {
-          
             if (!isset($response->data)) {
                 return $this->errorResponse($response->message);
             }
-            
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
 
@@ -68,7 +66,7 @@ class AcademicController extends Controller
     public function eventDetail(Request $request)
     {
         $nomor_induk = $request->input('nomor_induk');
-        $url = EventAcademicService::getInstance()->getEventDetails();
+        $url = EventAcademicService::getInstance()->eventUrl(1);
         $response = getCurl($url, null, getHeaders());
 
         if ($request->ajax()) {
@@ -92,7 +90,7 @@ class AcademicController extends Controller
 
     public function eventEdit($id)
     {
-      $url = EventAcademicService::getInstance()->getEventDetails();
+      $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
 
         $data = [

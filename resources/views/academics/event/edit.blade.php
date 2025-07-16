@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Akademik')
+@section('title', 'Edit Event Akademik')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Akademik Event</div>
