@@ -147,9 +147,14 @@ class AcademicController extends Controller
         return view('academics.event.edit', get_defined_vars());
     }
 
-    public function create(Request $request)
+    public function eventCreate(Request $request)
     {
-        return view('', get_defined_vars());
+        return view('academics.event.create', get_defined_vars());
+    }
+
+    public function eventUpload(Request $request)
+    {
+        return view('academics.event.create', get_defined_vars());
     }
 
     public function store(Request $request)

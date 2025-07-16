@@ -154,6 +154,34 @@
       }
       .modal-custom-title { font-size: 18px; }
   }
+
+  .academics-menu {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .academics-menu .button-clean,
+  .academics-menu .button-outline {
+      height: 48px;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-family: Poppins;
+      border-radius: 10px;
+      padding: 0 32px;
+      box-sizing: border-box;
+  }
+
+  .btn-icon span {
+    font-family: Poppins;
+    font-size: 12px;
+    font-weight: 400;
+    color: inherit;
+}
 </style>
 @endsection
 
@@ -277,13 +305,11 @@
   @include('academics.layouts.navbar-academic')
   <div class="academics-slicing-content content-card">
     <div class="academics-menu">
-      <button class="button-clean" id="">
-          Upload Event Akademik
-          <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
-      </button>
-      <button class="button-outline" id="">
-          Tambah Periode Akademik
-      </button>
+    <a href="{{ route('academics-event.upload') }}" class="button-clean">
+        Upload Event Akademik
+        <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Upload">
+    </a>
+    <a href="{{ route('academics-event.create') }}" class="button button-outline">Tambah Event Akademik</a>
     </div>
     <div class="content-card content-card-search">
       <div class="card-header">
