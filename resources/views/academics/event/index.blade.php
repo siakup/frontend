@@ -133,6 +133,18 @@
       background: var(--Red-Red-500, #E62129) !important;
       color: #fff !important;
   }
+  .active-lable {
+    background-color: #D0DE68;
+    border-radius: 2px;
+    padding: 2px 27px;
+  }
+
+  .inactive-lable {
+    background-color: #FAFBEE;
+    color: #98A725;
+    border-radius: 2px;
+    padding: 2px 27px;
+  }
   @media (max-width: 900px) {
       .modal-custom-content {
           width: 90vw;
@@ -314,14 +326,16 @@
                 </tr>
             </thead>
             <tbody>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>Perkuliahan Semester Pendek</td>
+            <td>Ya</td>
+            <td>Ya</td>
+            <td>Tidak</td>
+            <td>Tidak</td>
+            <td>Tidak</td>
+            <td>Tidak</td>
+            <td>
+              <span class="inactive-lable">Aktif</span>
+            </td>
             <td class="center">
               <button class="btn-icon btn-view-event-academic" data-nomor-induk="d" title="View" type="button">
                   <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
