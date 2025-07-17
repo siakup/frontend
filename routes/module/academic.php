@@ -9,6 +9,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/event', [AcademicController::class, 'indexEvent'])->name('academics-event.index');
         Route::get('/event-detail', [AcademicController::class, 'eventDetail'])->name('academics-event.detail');
         Route::get('/event/edit/{id}', [AcademicController::class, 'eventEdit'])->name('academics-event.edit');
+        Route::put('/event/update/{id}', [AcademicController::class, 'eventUpdate'])->name('academics-event.update');
         Route::delete('/event/delete/{id}', [AcademicController::class, 'eventDelete'])->name('academics-event.delete');
     });
 });

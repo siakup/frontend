@@ -68,46 +68,46 @@ class AcademicController extends Controller
         $nomor_induk = $request->input('nomor_induk');
         $url = EventAcademicService::getInstance()->eventUrl(1);
         $response = getCurl($url, null, getHeaders());
+        $data = $response->data->event;
 
         if ($request->ajax()) {
-            $data = [
-              'name' => "Perkuliahan Semester Ganjil",
-              'flag' => [
-                'nilai' => true,
-                'irs' => true,
-                'lulus' => false,
-                'registrasi' => false,
-                'yudisium' => false,
-                'survei' => false,
-                'dosen' => false
-              ],
-              'status' => true
-            ];
-            return view('academics.event._modal-view', get_defined_vars())->render();
+          return view('academics.event._modal-view', get_defined_vars())->render();
         }
-        return view('users.view', get_defined_vars());
+        return redirect()->route('academics-event.index');
     }
 
     public function eventEdit($id)
     {
-      $url = EventAcademicService::getInstance()->eventUrl($id);
+        $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
-
-        $data = [
-          'name' => "Perkuliahan Semester Ganjil",
-          'flag' => [
-            'nilai' => true,
-            'irs' => true,
-            'lulus' => false,
-            'registrasi' => false,
-            'yudisium' => false,
-            'survei' => false,
-            'dosen' => false
-          ],
-          'status' => true
-        ];
+        $data = json_decode(json_encode($response), true)['data']['event'];
+        // dd($data);
 
         return view('academics.event.edit', get_defined_vars());
+    }
+
+    public function eventUpdate(Request $request, $id) {
+      $data = [
+        'nama_event' => $request->nama_event,
+        'nilai_on' => $request->nilai_on ? true : false,
+        'irs_on' => $request->irs_on ? true : false,
+        'lulus_on' => $request->lulus_on ? true : false,
+        'registrasi_on' => $request->registrasi_on ? true : false,
+        'yudisium_on' => $request->yudisium_on ? true : false,
+        'survei_on' => $request->survei_on ? true : false,
+        'dosen_on' => $request->dosen_on ? true : false,
+        'status' => $request->status,
+      ];
+      $url = EventAcademicService::getInstance()->eventUrl($id);
+      $response = putCurl($url, $data, getHeaders());
+      
+      return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
+    }
+
+    public function eventDelete($id) {
+      $url = EventAcademicService::getInstance()->eventUrl($id);
+      $response = deleteCurl($url, getHeaders());
+      return $response;
     }
 
     public function create(Request $request)
