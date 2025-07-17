@@ -79,6 +79,7 @@ class AcademicController extends Controller
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
 
+
         $params = [
             'search' => $search,
             'page' => $page,

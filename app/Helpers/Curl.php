@@ -88,7 +88,7 @@ if (!function_exists('putCurl')) {
 }
 
 if (!function_exists('deleteCurl')) {
-    function deleteCurl($url = '', $params = '', $header = [])
+    function deleteCurl($url = '', $header = [])
     {
         $headers = array(
             'Content-Type: application/json',

@@ -313,6 +313,7 @@
     });
   })
 </script>
+
 @if(session('success'))
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -331,11 +332,13 @@
   <div class="academics-slicing-content content-card">
 
     <div class="academics-menu">
-    <a href="{{ route('academics-event.upload') }}" class="button-clean">
-        Upload Event Akademik
-        <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Upload">
-    </a>
-    <a href="{{ route('academics-event.create') }}" class="button button-outline">Tambah Event Akademik</a>
+      <button class="button-clean" id="">
+          Upload Event Akademik
+          <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
+      </button>
+      <button class="button-outline" id="">
+          Tambah Periode Akademik
+      </button>
     </div>
     <div class="content-card content-card-search">
       <div class="card-header">
@@ -424,11 +427,11 @@
         <img src="{{ asset('assets/icon-delete-gray-800.svg')}}" alt="ikon peringatan">
       </div>
       <div class="modal-custom-body">
-        <div>Apakah anda yakin informasi anda sudah benar?</div>
+        <div>Apakah anda yakin ingin menghapus event akademik ini?</div>
       </div>
       <div class="modal-custom-footer">
-        <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-        <button type="submit" class="button button-outline" id="btnSimpan">Ya, Simpan Sekarang</button>
+        <button type="button" class="button button-clean" id="btnCekKembali">Batal</button>
+        <button type="submit" class="button button-outline" id="btnSimpan">Hapus</button>
       </div>
     </div>
   </div>
