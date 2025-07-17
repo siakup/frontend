@@ -119,10 +119,11 @@
 </style>
 
 <script>
-  const toggleButton = document.getElementById('toggleButton');
-  const toggleIcon = document.getElementById('toggleIcon');
-  const toggleInfo = document.querySelector('.toggle-info');
-  let isActive = @json((bool) $data['status']);
+  var toggleButton = document.getElementById('toggleButton');
+  var toggleIcon = document.getElementById('toggleIcon');
+  var toggleInfo = document.querySelector('.toggle-info');
+  var isActive = @json((bool) $data->status);
+  
   if (isActive) {
       toggleIcon.src = "{{ asset('components/toggle-on-disabled-true-grey.svg') }}";
       toggleInfo.textContent = "Aktif";
@@ -155,37 +156,37 @@
                     </div> --}}
                     <div class="form-group">
                       <label>Nama Event</label>
-                      <input type="text" class="form-control" value="{{ $data['name'] }}" readonly>
+                      <input type="text" class="form-control" value="{{ $data->nama_event }}" readonly>
                     </div>
                     <div class="form-group">
                       <label>Flag</label>
                       <div class="form-control checkbox-group">
                         <div class="checkbox-form">
-                          <input type="checkbox" class="form-control" value="true" disabled @if($data['flag']['nilai']) checked @endif>
+                          <input type="checkbox" class="form-control" value="true" disabled @if($data->nilai_on) checked @endif>
                           <label>Nilai</label>
                         </div>
                         <div class="checkbox-form">
-                          <input type="checkbox" class="form-control" value="true" disabled @if($data['flag']['irs']) checked @endif>
+                          <input type="checkbox" class="form-control" value="true" disabled @if($data->irs_on) checked @endif>
                           <label>IRS</label>
                         </div>
                         <div class="checkbox-form">
-                          <input type="checkbox" class="form-control" value="true" disabled @if($data['flag']['lulus']) checked @endif>
+                          <input type="checkbox" class="form-control" value="true" disabled @if($data->lulus_on) checked @endif>
                           <label>Lulus</label>
                         </div>
                         <div class="checkbox-form">
-                          <input type="checkbox" class="form-control" value="true" disabled @if($data['flag']['registrasi']) checked @endif>
+                          <input type="checkbox" class="form-control" value="true" disabled @if($data->registrasi_on) checked @endif>
                           <label>Registrasi</label>
                         </div>
                         <div class="checkbox-form">
-                          <input type="checkbox" class="form-control" value="true" disabled @if($data['flag']['yudisium']) checked @endif>
+                          <input type="checkbox" class="form-control" value="true" disabled @if($data->yudisium_on) checked @endif>
                           <label>Yudisium</label>
                         </div>
                         <div class="checkbox-form">
-                          <input type="checkbox" class="form-control" value="true" disabled @if($data['flag']['survei']) checked @endif>
+                          <input type="checkbox" class="form-control" value="true" disabled @if($data->survei_on) checked @endif>
                           <label>Survei</label>
                         </div>
                         <div class="checkbox-form">
-                          <input type="checkbox" class="form-control" value="true" disabled @if($data['flag']['dosen']) checked @endif>
+                          <input type="checkbox" class="form-control" value="true" disabled @if($data->dosen_on) checked @endif>
                           <label>Dosen</label>
                         </div>
                       </div>

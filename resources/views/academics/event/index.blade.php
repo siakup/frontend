@@ -186,6 +186,7 @@
 @endsection
 
 @section('javascript')
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('searchInput');
@@ -255,35 +256,49 @@
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-view-event-academic');
         if (btn) {
-          const nomorInduk = btn.getAttribute('data-nomor-induk');
-            // if (nomorInduk) {
-                // $.get("{{ route('users.detail') }}", { nomor_induk: nomorInduk }, function(html) {
-                //     $('#userDetailModalContainer').html(html);
-                //     $('#modalDetailPengguna').show();
-                // });
-            // }
-            $.get("{{ route('academics-event.detail') }}", {  }, function(html) {
-                $('#eventDetailModalContainer').html(html);
-                $('#modalDetailEvent').show();
-            });
+          const id = btn.getAttribute('data-id');
+            if (id) {
+              $.get("{{ route('academics-event.detail') }}", { id: id }, function(html) {
+                  $('#eventDetailModalContainer').html(html);
+                  $('#modalDetailEvent').show();
+              });
+            }
         }
     });
   
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-delete-event-academic');
         if (btn) {
-          const nomorInduk = btn.getAttribute('data-nomor-induk');
-          document.getElementById('modalKonfirmasiSimpan').setAttribute('data-nomor-induk', nomorInduk);
+          const nomorInduk = btn.getAttribute('data-id');
+          document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', nomorInduk);
           document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
         }
     });
   
     document.getElementById('btnSimpan').addEventListener('click', function() {
-      const id = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-nomor-induk');
+      const id = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      $.ajax({
+          url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id', id),
+          method: 'DELETE',
+          headers: { 
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          success: function(response) {
+            successToast('Berhasil dihapus');
+            setTimeout(() => {
+              window.location.href = "{{ route('academics-event.index') }}";
+            }, 3000);
+          },
+          error: function() {
+              $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
+          }
+      });
     });
   
     document.getElementById('btnCekKembali').addEventListener('click', function() {
-      document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-nomor-induk');
+      document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
       document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
     });
 
@@ -298,18 +313,32 @@
     });
   })
 </script>
+
+@if(session('success'))
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    successToast('Berhasil disimpan');
+    setTimeout(() => {
+      window.location.href = "{{ route('academics-event.index') }}";
+    }, 3000);
+  })
+</script>
+@endif
 @endsection
 
 @section('content')
 <div class="academics-layout">
   @include('academics.layouts.navbar-academic')
   <div class="academics-slicing-content content-card">
+
     <div class="academics-menu">
-    <a href="{{ route('academics-event.upload') }}" class="button-clean">
-        Upload Event Akademik
-        <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Upload">
-    </a>
-    <a href="{{ route('academics-event.create') }}" class="button button-outline">Tambah Event Akademik</a>
+      <button class="button-clean" id="">
+          Upload Event Akademik
+          <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
+      </button>
+      <button class="button-outline" id="">
+          Tambah Periode Akademik
+      </button>
     </div>
     <div class="content-card content-card-search">
       <div class="card-header">
@@ -352,40 +381,41 @@
                 </tr>
             </thead>
             <tbody>
-            <td>Perkuliahan Semester Pendek</td>
-            <td>Ya</td>
-            <td>Ya</td>
-            <td>Tidak</td>
-            <td>Tidak</td>
-            <td>Tidak</td>
-            <td>Tidak</td>
-            <td>
-              <span class="inactive-lable">Aktif</span>
-            </td>
-            <td class="center">
-              <button class="btn-icon btn-view-event-academic" data-nomor-induk="d" title="View" type="button">
-                  <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
-                  <span>Lihat</span>
-              </button>
-              <a class="btn-icon" title="Edit" href="{{ route('academics-event.edit', ['id' => 1]) }}">
-                  <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
-              </a>
-              <button class="btn-icon btn-delete-event-academic" data-nomor-induk="d" title="Delete" type="button">
-                  <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Delete">
-                  <span>Hapus</span>
-              </button>
-            </td>
+              @foreach($data['data'] as $event)
+                <tr>
+                  <td>{{ $event['nama_event'] }}</td>
+                  <td>{{ $event['nilai_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>{{ $event['irs_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>{{ $event['registrasi_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>{{ $event['yudisium_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>{{ $event['survei_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>{{ $event['dosen_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>
+                    <span class="{{$event['status']}}-lable">{{$event['status'] === 'active' ? "Aktif" : "Tidak Aktif"}}</span>
+                  </td>
+                  <td class="center">
+                    <button class="btn-icon btn-view-event-academic" data-id="{{$event['id']}}" title="View" type="button">
+                        <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
+                        <span>Lihat</span>
+                    </button>
+                    <a class="btn-icon" title="Edit" href="{{ route('academics-event.edit', ['id' => $event['id']]) }}">
+                        <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
+                    </a>
+                    <button class="btn-icon btn-delete-event-academic" data-id="{{ $event['id'] }}" title="Delete" type="button">
+                        <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Delete">
+                        <span>Hapus</span>
+                    </button>
+                  </td>
+                </tr>
+              @endforeach
             </tbody>
         </table>
     </div>
   </div>
   @include('partials.pagination', [
-    // "currentPage" => $data['pagination']['current_page'],
-    "currentPage" =>  1,
-    // "lastPage" => $data['pagination']['last_page'],
-    "lastPage" => 10,
-    // "limit" => $limit,
-    "limit" => 5,
+    "currentPage" => $data['pagination']['current_page'],
+    "lastPage" => $data['pagination']['last_page'],
+    "limit" => $limit,
     "routes" => route('academics-event.index')
   ])
   <div id="eventDetailModalContainer"></div>
@@ -397,11 +427,11 @@
         <img src="{{ asset('assets/icon-delete-gray-800.svg')}}" alt="ikon peringatan">
       </div>
       <div class="modal-custom-body">
-        <div>Apakah anda yakin informasi anda sudah benar?</div>
+        <div>Apakah anda yakin ingin menghapus event akademik ini?</div>
       </div>
       <div class="modal-custom-footer">
-        <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-        <button type="submit" class="button button-outline" id="btnSimpan">Ya, Simpan Sekarang</button>
+        <button type="button" class="button button-clean" id="btnCekKembali">Batal</button>
+        <button type="submit" class="button button-outline" id="btnSimpan">Hapus</button>
       </div>
     </div>
   </div>

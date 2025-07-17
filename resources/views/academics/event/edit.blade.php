@@ -151,7 +151,8 @@
     const toggleButton = document.getElementById('toggleButton');
     const toggleIcon = document.getElementById('toggleIcon');
     const toggleInfo = document.querySelector('.toggle-info');
-    let isActive = @json((bool) $data['status']); 
+    let isActive = @json($data['status'] == 'active' ? true : false); 
+    // console.log(isActive);
   
     if (isActive) {
         toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
@@ -164,10 +165,13 @@
     toggleButton.addEventListener('click', function(e) {
       e.preventDefault();
       isActive = !isActive;
+      const input = document.getElementById('statusValue');
       if (isActive) {
+          input.value = "active";
           toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
           toggleInfo.textContent = "Aktif";
-      } else {
+        } else {
+          input.value = "inactive";
           toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
           toggleInfo.textContent = "Tidak Aktif";
       }
@@ -185,13 +189,16 @@
     document.getElementById('btnCekKembali').addEventListener('click', function() {
         document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
     });
+
+    
   })
 </script>
 @endsection
 
 @section('content')
-<form action="" method="POST">
+<form action="{{route('academics-event.update', ['id' => $id])}}" method="POST">
   @csrf
+  @method('PUT')
   <div class="page-header">
       <div class="page-title-text">Edit Event Akademik</div>
   </div>
@@ -203,42 +210,41 @@
   <div class="content-card">
     <div class="form-title-text" style="padding: 20px;">Edit Event Akademik</div>
       <div class="form-section">
-        <input type="hidden" id="user_id" value="">
         <div class="form-group">
             <label for="name">Nama Event</label>
             <div class="input-by-search">
-                <input type="text" id="name" class="form-control" value="{{$data['name']}}">
+                <input type="text" id="name" class="form-control" value="{{$data['nama_event']}}" name="nama_event">
             </div>
         </div>
         <div class="form-group">
           <label>Flag</label>
           <div class="checkbox-group">
             <div class="checkbox-form">
-              <input type="checkbox" class="form-control" value="true" @if($data['flag']['nilai']) checked @endif>
+              <input type="checkbox" name="nilai_on" class="form-control" value="true" @if($data['nilai_on']) checked @endif>
               <label>Nilai</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" class="form-control" value="true" @if($data['flag']['irs']) checked @endif>
+              <input type="checkbox" name="irs_on" class="form-control" value="true" @if($data['irs_on']) checked @endif>
               <label>IRS</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" class="form-control" value="true" @if($data['flag']['lulus']) checked @endif>
+              <input type="checkbox" name="lulus_on" class="form-control" value="true" @if($data['lulus_on']) checked @endif>
               <label>Lulus</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" class="form-control" value="true" @if($data['flag']['registrasi']) checked @endif>
+              <input type="checkbox" name="registrasi_on" class="form-control" value="true" @if($data['registrasi_on']) checked @endif>
               <label>Registrasi</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" class="form-control" value="true" @if($data['flag']['yudisium']) checked @endif>
+              <input type="checkbox" name="yudisium_on" class="form-control" value="true" @if($data['yudisium_on']) checked @endif>
               <label>Yudisium</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" class="form-control" value="true" @if($data['flag']['survei']) checked @endif>
+              <input type="checkbox" name="survei_on" class="form-control" value="true" @if($data['survei_on']) checked @endif>
               <label>Survei</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" class="form-control" value="true" @if($data['flag']['dosen']) checked @endif>
+              <input type="checkbox" name="dosen_on" class="form-control" value="true" @if($data['dosen_on']) checked @endif>
               <label>Dosen</label>
             </div>
           </div>
@@ -250,7 +256,7 @@
               <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
               <span class="toggle-info text-sm-bd">Tidak Aktif</span>
           </button>
-          <input type="hidden" name="status" id="statusValue" value="false">
+          <input type="hidden" name="status" id="statusValue" value="{{$data['status']}}">
         </div>
       </div>
       <div style="display: flex; gap: 20px; justify-content: flex-end; margin: 20px;">
