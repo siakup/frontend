@@ -31,7 +31,44 @@ class AcademicController extends Controller
             'sort' => $sort,
             'limit' => $limit,
         ];
+        $url = EventAcademicService::getInstance()->getListAllPeriode();
+        $response = getCurl($url, $params, getHeaders());
+        $data = json_decode(json_encode($response), true);
 
+        if ($request->ajax()) {
+            //pengecekan jika response tidak valid
+            if (!isset($response->data)) {
+                return $this->errorResponse($response->message);
+            }
+            
+            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+        }
+
+        return view('academics.periode.index', get_defined_vars());
+    }
+
+    public function periodeDetail(Request $request)
+    {
+        $nomor_induk = $request->input('nomor_induk');
+        $url = EventAcademicService::getInstance()->getEventDetails();
+        $response = getCurl($url, null, getHeaders());
+
+        if ($request->ajax()) {
+            $data = [
+              'name' => "Perkuliahan Semester Ganjil",
+              'flag' => [
+                'nilai' => true,
+                'irs' => true,
+                'lulus' => false,
+                'registrasi' => false,
+                'yudisium' => false,
+                'survei' => false,
+                'dosen' => false
+              ],
+              'status' => true
+            ];
+            return view('academics.periode._modal-view', get_defined_vars())->render();
+        }
         return view('academics.periode.index', get_defined_vars());
     }
 
@@ -110,9 +147,14 @@ class AcademicController extends Controller
       return $response;
     }
 
-    public function create(Request $request)
+    public function eventCreate(Request $request)
     {
-        return view('', get_defined_vars());
+        return view('academics.event.create', get_defined_vars());
+    }
+
+    public function eventUpload(Request $request)
+    {
+        return view('academics.event.create', get_defined_vars());
     }
 
     public function store(Request $request)

@@ -62,7 +62,13 @@ class Menu
                                   'name' => 'Edit Event Akademik',
                                   'url' => '/academics/event/edit/*',
                                   'parent' => 'academics-event.edit',
-                                  'isExpandeble' => false,
+                                  'isExpandable' => false,
+                                ],
+                                'add-event-akademik' => [
+                                  'name' => 'Tambah Event Akademik',
+                                  'url' => '/academics/event/create',
+                                  'parent' => 'academics-event.create',
+                                  'isExpandable' => false,
                                 ]
                               ]
                             ],
@@ -70,7 +76,7 @@ class Menu
                               'name' => 'Periode Akademik',
                               'url' => '/academics/periode',
                               'parent' => 'academics-periode.index',
-                              'isExpandeble' => false,
+                              'isExpandable' => false,
                             ],
                             // 'create' => [
                             //     'name' => 'Tambah Pengguna',
