@@ -181,7 +181,11 @@
     font-size: 12px;
     font-weight: 400;
     color: inherit;
-}
+  }
+
+  #btnUpload:hover img{
+        filter: brightness(0) invert(1);
+  }
 </style>
 @endsection
 
@@ -332,13 +336,11 @@
   <div class="academics-slicing-content content-card">
 
     <div class="academics-menu">
-      <button class="button-clean" id="">
-          Upload Event Akademik
-          <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
-      </button>
-      <button class="button-outline" id="">
-          Tambah Periode Akademik
-      </button>
+      <a href="{{ route('academics-event.upload') }}" class="button button-clean" id="btnUpload">
+        Upload Event Akademik
+        <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Upload">
+      </a>
+      <a href="{{ route('academics-event.create') }}" class="button button-outline">Tambah Event Akademik</a>
     </div>
     <div class="content-card content-card-search">
       <div class="card-header">
@@ -381,7 +383,7 @@
                 </tr>
             </thead>
             <tbody>
-              @foreach($data['data'] as $event)
+              @foreach($data['data'] ?? [] as $event)
                 <tr>
                   <td>{{ $event['nama_event'] }}</td>
                   <td>{{ $event['nilai_on'] ? "Ya" : "Tidak" }}</td>
@@ -412,12 +414,15 @@
         </table>
     </div>
   </div>
+  @if (isset($data['data']))
   @include('partials.pagination', [
     "currentPage" => $data['pagination']['current_page'],
     "lastPage" => $data['pagination']['last_page'],
     "limit" => $limit,
     "routes" => route('academics-event.index')
   ])
+  @endif
+  
   <div id="eventDetailModalContainer"></div>
   <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
     <div class="modal-custom-backdrop"></div>

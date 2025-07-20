@@ -8,14 +8,48 @@
 
 @section('css')
 <style>
+    .form-section {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+    }
+
+    .form-group {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        align-items: center;
+        margin-bottom: 0;
+    }
+
     .checkbox-group {
         display: flex;
-        gap: 60px;
+        flex-wrap: wrap;
+        gap: 40px 32px; /* row-gap column-gap */
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+        box-sizing: border-box;
     }
 
     .checkbox-form {
         display: flex;
+        align-items: center;
         gap: 8px;
+    }
+
+    .toggle-row,
+    .btn-toggle {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 20px;
+        justify-content: flex-end;
+        margin: 20px;
     }
 
     .checkbox-form label {
@@ -39,6 +73,32 @@
         padding: 8px 54.5px;
         margin: 0px;"
     }
+
+    .btn-toggle {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 0;
+        width: auto; 
+    }
+
+    .modal-custom-footer {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        width: 100%;
+        padding: 0 20px 24px 20px;
+        box-sizing: border-box;
+    }
+
+    .modal-custom-footer .button {
+        min-width: 220px;
+        padding: 14px 0;
+    }
 </style>
 @endsection
 
@@ -56,7 +116,7 @@
             <input type="hidden" id="user_id" value="">
             <div class="form-group">
                 <label for="name">Nama Event</label>
-                <div class="input-by-search">
+                <div>
                     <input type="text" id="name" class="form-control" value="">
                 </div>
             </div>
@@ -84,13 +144,11 @@
             </div>
             <div class="form-group">
             <label>Status</label>
-            <div class="toggle-row"></div>
             <button id="toggleButton" class="btn-toggle">
                 <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
                 <span class="toggle-info text-sm-bd" style="color: var(--Neutral-Gray-600, #8C8C8C)">Tidak Aktif</span>
             </button>
             <input type="hidden" name="status" id="statusValue" value="false">
-            </div>
         </div>
         <div class="button-group">
             <button type="button" class="button button-clean" id="btnBatal">Batal</button>
@@ -123,18 +181,31 @@
         const hiddenInput = document.getElementById('statusValue');
         const namaEvent   = document.getElementById('name');
         const btnSave     = document.getElementById('btnSimpan');
+        const btnConfirm  = document.getElementById('btnYaSimpan');
         const flagChecks  = document.querySelectorAll('input[name="flag[]"]');
 
         function updateSaveButtonState() {
             const eventFilled = namaEvent.value.trim() !== '';
-            const flagChecked = Array.from(flagChecks).some(chk => chk.checked);
+            // const flagChecked = Array.from(flagChecks).some(chk => chk.checked);
             const statusFilled = hiddenInput.value === 'active' || hiddenInput.value === 'inactive';
-            if (eventFilled && flagChecked && statusFilled) {
+            if (eventFilled && statusFilled) {
                 btnSave.disabled = false;
             } else {
                 btnSave.disabled = true;
             }
         }
+
+        btnSave.addEventListener('click', function() {
+            document.getElementById('modalKonfirmasiSimpan').style.display = 'block';
+        });
+
+        document.getElementById('btnBatal').addEventListener('click', function() {
+            window.location.href = "{{ route('academics-event.index') }}";
+        });
+
+        document.getElementById('btnCekKembali').addEventListener('click', function() {
+            document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+        });
 
         btnToggle.addEventListener('click', () => {
             const isActive = hiddenInput.value === 'active';
@@ -152,6 +223,42 @@
 
         document.getElementById('btnBatal').addEventListener('click', function() {
             window.location.href = "{{ route('academics-event.index') }}";
+        });
+
+        btnConfirm.addEventListener('click', function(e) {
+            e.preventDefault();
+            const nama = $('#name').val();
+            const flags = [];
+            $('input[name="flag[]"]:checked').each(function() {
+                flags.push($(this).val());
+            });
+            const status = $('#statusValue').val(); 
+
+            $.ajax({
+                url: "{{ route('academics-event.store') }}",
+                method: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    name: nama,
+                    flag: flags,
+                    status: status
+                },
+                success: function(response) {
+                    $('#modalKonfirmasiSimpan').hide();
+                    successToast('Berhasil disimpan');
+                    setTimeout(function() {
+                        window.location.href = "{{ route('academics-event.index') }}";
+                    }, 1200);
+                },
+                error: function(xhr) {
+                    $('#modalKonfirmasiSimpan').hide();
+                    let msg = 'Gagal menyimpan data';
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        msg = xhr.responseJSON.message;
+                    }
+                    errorToast(msg);
+                }
+            });
         });
     });
 </script>

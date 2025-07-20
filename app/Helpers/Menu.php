@@ -69,6 +69,12 @@ class Menu
                                   'url' => '/academics/event/create',
                                   'parent' => 'academics-event.create',
                                   'isExpandable' => false,
+                                ],
+                                'upload-event-akademik' => [
+                                  'name' => 'Unggah Event Akademik',
+                                  'url' => '/academics/event/upload',
+                                  'parent' => 'academics-event.upload',
+                                  'isExpandable' => false,
                                 ]
                               ]
                             ],
@@ -78,18 +84,6 @@ class Menu
                               'parent' => 'academics-periode.index',
                               'isExpandable' => false,
                             ],
-                            // 'create' => [
-                            //     'name' => 'Tambah Pengguna',
-                            //     'url' => '/users/create',
-                            //     'parent' => 'users.index',
-                            //     'isExpandable' => false
-                            // ],
-                            // 'edit' => [
-                            //     'name' => 'Ubah Informasi',
-                            //     'url' => '/users/edit/*',
-                            //     'parent' => 'users.index',
-                            //     'isExpandable' => false
-                            // ],
                         ],
                     ],
               ]

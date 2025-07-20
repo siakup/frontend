@@ -17,7 +17,9 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/event/edit/{id}', [AcademicController::class, 'eventEdit'])->name('academics-event.edit');
         Route::put('/event/update/{id}', [AcademicController::class, 'eventUpdate'])->name('academics-event.update');
         Route::get('/event/create', [AcademicController::class, 'eventCreate'])->name('academics-event.create');
+        Route::post('/event', [AcademicController::class, 'eventStore'])->name('academics-event.store');
         Route::get('/event/upload', [AcademicController::class, 'eventUpload'])->name('academics-event.upload');
+        Route::post('/event/upload', [AcademicController::class, 'eventStoreUpload'])->name('academics-event.store-upload');
         Route::delete('/event/delete/{id}', [AcademicController::class, 'eventDelete'])->name('academics-event.delete');
     });
 });

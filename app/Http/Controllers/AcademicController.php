@@ -155,12 +155,50 @@ class AcademicController extends Controller
 
     public function eventUpload(Request $request)
     {
-        return view('academics.event.create', get_defined_vars());
+        return view('academics.event.upload', get_defined_vars());
     }
 
-    public function store(Request $request)
+    public function eventStore(Request $request)
     {
-        
+        $validated = $request->validate([
+            'name'   => 'required|string|max:255',
+            'flag'   => 'array',
+            'status' => 'required|string|in:active,inactive',
+        ]);
+
+        $flags = [
+            'nilai_on'      => in_array('nilai_on', $request->flag ?? []),
+            'irs_on'        => in_array('irs_on', $request->flag ?? []),
+            'lulus_on'      => in_array('lulus_on', $request->flag ?? []),
+            'registrasi_on' => in_array('registrasi_on', $request->flag ?? []),
+            'yudisium_on'   => in_array('yudisium_on', $request->flag ?? []),
+            'survei_on'     => in_array('survei_on', $request->flag ?? []),
+            'dosen_on'      => in_array('dosen_on', $request->flag ?? []),
+        ];
+
+        $data = [
+            'nama_event' => $validated['name'],
+            'status'     => $validated['status'],
+            'flags'      => $flags, 
+            'created_by' => session('username'),
+        ];
+
+        $url = EventAcademicService::getInstance()->getListAllEvents();
+        $response = postCurl($url, $data, getHeaders());
+
+        if ($request->ajax()) {
+            if (isset($response->success) && $response->success) {
+                return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
+            }
+            return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
+        }
+
+        return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
+    }
+
+    public function eventStoreUpload(Request $request)
+    {
+        return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
     }
 
     public function show(Request $request, $id)
