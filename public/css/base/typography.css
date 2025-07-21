@@ -237,3 +237,12 @@
     font-weight: 400;
     line-height: 12px;
 }
+
+.text-sm-rg-red{
+    color: var(--Red-Red-500, #E62129);
+    font-family: Poppins;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
