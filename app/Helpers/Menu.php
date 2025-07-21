@@ -58,8 +58,8 @@ class Menu
                               'parent' => 'academics-event.index',
                               'isExpandeble' => false,
                               'children' => [
-                                'edit-event-akademik' => [
-                                  'name' => 'Edit Event Akademik',
+                                'ubah-event-akademik' => [
+                                  'name' => 'Ubah Event Akademik',
                                   'url' => '/academics/event/edit/*',
                                   'parent' => 'academics-event.edit',
                                   'isExpandable' => false,

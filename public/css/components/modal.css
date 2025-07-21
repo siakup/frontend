@@ -1,4 +1,4 @@
-.modal-custom {
+    .modal-custom {
         position: fixed;
         inset: 0;
         z-index: 9999;
@@ -12,7 +12,7 @@
         position: fixed;
         inset: 0;
         z-index: 1;
-        display: none;
+        /* display: none; */
     }
 
     .modal-custom-body {
@@ -36,6 +36,7 @@
         flex-direction: column;
         align-items: flex-start;
         align-self: stretch;
+        z-index: 9999;
     }
 
     .modal-custom-header {
@@ -85,7 +86,7 @@
         justify-content: flex-start;
     }
 
-    .form-group input[readonly],
+    .form-group [readonly],
     .form-group textarea[readonly] {
         background: var(--Background-Disable-White, #F5F5F5);
         color: var(--Neutral-Gray-600, #8C8C8C);

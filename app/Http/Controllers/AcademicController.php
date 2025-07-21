@@ -103,8 +103,8 @@ class AcademicController extends Controller
 
     public function eventDetail(Request $request)
     {
-        $nomor_induk = $request->input('nomor_induk');
-        $url = EventAcademicService::getInstance()->eventUrl(1);
+        $id = $request->input('id');
+        $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
         $data = $response->data->event;
 
@@ -125,6 +125,12 @@ class AcademicController extends Controller
     }
 
     public function eventUpdate(Request $request, $id) {
+      $request->validate([
+        'nama_event' => 'required'
+      ], [
+        'nama_event.required' => "Mohon diisi Nama Event sebelum disimpan"
+      ]);
+
       $data = [
         'nama_event' => $request->nama_event,
         'nilai_on' => $request->nilai_on ? true : false,

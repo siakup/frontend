@@ -8,6 +8,7 @@
 @import "./pages/menu.css";
 @import "./pages/footer.css";
 @import "./components/pagination.css";
+@import './components/alert.css';
 @import "./components/modal.css";
 
 /* define the screen */
