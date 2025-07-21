@@ -2,6 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Endpoint\EventAcademicService;
+use App\Endpoint\PeriodAcademicService;
+
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Mail;
@@ -21,31 +23,30 @@ class AcademicController extends Controller
     public function indexPeriode(Request $request)
     {
         $search = $request->input('search');
-        $sort = $request->input('sort', 'nama,asc');
+        $sort = $request->input('sort', 'active,desc');
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
 
-        $params = [
-            'search' => $search,
-            'page' => $page,
-            'sort' => $sort,
-            'limit' => $limit,
-        ];
-        $url = EventAcademicService::getInstance()->getListAllPeriode();
+        $params = compact('search', 'sort', 'page', 'limit');
+
+        $url = PeriodAcademicService::getInstance()->getListAllPeriode();
         $response = getCurl($url, $params, getHeaders());
-        $data = json_decode(json_encode($response), true);
+
 
         if ($request->ajax()) {
-            //pengecekan jika response tidak valid
-            if (!isset($response->data)) {
-                return $this->errorResponse($response->message);
-            }
-            
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
 
-        return view('academics.periode.index', get_defined_vars());
+        return view('academics.periode.index', [
+            'data' => $response,
+            'search' => $search,
+            'sort' => $sort,
+            'page' => $page,
+            'limit' => $limit,
+        ]);
     }
+
+
 
     public function periodeDetail(Request $request)
     {
@@ -54,19 +55,6 @@ class AcademicController extends Controller
         $response = getCurl($url, null, getHeaders());
 
         if ($request->ajax()) {
-            $data = [
-              'name' => "Perkuliahan Semester Ganjil",
-              'flag' => [
-                'nilai' => true,
-                'irs' => true,
-                'lulus' => false,
-                'registrasi' => false,
-                'yudisium' => false,
-                'survei' => false,
-                'dosen' => false
-              ],
-              'status' => true
-            ];
             return view('academics.periode._modal-view', get_defined_vars())->render();
         }
         return view('academics.periode.index', get_defined_vars());
