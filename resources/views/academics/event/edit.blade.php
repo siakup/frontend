@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Edit Event Akademik')
+@section('title', 'Ubah Event Akademik')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Akademik Event</div>
@@ -142,6 +142,16 @@
       }
       .modal-custom-title { font-size: 18px; }
   }
+  .input {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 3px;
+  }
+  .input span {
+    color: #E62129;
+    font-size: 12px;
+  }
 </style>
 @endsection
 
@@ -151,15 +161,16 @@
     const toggleButton = document.getElementById('toggleButton');
     const toggleIcon = document.getElementById('toggleIcon');
     const toggleInfo = document.querySelector('.toggle-info');
-    let isActive = @json($data['status'] == 'active' ? true : false); 
-    // console.log(isActive);
+    let isActive = @json($data['status'] == 'active' ? true : false);
   
     if (isActive) {
         toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
         toggleInfo.textContent = "Aktif";
+        toggleInfo.style.color = "black";
     } else {
         toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
         toggleInfo.textContent = "Tidak Aktif";
+        toggleInfo.style.color = "#8C8C8C";
     }
 
     toggleButton.addEventListener('click', function(e) {
@@ -170,10 +181,12 @@
           input.value = "active";
           toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
           toggleInfo.textContent = "Aktif";
+          toggleInfo.style.color = "black";
         } else {
           input.value = "inactive";
           toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
           toggleInfo.textContent = "Tidak Aktif";
+          toggleInfo.style.color = "#8C8C8C"
       }
     });
 
@@ -190,6 +203,27 @@
         document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
     });
 
+    const formCheckDatas = ["nilai", "irs", "lulus", "registrasi", "yudisium", "survei", "dosen"];
+    let flag = {
+      nilai:  @json($data['nilai_on']),
+      irs:  @json($data['irs_on']),
+      lulus:  @json($data['lulus_on']),
+      registrasi:  @json($data['registrasi_on']),
+      yudisium:  @json($data['yudisium_on']),
+      survei:  @json($data['survei_on']),
+      dosen:  @json($data['dosen_on'])
+    }
+    
+    formCheckDatas.map(check => {
+      document.querySelector(`label[for="${check}"]`).style.color = flag[check] ? "#262626" : "#8C8C8C";
+      document.getElementById(check).addEventListener("change", function (e) {
+        if(e.target.checked) {
+          document.querySelector(`label[for="${check}"]`).style.color = "#262626";
+        } else {
+          document.querySelector(`label[for="${check}"]`).style.color = "#8C8C8C";
+        }
+      })
+    })
     
   })
 </script>
@@ -200,7 +234,7 @@
   @csrf
   @method('PUT')
   <div class="page-header">
-      <div class="page-title-text">Edit Event Akademik</div>
+      <div class="page-title-text">Ubah Event Akademik</div>
   </div>
 
   <a href="{{ route('academics-event.index') }}" class="button-no-outline-left">
@@ -208,44 +242,47 @@
   </a>
   
   <div class="content-card">
-    <div class="form-title-text" style="padding: 20px;">Edit Event Akademik</div>
+    <div class="form-title-text" style="padding: 20px;">Ubah Event Akademik</div>
       <div class="form-section">
         <div class="form-group">
             <label for="name">Nama Event</label>
-            <div class="input-by-search">
-                <input type="text" id="name" class="form-control" value="{{$data['nama_event']}}" name="nama_event">
+            <div class="input-by-search input">
+                <input type="text" id="name" class="form-control" value="{{$data['nama_event']}}" name="nama_event" placeholder="Nama Event">
+                @error('nama_event')
+                  <span>{{ $message }}</span>
+                @enderror
             </div>
         </div>
         <div class="form-group">
           <label>Flag</label>
           <div class="checkbox-group">
             <div class="checkbox-form">
-              <input type="checkbox" name="nilai_on" class="form-control" value="true" @if($data['nilai_on']) checked @endif>
-              <label>Nilai</label>
+              <input id="nilai" type="checkbox" name="nilai_on" class="form-control" value="true" @if($data['nilai_on']) checked @endif>
+              <label for="nilai">Nilai</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" name="irs_on" class="form-control" value="true" @if($data['irs_on']) checked @endif>
-              <label>IRS</label>
+              <input id="irs" type="checkbox" name="irs_on" class="form-control" value="true" @if($data['irs_on']) checked @endif>
+              <label for="irs">IRS</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" name="lulus_on" class="form-control" value="true" @if($data['lulus_on']) checked @endif>
-              <label>Lulus</label>
+              <input id="lulus" type="checkbox" name="lulus_on" class="form-control" value="true" @if($data['lulus_on']) checked @endif>
+              <label for="lulus"l>Lulus</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" name="registrasi_on" class="form-control" value="true" @if($data['registrasi_on']) checked @endif>
-              <label>Registrasi</label>
+              <input id="registrasi" type="checkbox" name="registrasi_on" class="form-control" value="true" @if($data['registrasi_on']) checked @endif>
+              <label for="registrasi">Registrasi</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" name="yudisium_on" class="form-control" value="true" @if($data['yudisium_on']) checked @endif>
-              <label>Yudisium</label>
+              <input id="yudisium" type="checkbox" name="yudisium_on" class="form-control" value="true" @if($data['yudisium_on']) checked @endif>
+              <label for="yudisium">Yudisium</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" name="survei_on" class="form-control" value="true" @if($data['survei_on']) checked @endif>
-              <label>Survei</label>
+              <input id="survei" type="checkbox" name="survei_on" class="form-control" value="true" @if($data['survei_on']) checked @endif>
+              <label for="survei">Survei</label>
             </div>
             <div class="checkbox-form">
-              <input type="checkbox" name="dosen_on" class="form-control" value="true" @if($data['dosen_on']) checked @endif>
-              <label>Dosen</label>
+              <input id="dosen" type="checkbox" name="dosen_on" class="form-control" value="true" @if($data['dosen_on']) checked @endif>
+              <label for="dosen">Dosen</label>
             </div>
           </div>
         </div>

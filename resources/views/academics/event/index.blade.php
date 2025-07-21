@@ -11,10 +11,11 @@
   .center {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 24px;
   }
 
-  .center * {
+  .center .btn-icon {
     display: flex; 
     align-items: center;
     justify-items: center;
@@ -86,6 +87,7 @@
       display: flex;
       justify-content: flex-start;
   }
+  
   /* Custom dropdown style for modal select */
   .modal-custom-content select.form-control {
       width: 100%;
@@ -136,14 +138,14 @@
   .active-lable {
     background-color: #D0DE68;
     border-radius: 2px;
-    padding: 2px 27px;
+    padding: 2px 29px;
   }
 
   .inactive-lable {
     background-color: #FAFBEE;
     color: #98A725;
     border-radius: 2px;
-    padding: 2px 27px;
+    padding: 2px 10px;
   }
   @media (max-width: 900px) {
       .modal-custom-content {
@@ -181,7 +183,17 @@
     font-size: 12px;
     font-weight: 400;
     color: inherit;
-}
+  }
+
+  .status-lable {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .btn-edit-event-academic {
+    color: #E62129;
+  }
 </style>
 @endsection
 
@@ -217,16 +229,16 @@
                     return;
                 }
                 dropdown.innerHTML = '';
-                data.data.forEach(user => {
+                data.data.forEach(event => {
                     const item = document.createElement('div');
                     item.className = 'dropdown-item';
-                    item.textContent = user.username;
+                    item.textContent = event.nama_event;
                     item.onclick = () => {
                         dropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
                         item.classList.add('active');
-                        input.value = user.username;
+                        input.value = event.nama_event;
                         dropdown.style.display = 'none';
-                        refreshTable(user.username);
+                        refreshTable(event.nama_event);
                     };
                     dropdown.appendChild(item);
                 });
@@ -238,20 +250,47 @@
         });
     });
 
-    function refreshTable(username) {
+    function refreshTable(nama_event) {
         $.ajax({
-            url: '{{ route('users.index') }}',
+            url: '{{ route('academics-event.index') }}',
             method: 'GET',
-            data: { search: username },
+            data: { search: nama_event },
             headers: { 'X-Requested-With': 'XMLHttpRequest' },
             success: function(response) {
-                window.location.href = '{{ route('users.index') }}' + '?search=' + encodeURIComponent(username);
+                window.location.href = '{{ route('academics-event.index') }}' + '?search=' + encodeURIComponent(nama_event);
             },
             error: function() {
                 $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
             }
         });
     }
+
+    function sortTable(value) {
+        $.ajax({
+            url: '{{ route('academics-event.index') }}',
+            method: 'GET',
+            data: { 
+                sort: value 
+            },
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+            success: function(response) {
+                window.location.href = '{{ route('academics-event.index') }}' + '?sort=' + encodeURIComponent(value);
+            },
+            error: function() {
+                $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
+            }
+        });
+    }
+
+    document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
+        item.addEventListener('click', function () {
+            sortDropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+            const sortKey = this.getAttribute('data-sort');
+            this.classList.add('active');
+            sortDropdown.style.display = 'none';
+            sortTable(sortKey); // Panggil AJAX sortTable
+        });
+    });
 
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-view-event-academic');
@@ -269,8 +308,8 @@
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-delete-event-academic');
         if (btn) {
-          const nomorInduk = btn.getAttribute('data-id');
-          document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', nomorInduk);
+          const idEvent = btn.getAttribute('data-id');
+          document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idEvent);
           document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
         }
     });
@@ -286,10 +325,12 @@
             'X-Requested-With': 'XMLHttpRequest'
           },
           success: function(response) {
+            document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
+            document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
             successToast('Berhasil dihapus');
             setTimeout(() => {
               window.location.href = "{{ route('academics-event.index') }}";
-            }, 3000);
+            }, 5000);
           },
           error: function() {
               $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
@@ -366,17 +407,17 @@
       </div>
     </div>
     <div class="table-responsive">
-        <table class="table" id="list-user" style="--table-cols:7">
+        <table class="table" id="list-user" style="--table-cols:9">
             <thead>
                 <tr>
                     <th style="width: 50%;">Nama Event</th>
-                    <th style="width: 40%;">Event Nilai</th>
-                    <th style="width: 40%;">Event IRS</th>
-                    <th style="width: 40%;">Event Registrasi</th>
-                    <th style="width: 40%;">Event Yudisium</th>
-                    <th style="width: 40%;">Event Survei</th>
-                    <th style="width: 40%;">Event Dosen</th>
-                    <th style="width: 40%;">Event Status</th>
+                    <th style="width: 20%;">Event <br> Nilai</th>
+                    <th style="width: 20%;">Event <br> IRS</th>
+                    <th style="width: 20%;">Event <br> Registrasi</th>
+                    <th style="width: 20%;">Event <br> Yudisium</th>
+                    <th style="width: 20%;">Event <br> Survei</th>
+                    <th style="width: 20%;">Event <br> Dosen</th>
+                    <th style="width: 20%;">Status</th>
                     <th style="width: 60%;">Aksi</th>
                 </tr>
             </thead>
@@ -391,15 +432,16 @@
                   <td>{{ $event['survei_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['dosen_on'] ? "Ya" : "Tidak" }}</td>
                   <td>
-                    <span class="{{$event['status']}}-lable">{{$event['status'] === 'active' ? "Aktif" : "Tidak Aktif"}}</span>
+                    <span class="{{$event['status']}}-lable status-lable">{{$event['status'] === 'active' ? "Aktif" : "Tidak Aktif"}}</span>
                   </td>
                   <td class="center">
                     <button class="btn-icon btn-view-event-academic" data-id="{{$event['id']}}" title="View" type="button">
                         <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
                         <span>Lihat</span>
                     </button>
-                    <a class="btn-icon" title="Edit" href="{{ route('academics-event.edit', ['id' => $event['id']]) }}">
-                        <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
+                    <a class="btn-icon btn-edit-event-academic" title="Edit" href="{{ route('academics-event.edit', ['id' => $event['id']]) }}">
+                        <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
+                        <span>Ubah</span>
                     </a>
                     <button class="btn-icon btn-delete-event-academic" data-id="{{ $event['id'] }}" title="Delete" type="button">
                         <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Delete">
