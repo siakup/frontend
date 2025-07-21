@@ -327,15 +327,15 @@
         <table class="table" id="list-user" style="--table-cols:9">
             <thead>
                 <tr>
-                    <th style="width: 50%;">Nama Event</th>
-                    <th style="width: 20%;">Event <br> Nilai</th>
-                    <th style="width: 20%;">Event <br> IRS</th>
-                    <th style="width: 20%;">Event <br> Registrasi</th>
-                    <th style="width: 20%;">Event <br> Yudisium</th>
-                    <th style="width: 20%;">Event <br> Survei</th>
-                    <th style="width: 20%;">Event <br> Dosen</th>
-                    <th style="width: 20%;">Status</th>
-                    <th style="width: 60%;">Aksi</th>
+                    <th style="width: 45%;">Nama Event</th>
+                    <th style="width: 30%;">Event <br> Nilai</th>
+                    <th style="width: 30%;">Event <br> IRS</th>
+                    <th style="width: 35%;">Event <br> Registrasi</th>
+                    <th style="width: 35%;">Event <br> Yudisium</th>
+                    <th style="width: 30%;">Event <br> Survei</th>
+                    <th style="width: 30%;">Event <br> Dosen</th>
+                    <th style="width: 35%;">Status</th>
+                    <th style="width: 100%;">Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -351,19 +351,21 @@
                   <td>
                     <span class="{{$event['status']}}-lable status-lable">{{$event['status'] === 'active' ? "Aktif" : "Tidak Aktif"}}</span>
                   </td>
-                  <td class="center">
-                    <button class="btn-icon btn-view-event-academic" data-id="{{$event['id']}}" title="View" type="button">
-                        <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
-                        <span>Lihat</span>
-                    </button>
-                    <a class="btn-icon btn-edit-event-academic" title="Edit" href="{{ route('academics-event.edit', ['id' => $event['id']]) }}">
-                        <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                        <span>Ubah</span>
-                    </a>
-                    <button class="btn-icon btn-delete-event-academic" data-id="{{ $event['id'] }}" title="Delete" type="button">
-                        <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Delete">
-                        <span>Hapus</span>
-                    </button>
+                  <td>
+                    <div class="center">
+                      <button class="btn-icon btn-view-event-academic" data-id="{{$event['id']}}" title="View" type="button">
+                          <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
+                          <span>Lihat</span>
+                      </button>
+                      <a class="btn-icon btn-edit-event-academic" title="Edit" href="{{ route('academics-event.edit', ['id' => $event['id']]) }}">
+                          <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
+                          <span>Ubah</span>
+                      </a>
+                      <button class="btn-icon btn-delete-event-academic" data-id="{{ $event['id'] }}" title="Delete" type="button">
+                          <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Delete">
+                          <span>Hapus</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               @endforeach
