@@ -7,6 +7,18 @@
 @endsection
 
 @section('css')
+    <style>
+        #toggleSortDropdown:hover {
+            color: #EB474D;
+        }
+
+        .badge {
+            padding: 2px 5px;
+            border-radius: 2px;
+            font-size: 10px;
+        }
+    </style>
+
 @endsection
 
 @section('javascript')

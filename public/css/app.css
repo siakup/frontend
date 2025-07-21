@@ -8,7 +8,7 @@
 @import "./pages/menu.css";
 @import "./pages/footer.css";
 @import "./components/pagination.css";
-@import './components/alert.css';
+@import "./components/alert.css";
 @import "./components/modal.css";
 
 /* define the screen */
@@ -205,7 +205,7 @@
 
 .content-card {
     background: #ffffff;
-    border-radius: 12px 12px 12px 12px;
+    border-radius: 0px 12px 12px 12px;
     /* padding: 16px 16px 16px 16px; */
     margin: 16px 16px 16px;
     border: 1px solid var(--Surface-Border-Primary, #d9d9d9);
