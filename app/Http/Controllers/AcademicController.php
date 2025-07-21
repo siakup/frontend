@@ -36,8 +36,7 @@ class AcademicController extends Controller
         if ($request->ajax()) {
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
-
-
+        
         return view('academics.periode.index', [
             'data' => $response,
             'search' => $search,

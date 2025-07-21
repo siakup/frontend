@@ -11,12 +11,6 @@
         #toggleSortDropdown:hover {
             color: #EB474D;
         }
-
-        .badge {
-            padding: 2px 5px;
-            border-radius: 2px;
-            font-size: 10px;
-        }
     </style>
 
 @endsection
@@ -171,7 +165,7 @@
                                             <span style="font-size: 14px;">Lihat</span>
                                         </button>
 
-                                        <a class="btn-icon" title="Edit"
+                                        <a class="btn-icon" title="Ubah"
                                             href="{{ route('academics-periode.edit', ['id' => $periode->id]) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
