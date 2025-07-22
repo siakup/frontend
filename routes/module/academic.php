@@ -8,6 +8,7 @@ Route::group(['middleware' => ['auth']], function () {
         //periode akademik
         Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
         Route::get('/periode/create', [AcademicController::class, 'createPeriode'])->name('periode.create');
+        Route::post('/periode', [AcademicController::class, 'periodeStore'])->name('academics-periode.store');
         Route::get('/periode-detail', [AcademicController::class, 'periodeDetail'])->name('academics-periode.detail');
         Route::get('/periode-edit', [AcademicController::class, 'periodeEdit'])->name('academics-periode.edit');
 

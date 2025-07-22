@@ -70,6 +70,18 @@ class AcademicController extends Controller
             return view('academics.periode._modal-view', get_defined_vars())->render();
         }
         return view('academics.periode.index', get_defined_vars());
+
+        
+    }
+
+    public function createPeriode(Request $request)
+    {
+        return view('academics.periode.create', get_defined_vars());
+    }
+
+    public function periodeStore(Request $request) 
+    {
+      dd($request->all());
     }
 
     public function indexEvent(Request $request)
