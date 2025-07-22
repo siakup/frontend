@@ -2,7 +2,7 @@
 
 namespace App\Endpoint;
 
-class AcademicService
+class EventAcademicService
 {
     private static $instance = null;
 
@@ -20,11 +20,6 @@ class AcademicService
         return config('endpoint.academics.url') . '/api/events';
     }
 
-    private function basePeriodeURL()
-    {
-      return config('endpoint.academics.url') . '/api/periode';
-    }
-
     public function getListAllEvents()
     {
       return $this->baseEventURL() . '/';
@@ -39,16 +34,6 @@ class AcademicService
     public function getEventDetails()
     {
       return $this->baseEventURL() . 'events/detail';
-    }
-    
-    public function getListAllPeriode()
-    {
-      return $this->basePeriodeURL() . '/';
-    }
-
-    public function periodeUrl($id)
-    {
-      return $this->basePeriodeURL() . '/' . $id;
     }
 }
 

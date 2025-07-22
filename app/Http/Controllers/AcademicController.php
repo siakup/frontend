@@ -1,7 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Endpoint\AcademicService;
+use App\Endpoint\EventAcademicService;
+use App\Endpoint\PeriodAcademicService;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Mail;
@@ -21,52 +22,38 @@ class AcademicController extends Controller
     public function indexPeriode(Request $request)
     {
         $search = $request->input('search');
-        $sort = $request->input('sort', 'nama,asc');
+        $sort = $request->input('sort', 'active,desc');
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
 
-        $params = [
-            'search' => $search,
-            'page' => $page,
-            'sort' => $sort,
-            'limit' => $limit,
-        ];
-        $url = AcademicService::getInstance()->getListAllPeriode();
+        $params = compact('search', 'sort', 'page', 'limit');
+
+        $url = PeriodAcademicService::getInstance()->getListAllPeriode();
         $response = getCurl($url, $params, getHeaders());
-        $data = json_decode(json_encode($response), true);
+
 
         if ($request->ajax()) {
-            //pengecekan jika response tidak valid
-            if (!isset($response->data)) {
-                return $this->errorResponse($response->message);
-            }
-            
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
-
-        return view('academics.periode.index', get_defined_vars());
+        
+        return view('academics.periode.index', [
+            'data' => $response,
+            'search' => $search,
+            'sort' => $sort,
+            'page' => $page,
+            'limit' => $limit,
+        ]);
     }
+
+
 
     public function periodeDetail(Request $request)
     {
         $nomor_induk = $request->input('nomor_induk');
-        $url = AcademicService::getInstance()->getEventDetails();
+        $url = EventAcademicService::getInstance()->getEventDetails();
         $response = getCurl($url, null, getHeaders());
 
         if ($request->ajax()) {
-            $data = [
-              'name' => "Perkuliahan Semester Ganjil",
-              'flag' => [
-                'nilai' => true,
-                'irs' => true,
-                'lulus' => false,
-                'registrasi' => false,
-                'yudisium' => false,
-                'survei' => false,
-                'dosen' => false
-              ],
-              'status' => true
-            ];
             return view('academics.periode._modal-view', get_defined_vars())->render();
         }
         return view('academics.periode.index', get_defined_vars());
@@ -101,7 +88,7 @@ class AcademicController extends Controller
           'created_by' => session('username'),
       ];
 
-      $url = AcademicService::getInstance()->getListAllPeriode();
+      $url = PeriodAcademicService::getInstance()->store();
       $response = postCurl($url, $data, getHeaders());
 
       if ($request->ajax()) {
@@ -129,7 +116,7 @@ class AcademicController extends Controller
             'limit' => $limit,
         ];
 
-        $url = AcademicService::getInstance()->getListAllEvents();
+        $url = EventAcademicService::getInstance()->getListAllEvents();
         $response = getCurl($url, $params, getHeaders());
         $data = json_decode(json_encode($response), true);
 
@@ -146,7 +133,7 @@ class AcademicController extends Controller
     public function eventDetail(Request $request)
     {
         $id = $request->input('id');
-        $url = AcademicService::getInstance()->eventUrl($id);
+        $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
         $data = $response->data->event;
 
@@ -158,7 +145,7 @@ class AcademicController extends Controller
 
     public function eventEdit($id)
     {
-        $url = AcademicService::getInstance()->eventUrl($id);
+        $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
         $data = json_decode(json_encode($response), true)['data']['event'];
 
@@ -184,14 +171,14 @@ class AcademicController extends Controller
         'status' => $request->status,
         'updated_by' => session('username')
       ];
-      $url = AcademicService::getInstance()->eventUrl($id);
+      $url = EventAcademicService::getInstance()->eventUrl($id);
       $response = putCurl($url, $data, getHeaders());
       
       return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
     }
 
     public function eventDelete($id) {
-      $url = AcademicService::getInstance()->eventUrl($id);
+      $url = EventAcademicService::getInstance()->eventUrl($id);
       $response = deleteCurl($url, getHeaders());
       return $response;
     }
@@ -231,7 +218,7 @@ class AcademicController extends Controller
             'created_by' => session('username'),
         ];
 
-        $url = AcademicService::getInstance()->getListAllEvents();
+        $url = EventAcademicService::getInstance()->getListAllEvents();
         $response = postCurl($url, $data, getHeaders());
 
         if ($request->ajax()) {
