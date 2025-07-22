@@ -296,12 +296,12 @@
             <label for="ganjil" style="margin-left: 4px;">Ganjil</label>
           </div>
           <div class="checkbox-form">
-            <input type="radio" id="pendek" class="form-check-input" value="pendek" name="semester">
-            <label for="pendek" style="margin-left: 4px;">Pendek</label>
-          </div>
-          <div class="checkbox-form">
             <input type="radio" id="genap" class="form-check-input" value="genap" name="semester">
             <label for="genap" style="margin-left: 4px;">Genap</label>
+          </div>
+          <div class="checkbox-form">
+            <input type="radio" id="pendek" class="form-check-input" value="pendek" name="semester">
+            <label for="pendek" style="margin-left: 4px;">Pendek</label>
           </div>
         </div>
       </div>
@@ -343,7 +343,7 @@
           <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
           <span class="toggle-info text-sm-bd" style="color: var(--Neutral-Gray-600, #8C8C8C)">Tidak Aktif</span>
         </button>
-        <input type="hidden" name="status" id="statusValue" value="false">
+        <input type="hidden" name="status" id="statusValue" value="inactive">
       </div>
       <div class="button-group">
         <button type="button" class="button button-clean" id="btnBatal">Batal</button>
