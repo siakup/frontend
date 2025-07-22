@@ -83,6 +83,20 @@ class Menu
                               'url' => '/academics/periode',
                               'parent' => 'academics-periode.index',
                               'isExpandable' => false,
+                              'children' => [
+                                'ubah-periode-akademik' => [
+                                  'name' => 'Ubah Periode Akademik',
+                                  'url' => '/academics/periode/edit/*',
+                                  'parent' => 'academics-periode.edit',
+                                  'isExpandable' => false,
+                                ],
+                                'add-periode-akademik' => [
+                                  'name' => 'Tambah Periode Akademik',
+                                  'url' => '/academics/periode/create',
+                                  'parent' => 'academics-periode.create',
+                                  'isExpandable' => false,
+                                ],
+                              ]
                             ],
                         ],
                     ],
