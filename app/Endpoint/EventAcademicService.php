@@ -15,25 +15,25 @@ class EventAcademicService
         return self::$instance;
     }
 
-    private function url()
+    private function baseEventURL()
     {
         return config('endpoint.academics.url') . '/api/events';
     }
 
     public function getListAllEvents()
     {
-      return $this->url() . '/';
+      return $this->baseEventURL() . '/';
     }
 
     public function eventUrl($id)
     {
-      return $this->url() . '/' . $id;
+      return $this->baseEventURL() . '/' . $id;
     }
 
+    
     public function getEventDetails()
     {
-      return $this->url() . 'events/detail';
+      return $this->baseEventURL() . 'events/detail';
     }
-
 }
 

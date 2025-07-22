@@ -21,6 +21,11 @@ class PeriodAcademicService
     return rtrim(config('endpoint.academics.url'), '/') . '/api/period/';
     }
 
+    public function store()
+    {
+      return $this->url();
+    }
+
     public function getListAllPeriode()
     {
       
