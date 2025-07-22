@@ -30,12 +30,6 @@ class EventAcademicService
       return $this->url() . '/' . $id;
     }
 
-    public function getListAllPeriode()
-    {
-      
-      return $this->url() . 'periode/list';
-    }
-
     public function getEventDetails()
     {
       return $this->url() . 'events/detail';
