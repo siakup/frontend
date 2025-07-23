@@ -193,6 +193,10 @@
       background: white;
     }
 
+    .form-group input[readonly]#year {
+      cursor: pointer;
+    }
+
     .form-group input[readonly]:focus {
       outline: none;
     }
@@ -254,6 +258,10 @@
       padding-right: 10px;
       border-radius: 16px;
       color: #262626;
+    }
+
+    #toggleButton {
+      width: max-content !important;
     }
 
 </style>
@@ -369,6 +377,7 @@
   </form>
       
   <script src="{{asset('js/plugins/flatpckr.js')}}"></script>
+  <script src="{{asset('js/plugins/flatpckr-id.js')}}"></script>
   <script>
       document.addEventListener('DOMContentLoaded', () => {
           const maxWord = 280;
@@ -382,19 +391,18 @@
           const deskripsi   = document.getElementById('deskripsi');
           const tanggalMulai = document.getElementById('tanggal-mulai');
           const tanggalAkhir = document.getElementById('tanggal-akhir');
-          
+          let tanggalMulaiInput, tanggalAkhirInput;
           
           const btnSave     = document.getElementById('btnSimpan');
           
           function updateSaveButtonState() {
-            const descriptionFilled = deskripsi.value.trim() !== '' && deskripsi.value.trim().split(/\s+/).filter(word => word.length > 0).length <= maxWord;
+            const descriptionFilled = deskripsi.value.trim() !== '' && deskripsi.value.length <= maxWord;
             const tahunFilled = tahun.value !== '';
-            const startDateFilled = tanggalMulai.value !== '';
-            const endDateFilled = tanggalAkhir.value !== '';
+            const startDateFilled = tanggalMulai.value !== '' && (tanggalMulaiInput.selectedDates[0] < tanggalAkhirInput.selectedDates[0]);
+            const endDateFilled = tanggalAkhir.value !== '' && (tanggalAkhirInput.selectedDates[0] > tanggalMulaiInput.selectedDates[0]);
 
             const semester = document.querySelector('input[name="semester"]:checked');
             const semesterOptionFilled = semester ? true : false;
-
             
             if (descriptionFilled && tahunFilled && semesterOptionFilled && startDateFilled && endDateFilled) {
               btnSave.disabled = false;
@@ -449,35 +457,49 @@
           deskripsi.addEventListener('input', function (e) {
             const lengthDisplay = document.getElementById('Length-display');
             const word = e.target.value;
-            const splitWord = word.trim().split(/\s+/).filter(word => word.length > 0);
-            const currentWord = lengthDisplay.innerHTML.split('/')[0];
+            let splitWord = word.split('');
             
-            if(currentWord <= maxWord) {
-              if(currentWord == maxWord) {
-                lengthDisplay.style.color = "#E62129";
-              } else {
-                lengthDisplay.style.color = "#8C8C8C";
-              }
+            if(splitWord.length >= maxWord) {
+              lengthDisplay.style.color = "#E62129";
             } else {
-              const trimmed = splitWord.slice(0, maxWord).join(" ");
-              deskripsi.value = trimmed;
-              words = trimmed.split(/\s+/);
+              lengthDisplay.style.color = "#8C8C8C";
+            }
+            
+            if(splitWord.length > maxWord) {
+              splitWord = splitWord.slice(0, maxWord).join("");
+              deskripsi.value = splitWord;
             }
   
             lengthDisplay.textContent = `${splitWord.length}/${maxWord}`;
             updateSaveButtonState();
           });
   
-          flatpickr("#tanggal-mulai", {
+          tanggalMulaiInput = flatpickr("#tanggal-mulai", {
+            locale: 'id',
             enableTime: true,
             dateFormat: "d-m-Y, H:i",
-            time_24hr: true
+            time_24hr: true,
+            onChange: (selectedDates) => {
+              if(selectedDates.length > 0) {
+                tanggalAkhirInput.set('minDate', selectedDates[0]);
+              } else {
+                tanggalAkhirInput.set('minDate', null);
+              }
+            } 
           }); 
   
-          flatpickr("#tanggal-akhir", {
+          tanggalAkhirInput = flatpickr("#tanggal-akhir", {
+            locale: 'id',
             enableTime: true,
             dateFormat: "d-m-Y, H:i",
-            time_24hr: true
+            time_24hr: true,
+            onChange: (selectedDates) => {
+              if(selectedDates.length > 0) {
+                tanggalMulaiInput.set('maxDate', selectedDates[0]);
+              } else {
+                tanggalMulaiInput.set('maxDate', null);
+              }
+            } 
           });
 
           tanggalMulai.addEventListener('change', () => {
@@ -498,14 +520,21 @@
           });
           
           const yearInput = document.querySelector('.year-input');
-          yearInput.addEventListener('click', (e) => {
+          document.addEventListener('click', (e) => {
+            const year = e.target.closest('.year-input');
             const yearDropdown = document.querySelector('#Year-dropdown');
-            if(yearDropdown.style.display == "flex"){
+
+            if(year !== null) {
+              if(yearDropdown.style.display == "flex"){
+                yearDropdown.style.display = "none";
+                year.querySelector('img').src = "{{ asset('assets/base/icon-calendar.svg')}}"
+              }else{
+                yearDropdown.style.display = "flex";
+                year.querySelector('img').src = "{{ asset('assets/active/icon-calendar.svg')}}"
+              }
+            } else {
               yearDropdown.style.display = "none";
               yearInput.querySelector('img').src = "{{ asset('assets/base/icon-calendar.svg')}}"
-            }else{
-              yearDropdown.style.display = "flex";
-              yearInput.querySelector('img').src = "{{ asset('assets/active/icon-calendar.svg')}}"
             }
           });
   
