@@ -251,7 +251,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($response->data as $user): ?>
+                <?php foreach ($response->data ?? [] as $user): ?>
                 <tr>
                     <td>{{ $user->nomor_induk }}</td>
                     <td>{{ $user->nama }}</td>
@@ -286,6 +286,7 @@
         </table>
     </div>
     <!-- </div> -->
+    @if(isset($data['data']))
     @include('partials.pagination', [
         'currentPage' => $data['pagination']['current_page'],
         'lastPage' => $data['pagination']['last_page'],
@@ -296,4 +297,5 @@
     <div id="userDetailModalContainer"></div>
 
     @include('partials.success-modal')
+    @endif;
 @endsection
