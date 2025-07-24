@@ -218,7 +218,7 @@ class AcademicController extends Controller
             'created_by' => session('username'),
         ];
 
-        $url = EventAcademicService::getInstance()->getListAllEvents();
+        $url = EventAcademicService::getInstance()->baseEventURL();
         $response = postCurl($url, $data, getHeaders());
 
         if ($request->ajax()) {
