@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
     localStorage.removeItem('flash_message');
 });
 
-const toastTimeout = 5000;
+const appToastTimeout = 5000;
 
 function successToast(message = null) {
     Swal.fire({
@@ -82,7 +82,7 @@ function successToast(message = null) {
             title: 'swal2-title-custom'
         },
         buttonsStyling: false,
-        timer: toastTimeout,
+        timer: appToastTimeout,
         timerProgressBar: true,
         icon: undefined
     });
@@ -104,7 +104,7 @@ function errorToast(message = null) {
             title: 'swal2-title-custom'
         },
         buttonsStyling: false,
-        timer: toastTimeout,
+        timer: appToastTimeout,
         timerProgressBar: true,
         icon: 'error'
     });
@@ -166,7 +166,7 @@ function warningToast(message = null) {
             title: 'swal2-title-custom'
         },
         buttonsStyling: false,
-        timer: toastTimeout,
+        timer: appToastTimeout,
         timerProgressBar: true,
         icon: 'warning'
     });
