@@ -216,9 +216,17 @@
         if (btn) {
           const id = btn.getAttribute('data-id');
             if (id) {
-              $.get("{{ route('academics-event.detail') }}", { id: id }, function(html) {
+              $.ajax({
+                url: "{{ route('academics-event.detail') }}", 
+                method: 'GET',
+                data: { id: id }, 
+                headers: {
+                  'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function(html) {
                   $('#eventDetailModalContainer').html(html);
                   $('#modalDetailEvent').show();
+                }
               });
             }
         }
