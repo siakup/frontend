@@ -236,6 +236,11 @@ class AcademicController extends Controller
         return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
     }
 
+    public function indexCalendar(Request $request)
+    {
+      return view('academics.calendar.index', get_defined_vars());
+    }
+
     public function show(Request $request, $id)
     {
         return view('academics.show', get_defined_vars());
