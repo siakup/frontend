@@ -127,22 +127,6 @@
     }
 </style>
 
-<script>
-    const toggleButton = document.getElementById('toggleButton');
-    const toggleIcon = document.getElementById('toggleIcon');
-    const toggleInfo = document.querySelector('.toggle-info');
-    let isActive = @json((bool) $data['status']);
-    if (isActive) {
-        toggleIcon.src = "{{ asset('components/toggle-on-disabled-true-grey.svg') }}";
-        toggleInfo.textContent = "Aktif";
-        statusValue.value = "true";
-    } else {
-        toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
-        toggleInfo.textContent = "Tidak Aktif";
-        statusValue.value = "false";
-    }
-</script>
-
 <div id="modalPeriodeAkademik" class="modal-custom" style="display:block;">
     <div class="modal-custom-backdrop"></div>
     <div class="modal-custom-content">
@@ -155,52 +139,66 @@
         </div>
         <div class="modal-custom-body">
             <div class="expandable-section" id="section-detail">
-                <div class="" onclick="toggleSection('detail')">
+                <div onclick="toggleSection('detail')">
                     <span class="text-md-bd">Periode Akademik</span>
                 </div>
                 <div class="expandable-content" id="content-detail" style="display:block;">
                     <div class="form-group">
                         <label>Tahun</label>
-                        <input type="text" class="form-control" value="{{ $data['name'] }}" readonly>
+                        <input type="text" class="form-control" value="{{ $response->data->periode->tahun ?? '-' }}"
+                            readonly>
                     </div>
                     <div class="form-group">
                         <label>Semester</label>
                         <div class="form-control checkbox-group">
                             <div class="checkbox-form">
-                                <input type="checkbox" class="form-control" value="true" disabled>
+                                <input type="checkbox" class="form-control" value="Ganjil" disabled
+                                    {{ $data->semester == 1 ? 'checked' : '' }}>
                                 <label>Ganjil</label>
                             </div>
                             <div class="checkbox-form">
-                                <input type="checkbox" class="form-control" value="true" disabled>
+                                <input type="checkbox" class="form-control" value="Pendek" disabled
+                                    {{ $data->semester == 3 ? 'checked' : '' }}>
                                 <label>Pendek</label>
                             </div>
                             <div class="checkbox-form">
-                                <input type="checkbox" class="form-control" value="true" disabled>
+                                <input type="checkbox" class="form-control" value="Genap" disabled
+                                    {{ $data->semester == 2 ? 'checked' : '' }}>
                                 <label>Genap</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <label>Tahun Akademik</label>
-                        <input type="text" class="form-control" value="" readonly>
+                        <input type="text" class="form-control"
+                            value="{{ $data->tahun ?? '-' }}/{{ ($data->tahun ?? 0) + 1 }}" readonly>
                     </div>
                     <div class="form-group">
-                        <label>Tanggal Mulai/Tanggal Berakhir</label>
-                        <input type="text" class="form-control" value="" readonly>
+                        <label>Tanggal Mulai / Tanggal Berakhir</label>
+                        <input type="text" class="form-control"
+                            value="{{ \Carbon\Carbon::parse($data->tanggal_mulai)->format('d M Y') }} - {{ \Carbon\Carbon::parse($data->tanggal_akhir)->format('d M Y') }}"
+                            readonly>
                     </div>
                     <div class="form-group">
                         <label>Deskripsi</label>
-                        <input type="text" class="form-control" value="" readonly>
+                        <input type="text" class="form-control" value="{{ $data->deskripsi ?? '-' }}" readonly>
                     </div>
                     <div class="form-group">
                         <label>Status</label>
                         <div class="toggle-row"></div>
-                        <button id="toggleButton" class="btn-toggle">
-                            <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon"
-                                id="toggleIcon">
-                            <span class="toggle-info text-sm-bd">Tidak Aktif</span>
+                        <button id="toggleButton" class="btn-toggle" disabled>
+                            @if ($data->status == 'active')
+                                <img src="{{ asset('components/toggle-on-disabled-true.svg') }}" alt="Toggle Icon"
+                                    id="toggleIcon">
+                                <span class="toggle-info text-sm-bd">Aktif</span>
+                            @else
+                                <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon"
+                                    id="toggleIcon">
+                                <span class="toggle-info text-sm-bd">Tidak Aktif</span>
+                            @endif
                         </button>
-                        <input type="hidden" name="status" id="statusValue" value="false">
+                        <input type="hidden" name="status" id="statusValue"
+                            value="{{ $data->status == 'active' ? 'true' : 'false' }}">
                     </div>
                 </div>
             </div>

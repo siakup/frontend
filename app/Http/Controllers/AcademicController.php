@@ -35,7 +35,8 @@ class AcademicController extends Controller
         if ($request->ajax()) {
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
-        
+
+
         return view('academics.periode.index', [
             'data' => $response,
             'search' => $search,
@@ -46,12 +47,14 @@ class AcademicController extends Controller
     }
 
 
-
     public function periodeDetail(Request $request)
     {
-        $nomor_induk = $request->input('nomor_induk');
-        $url = EventAcademicService::getInstance()->getEventDetails();
+
+        $idPeriode = $request->input('id');
+        $url = PeriodAcademicService::getInstance()->getPeriodeDetail($idPeriode);
         $response = getCurl($url, null, getHeaders());
+
+        dd($response);
 
         if ($request->ajax()) {
             return view('academics.periode._modal-view', get_defined_vars())->render();
@@ -100,6 +103,7 @@ class AcademicController extends Controller
 
       return redirect()->route('academics-periode.index')->with('success', 'Berhasil disimpan');
     }
+
 
     public function indexEvent(Request $request)
     {

@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/periode', [AcademicController::class, 'periodeStore'])->name('academics-periode.store');
         Route::get('/periode-detail', [AcademicController::class, 'periodeDetail'])->name('academics-periode.detail');
         Route::get('/periode-edit', [AcademicController::class, 'periodeEdit'])->name('academics-periode.edit');
+        Route::get('/periode/detail', [AcademicController::class, 'periodeDetail'])->name('periode.detail');
 
         //event akademik
         Route::get('/event', [AcademicController::class, 'indexEvent'])->name('academics-event.index');

@@ -8,7 +8,8 @@
 
 @section('css')
     <style>
-        #toggleSortDropdown:hover {
+        #toggleSortDropdown:hover,
+        #toggleSortDropdown.active {
             color: #EB474D;
         }
     </style>
@@ -19,28 +20,51 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-            // Toggle sort dropdown
             document.getElementById('toggleSortDropdown').addEventListener('click', function(event) {
                 const dropdown = document.getElementById('sortDropdown');
-                dropdown.style.display = dropdown.style.display === 'none' || dropdown.style.display ===
-                    '' ? 'block' : 'none';
-                event.stopPropagation(); // Cegah dropdown langsung tertutup
+                const toggleBtn = document.getElementById('toggleSortDropdown');
+
+                const isOpen = dropdown.style.display === 'none' || dropdown.style.display === '';
+                dropdown.style.display = isOpen ? 'block' : 'none';
+
+                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                    toggleBtn.classList.remove('active');
+                }
+                toggleBtn.classList.toggle('active', isOpen);
+
+                event.stopPropagation();
             });
 
-            // Klik opsi sort
             document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
                 item.addEventListener('click', function() {
                     const sortValue = this.dataset.sort;
+                    const sortText = this.textContent.trim();
+
+                    const sortLabel = document.getElementById('sortLabel');
+                    if (sortLabel) {
+                        sortLabel.textContent = sortText;
+                    }
 
                     const url = new URL(window.location.href);
                     url.searchParams.set('sort', sortValue);
-                    url.searchParams.set('page', 1); // reset ke halaman 1 saat filter
-
+                    url.searchParams.set('page', 1);
                     window.location.href = url.toString();
                 });
             });
 
-            // Klik di luar dropdown -> tutup dropdown
+            const params = new URLSearchParams(window.location.search);
+            const currentSort = params.get('sort');
+            if (currentSort) {
+                const currentItem = Array.from(document.querySelectorAll('#sortDropdown .dropdown-item'))
+                    .find(item => item.dataset.sort === currentSort);
+                if (currentItem) {
+                    const sortLabel = document.getElementById('sortLabel');
+                    if (sortLabel) {
+                        sortLabel.textContent = currentItem.textContent.trim();
+                    }
+                }
+            }
             document.addEventListener('click', function(e) {
                 const toggleBtn = document.getElementById('toggleSortDropdown');
                 const dropdown = document.getElementById('sortDropdown');
@@ -50,20 +74,23 @@
                 }
             });
 
-            // Tombol lihat detail
+            // detail
             document.addEventListener('click', function(e) {
                 const btn = e.target.closest('.btn-view-periode-academic');
                 if (btn) {
-                    const nomorInduk = btn.getAttribute('data-nomor-induk');
-
-                    $.get("{{ route('academics-periode.detail') }}", {}, function(html) {
-                        $('#periodeDetailModalContainer').html(html);
-                        $('#modalPeriodeAkademik').show();
-                    });
+                    const idPeriode = btn.getAttribute('data-periode-akademik');
+                    if (idPeriode) {
+                        $.get("{{ route('periode.detail') }}", {
+                            id: idPeriode
+                        }, function(html) {
+                            $('#periodeDetailModalContainer').html(html);
+                            $('#modalPeriodeAkademik').show();
+                        });
+                    }
                 }
             });
 
-            // Tombol search enter
+            //search
             document.getElementById('searchInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     this.form.submit();
@@ -106,7 +133,7 @@
                     {{-- start filter --}}
                     <div class="filter-box">
                         <button class="button-clean sort-toggle-btn" id="toggleSortDropdown">
-                            Urutkan
+                            <span id="sortLabel">Urutkan</span>
                             <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
                         </button>
                         <div id="sortDropdown" class="sort-dropdown" style="display: none;">
@@ -160,7 +187,7 @@
                                     </td>
                                     <td class="center">
                                         <button type="button" class="btn-icon btn-view-periode-academic"
-                                            data-id="{{ $periode->id }}" title="Lihat">
+                                            data-periode-akademik="{{ $periode->id }}" title="Lihat">
                                             <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
                                             <span style="font-size: 14px;">Lihat</span>
                                         </button>
@@ -184,16 +211,17 @@
                     </tbody>
                 </table>
             </div>
-            @include('partials.pagination', [
-                // "currentPage" => $data['pagination']['current_page'],
-                'currentPage' => 1,
-                // "lastPage" => $data['pagination']['last_page'],
-                'lastPage' => 10,
-                // "limit" => $limit,
-                'limit' => 5,
-                'routes' => route('academics-periode.index'),
-            ])
         </div>
+        @include('partials.pagination', [
+            // "currentPage" => $data['pagination']['current_page'],
+            'currentPage' => 1,
+            // "lastPage" => $data['pagination']['last_page'],
+            'lastPage' => 10,
+            // "limit" => $limit,
+            'limit' => 5,
+            'routes' => route('academics-periode.index'),
+        ])
     </div>
     <div id="periodeDetailModalContainer"></div>
+    @include('partials.success-modal')
 </div @endsection
