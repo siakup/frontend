@@ -116,7 +116,7 @@ class AcademicController extends Controller
             'limit' => $limit,
         ];
 
-        $url = EventAcademicService::getInstance()->getListAllEvents();
+        $url = EventAcademicService::getInstance()->baseEventURL();
         $response = getCurl($url, $params, getHeaders());
         $data = json_decode(json_encode($response), true);
 
