@@ -48,11 +48,11 @@
     </button>
   </div>
   <script>
-    const select = document.querySelector(".option-pagination-show select");
+    const paginationSelect = document.querySelector(".option-pagination-show select");
     const searchButton = document.querySelector('.paginate-search .paginate-button');
     const removeTextButton = document.querySelector('.paginate-search .paginate-remove-search-text');
 
-    select.addEventListener('change', (event) => {
+    paginationSelect.addEventListener('change', (event) => {
       const url = new URL(window.location.href);
       url.searchParams.set('limit', event.target.value);
       url.searchParams.delete('page');
