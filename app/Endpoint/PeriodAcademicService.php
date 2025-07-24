@@ -18,7 +18,7 @@ class PeriodAcademicService
 
     private function url()
     {
-    return rtrim(config('endpoint.academics.url'), '/') . '/api/periode/';
+    return rtrim(config('endpoint.academics.url'), '/') . '/api/period/';
     }
 
     public function store()
