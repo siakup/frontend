@@ -297,5 +297,5 @@
     <div id="userDetailModalContainer"></div>
 
     @include('partials.success-modal')
-    @endif;
+    @endif
 @endsection
