@@ -24,4 +24,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/event/upload', [AcademicController::class, 'eventStoreUpload'])->name('academics-event.store-upload');
         Route::delete('/event/delete/{id}', [AcademicController::class, 'eventDelete'])->name('academics-event.delete');
     });
+
+    Route::group(['prefix' => 'calendar-academic'], function () {
+      Route::get('/', [AcademicController::class, 'indexCalendar'])->name('calendar-academic.index');
+    });
 });

@@ -205,6 +205,7 @@
         item.addEventListener('click', function () {
             sortDropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
             const sortKey = this.getAttribute('data-sort');
+            
             this.classList.add('active');
             sortDropdown.style.display = 'none';
             sortTable(sortKey); // Panggil AJAX sortTable
@@ -317,7 +318,7 @@
         </div>
         <div class="filter-box">
           <button class="button-clean" id="sortButton">
-              Urutkan
+              {{empty($_GET) ? "Urutkan" : ($sort === "active" ? "Aktif" : ($sort === "inactive" ? "Tidak Aktif" : ($sort === "nama,asc" ? "A-Z" : ($sort === "nama,desc" ? "Z-A" : ($sort === "created_at,desc" ? "Terbaru" : "Terlama")))))}}
               <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
           </button>
           <div id="sortDropdown" class="sort-dropdown" style="display: none;">
