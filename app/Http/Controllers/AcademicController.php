@@ -31,11 +31,9 @@ class AcademicController extends Controller
         $url = PeriodAcademicService::getInstance()->getListAllPeriode();
         $response = getCurl($url, $params, getHeaders());
 
-
         if ($request->ajax()) {
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
-
 
         return view('academics.periode.index', [
             'data' => $response,
@@ -53,8 +51,6 @@ class AcademicController extends Controller
         $idPeriode = $request->input('id');
         $url = PeriodAcademicService::getInstance()->getPeriodeDetail($idPeriode);
         $response = getCurl($url, null, getHeaders());
-
-        dd($response);
 
         if ($request->ajax()) {
             return view('academics.periode._modal-view', get_defined_vars())->render();
