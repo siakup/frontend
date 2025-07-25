@@ -9,15 +9,19 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
         Route::get('/periode/create', [AcademicController::class, 'createPeriode'])->name('periode.create');
         Route::post('/periode', [AcademicController::class, 'periodeStore'])->name('academics-periode.store');
+        
+        Route::get('/periode/edit/{id}', [AcademicController::class, 'periodeEdit'])->name('academics-periode.edit');
+        Route::put('/periode/update/{id}', [AcademicController::class, 'periodeUpdate'])->name('academics-periode.update');
+
         Route::get('/periode-detail', [AcademicController::class, 'periodeDetail'])->name('academics-periode.detail');
-        Route::get('/periode-edit', [AcademicController::class, 'periodeEdit'])->name('academics-periode.edit');
-        Route::get('/periode/detail', [AcademicController::class, 'periodeDetail'])->name('periode.detail');
 
         //event akademik
         Route::get('/event', [AcademicController::class, 'indexEvent'])->name('academics-event.index');
         Route::get('/event-detail', [AcademicController::class, 'eventDetail'])->name('academics-event.detail');
+
         Route::get('/event/edit/{id}', [AcademicController::class, 'eventEdit'])->name('academics-event.edit');
         Route::put('/event/update/{id}', [AcademicController::class, 'eventUpdate'])->name('academics-event.update');
+
         Route::get('/event/create', [AcademicController::class, 'eventCreate'])->name('academics-event.create');
         Route::post('/event', [AcademicController::class, 'eventStore'])->name('academics-event.store');
         Route::get('/event/upload', [AcademicController::class, 'eventUpload'])->name('academics-event.upload');

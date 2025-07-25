@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Tambah Periode Akademik')
+@section('title', 'Ubah Periode Akademik')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Akademik</div>
@@ -140,8 +140,22 @@
 
         .form-inline {
             display: flex;
-            flex-direction: row;
-            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-end;
+        }
+
+        .form-inline .form-group {
+            flex: 1;
+        }
+
+        @media (max-width: 768px) {
+            .form-inline {
+                flex-direction: column;
+            }
+
+            .form-inline .form-group {
+                width: 100%;
+            }
         }
 
         /* Custom tanggal terpilih */
@@ -273,28 +287,31 @@
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Tambah Periode Akademik</div>
+        <div class="page-title-text">Ubah Periode Akademik</div>
     </div>
 
     <a href="{{ route('academics-periode.index') }}" class="button-no-outline-left">
         <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Periode Akademik
     </a>
-    <form action="{{ route('academics-periode.store') }}" method="POST">
+    <form action="{{ route('academics-periode.update', ['id' => $id]) }}" method="POST">
         @csrf
+        @method('PUT')
         <div class="content-card">
-            <div class="form-title-text" style="padding: 20px;">Buat Periode Akademik</div>
+            <div class="form-title-text" style="padding: 20px;">Ubah Periode Akademik</div>
             <div class="form-section">
                 <input type="hidden" id="user_id" value="">
                 <div class="form-group">
                     <label for="year">Tahun</label>
                     <div class="year-wrapper">
                         <div class="year-input">
-                            <input type="text" id="year" class="form-control" name="year" value=""
-                                placeholder="Tahun" readonly />
+                            <input type="text" id="year" class="form-control" name="tahun"
+                                value="{{ $data['tahun'] }}" placeholder="Tahun" readonly />
+                            <input type="hidden" id="tahun_akademik" name="tahun_akademik"
+                                value="{{ $data['tahun'] }}/{{ $data['tahun'] + 1 }}">
                             <img src="{{ asset('assets/base/icon-calendar.svg') }}" alt="Icon Calendar">
-                            <span class="year-input-right-label">Years</span>
+                            <span class="year-input-right-label">Tahun</span>
                         </div>
-                        <div id="Year-dropdown">
+                        <div id="Year-dropdown" style="display: none;">
                             @for ($i = date('Y'); $i < date('Y') + 5; $i++)
                                 <div data-year="{{ $i }}">{{ $i }}</div>
                             @endfor
@@ -305,15 +322,18 @@
                     <label for="">Semester</label>
                     <div class="checkbox-group">
                         <div class="checkbox-form">
-                            <input type="radio" id="ganjil" class="form-check-input" value="ganjil" name="semester">
+                            <input type="radio" id="ganjil" value="1" name="semester"
+                                {{ $data['semester'] == 1 ? 'checked' : '' }}>
                             <label for="ganjil" style="margin-left: 4px;">Ganjil</label>
                         </div>
                         <div class="checkbox-form">
-                            <input type="radio" id="genap" class="form-check-input" value="genap" name="semester">
+                            <input type="radio" id="genap" value="2" name="semester"
+                                {{ $data['semester'] == 2 ? 'checked' : '' }}>
                             <label for="genap" style="margin-left: 4px;">Genap</label>
                         </div>
                         <div class="checkbox-form">
-                            <input type="radio" id="pendek" class="form-check-input" value="pendek" name="semester">
+                            <input type="radio" id="pendek" value="3" name="semester"
+                                {{ $data['semester'] == 3 ? 'checked' : '' }}>
                             <label for="pendek" style="margin-left: 4px;">Pendek</label>
                         </div>
                     </div>
@@ -322,23 +342,26 @@
                     <label for="tahun_akademik">Tahun Akademik</label>
                     <div class="form-inline">
                         <input type="text" id="tahun_akademik" class="form-control" readonly name="tahun_akademik"
-                            value="" placeholder='Auto Fill (Tahun yang dipilih +"/"+ Tahun berikutnya)'>
+                            value="{{ $data['tahun'] . '/' . ($data['tahun'] + 1) }}"
+                            placeholder='Auto Fill (Tahun yang dipilih +"/"+ Tahun berikutnya)'>
                     </div>
                 </div>
-                <div class="form-inline">
-                    <div class="form-group">
+                <div class="form-inline" style="display: flex; gap: 24px;">
+                    <div class="form-group" style="flex: 1;">
                         <label for="tanggal-mulai">Tanggal Mulai</label>
                         <div class="calendar-input">
                             <input type="text" id="tanggal-mulai" class="form-control" name="tanggal_mulai"
-                                value="" placeholder="dd-mm-yyyy, hh:mm">
+                                value="{{ \Carbon\Carbon::parse($data['tanggal_mulai'])->format('d-m-Y H:i') }}"
+                                placeholder="dd-mm-yyyy, hh:mm">
                             <img src="{{ asset('assets/base/icon-calendar.svg') }}" alt="Icon Calendar">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="flex: 1;">
                         <label for="tanggal-akhir">Tanggal Berakhir</label>
                         <div class="calendar-input">
                             <input type="text" id="tanggal-akhir" class="form-control" name="tanggal_akhir"
-                                value="" placeholder="dd-mm-yyyy, hh:mm">
+                                value="{{ \Carbon\Carbon::parse($data['tanggal_akhir'])->format('d-m-Y H:i') }}"
+                                placeholder="dd-mm-yyyy, hh:mm">
                             <img src="{{ asset('assets/base/icon-calendar.svg') }}" alt="Icon Calendar">
                         </div>
                     </div>
@@ -346,8 +369,8 @@
                 <div class="form-group">
                     <label for="deskripsi">Deskripsi</label>
                     <div class="info-group">
-                        <textarea id="deskripsi" cols="110" rows="10" class="form-control" name="deskripsi" value=""
-                            placeholder="Tulis deskripsi disini" id="deskripsi"></textarea>
+                        <textarea id="deskripsi" cols="110" rows="10" class="form-control" name="deskripsi"
+                            placeholder="Tulis deskripsi disini">{{ $data['deskripsi'] }}</textarea>
                         <div class="info-section">
                             <span class="info-text">Maksimal 280 Karakter</span>
                             <span class="info-text" id="Length-display">0/280</span>
@@ -404,6 +427,23 @@
             const deskripsi = document.getElementById('deskripsi');
             const tanggalMulai = document.getElementById('tanggal-mulai');
             const tanggalAkhir = document.getElementById('tanggal-akhir');
+
+            //ceking data status
+            const status = @json($data['status']);
+            if (status === 'active') {
+                icon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
+                text.textContent = "Aktif";
+                text.style.color = "#262626";
+                hiddenInput.value = "active";
+                btnToggle.disabled = false;
+                btnToggle.classList.remove('disabled');
+            } else {
+                icon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
+                text.textContent = "Tidak Aktif";
+                text.style.color = "#8C8C8C";
+                hiddenInput.value = "inactive";
+            }
+
             let tanggalMulaiInput, tanggalAkhirInput;
 
             const btnSave = document.getElementById('btnSimpan');

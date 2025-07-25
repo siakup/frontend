@@ -80,11 +80,17 @@
                 if (btn) {
                     const idPeriode = btn.getAttribute('data-periode-akademik');
                     if (idPeriode) {
-                        $.get("{{ route('periode.detail') }}", {
-                            id: idPeriode
-                        }, function(html) {
-                            $('#periodeDetailModalContainer').html(html);
-                            $('#modalPeriodeAkademik').show();
+                        $.ajax({
+                            url: "{{ route('academics-periode.detail') }}",
+                            method: 'GET',
+                            data: {
+                                id: idPeriode
+                            },
+                            success: function(html) {
+                                console.log('Response:', html);
+                                $('#periodeDetailModalContainer').html(html);
+                                $('#modalPeriodeAkademik').show();
+                            }
                         });
                     }
                 }
@@ -175,7 +181,7 @@
                                                 3 => 'Pendek',
                                             ];
                                         @endphp
-                                        {{ $periode->semester }}
+                                        {{ $namaSemester[$periode->semester] ?? 'Tidak Diketahui' }}
                                     </td>
                                     <td>{{ $periode->tahun }}/{{ $periode->tahun + 1 }}</td>
                                     <td>
@@ -213,15 +219,15 @@
             </div>
         </div>
         @include('partials.pagination', [
-            // "currentPage" => $data['pagination']['current_page'],
-            'currentPage' => 1,
-            // "lastPage" => $data['pagination']['last_page'],
-            'lastPage' => 10,
-            // "limit" => $limit,
-            'limit' => 5,
+            'currentPage' => $data->pagination->current_page ?? 1,
+            'lastPage' => $data->pagination->last_page ?? 1,
+            'limit' => $limit,
             'routes' => route('academics-periode.index'),
+            'showSearch' => false,
         ])
+
+        <div id="periodeDetailModalContainer"></div>
     </div>
-    <div id="periodeDetailModalContainer"></div>
     @include('partials.success-modal')
-</div @endsection
+    </div>
+@endsection
