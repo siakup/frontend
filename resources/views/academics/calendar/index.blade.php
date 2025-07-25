@@ -33,6 +33,23 @@
 
 @section('javascript')
 <script>
+  function sortTable(value) {
+      $.ajax({
+          url: "{{ route('calendar-academic.index') }}",
+          method: 'GET',
+          data: { 
+              sort: value 
+          },
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          success: function(response) {
+              window.location.href = "{{ route('academics-event.index') }}" + '?sort=' + encodeURIComponent(value);
+          },
+          error: function() {
+              $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
+          }
+      });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     // sort dropdown
     const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
@@ -49,11 +66,12 @@
     sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(item => {
         item.addEventListener('click', function () {
             sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+            const url = new URL(window.location.href);
+            
             const sortKey = this.getAttribute('data-sort');
             
-            this.classList.add('active');
-            sortDropdownCampusProgram.style.display = 'none';
-            sortTable(sortKey); // Panggil AJAX sortTable
+            url.searchParams.set('program_perkuliahan', sortKey);
+            window.location.href = url.toString();
         });
     });
 
@@ -65,11 +83,12 @@
     sortDropdownStudyProgram.querySelectorAll('.dropdown-item').forEach(item => {
         item.addEventListener('click', function () {
             sortDropdownStudyProgram.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+            const url = new URL(window.location.href);
+            
             const sortKey = this.getAttribute('data-sort');
             
-            this.classList.add('active');
-            sortDropdownStudyProgram.style.display = 'none';
-            sortTable(sortKey); // Panggil AJAX sortTable
+            url.searchParams.set('program_studi', sortKey);
+            window.location.href = url.toString();
         });
     });
 
@@ -102,7 +121,7 @@
         <div class="card-header" id="CampusProgramSection">
           <div class="page-title-text sub-title">Program Perkuliahan</div>
           <button class="button-clean campus" id="sortButton">
-              <span>Reguler</span>
+              <span>{{empty($_GET['program_perkuliahan']) ? 'Reguler' : ucwords(str_replace('-', ' ', strtolower($params['program_perkuliahan']))) }}</span>
               <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
           </button>
           <div id="sortDropdown" class="sort-dropdown left campus" style="display: none;">
@@ -115,14 +134,14 @@
         <div class="card-header" id="StudyProgramSection">
           <div class="page-title-text sub-title">Program Studi</div>
           <button class="button-clean study" id="sortButton">
-              <span>Ilmu Komputer</span>
+              <span>{{empty($_GET['program_studi']) ? 'Ilmu Komputer' : ucwords(str_replace('-', ' ', strtolower($params['program_studi']))) }}</span>
               <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
           </button>
           <div id="sortDropdown" class="sort-dropdown right study" style="display: none;">
-              <div class="dropdown-item" data-sort="Ilkom">Ilmu Komputer</div>
-              <div class="dropdown-item" data-sort="Tekkim">Teknik Kimia</div>
-              <div class="dropdown-item" data-sort="Teksip">Teknik Sipil</div>
-              <div class="dropdown-item" data-sort="Tekin">Teknik Industri</div>
+              <div class="dropdown-item" data-sort="1">Ilmu Komputer</div>
+              <div class="dropdown-item" data-sort="2">Teknik Kimia</div>
+              <div class="dropdown-item" data-sort="3">Teknik Sipil</div>
+              <div class="dropdown-item" data-sort="4">Teknik Industri</div>
           </div>
         </div>
       </div>

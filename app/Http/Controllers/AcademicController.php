@@ -238,6 +238,11 @@ class AcademicController extends Controller
 
     public function indexCalendar(Request $request)
     {
+      $program_perkuliahan = $request->input('program_perkuliahan', 'reguler');
+      $program_studi = $request->input('program_studi', 'ilmu komputer');
+
+      $params = compact('program_perkuliahan', 'program_studi');
+
       return view('academics.calendar.index', get_defined_vars());
     }
 
