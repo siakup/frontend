@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
+
 
 use App\Traits\ApiResponse;
 
@@ -23,8 +25,8 @@ class AcademicController extends Controller
     {
         $search = $request->input('search');
         $sort = $request->input('sort', 'active,desc');
-        $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
+        $page = $request->input('page', 1);
 
         $params = compact('search', 'sort', 'page', 'limit');
 
@@ -44,20 +46,17 @@ class AcademicController extends Controller
         ]);
     }
 
-
     public function periodeDetail(Request $request)
     {
-
-        $idPeriode = $request->input('id');
-        $url = PeriodAcademicService::getInstance()->getPeriodeDetail($idPeriode);
+        $id = $request->input('id');
+        $url = PeriodAcademicService::getInstance()->periodeUrl($id);
         $response = getCurl($url, null, getHeaders());
+        $data = $response->data->periode;
 
         if ($request->ajax()) {
             return view('academics.periode._modal-view', get_defined_vars())->render();
         }
-        return view('academics.periode.index', get_defined_vars());
-
-        
+        return redirect()->route('academics-periode.index');
     }
 
     public function createPeriode(Request $request)
@@ -89,6 +88,7 @@ class AcademicController extends Controller
 
       $url = PeriodAcademicService::getInstance()->store();
       $response = postCurl($url, $data, getHeaders());
+        dd($response);
 
       if ($request->ajax()) {
           if (isset($response->success) && $response->success) {
@@ -100,6 +100,35 @@ class AcademicController extends Controller
       return redirect()->route('academics-periode.index')->with('success', 'Berhasil disimpan');
     }
 
+    public function periodeEdit(Request $request, $id)
+    {
+        $url = PeriodAcademicService::getInstance()->periodeUrl($id);
+        $response = getCurl($url, null, getHeaders());
+
+        $data = json_decode(json_encode($response), true)['data']['periode'];
+
+        return view('academics.periode.edit', get_defined_vars());
+   }
+
+
+    public function periodeUpdate(Request $request, $id)
+    {  
+        $data = [
+        'tahun' => $request->tahun,
+        'semester' => $request->semester,
+        'tanggal_mulai' => Carbon::createFromFormat('d-m-Y, H:i', $request->tanggal_mulai)->format('Y-m-d H:i:s'),
+        'tanggal_akhir' => Carbon::createFromFormat('d-m-Y, H:i', $request->tanggal_akhir)->format('Y-m-d H:i:s'),
+        'deskripsi' => $request->deskripsi,
+        'status' => $request->status,
+        'update_at' => date('Y-m-d H:i:s'),
+        'updated_by' => session('username')
+      ]; 
+
+        $url = PeriodAcademicService::getInstance()->periodeUrl($id); 
+        $response = putCurl($url, $data, getHeaders());
+
+        return redirect()->route('academics-periode.index')->with('success', 'Periode berhasil diperbarui');
+    }
 
     public function indexEvent(Request $request)
     {
@@ -145,8 +174,10 @@ class AcademicController extends Controller
 
     public function eventEdit($id)
     {
+
         $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
+
         $data = json_decode(json_encode($response), true)['data']['event'];
 
         return view('academics.event.edit', get_defined_vars());
@@ -234,26 +265,6 @@ class AcademicController extends Controller
     public function eventStoreUpload(Request $request)
     {
         return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
-    }
-
-    public function show(Request $request, $id)
-    {
-        return view('academics.show', get_defined_vars());
-    }
-
-    public function edit(Request $request, $id)
-    {
-        return view('academics.show', get_defined_vars());
-    }
-
-    public function update(Request $request, $id)
-    {
-        
-    }
-
-    public function delete(Request $request, $id)
-    {
-        return redirect()->back();
     }
 
 }

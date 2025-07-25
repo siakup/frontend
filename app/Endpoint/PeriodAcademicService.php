@@ -32,9 +32,14 @@ class PeriodAcademicService
       return $this->url() . '/list';
     }
 
-        public function getPeriodeDetail($idPeriode)
+    public function periodeUrl($id)
     {
-        return $this->url() . '/detail/' . $idPeriode;
+        return $this->url() . '/' . $id;
+    }
+
+    public function getPeriodDetails()
+    {
+      return $this->url() . 'period/detail';
     }
 }
 
