@@ -145,7 +145,7 @@ class AcademicController extends Controller
             'limit' => $limit,
         ];
 
-        $url = EventAcademicService::getInstance()->getListAllEvents();
+        $url = EventAcademicService::getInstance()->baseEventURL();
         $response = getCurl($url, $params, getHeaders());
         $data = json_decode(json_encode($response), true);
 
@@ -249,7 +249,7 @@ class AcademicController extends Controller
             'created_by' => session('username'),
         ];
 
-        $url = EventAcademicService::getInstance()->getListAllEvents();
+        $url = EventAcademicService::getInstance()->baseEventURL();
         $response = postCurl($url, $data, getHeaders());
 
         if ($request->ajax()) {
@@ -265,6 +265,36 @@ class AcademicController extends Controller
     public function eventStoreUpload(Request $request)
     {
         return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
+    }
+
+    public function indexCalendar(Request $request)
+    {
+      $program_perkuliahan = $request->input('program_perkuliahan', 'reguler');
+      $program_studi = $request->input('program_studi', 'ilmu komputer');
+
+      $params = compact('program_perkuliahan', 'program_studi');
+
+      return view('academics.calendar.index', get_defined_vars());
+    }
+
+    public function show(Request $request, $id)
+    {
+        return view('academics.show', get_defined_vars());
+    }
+
+    public function edit(Request $request, $id)
+    {
+        return view('academics.show', get_defined_vars());
+    }
+
+    public function update(Request $request, $id)
+    {
+        
+    }
+
+    public function delete(Request $request, $id)
+    {
+        return redirect()->back();
     }
 
 }

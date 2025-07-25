@@ -15,7 +15,7 @@ class EventAcademicService
         return self::$instance;
     }
 
-    private function baseEventURL()
+    public function baseEventURL()
     {
         return config('endpoint.academics.url') . '/api/events';
     }

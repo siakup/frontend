@@ -10,18 +10,21 @@ class Menu
                 'name' => 'Beranda',
                 'url' => '/',
                 'parent' => null,
-                'isExpandable' => false
+                'isExpandable' => false,
+                'children' => [
+                  
+                ]
             ],
-            'users' => [
+            'konfigurasi' => [
                 'name' => 'Konfigurasi',
                 'url' => '#',
                 'parent' => null,
                 'isExpandable' => true,
                 'children' => [
-                    'index' => [
+                    'user' => [
                         'name' => 'Manajemen Pengguna',
                         'url' => '/users',
-                        'parent' => 'users',
+                        'parent' => 'konfigurasi',
                         'isExpandable' => false,
                         'children' => [
                             'create' => [
@@ -38,18 +41,10 @@ class Menu
                             ],
                         ],
                     ],
-                ]
-            ],
-            'academics' => [
-              'name' => 'Konfigurasi',
-              'url' => '#',
-              'parent' => null,
-              'isExpandable' => true,
-              'children' => [
-                'index' => [
+                    'akademik' => [
                         'name' => 'Akademik',
                         'url' => '/academics',
-                        'parent' => 'academics',
+                        'parent' => 'konfigurasi',
                         'isExpandable' => false,
                         'children' => [
                             'event-akademik' => [
@@ -100,9 +95,18 @@ class Menu
                             ],
                         ],
                     ],
-              ]
-            ]
-
+                ]
+            ],
+            'calendar-academics' => [
+                'name' => 'Kalender Akademik',
+                'url' => '/calendar-academic',
+                'parent' => 'calendar-academic.index',
+                'isExpandable' => true,
+                // 'children' => [
+                    
+                // ]
+            ],
+              
         ];
     }
 
