@@ -99,8 +99,8 @@ class Menu
             ],
             'calendar-academics' => [
                 'name' => 'Kalender Akademik',
-                'url' => '/calendar-academic',
-                'parent' => 'calendar-academic.index',
+                'url' => '/calendar',
+                'parent' => 'calendar.index',
                 'isExpandable' => true,
                 // 'children' => [
                     

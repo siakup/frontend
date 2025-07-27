@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcademicController;
+use App\Http\Controllers\CalendarController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'academics'], function () {
@@ -26,10 +27,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/event', [AcademicController::class, 'eventStore'])->name('academics-event.store');
         Route::get('/event/upload', [AcademicController::class, 'eventUpload'])->name('academics-event.upload');
         Route::post('/event/upload', [AcademicController::class, 'eventStoreUpload'])->name('academics-event.store-upload');
+        Route::get('/event/template', [AcademicController::class, 'eventDownloadTemplate'])->name('academics-event.template');
+        Route::post('/event/preview', [AcademicController::class, 'eventPreview'])->name('academics-event.preview');
         Route::delete('/event/delete/{id}', [AcademicController::class, 'eventDelete'])->name('academics-event.delete');
     });
 
-    Route::group(['prefix' => 'calendar-academic'], function () {
-      Route::get('/', [AcademicController::class, 'indexCalendar'])->name('calendar-academic.index');
+    Route::group(['prefix' => 'calendar'], function () {
+      Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
     });
 });

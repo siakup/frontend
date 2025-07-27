@@ -286,7 +286,7 @@
 @if(session('success'))
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    successToast('Berhasil disimpan');
+    successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
     setTimeout(() => {
       window.location.href = "{{ route('academics-event.index') }}";
     }, 3000);

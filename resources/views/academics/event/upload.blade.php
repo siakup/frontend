@@ -46,7 +46,7 @@
 
     .upload-area {
         flex: 1 1 0;
-        min-width: 60%;
+        min-width: 75%;
         display: flex;
         flex-direction: column;
         /* align-items: stretch; */
@@ -62,7 +62,7 @@
         background: var(--Neutral-Gray-50, #FFF);
         padding: 32px 16px;
         text-align: center;
-        width:60%;
+        width:70%;
         margin-bottom: 16px;
         margin-right: 0;
         margin-left: 0;
@@ -81,8 +81,8 @@
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        width: 120%;
-        gap: 120px;
+        width: 100%;
+        gap: 100px;
     }
 
     .upload-btn-group {
@@ -117,6 +117,11 @@
         cursor:pointer; 
         display:inline-block; 
         min-height: 20px;
+        width: 120px;
+    }
+
+    .button-outline{
+        width: 120px;
     }
 
     li{
@@ -165,6 +170,35 @@
         margin-left: 8px;
         cursor: pointer;
     }
+
+    .modal-custom-content {
+        max-width: 600px;
+        z-index: 2;
+        align-items: center;
+        align-self: auto;
+    }
+
+    .modal-custom-body {
+        padding: 12px 50px 12px 50px;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    .modal-custom {
+        align-items: start;
+    }
+
+    @media (max-width: 600px) {
+        .modal-custom-content {
+            width: 90vw;
+            min-width: unset;
+            max-width: 98vw;
+            padding: 16px;
+        }
+        .modal-custom-title { font-size: 18px; }
+    }
+
 </style>
 @endsection
 
@@ -176,6 +210,8 @@
         const filePreview = document.getElementById("filePreview");
         const fileNameSpan = document.getElementById("fileName");
         const removeFileBtn = document.getElementById("removeFileBtn");
+        const modal = document.getElementById("modalKonfirmasiUnggah");
+        const btnYa = document.getElementById("btnYa");
 
         if (batalButton) {
             batalButton.addEventListener("click", function () {
@@ -184,15 +220,28 @@
         }
 
         if (fileInput && unggahButton) {
+            const container = document.querySelector('.upload-card-and-buttons');
             fileInput.addEventListener("change", function () {
                 if (fileInput.files.length) {
                     unggahButton.disabled = false;
                     fileNameSpan.textContent = fileInput.files[0].name;
                     filePreview.style.display = "flex";
+                    container.style.gap = '20px';
                     document.querySelector('.upload-card').style.display = 'none';
                 } else {
                     unggahButton.disabled = true;
                     filePreview.style.display = "none";
+                }
+            });
+
+            unggahButton.addEventListener("click", function () {
+                if (fileInput.files.length) {
+                    fileNameSpan.textContent = fileInput.files[0].name;
+                    const fileNameModal = document.getElementById("fileNameModal");
+                    if (fileNameModal) {
+                        fileNameModal.textContent = fileInput.files[0].name;
+                    }
+                    modal.style.display = 'flex';
                 }
             });
         }
@@ -205,6 +254,18 @@
                 document.querySelector('.upload-card').style.display = 'block';
             });
         }
+
+        if (btnYa) {
+            btnYa.addEventListener("click", function () {
+                const filenameInput = document.getElementById("filenameInput");
+                filenameInput.value = fileInput.files[0]?.name || '';
+                document.getElementById("uploadForm").submit();
+            });
+        }
+
+        document.getElementById("btnTidak").addEventListener("click", function () {
+            modal.style.display = "none";
+        });
     });
 </script>
 
@@ -226,14 +287,15 @@
                 <div class="text-md-rg">
                     Allowed Type: [.xlsx, .xls, .csv]
                 </div>
-                <a href="#">Download Sample Data (.xlsx)</a>
-                <a href="#">Download Sample Data (.csv)</a>
+                <a href="{{ route('academics-event.template', ['type' => 'xlsx']) }}">Download Sample Data (.xlsx)</a>
+                <a href="{{ route('academics-event.template', ['type' => 'csv']) }}">Download Sample Data (.csv)</a>
             </div>
             <div class="upload-area">
                 <div class="upload-area-title">Unggah File Event Akademik</div>
                 <div class="upload-card-and-buttons">
-                    <form action="{{ route('academics-event.store-upload') }}" method="POST" enctype="multipart/form-data" style="display: contents;">
+                    <form action="{{ route('academics-event.preview') }}" method="POST" enctype="multipart/form-data" style="display: contents;" id="uploadForm">
                     @csrf
+                    <input type="hidden" name="filename" id="filenameInput">
                     <div class="upload-card">
                         <div class="text-md-bd">
                             <img src="{{ asset('assets/icon-upload-gray-600.svg') }}" alt="upload" style="height: 1.5em; width: auto; margin-bottom: 8px;"><br>
@@ -245,7 +307,7 @@
                             <input type="file" name="file" accept=".xlsx,.xls,.csv" style="display:none;">
                         </label>
                         <div class="text-sm-lg">
-                            .xsl & .csv | 5MB
+                            .xlsx, .xls & .csv | 5MB
                         </div>
                     </div>
                     <div id="filePreview" class="file-preview" style="display: none;">
@@ -257,7 +319,7 @@
 
                     <div class="upload-btn-group">
                         <button type="button" class="button button-clean" id="btnBatalUnggah">Batal</button>
-                        <button type="submit" class="button button-outline" id="btnUnggah" disabled>
+                        <button type="button" class="button button-outline" id="btnUnggah" disabled>
                             Unggah <span style="font-size:1.1em;"><img src="{{ asset('assets/icon-upload-gray-600.svg') }}"></span>
                         </button>
                     </div>
@@ -268,37 +330,48 @@
 
         <div class="content-inside-card">
             <div style="font-weight: 500; margin-bottom: 12px;">
-                File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma ";"<br>
+                File yang diterima adalah file .xlsx atau .csv dengan pemisah antar kolom berupa titik koma ";"<br>
                 Urutan kolom sebagai berikut:
             </div>
             <ul style="text-sm-rg-red">
-                <li>kode: kode mata kuliah *)</li>
-                <li>nama: nama mata kuliah *)</li>
-                <li>sks: jumlah sks mata kuliah *)</li>
-                <li>semester: semester mata kuliah *)</li>
-                <li>tujuan: tujuan mata kuliah</li>
-                <li>deskripsi: deskripsi singkat mata kuliah</li>
-                <li>jenis: jenis mata kuliah, pilih salah satu dari Mata Kuliah </li>
-                <li>jenis: jenis mata kuliah, pilih salah satu dari Mata Kuliah Dasar Umum, Mata Kuliah Program Studi, Mata Kuliah Sains Dasar, Mata Kuliah Universitas Pertamina *)</li>
-                <li>koordinator: NIP Dosen koordinator</li>
-                <li>spesial: y/n, y jika mata kuliah spesial, n jika tidak *)</li>
-                <li>dibuka: y/n, y jika mata kuliah dibuka untuk prodi lain, n jika tidak *)</li>
-                <li>wajib: y/n, y jika mata kuliah wajib, n jika tidak *)</li>
-                <li>mbkm: y/n, y jika mata kuliah MBKM, n jika tidak *)</li>
-                <li>aktif: y/n, y jika mata kuliah aktif, n jika tidak *)</li>
-                <li>prasyarat mata kuliah: kode mata kuliah prasyarat</li>
-                <li>namasingkat: nama singkat atau akronim mata kuliah *)</li>
-                <li>*) required, jika ada nilai kosong, upload ulang akan mengganti data sebelumnya, prasyarat mata kuliah hanya 1</li>
+                <li>nama: nama event *)</li>
+                <li>event nilai: y/n</li>
+                <li>event krs: y/n</li>
+                <li>event kelulusan: y/n</li>
+                <li>event registrasi: y/n</li>
+                <li>event yudisium: y/n</li>
+                <li>event survei: y/n</li>
+                <li>event dosen: y/n</li>
+                <li>status: active/inactive *)</li>
+                <li>*) required, jika ada nilai kosong, upload ulang akan mengganti data sebelumnya</li>
             </ul>
-            <div class="text-md-rg" style="margin-top: 7%;">
-                kode; nama; sks; semester; tujuan; deskripsi; jenis; koordinator; spesial; dibuka; wajib; mbkm; aktif; prasyarat; namasingkat<br>
-                UP001; Kalkulus; 3; 1; ; ; Mata Kuliah Dasar Umum; 116024; n; y; n; y; n; ; K; y<br>
-                UP002; Kimia Dasar; 2; 1; ; ; Mata Kuliah Dasar Umum; 116024; n; y; n; y; n; ; y; UP003-UP321; KD2; y
+            <div class="text-md-rg" style="margin-top: 5%;">
+                nama; event nilai; event krs; event kelulusan; event registrasi; event yudisium; event survei; event dosen; status<br>
+                Perkuliahan Semester Ganjil; n; n; n; n; n; n; y; active<br>
+                Perkuliahan Semester Genap; n; n; n; n; n; n; y; active<br>
+                Pengisian Survei; n; n; n; n; n; y; n; active
             </div>
-            <div class="text-md-rg" style="margin-top: 7%;">
+            <div class="text-md-rg" style="margin-top: 5%;">
                 <span>Jumlah Data : 0</span><br>
                 <span>Jumlah Data Sukses: 0</span><br>
                 <span>Jumlah Data Gagal: 0</span>
+            </div>
+        </div>
+
+        <div id="modalKonfirmasiUnggah" class="modal-custom" style="display:none;">
+            <div class="modal-custom-backdrop"></div>
+            <div class="modal-custom-content">
+            <div class="modal-custom-header">
+                <span class="text-lg-bd">Tunggu Sebentar</span>
+                <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
+            </div>
+            <div class="modal-custom-body">
+                <div>Apakah anda yakin untuk mengunggah event akademik dari <strong id="fileNameModal">(Nama File)</strong>?</div>
+            </div>
+            <div class="modal-custom-footer">
+                <button type="button" class="button button-clean" id="btnTidak">Tidak</button>
+                <button type="button" class="button button-outline" id="btnYa">Ya</button>
+            </div>
             </div>
         </div>
     </div>

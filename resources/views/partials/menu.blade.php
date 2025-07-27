@@ -82,7 +82,7 @@
                 </ul>
             </li>
             <li class="menu-item">
-                <a href="{{ route('calendar-academic.index') }}" class="menu-link {{ Request::is('calendar-academic*') ? 'active' : '' }}">
+                <a href="{{ route('calendar.index') }}" class="menu-link {{ Request::is('calendar*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-admin.svg') }}" 
                             alt="Kalender Akademik Icon" 

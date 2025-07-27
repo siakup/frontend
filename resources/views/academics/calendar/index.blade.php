@@ -35,7 +35,7 @@
 <script>
   function sortTable(value) {
       $.ajax({
-          url: "{{ route('calendar-academic.index') }}",
+          url: "{{ route('calendar.index') }}",
           method: 'GET',
           data: { 
               sort: value 

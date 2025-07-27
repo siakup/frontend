@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+// use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 use App\Traits\ApiResponse;
@@ -219,11 +222,6 @@ class AcademicController extends Controller
         return view('academics.event.create', get_defined_vars());
     }
 
-    public function eventUpload(Request $request)
-    {
-        return view('academics.event.upload', get_defined_vars());
-    }
-
     public function eventStore(Request $request)
     {
         $validated = $request->validate([
@@ -262,39 +260,87 @@ class AcademicController extends Controller
         return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
     }
 
+    public function eventUpload(Request $request)
+    {
+        return view('academics.event.upload', get_defined_vars());
+    }
+
+    public function eventDownloadTemplate(Request $request)
+    {
+        $type = $request->query('type', 'xlsx');
+        $allowed = ['xlsx', 'csv'];
+
+        if (!in_array($type, $allowed)) {
+            return redirect()->back()->with('error', 'Format file tidak valid');
+        }
+
+        $data = [
+            ['nama', 'event nilai', 'event krs', 'event kelulusan', 'event registrasi', 'event yudisium', 'event survei', 'event dosen', 'status'],
+            ['Perkuliahan Semester Ganjil', 'n', 'n', 'n', 'n', 'n', 'n', 'y', 'active'],
+            ['Perkuliahan Semester Genap', 'n', 'n', 'n', 'n', 'n', 'n', 'y', 'active'],
+            ['Pengisian Survei', 'n', 'n', 'n', 'n', 'n', 'y', 'n', 'active'],
+        ];
+
+        $filename = 'template-event-akademik.' . $type;
+
+        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+            private $rows;
+            public function __construct($rows) { $this->rows = $rows; }
+            public function array(): array { return array_slice($this->rows, 1); }
+            public function headings(): array { return $this->rows[0]; }
+        }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
+    }
+
+    public function eventPreview(Request $request)
+    {
+        if ($request->isMethod('get')) {
+            return redirect()->route('academics-event.upload');
+        }
+
+        $request->validate([
+            'file' => 'required|file|mimes:xlsx,csv,xls',
+        ]);
+
+        try {
+            $rows = \Maatwebsite\Excel\Facades\Excel::toArray([], $request->file('file'));
+            $data = $rows[0] ?? [];
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal memproses file: ' . $e->getMessage());
+        }
+
+        return view('academics.event.preview', compact('data'));
+    }
+
     public function eventStoreUpload(Request $request)
     {
-        return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
-    }
+        $data = $request->input('data', []);
 
-    public function indexCalendar(Request $request)
-    {
-      $program_perkuliahan = $request->input('program_perkuliahan', 'reguler');
-      $program_studi = $request->input('program_studi', 'ilmu komputer');
+        $events = [];
+        foreach ($data as $row) {
+            if (count($row) < 9) {
+                continue; 
+            }
 
-      $params = compact('program_perkuliahan', 'program_studi');
+            $events[] = [
+                'nama_event' => $row[0],
+                'nilai_on' => strtolower($row[1]) === 'y',
+                'irs_on' => strtolower($row[2]) === 'y',
+                'lulus_on' => strtolower($row[3]) === 'y',
+                'registrasi_on' => strtolower($row[4]) === 'y',
+                'yudisium_on' => strtolower($row[5]) === 'y',
+                'survei_on' => strtolower($row[6]) === 'y',
+                'dosen_on' => strtolower($row[7]) === 'y',
+                'status' => strtolower($row[8]) === 'active' ? 'active' : 'inactive',
+                'created_by' => session('username'),
+            ];
+        }
 
-      return view('academics.calendar.index', get_defined_vars());
-    }
-
-    public function show(Request $request, $id)
-    {
-        return view('academics.show', get_defined_vars());
-    }
-
-    public function edit(Request $request, $id)
-    {
-        return view('academics.show', get_defined_vars());
-    }
-
-    public function update(Request $request, $id)
-    {
-        
-    }
-
-    public function delete(Request $request, $id)
-    {
-        return redirect()->back();
+        $url = EventAcademicService::getInstance()->bulkStore();
+        $response = postCurl($url, ['events' => $events], getHeaders());
+        if (isset($response->success) && $response->success) {
+            return redirect()->route('academics-event.index')->with('success', 'Berhasil mengunggah event akademik');
+        }
+        return redirect()->route('academics-event.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
     }
 
 }
