@@ -43,7 +43,7 @@
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Tambah Event Akademik</div>
+        <div class="page-title-text">Unggah Event Akademik</div>
     </div>
     
     <a href="{{ route('academics-event.index') }}" class="button-no-outline-left">
@@ -51,7 +51,7 @@
     </a>
     <div class="content-card">
         <div class="text-lg-bd page-title-text">
-            <span>Import Event Akademik</span>
+            <span>Impor Event Akademik</span>
             <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
         <form action="{{ route('academics-event.store-upload') }}" method="POST">

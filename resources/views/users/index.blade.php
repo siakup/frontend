@@ -126,33 +126,58 @@
                 }
             });
 
-            // sort dropdown
-            const sortBtn = document.getElementById('sortButton');
-            const sortDropdown = document.getElementById('sortDropdown');
+            document.getElementById('sortButton').addEventListener('click', function(event) {
+                const dropdown = document.getElementById('sortDropdown');
+                const toggleBtn = document.getElementById('sortButton');
 
-            // Toggle dropdown on button click
-            sortBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                sortDropdown.style.display = (sortDropdown.style.display === 'block') ? 'none' : 'block';
-            });
+                const isOpen = dropdown.style.display === 'none' || dropdown.style.display === '';
+                dropdown.style.display = isOpen ? 'block' : 'none';
 
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!sortDropdown.contains(e.target) && e.target !== sortBtn) {
-                    sortDropdown.style.display = 'none';
+                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                    toggleBtn.classList.remove('active');
                 }
+                toggleBtn.classList.toggle('active', isOpen);
+
+                event.stopPropagation();
             });
 
-            // Optional: Add sorting functionality
             document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
                 item.addEventListener('click', function() {
-                    sortDropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove(
-                        'active'));
-                    const sortKey = this.getAttribute('data-sort');
-                    console.log('Sort by:', sortKey); // Replace with your logic
-                    this.classList.add('active');
-                    sortDropdown.style.display = 'none';
+                    const sortValue = this.dataset.sort;
+                    const sortText = this.textContent.trim();
+
+                    const sortLabel = document.getElementById('sortLabel');
+                    if (sortLabel) {
+                        sortLabel.textContent = sortText;
+                    }
+
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('sort', sortValue);
+                    url.searchParams.set('page', 1);
+                    window.location.href = url.toString();
                 });
+            });
+
+            const params = new URLSearchParams(window.location.search);
+            const currentSort = params.get('sort');
+            if (currentSort) {
+                const currentItem = Array.from(document.querySelectorAll('#sortDropdown .dropdown-item'))
+                    .find(item => item.dataset.sort === currentSort);
+                if (currentItem) {
+                    const sortLabel = document.getElementById('sortLabel');
+                    if (sortLabel) {
+                        sortLabel.textContent = currentItem.textContent.trim();
+                    }
+                }
+            }
+            document.addEventListener('click', function(e) {
+                const toggleBtn = document.getElementById('sortButton');
+                const dropdown = document.getElementById('sortDropdown');
+
+                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
             });
 
             document.addEventListener('click', function(e) {
@@ -233,7 +258,7 @@
             </div>
             <div class="filter-box">
                 <button class="button-clean" id="sortButton">
-                    Urutkan
+                    <span id="sortLabel">Urutkan</span>
                     <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
                 </button>
                 <div id="sortDropdown" class="sort-dropdown" style="display: none;">

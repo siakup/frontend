@@ -600,7 +600,7 @@
 
             <div class="academics-menu">
                 <a href="{{ route('academics-event.upload') }}" class="button button-clean" id="btnUpload">
-                    Upload Event Akademik
+                    Unggah Event Akademik
                     <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Upload">
                 </a>
                 <a href="{{ route('academics-event.create') }}" class="button button-outline">Tambah Event Akademik</a>
