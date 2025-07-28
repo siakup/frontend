@@ -16,7 +16,7 @@
   }
 
   .center .btn-icon {
-    display: flex; 
+    display: flex;
     align-items: center;
     justify-items: center;
     text-decoration: none;
@@ -43,7 +43,7 @@
       gap: 16px;
       align-self: auto;
   }
-  
+
   .active-lable {
     background-color: #D0DE68;
     border-radius: 2px;
@@ -108,10 +108,10 @@
   .btn-edit-event-academic {
     color: #E62129;
   }
-    
+
   #btnUpload:hover img{
         filter: brightness(0) invert(1);
-        
+
   }
 </style>
 @endsection
@@ -122,7 +122,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     const input = document.getElementById('searchInput');
     const dropdown = document.getElementById('searchDropdown');
-    
+
     // Create loading indicator
     const loadingIndicator = document.createElement('div');
     loadingIndicator.className = 'dropdown-item text-center';
@@ -188,8 +188,8 @@
         $.ajax({
             url: '{{ route('academics-event.index') }}',
             method: 'GET',
-            data: { 
-                sort: value 
+            data: {
+                sort: value
             },
             headers: { 'X-Requested-With': 'XMLHttpRequest' },
             success: function(response) {
@@ -217,9 +217,9 @@
           const id = btn.getAttribute('data-id');
             if (id) {
               $.ajax({
-                url: "{{ route('academics-event.detail') }}", 
+                url: "{{ route('academics-event.detail') }}",
                 method: 'GET',
-                data: { id: id }, 
+                data: { id: id },
                 headers: {
                   'X-Requested-With': 'XMLHttpRequest'
                 },
@@ -231,7 +231,7 @@
             }
         }
     });
-  
+
     document.addEventListener('click', function(e) {
         const btn = e.target.closest('.btn-delete-event-academic');
         if (btn) {
@@ -240,14 +240,14 @@
           document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
         }
     });
-  
+
     document.getElementById('btnSimpan').addEventListener('click', function() {
       const id = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
       $.ajax({
           url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id', id),
           method: 'DELETE',
-          headers: { 
+          headers: {
             'X-CSRF-TOKEN': csrfToken,
             'X-Requested-With': 'XMLHttpRequest'
           },
@@ -264,7 +264,7 @@
           }
       });
     });
-  
+
     document.getElementById('btnCekKembali').addEventListener('click', function() {
       document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
       document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
@@ -389,11 +389,11 @@
     "routes" => route('academics-event.index')
   ])
   @endif
-  
+
   <div id="eventDetailModalContainer"></div>
   <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
     <div class="modal-custom-backdrop"></div>
-    <div class="modal-custom-content">
+    <div class="modal-custom-content" style="background-color: #98A725 ">
       <div class="modal-custom-header">
         <span class="text-lg-bd">Tunggu Sebentar</span>
         <img src="{{ asset('assets/icon-delete-gray-800.svg')}}" alt="ikon peringatan">

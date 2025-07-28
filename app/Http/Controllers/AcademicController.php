@@ -57,7 +57,7 @@ class AcademicController extends Controller
         }
         return view('academics.periode.index', get_defined_vars());
 
-        
+
     }
 
     public function createPeriode(Request $request)
@@ -65,7 +65,7 @@ class AcademicController extends Controller
         return view('academics.periode.create', get_defined_vars());
     }
 
-    public function periodeStore(Request $request) 
+    public function periodeStore(Request $request)
     {
       $validated = $request->validate([
           'year'   => 'required',
@@ -98,6 +98,13 @@ class AcademicController extends Controller
       }
 
       return redirect()->route('academics-periode.index')->with('success', 'Berhasil disimpan');
+    }
+
+    public function periodeDelete($id) {
+        $url = PeriodAcademicService::getInstance()->periodUrl($id);
+        $response = deleteCurl($url, getHeaders());
+        dd($response);
+        return $response;
     }
 
 
@@ -173,11 +180,12 @@ class AcademicController extends Controller
       ];
       $url = EventAcademicService::getInstance()->eventUrl($id);
       $response = putCurl($url, $data, getHeaders());
-      
+
       return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
     }
 
     public function eventDelete($id) {
+        dd($id);
       $url = EventAcademicService::getInstance()->eventUrl($id);
       $response = deleteCurl($url, getHeaders());
       return $response;
@@ -214,7 +222,7 @@ class AcademicController extends Controller
         $data = [
             'nama_event' => $validated['name'],
             'status'     => $validated['status'],
-            'flags'      => $flags, 
+            'flags'      => $flags,
             'created_by' => session('username'),
         ];
 
@@ -248,7 +256,7 @@ class AcademicController extends Controller
 
     public function update(Request $request, $id)
     {
-        
+
     }
 
     public function delete(Request $request, $id)

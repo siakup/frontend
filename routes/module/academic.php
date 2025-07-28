@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcademicController;
 
-Route::group(['middleware' => ['auth']], function () {
+Route::group(['midgit dleware' => ['auth']], function () {
     Route::group(['prefix' => 'academics'], function () {
         //periode akademik
         Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
@@ -12,6 +12,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/periode-detail', [AcademicController::class, 'periodeDetail'])->name('academics-periode.detail');
         Route::get('/periode-edit', [AcademicController::class, 'periodeEdit'])->name('academics-periode.edit');
         Route::get('/periode/detail', [AcademicController::class, 'periodeDetail'])->name('periode.detail');
+        Route::delete('/periode/delete/{id}',  [AcademicController::class, 'periodeDelete'])->name('academics-periode.delete');
+
 
         //event akademik
         Route::get('/event', [AcademicController::class, 'indexEvent'])->name('academics-event.index');
