@@ -342,11 +342,11 @@
                     <th style="width: 45%;">Nama Event</th>
                     <th style="width: 30%;">Event <br> Nilai</th>
                     <th style="width: 30%;">Event <br> IRS</th>
+                    <th style="width: 30%;">Event <br> Lulus</th>
                     <th style="width: 35%;">Event <br> Registrasi</th>
                     <th style="width: 35%;">Event <br> Yudisium</th>
                     <th style="width: 30%;">Event <br> Survei</th>
                     <th style="width: 30%;">Event <br> Dosen</th>
-                    <th style="width: 30%;">Event <br> Lulus</th>
                     <th style="width: 35%;">Status</th>
                     <th style="width: 100%;">Aksi</th>
                 </tr>
@@ -357,11 +357,11 @@
                   <td>{{ $event['nama_event'] }}</td>
                   <td>{{ $event['nilai_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['irs_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>{{ $event['lulus_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['registrasi_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['yudisium_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['survei_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['dosen_on'] ? "Ya" : "Tidak" }}</td>
-                  <td>{{ $event['lulus_on'] ? "Ya" : "Tidak" }}</td>
                   <td>
                     <span class="{{$event['status']}}-lable status-lable">{{$event['status'] === 'active' ? "Aktif" : "Tidak Aktif"}}</span>
                   </td>
