@@ -27,7 +27,7 @@
                 const isOpen = dropdown.style.display === 'none' || dropdown.style.display === '';
                 dropdown.style.display = isOpen ? 'block' : 'none';
 
-                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                if (!toggleBtn.contains(event.target) && !dropdown.contains(event.target)) {
                     dropdown.style.display = 'none';
                     toggleBtn.classList.remove('active');
                 }
@@ -103,6 +103,36 @@
                 }
             });
 
+            document.addEventListener('click', function(e) {
+                const target = e.target.closest('.pagination-link');
+                if (target) {
+                    e.preventDefault();
+
+                    const url = target.getAttribute('href');
+                    if (!url) return;
+
+                    // Ambil form pencarian (jika masih ingin bawa filter/search)
+                    const searchInput = document.querySelector('#searchInput');
+                    const search = searchInput ? searchInput.value : '';
+
+                    const finalUrl = new URL(url, window.location.origin);
+                    if (search) finalUrl.searchParams.set('search', search);
+
+                    fetch(finalUrl, {
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => response.text())
+                        .then(html => {
+                            const tableContainer = document.querySelector('.table-responsive');
+                            if (tableContainer) {
+                                tableContainer.innerHTML = html;
+                            }
+                        })
+                        .catch(err => console.error('Pagination fetch error:', err));
+                }
+            });
         });
     </script>
 @endsection
@@ -216,16 +246,17 @@
                         @endif
                     </tbody>
                 </table>
+                <div id="tableContainer">
+                    @include('partials.pagination', [
+                        'currentPage' => $data->pagination->current_page ?? 1,
+                        'lastPage' => $data->pagination->last_page ?? 1,
+                        'limit' => $limit,
+                        'routes' => route('academics-periode.index'),
+                        'showSearch' => false,
+                    ])
+                </div>
             </div>
         </div>
-        @include('partials.pagination', [
-            'currentPage' => $data->pagination->current_page ?? 1,
-            'lastPage' => $data->pagination->last_page ?? 1,
-            'limit' => $limit,
-            'routes' => route('academics-periode.index'),
-            'showSearch' => false,
-        ])
-
         <div id="periodeDetailModalContainer"></div>
     </div>
     @include('partials.success-modal')
