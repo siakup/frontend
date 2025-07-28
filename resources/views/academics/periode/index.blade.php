@@ -12,6 +12,38 @@
         #toggleSortDropdown.active {
             color: #EB474D;
         }
+
+        .content-card {
+            border-radius: 0px 12px 12px 12px;
+        }
+
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .center .btn-icon {
+            display: flex;
+            align-items: center;
+            justify-items: center;
+            text-decoration: none;
+            gap: 2px;
+            font-size: 12px;
+        }
+
+        .center .btn-delete-periode-academic {
+            color: #8C8C8C;
+        }
+
+        .center .btn-view-periode-academic {
+            color: #262626;
+        }
+
+        .center .btn-edit-periode-academic {
+            color: #E62129;
+        }
     </style>
 
 @endsection
@@ -87,7 +119,6 @@
                                 id: idPeriode
                             },
                             success: function(html) {
-                                console.log('Response:', html);
                                 $('#periodeDetailModalContainer').html(html);
                                 $('#modalPeriodeAkademik').show();
                             }
@@ -135,6 +166,18 @@
             });
         });
     </script>
+
+    @if (session('success'))
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
+                setTimeout(() => {
+                    window.location.href = "{{ route('academics-event.index') }}";
+                }, 3000);
+            })
+        </script>
+    @endif
+
 @endsection
 
 
@@ -228,14 +271,14 @@
                                             <span style="font-size: 14px;">Lihat</span>
                                         </button>
 
-                                        <a class="btn-icon" title="Ubah"
+                                        <a class="btn-icon btn-edit-periode-academic" title="Ubah"
                                             href="{{ route('academics-periode.edit', ['id' => $periode->id]) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                                            <span>Ubah</span>
+                                            <span style="color:#E62129">Ubah</span>
                                         </a>
 
-                                        <button type="button" class="btn-icon btn-delete-event-academic"
+                                        <button type="button" class="btn-icon btn-delete-periode-academic"
                                             data-id="{{ $periode->id }}" title="Hapus">
                                             <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
                                             <span style="font-size: 14px;">Hapus</span>

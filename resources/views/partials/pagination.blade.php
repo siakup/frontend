@@ -56,26 +56,34 @@
         </div>
     @endif
     <script>
-        const select = document.querySelector(".option-pagination-show select");
-        const searchButton = document.querySelector('.paginate-search .paginate-button');
-        const removeTextButton = document.querySelector('.paginate-search .paginate-remove-search-text');
+        document.addEventListener('DOMContentLoaded', () => {
+            const select = document.querySelector(".option-pagination-show select");
+            const searchButton = document.querySelector('.paginate-search .paginate-button');
+            const removeTextButton = document.querySelector('.paginate-search .paginate-remove-search-text');
 
-        select.addEventListener('change', (event) => {
-            const url = new URL(window.location.href);
-            url.searchParams.set('limit', event.target.value);
-            url.searchParams.delete('page');
-            window.location.href = url.toString();
-        });
+            if (select) {
+                select.addEventListener('change', (event) => {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('limit', event.target.value);
+                    url.searchParams.delete('page');
+                    window.location.href = url.toString();
+                });
+            }
 
-        searchButton.addEventListener('click', () => {
-            const form = document.querySelector('.paginate-search form');
-            removeTextButton.style.display = 'inline';
-            form.style.setProperty('display', 'flex', 'important');
-        });
+            if (searchButton && removeTextButton) {
+                searchButton.addEventListener('click', () => {
+                    const form = document.querySelector('.paginate-search form');
+                    if (form) {
+                        removeTextButton.style.display = 'inline';
+                        form.style.setProperty('display', 'flex', 'important');
+                    }
+                });
 
-        removeTextButton.addEventListener('click', () => {
-            const input = document.querySelector('.paginate-search form input');
-            input.value = "";
+                removeTextButton.addEventListener('click', () => {
+                    const input = document.querySelector('.paginate-search form input');
+                    if (input) input.value = "";
+                });
+            }
         });
     </script>
 </div>
