@@ -386,7 +386,7 @@
                 <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
             </div>
             <div class="modal-custom-body">
-                <div>Apakah anda yakin untuk mengunggah event akademik dari <strong id="fileNameModal">(Nama File)</strong>?</div>
+                <div>Apakah Anda yakin untuk mengunggah event akademik dari <strong id="fileNameModal">(Nama File)</strong>?</div>
             </div>
             <div class="modal-custom-footer">
                 <button type="button" class="button button-clean" id="btnTidak">Tidak</button>
@@ -403,7 +403,7 @@
                 <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
             </div>
             <div class="modal-custom-body">
-                <div>Apakah anda yakin ingin membatalkan unggah event akademik?</div>
+                <div>Apakah Anda yakin ingin membatalkan unggah event akademik?</div>
             </div>
             <div class="modal-custom-footer">
                 <button type="button" class="button button-clean" id="btnKembali">Kembali</button>

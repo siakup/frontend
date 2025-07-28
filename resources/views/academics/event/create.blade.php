@@ -214,7 +214,6 @@
                 <label for="name">Nama Event</label>
                 <div>
                     <input placeholder="Nama Event" type="text" id="name" class="form-control" value="">
-                    <div id="error-message" class="text-sm-rg-red">Mohon diisi Nama Event sebelum disimpan.</div>
                 </div>
             </div>
             <div class="form-group">
@@ -261,7 +260,7 @@
             <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="ikon peringatan">
             </div>
             <div class="modal-custom-body">
-            <div>Apakah anda yakin informasi yang ditambah sudah benar?</div>
+            <div>Apakah Anda yakin informasi yang ditambah sudah benar?</div>
             </div>
             <div class="modal-custom-footer">
             <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
