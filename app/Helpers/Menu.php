@@ -70,6 +70,12 @@ class Menu
                                   'url' => '/academics/event/upload',
                                   'parent' => 'academics-event.upload',
                                   'isExpandable' => false,
+                                ],
+                                'preview-event-akademik' => [
+                                  'name' => 'Unggah Event Akademik',
+                                  'url' => '/academics/event/preview',
+                                  'parent' => 'academics-event.preview',
+                                  'isExpandable' => false,
                                 ]
                               ]
                             ],
