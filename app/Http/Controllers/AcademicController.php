@@ -37,7 +37,13 @@ class AcademicController extends Controller
         $response = getCurl($url, $params, getHeaders());
 
         if ($request->ajax()) {
-            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+            return view('academics.periode.partials.table', [
+                'data' => $response,
+                'search' => $search,
+                'sort' => $sort,
+                'page' => $page,
+                'limit' => $limit,
+            ]);
         }
 
         return view('academics.periode.index', [

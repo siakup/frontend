@@ -405,7 +405,7 @@
                     </div>
                     <div class="modal-custom-footer">
                         <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-                        <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Simpan
+                        <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Ubah
                             Sekarang</button>
                     </div>
                 </div>
