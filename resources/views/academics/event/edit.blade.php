@@ -227,7 +227,7 @@
           <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="ikon peringatan">
         </div>
         <div class="modal-custom-body">
-          <div>Apakah anda yakin informasi anda sudah benar?</div>
+          <div>Apakah Anda yakin informasi yang diubah sudah benar?</div>
         </div>
         <div class="modal-custom-footer">
           <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
