@@ -142,6 +142,9 @@
             method: 'GET',
             data: { search: keyword },
             dataType: 'json',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             success: function(data) {
                 if (!data.success || !Array.isArray(data.data) || data.data.length === 0) {
                     dropdown.innerHTML = '<div class="dropdown-item text-center">Tidak ada hasil ditemukan</div>';
@@ -318,7 +321,7 @@
         </div>
         <div class="filter-box">
           <button class="button-clean" id="sortButton">
-              {{empty($_GET) ? "Urutkan" : ($sort === "active" ? "Aktif" : ($sort === "inactive" ? "Tidak Aktif" : ($sort === "nama,asc" ? "A-Z" : ($sort === "nama,desc" ? "Z-A" : ($sort === "created_at,desc" ? "Terbaru" : "Terlama")))))}}
+              {{empty($_GET) ? "Terbaru" : ($sort === "active" ? "Aktif" : ($sort === "inactive" ? "Tidak Aktif" : ($sort === "nama,asc" ? "A-Z" : ($sort === "nama,desc" ? "Z-A" : ($sort === "created_at,desc" ? "Terbaru" : "Terlama")))))}}
               <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
           </button>
           <div id="sortDropdown" class="sort-dropdown" style="display: none;">
@@ -343,6 +346,7 @@
                     <th style="width: 35%;">Event <br> Yudisium</th>
                     <th style="width: 30%;">Event <br> Survei</th>
                     <th style="width: 30%;">Event <br> Dosen</th>
+                    <th style="width: 30%;">Event <br> Lulus</th>
                     <th style="width: 35%;">Status</th>
                     <th style="width: 100%;">Aksi</th>
                 </tr>
@@ -357,6 +361,7 @@
                   <td>{{ $event['yudisium_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['survei_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['dosen_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>{{ $event['lulus_on'] ? "Ya" : "Tidak" }}</td>
                   <td>
                     <span class="{{$event['status']}}-lable status-lable">{{$event['status'] === 'active' ? "Aktif" : "Tidak Aktif"}}</span>
                   </td>

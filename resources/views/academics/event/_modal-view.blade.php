@@ -116,14 +116,29 @@
       font-size: 14px;
       color: #8C8C8C;
     }
+
+    .modal-custom-body {
+      text-align: start;
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+
+    .flag-label {
+      align-items: start;
+      margin-top: 20px;
+    }
+
+    .flag-label .checkbox-group {
+      padding-top: 0px;
+    }
 </style>
 
 <script>
   var toggleButton = document.getElementById('toggleButton');
   var toggleIcon = document.getElementById('toggleIcon');
   var toggleInfo = document.querySelector('.toggle-info');
-  var isActive = @json((bool) $data->status);
-  
+  var isActive = @json($data->status) == 'active';
+
   if (isActive) {
       toggleIcon.src = "{{ asset('components/toggle-on-disabled-true-grey.svg') }}";
       toggleInfo.textContent = "Aktif";
@@ -144,21 +159,17 @@
                 &times;
             </button>
         </div>
+        <div class="modal-custom-body title" onclick="toggleSection('detail')">
+            <span class="text-md-bd">Event Akademik</span>
+        </div>
         <div class="modal-custom-body">
             <div class="expandable-section" id="section-detail">
-                <div class="" onclick="toggleSection('detail')">
-                    <span class="text-md-bd">Event Akademik</span>
-                </div>
                 <div class="expandable-content" id="content-detail" style="display:block;">
-                    {{-- <div class="form-group">
-                        <label>Nama Event</label>
-                        <input type="text" class="form-control" value="{{ $response->data->user->nomor_induk }}" readonly>
-                    </div> --}}
                     <div class="form-group">
                       <label>Nama Event</label>
                       <input type="text" class="form-control" value="{{ $data->nama_event }}" readonly>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group flag-label">
                       <label>Flag</label>
                       <div class="form-control checkbox-group">
                         <div class="checkbox-form">

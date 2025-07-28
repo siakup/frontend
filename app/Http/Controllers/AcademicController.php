@@ -91,7 +91,6 @@ class AcademicController extends Controller
 
       $url = PeriodAcademicService::getInstance()->store();
       $response = postCurl($url, $data, getHeaders());
-        dd($response);
 
       if ($request->ajax()) {
           if (isset($response->success) && $response->success) {
@@ -136,10 +135,9 @@ class AcademicController extends Controller
     public function indexEvent(Request $request)
     {
         $search = $request->input('search');
-        $sort = $request->input('sort', 'nama,asc');
+        $sort = $request->input('sort', 'created_at,desc');
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
-
 
         $params = [
             'search' => $search,
