@@ -159,97 +159,86 @@
             <div class="page-title-text">Ubah Event Akademik</div>
         </div>
 
-        <a href="{{ route('academics-event.index') }}" class="button-no-outline-left">
-            <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Event Akademik
-        </a>
-
-        <div class="content-card">
-            <div class="form-title-text" style="padding: 20px;">Ubah Event Akademik</div>
-            <div class="form-section">
-                <div class="form-group">
-                    <label for="name">Nama Event</label>
-                    <div class="input-by-search input">
-                        <input type="text" id="name" class="form-control" value="{{ $data['nama_event'] }}"
-                            name="nama_event" placeholder="Nama Event">
-                        @error('nama_event')
-                            <span>{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Flag</label>
-                    <div class="checkbox-group">
-                        <div class="checkbox-form">
-                            <input id="nilai" type="checkbox" name="nilai_on" class="form-control" value="true"
-                                @if ($data['nilai_on']) checked @endif>
-                            <label for="nilai">Nilai</label>
-                        </div>
-                        <div class="checkbox-form">
-                            <input id="irs" type="checkbox" name="irs_on" class="form-control" value="true"
-                                @if ($data['irs_on']) checked @endif>
-                            <label for="irs">IRS</label>
-                        </div>
-                        <div class="checkbox-form">
-                            <input id="lulus" type="checkbox" name="lulus_on" class="form-control" value="true"
-                                @if ($data['lulus_on']) checked @endif>
-                            <label for="lulus"l>Lulus</label>
-                        </div>
-                        <div class="checkbox-form">
-                            <input id="registrasi" type="checkbox" name="registrasi_on" class="form-control" value="true"
-                                @if ($data['registrasi_on']) checked @endif>
-                            <label for="registrasi">Registrasi</label>
-                        </div>
-                        <div class="checkbox-form">
-                            <input id="yudisium" type="checkbox" name="yudisium_on" class="form-control" value="true"
-                                @if ($data['yudisium_on']) checked @endif>
-                            <label for="yudisium">Yudisium</label>
-                        </div>
-                        <div class="checkbox-form">
-                            <input id="survei" type="checkbox" name="survei_on" class="form-control" value="true"
-                                @if ($data['survei_on']) checked @endif>
-                            <label for="survei">Survei</label>
-                        </div>
-                        <div class="checkbox-form">
-                            <input id="dosen" type="checkbox" name="dosen_on" class="form-control" value="true"
-                                @if ($data['dosen_on']) checked @endif>
-                            <label for="dosen">Dosen</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Status</label>
-                    <div class="toggle-row"></div>
-                    <button id="toggleButton" class="btn-toggle">
-                        <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon"
-                            id="toggleIcon">
-                        <span class="toggle-info text-sm-bd">Tidak Aktif</span>
-                    </button>
-                    <input type="hidden" name="status" id="statusValue" value="{{ $data['status'] }}">
-                </div>
-            </div>
-            <div style="display: flex; gap: 20px; justify-content: flex-end; margin: 20px;">
-                <button type="button" class="button button-clean" id="btnBatalUbahEvent"
-                    style="padding: 8px 54.5px; margin: 0px;">Batal</button>
-                <button type="button" class="button button-outline" id="btnSimpan"
-                    style="padding: 8px 54.5px; margin: 0px;">Simpan</button>
+  <a href="{{ route('academics-event.index') }}" class="button-no-outline-left">
+      <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Event Akademik
+  </a>
+  
+  <div class="content-card">
+    <div class="form-title-text" style="padding: 20px;">Ubah Event Akademik</div>
+      <div class="form-section">
+        <div class="form-group">
+            <label for="name">Nama Event</label>
+            <div class="input-by-search input">
+                <input type="text" id="name" class="form-control" value="{{$data['nama_event']}}" name="nama_event" placeholder="Nama Event">
+                @error('nama_event')
+                  <span>{{ $message }}</span>
+                @enderror
             </div>
         </div>
-
-        <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-            <div class="modal-custom-backdrop"></div>
-            <div class="modal-custom-content">
-                <div class="modal-custom-header">
-                    <span class="text-lg-bd">Tunggu Sebentar</span>
-                    <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="ikon peringatan">
-                </div>
-                <div class="modal-custom-body">
-                    <div>Apakah anda yakin informasi anda sudah benar?</div>
-                </div>
-                <div class="modal-custom-footer">
-                    <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-                    <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Ubah Sekarang</button>
-                </div>
+        <div class="form-group">
+          <label>Flag</label>
+          <div class="checkbox-group">
+            <div class="checkbox-form">
+              <input id="nilai" type="checkbox" name="nilai_on" class="form-control" value="true" @if($data['nilai_on']) checked @endif>
+              <label for="nilai">Nilai</label>
             </div>
+            <div class="checkbox-form">
+              <input id="irs" type="checkbox" name="irs_on" class="form-control" value="true" @if($data['irs_on']) checked @endif>
+              <label for="irs">IRS</label>
+            </div>
+            <div class="checkbox-form">
+              <input id="lulus" type="checkbox" name="lulus_on" class="form-control" value="true" @if($data['lulus_on']) checked @endif>
+              <label for="lulus"l>Lulus</label>
+            </div>
+            <div class="checkbox-form">
+              <input id="registrasi" type="checkbox" name="registrasi_on" class="form-control" value="true" @if($data['registrasi_on']) checked @endif>
+              <label for="registrasi">Registrasi</label>
+            </div>
+            <div class="checkbox-form">
+              <input id="yudisium" type="checkbox" name="yudisium_on" class="form-control" value="true" @if($data['yudisium_on']) checked @endif>
+              <label for="yudisium">Yudisium</label>
+            </div>
+            <div class="checkbox-form">
+              <input id="survei" type="checkbox" name="survei_on" class="form-control" value="true" @if($data['survei_on']) checked @endif>
+              <label for="survei">Survei</label>
+            </div>
+            <div class="checkbox-form">
+              <input id="dosen" type="checkbox" name="dosen_on" class="form-control" value="true" @if($data['dosen_on']) checked @endif>
+              <label for="dosen">Dosen</label>
+            </div>
+          </div>
         </div>
-    </form>
+        <div class="form-group">
+          <label>Status</label>
+          <div class="toggle-row"></div>
+          <button id="toggleButton" class="btn-toggle">
+              <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
+              <span class="toggle-info text-sm-bd">Tidak Aktif</span>
+          </button>
+          <input type="hidden" name="status" id="statusValue" value="{{$data['status']}}">
+        </div>
+      </div>
+      <div style="display: flex; gap: 20px; justify-content: flex-end; margin: 20px;">
+        <button type="button" class="button button-clean" id="btnBatalUbahEvent" style="padding: 8px 54.5px; margin: 0px;">Batal</button>
+        <button type="button" class="button button-outline" id="btnSimpan" style="padding: 8px 54.5px; margin: 0px;">Simpan</button>
+      </div>
+    </div>
+    
+    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
+      <div class="modal-custom-backdrop"></div>
+      <div class="modal-custom-content">
+        <div class="modal-custom-header">
+          <span class="text-lg-bd">Tunggu Sebentar</span>
+          <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="ikon peringatan">
+        </div>
+        <div class="modal-custom-body">
+          <div>Apakah anda yakin informasi anda sudah benar?</div>
+        </div>
+        <div class="modal-custom-footer">
+          <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
+          <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
+        </div>
+      </div>
+    </div>
+</form>
 @endsection

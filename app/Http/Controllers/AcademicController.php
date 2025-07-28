@@ -73,7 +73,7 @@ class AcademicController extends Controller
         return view('academics.periode.create', get_defined_vars());
     }
 
-    public function periodeStore(Request $request) 
+    public function periodeStore(Request $request)
     {
       $validated = $request->validate([
           'year'   => 'required',
@@ -97,7 +97,6 @@ class AcademicController extends Controller
 
       $url = PeriodAcademicService::getInstance()->store();
       $response = postCurl($url, $data, getHeaders());
-        dd($response);
 
       if ($request->ajax()) {
           if (isset($response->success) && $response->success) {
@@ -107,6 +106,13 @@ class AcademicController extends Controller
       }
 
       return redirect()->route('academics-periode.index')->with('success', 'Berhasil disimpan');
+    }
+
+    public function periodeDelete($id) {
+        $url = PeriodAcademicService::getInstance()->periodUrl($id);
+        $response = deleteCurl($url, getHeaders());
+        dd($response);
+        return $response;
     }
 
     public function periodeEdit(Request $request, $id)
@@ -121,7 +127,7 @@ class AcademicController extends Controller
 
 
     public function periodeUpdate(Request $request, $id)
-    {  
+    {
         $data = [
         'tahun' => $request->tahun,
         'semester' => $request->semester,
@@ -131,9 +137,9 @@ class AcademicController extends Controller
         'status' => $request->status,
         'update_at' => date('Y-m-d H:i:s'),
         'updated_by' => session('username')
-      ]; 
+      ];
 
-        $url = PeriodAcademicService::getInstance()->periodeUrl($id); 
+        $url = PeriodAcademicService::getInstance()->periodeUrl($id);
         $response = putCurl($url, $data, getHeaders());
 
         return redirect()->route('academics-periode.index')->with('success', 'Periode berhasil diperbarui');
@@ -142,10 +148,9 @@ class AcademicController extends Controller
     public function indexEvent(Request $request)
     {
         $search = $request->input('search');
-        $sort = $request->input('sort', 'nama,asc');
+        $sort = $request->input('sort', 'created_at,desc');
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
-
 
         $params = [
             'search' => $search,
@@ -213,7 +218,7 @@ class AcademicController extends Controller
       ];
       $url = EventAcademicService::getInstance()->eventUrl($id);
       $response = putCurl($url, $data, getHeaders());
-      
+
       return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
     }
 
@@ -249,7 +254,7 @@ class AcademicController extends Controller
         $data = [
             'nama_event' => $validated['name'],
             'status'     => $validated['status'],
-            'flags'      => $flags, 
+            'flags'      => $flags,
             'created_by' => session('username'),
         ];
 
@@ -324,7 +329,7 @@ class AcademicController extends Controller
         $events = [];
         foreach ($data as $row) {
             if (count($row) < 9) {
-                continue; 
+                continue;
             }
 
             $events[] = [
