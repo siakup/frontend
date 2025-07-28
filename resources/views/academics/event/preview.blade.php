@@ -60,15 +60,15 @@
                 <table class="table" id="list-user" style="--table-cols:9">
                     <thead>
                         <tr>
-                            <th style="width: 45%;">Nama Event</th>
-                            <th style="width: 30%;">Event <br> Nilai</th>
-                            <th style="width: 30%;">Event <br> IRS</th>
-                            <th style="width: 35%;">Event <br> Lulus</th>
-                            <th style="width: 35%;">Event <br> Registrasi</th>
-                            <th style="width: 35%;">Event <br> Yudisium</th>
-                            <th style="width: 30%;">Event <br> Survei</th>
-                            <th style="width: 30%;">Event <br> Dosen</th>
-                            <th style="width: 35%;">Status</th>
+                            <th style="width: 30%">Nama Event</th>
+                            <th style="width: 10%">Event<br/>Nilai</th>
+                            <th style="width: 10%">Event<br/>IRS</th>
+                            <th style="width: 10%">Event<br/>Lulus</th>
+                            <th style="width: 10%">Event Registrasi</th>
+                            <th style="width: 10%">Event Yudisium</th>
+                            <th style="width: 10%">Event Survei</th>
+                            <th style="width: 10%">Event Dosen</th>
+                            <th style="width: 15%">Status</th>
                         </tr>
                     </thead>
                     <tbody>

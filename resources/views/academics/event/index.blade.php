@@ -405,7 +405,7 @@
         <img src="{{ asset('assets/icon-delete-gray-800.svg')}}" alt="ikon peringatan">
       </div>
       <div class="modal-custom-body">
-        <div>Apakah anda yakin ingin menghapus event akademik ini?</div>
+        <div>Apakah Anda yakin ingin menghapus event akademik ini?</div>
       </div>
       <div class="modal-custom-footer">
         <button type="button" class="button button-clean" id="btnCekKembali">Batal</button>
