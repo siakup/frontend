@@ -158,14 +158,20 @@
             document.addEventListener('click', function(e) {
                 const btn = e.target.closest('.btn-view-user');
                 if (btn) {
-                    const nomorInduk = btn.getAttribute('data-nomor-induk');
+                const nomorInduk = btn.getAttribute('data-nomor-induk');
                     if (nomorInduk) {
-                        $.get("{{ route('users.detail') }}", {
-                            nomor_induk: nomorInduk
-                        }, function(html) {
-                            $('#userDetailModalContainer').html(html);
-                            $('#modalDetailPengguna').show();
-                        });
+                    $.ajax({
+                        url: "{{ route('users.detail') }}", 
+                        method: 'GET',
+                        data: { nomor_induk: nomorInduk }, 
+                        headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        success: function(html) {
+                        $('#userDetailModalContainer').html(html);
+                        $('#modalDetailPengguna').show();
+                        }
+                    });
                     }
                 }
             });
@@ -173,15 +179,20 @@
             document.addEventListener('click', function(e) {
                 const btn = e.target.closest('.btn-reset-pass');
                 if (btn) {
-                    e.preventDefault();
-                    const nomorInduk = btn.getAttribute('data-nomor-induk');
+                const nomorInduk = btn.getAttribute('data-nomor-induk');
                     if (nomorInduk) {
-                        $.get("{{ route('users.resetPassword') }}", {
-                            nomor_induk: nomorInduk
-                        }, function(html) {
-                            $('#userDetailModalContainer').html(html);
-                            $('#modalResetPassword').show();
-                        });
+                    $.ajax({
+                        url: "{{ route('users.resetPassword') }}", 
+                        method: 'GET',
+                        data: { nomor_induk: nomorInduk }, 
+                        headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                        },
+                        success: function(html) {
+                        $('#userDetailModalContainer').html(html);
+                        $('#modalResetPassword').show();
+                        }
+                    });
                     }
                 }
             });

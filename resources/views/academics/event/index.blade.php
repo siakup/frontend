@@ -142,6 +142,9 @@
             method: 'GET',
             data: { search: keyword },
             dataType: 'json',
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             success: function(data) {
                 if (!data.success || !Array.isArray(data.data) || data.data.length === 0) {
                     dropdown.innerHTML = '<div class="dropdown-item text-center">Tidak ada hasil ditemukan</div>';
@@ -205,6 +208,7 @@
         item.addEventListener('click', function () {
             sortDropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
             const sortKey = this.getAttribute('data-sort');
+            
             this.classList.add('active');
             sortDropdown.style.display = 'none';
             sortTable(sortKey); // Panggil AJAX sortTable
@@ -285,7 +289,7 @@
 @if(session('success'))
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    successToast('Berhasil disimpan');
+    successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
     setTimeout(() => {
       window.location.href = "{{ route('academics-event.index') }}";
     }, 3000);
@@ -317,7 +321,7 @@
         </div>
         <div class="filter-box">
           <button class="button-clean" id="sortButton">
-              Urutkan
+              {{empty($_GET) ? "Terbaru" : ($sort === "active" ? "Aktif" : ($sort === "inactive" ? "Tidak Aktif" : ($sort === "nama,asc" ? "A-Z" : ($sort === "nama,desc" ? "Z-A" : ($sort === "created_at,desc" ? "Terbaru" : "Terlama")))))}}
               <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
           </button>
           <div id="sortDropdown" class="sort-dropdown" style="display: none;">
@@ -342,6 +346,7 @@
                     <th style="width: 35%;">Event <br> Yudisium</th>
                     <th style="width: 30%;">Event <br> Survei</th>
                     <th style="width: 30%;">Event <br> Dosen</th>
+                    <th style="width: 30%;">Event <br> Lulus</th>
                     <th style="width: 35%;">Status</th>
                     <th style="width: 100%;">Aksi</th>
                 </tr>
@@ -356,6 +361,7 @@
                   <td>{{ $event['yudisium_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['survei_on'] ? "Ya" : "Tidak" }}</td>
                   <td>{{ $event['dosen_on'] ? "Ya" : "Tidak" }}</td>
+                  <td>{{ $event['lulus_on'] ? "Ya" : "Tidak" }}</td>
                   <td>
                     <span class="{{$event['status']}}-lable status-lable">{{$event['status'] === 'active' ? "Aktif" : "Tidak Aktif"}}</span>
                   </td>

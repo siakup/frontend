@@ -30,10 +30,14 @@ class EventAcademicService
       return $this->baseEventURL() . '/' . $id;
     }
 
-    
     public function getEventDetails()
     {
       return $this->baseEventURL() . 'events/detail';
+    }
+
+    public function bulkStore()
+    {
+      return $this->baseEventURL() . '/bulk-store';
     }
 }
 

@@ -1,15 +1,15 @@
 <div class="sidebar">
     <div class="logo">
-        <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="logo-image">
+        <img src="{{ asset('images/uper.png') }}" alt="Logo" class="logo-image">
         <div class="logo-lines">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="5" viewBox="0 0 41 5" fill="none">
-                <path d="M0.5 2.5H40.5" stroke="#0076BE" stroke-width="4"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="5" viewBox="0 0 40 5" fill="none">
+                <path d="M0.5 2.5H39.5" stroke="#0076BE" stroke-width="8"/>
             </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="55" height="5" viewBox="0 0 55 5" fill="none">
-                <path d="M0.5 2.5H54.5" stroke="#E62129" stroke-width="4"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="56" height="5" viewBox="0 0 56 5" fill="none">
+                <path d="M0.5 2.5H55.5" stroke="#E62129" stroke-width="8"/>
             </svg>
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="5" viewBox="0 0 60 5" fill="none">
-                <path d="M0.5 2.5H59.5" stroke="#98A725" stroke-width="4"/>
+                <path d="M0.5 2.5H59.5" stroke="#98A725" stroke-width="8"/>
             </svg>
         </div>
         <!-- <img src="{{ asset('images/siakad-.svg') }}" alt="Logo Text" class="logo-text"> -->
@@ -80,6 +80,16 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('calendar.index') }}" class="menu-link {{ Request::is('calendar*') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <img src="{{ asset('assets/base/icon-admin.svg') }}" 
+                            alt="Kalender Akademik Icon" 
+                            class="menu-icon">
+                        <span>Kalender Akademik</span>
+                    </div>
+                </a>
             </li>
             <li class="menu-item">
                 <a href="{{ route('lectures.index') }}" class="menu-link {{ Request::is('lectures*') ? 'active' : '' }}">
