@@ -166,6 +166,9 @@
                             data: {
                                 id: idPeriode
                             },
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest'
+                            },
                             success: function(html) {
                                 $('#periodeDetailModalContainer').html(html);
                                 $('#modalPeriodeAkademik').show();
