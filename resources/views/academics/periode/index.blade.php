@@ -14,6 +14,7 @@
         }
 
         .content-card {
+            background: #ffffff;
             border-radius: 0px 12px 12px 12px;
         }
 
@@ -43,36 +44,37 @@
 
         .center .btn-edit-periode-academic {
             color: #E62129;
+        }
 
+        .modal-custom-content {
+            max-width: 600px;
+            z-index: 2;
+            align-items: center;
+            gap: 16px;
+            align-self: auto;
+        }
+
+        .modal-custom {
+            align-items: start;
+        }
+
+        @media (max-width: 900px) {
             .modal-custom-content {
-                max-width: 600px;
-                z-index: 2;
-                align-items: center;
-                gap: 16px;
-                align-self: auto;
+                width: 90vw;
+                min-width: unset;
+                max-width: 98vw;
+                padding: 16px;
             }
 
-            .modal-custom {
-                align-items: start;
+            .modal-custom-title {
+                font-size: 18px;
             }
+        }
 
-            @media (max-width: 900px) {
-                .modal-custom-content {
-                    width: 90vw;
-                    min-width: unset;
-                    max-width: 98vw;
-                    padding: 16px;
-                }
+        #btnUpload:hover img {
+            filter: brightness(0) invert(1);
 
-                .modal-custom-title {
-                    font-size: 18px;
-                }
-            }
-
-            #btnUpload:hover img {
-                filter: brightness(0) invert(1);
-
-            }
+        }
     </style>
 
 @endsection
@@ -82,196 +84,135 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
 
-                    document.getElementById('toggleSortDropdown').addEventListener('click', function(event) {
-                        const dropdown = document.getElementById('sortDropdown');
-                        const toggleBtn = document.getElementById('toggleSortDropdown');
+            document.getElementById('toggleSortDropdown').addEventListener('click', function(event) {
+                const dropdown = document.getElementById('sortDropdown');
+                const toggleBtn = document.getElementById('toggleSortDropdown');
 
-                        const isOpen = dropdown.style.display === 'none' || dropdown.style.display === '';
-                        dropdown.style.display = isOpen ? 'block' : 'none';
+                const isOpen = dropdown.style.display === 'none' || dropdown.style.display === '';
+                dropdown.style.display = isOpen ? 'block' : 'none';
 
-                        if (!toggleBtn.contains(event.target) && !dropdown.contains(event.target)) {
-                            dropdown.style.display = 'none';
-                            toggleBtn.classList.remove('active');
-                        }
-                        toggleBtn.classList.toggle('active', isOpen);
+                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                    toggleBtn.classList.remove('active');
+                }
+                toggleBtn.classList.toggle('active', isOpen);
 
-                        event.stopPropagation();
-                    });
+                event.stopPropagation();
+            });
 
-                    document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-                        item.addEventListener('click', function() {
-                            const sortValue = this.dataset.sort;
-                            const sortText = this.textContent.trim();
+            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const sortValue = this.dataset.sort;
+                    const sortText = this.textContent.trim();
 
-                            const sortLabel = document.getElementById('sortLabel');
-                            if (sortLabel) {
-                                sortLabel.textContent = sortText;
-                            }
-
-                            const url = new URL(window.location.href);
-                            url.searchParams.set('sort', sortValue);
-                            url.searchParams.set('page', 1);
-                            window.location.href = url.toString();
-                        });
-                    });
-
-                    const params = new URLSearchParams(window.location.search);
-                    const currentSort = params.get('sort');
-                    if (currentSort) {
-                        const currentItem = Array.from(document.querySelectorAll('#sortDropdown .dropdown-item'))
-                            .find(item => item.dataset.sort === currentSort);
-                        if (currentItem) {
-                            const sortLabel = document.getElementById('sortLabel');
-                            if (sortLabel) {
-                                sortLabel.textContent = currentItem.textContent.trim();
-                            }
-                        }
+                    const sortLabel = document.getElementById('sortLabel');
+                    if (sortLabel) {
+                        sortLabel.textContent = sortText;
                     }
-                    document.addEventListener('click', function(e) {
-                        const toggleBtn = document.getElementById('toggleSortDropdown');
-                        const dropdown = document.getElementById('sortDropdown');
 
-                        if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                            dropdown.style.display = 'none';
-                        }
-                    });
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('sort', sortValue);
+                    url.searchParams.set('page', 1);
+                    window.location.href = url.toString();
+                });
+            });
 
-                    // detail
-                    document.addEventListener('click', function(e) {
-                        const btn = e.target.closest('.btn-view-periode-academic');
-                        if (btn) {
-                            const idPeriode = btn.getAttribute('data-periode-akademik');
-                            if (idPeriode) {
-                                <<
-                                << << < HEAD
-                                $.ajax({
-                                        url: "{{ route('academics-periode.detail') }}",
-                                        method: 'GET',
-                                        data: {
-                                            id: idPeriode
-                                        },
-                                        success: function(html) {
-                                                $('#periodeDetailModalContainer').html(html);
-                                                $('#modalPeriodeAkademik').show();
-                                            } ===
-                                            === =
-                                            $.get("{{ route('periode.detail') }}", {
-                                                id: idPeriode
-                                            }, function(html) {
-                                                $('#periodeDetailModalContainer').html(html);
-                                                $('#modalPeriodeAkademik').show(); >>>
-                                                >>> > 4623 cbc1d6c8ae4ea835df9b6975ae47e7b6d0c7
-                                            });
-                                    }
-                                }
-                            });
+            const params = new URLSearchParams(window.location.search);
+            const currentSort = params.get('sort');
+            if (currentSort) {
+                const currentItem = Array.from(document.querySelectorAll('#sortDropdown .dropdown-item'))
+                    .find(item => item.dataset.sort === currentSort);
+                if (currentItem) {
+                    const sortLabel = document.getElementById('sortLabel');
+                    if (sortLabel) {
+                        sortLabel.textContent = currentItem.textContent.trim();
+                    }
+                }
+            }
+            document.addEventListener('click', function(e) {
+                const toggleBtn = document.getElementById('toggleSortDropdown');
+                const dropdown = document.getElementById('sortDropdown');
 
-                        //search
-                        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-                            if (e.key === 'Enter') {
-                                this.form.submit();
+                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+
+            // detail
+            document.addEventListener('click', function(e) {
+                const btn = e.target.closest('.btn-view-periode-academic');
+                if (btn) {
+                    const idPeriode = btn.getAttribute('data-periode-akademik');
+                    if (idPeriode) {
+                        $.ajax({
+                            url: "{{ route('academics-periode.detail') }}",
+                            method: 'GET',
+                            data: {
+                                id: idPeriode
+                            },
+                            success: function(html) {
+                                $('#periodeDetailModalContainer').html(html);
+                                $('#modalPeriodeAkademik').show();
                             }
                         });
+                    }
+                }
+            });
 
-                        <<
-                        << << < HEAD
-                        document.addEventListener('click', function(e) {
-                            const target = e.target.closest('.pagination-link');
-                            if (target) {
-                                e.preventDefault();
+            //search
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    this.form.submit();
+                }
+            });
 
-                                const url = target.getAttribute('href');
-                                if (!url) return;
+            // delete button
+            document.addEventListener('click', function(e) {
+                const btn = e.target.closest('.btn-delete-periode-academic');
+                if (btn) {
+                    const idPeriode = btn.getAttribute('data-id');
+                    document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idPeriode);
+                    document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
+                }
+            });
 
-                                // Ambil form pencarian (jika masih ingin bawa filter/search)
-                                const searchInput = document.querySelector('#searchInput');
-                                const search = searchInput ? searchInput.value : '';
+            document.getElementById('btnSimpan').addEventListener('click', function() {
+                const id = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                                const finalUrl = new URL(url, window.location.origin);
-                                if (search) finalUrl.searchParams.set('search', search);
+                $.ajax({
+                    url: "/academics/periode/delete/" + id,
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                        document.getElementById('modalKonfirmasiSimpan').removeAttribute(
+                            'data-id');
+                        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+                        successToast('Berhasil dihapus');
+                        setTimeout(() => {
+                            window.location.href =
+                                "{{ route('academics-periode.index') }}";
+                        }, 5000);
+                    },
+                    error: function() {
+                        $('tbody').html(
+                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
+                        );
+                    }
+                });
 
-                                fetch(finalUrl, {
-                                        headers: {
-                                            'X-Requested-With': 'XMLHttpRequest'
-                                        }
-                                    })
-                                    .then(response => response.text())
-                                    .then(html => {
-                                        const tableContainer = document.querySelector(
-                                            '.table-responsive');
-                                        if (tableContainer) {
-                                            tableContainer.innerHTML = html;
-                                        }
-                                    })
-                                    .catch(err => console.error('Pagination fetch error:', err));
-                            }
-                        }); ===
-                        === =
-                        // delete button
-                        document.addEventListener('click', function(e) {
-                            const btn = e.target.closest('.btn-delete-periode-academic');
-                            if (btn) {
-                                const idPeriode = btn.getAttribute('data-id');
-                                document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id',
-                                    idPeriode);
-                                document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
-                            }
-                        });
+            });
 
-                        document.getElementById('btnSimpan').addEventListener('click', function() {
-                            const id = document.getElementById('modalKonfirmasiSimpan').getAttribute(
-                                'data-id');
-                            const csrfToken = document.querySelector('meta[name="csrf-token"]')
-                                .getAttribute('content');
+            document.getElementById('btnCekKembali').addEventListener('click', function() {
+                document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
+                document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+            });
 
-                            $.ajax({
-                                url: "/academics/periode/delete/" + id,
-                                method: 'DELETE',
-                                headers: {
-                                    'X-CSRF-TOKEN': csrfToken,
-                                    'X-Requested-With': 'XMLHttpRequest'
-                                },
-                                success: function(response) {
-                                    document.getElementById('modalKonfirmasiSimpan')
-                                        .removeAttribute('data-id');
-                                    document.getElementById('modalKonfirmasiSimpan').style
-                                        .display = 'none';
-                                    successToast('Berhasil dihapus');
-                                    setTimeout(() => {
-                                        window.location.href =
-                                            "{{ route('academics-periode.index') }}";
-                                    }, 5000);
-                                },
-                                error: function() {
-                                    $('tbody').html(
-                                        '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                                        );
-                                }
-                            });
-
-                        });
-
-                        document.getElementById('btnCekKembali').addEventListener('click', function() {
-                            document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
-                            document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-                        });
-
-                        >>>
-                        >>> > 4623 cbc1d6c8ae4ea835df9b6975ae47e7b6d0c7
-                    });
+        });
     </script>
-
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
-                setTimeout(() => {
-                    window.location.href = "{{ route('academics-event.index') }}";
-                }, 3000);
-            })
-        </script>
-    @endif
-
 @endsection
 
 
@@ -306,16 +247,16 @@
                     {{-- start filter --}}
                     <div class="filter-box">
                         <button class="button-clean sort-toggle-btn" id="toggleSortDropdown">
-                            <span id="sortLabel">Urutkan</span>
+                            <span id="sortLabel">Terbaru</span>
                             <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
                         </button>
                         <div id="sortDropdown" class="sort-dropdown" style="display: none;">
                             <div class="dropdown-item" data-sort="active">Aktif</div>
                             <div class="dropdown-item" data-sort="inactive">Tidak Aktif</div>
-                            <div class="dropdown-item" data-sort="id_periode,asc">A-Z</div>
-                            <div class="dropdown-item" data-sort="id_periode,desc">Z-A</div>
-                            <div class="dropdown-item" data-sort="created_at,asc">Terbaru</div>
-                            <div class="dropdown-item" data-sort="created_at,desc">Terlama</div>
+                            <div class="dropdown-item" data-sort="semester,asc">A-Z</div>
+                            <div class="dropdown-item" data-sort="semester,desc">Z-A</div>
+                            <div class="dropdown-item" data-sort="created_at,desc">Terbaru</div>
+                            <div class="dropdown-item" data-sort="created_at,asc">Terlama</div>
                         </div>
                     </div>
                 </div>
@@ -348,7 +289,7 @@
                                                 3 => 'Pendek',
                                             ];
                                         @endphp
-                                        {{ $periode->semester }}
+                                        {{ $namaSemester[$periode->semester] ?? 'Tidak Diketahui' }}
                                     </td>
                                     <td>{{ $periode->tahun }}/{{ $periode->tahun + 1 }}</td>
                                     <td>
@@ -362,14 +303,14 @@
                                         <button type="button" class="btn-icon btn-view-periode-academic"
                                             data-periode-akademik="{{ $periode->id }}" title="Lihat">
                                             <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
-                                            <span style="font-size: 14px;">Lihat</span>
+                                            <span>Lihat</span>
                                         </button>
 
                                         <a class="btn-icon btn-edit-periode-academic" title="Ubah"
                                             href="{{ route('academics-periode.edit', ['id' => $periode->id]) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                                            <span style="color:#E62129">Ubah</span>
+                                            <span>Ubah</span>
                                         </a>
 
                                         <button type="button" class="btn-icon btn-delete-periode-academic"
@@ -383,29 +324,15 @@
                         @endif
                     </tbody>
                 </table>
-                <div id="tableContainer">
-                    @include('partials.pagination', [
-                        'currentPage' => $data->pagination->current_page ?? 1,
-                        'lastPage' => $data->pagination->last_page ?? 1,
-                        'limit' => $limit,
-                        'routes' => route('academics-periode.index'),
-                        'showSearch' => false,
-                    ])
-                </div>
             </div>
         </div>
-        <<<<<<< HEAD <div id="periodeDetailModalContainer">
-    </div>
-    =======
-    @include('partials.pagination', [
-        // "currentPage" => $data['pagination']['current_page'],
-        'currentPage' => 1,
-        // "lastPage" => $data['pagination']['last_page'],
-        'lastPage' => 10,
-        // "limit" => $limit,
-        'limit' => 5,
-        'routes' => route('academics-periode.index'),
-    ])
+        @include('partials.pagination', [
+            'currentPage' => $data->pagination->current_page ?? 1,
+            'lastPage' => $data->pagination->last_page ?? 1,
+            'limit' => $limit,
+            'routes' => route('academics-periode.index'),
+            'showSearch' => false,
+        ])
     </div>
     <div id="periodeDetailModalContainer"></div>
     <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
@@ -423,7 +350,6 @@
                 <button type="submit" class="button button-outline" id="btnSimpan">Hapus</button>
             </div>
         </div>
-        >>>>>>> 4623cbc1d6c8ae4ea835df9b6975ae47e7b6d0c7
     </div>
     @include('partials.success-modal')
 @endsection

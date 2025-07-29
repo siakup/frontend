@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Endpoint\EventAcademicService;
@@ -27,7 +28,7 @@ class AcademicController extends Controller
     public function indexPeriode(Request $request)
     {
         $search = $request->input('search');
-        $sort = $request->input('sort', 'active,desc');
+        $sort = $request->input('sort', 'created_at,desc');
         $limit = $request->input('limit', 10);
         $page = $request->input('page', 1);
 
@@ -37,13 +38,7 @@ class AcademicController extends Controller
         $response = getCurl($url, $params, getHeaders());
 
         if ($request->ajax()) {
-            return view('academics.periode.partials.table', [
-                'data' => $response,
-                'search' => $search,
-                'sort' => $sort,
-                'page' => $page,
-                'limit' => $limit,
-            ]);
+            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
 
         return view('academics.periode.index', [
@@ -54,6 +49,7 @@ class AcademicController extends Controller
             'limit' => $limit,
         ]);
     }
+
 
     public function periodeDetail(Request $request)
     {
@@ -68,6 +64,7 @@ class AcademicController extends Controller
         return redirect()->route('academics-periode.index');
     }
 
+
     public function createPeriode(Request $request)
     {
         return view('academics.periode.create', get_defined_vars());
@@ -75,43 +72,44 @@ class AcademicController extends Controller
 
     public function periodeStore(Request $request)
     {
-      $validated = $request->validate([
-          'year'   => 'required',
-          'semester'   => 'required|string|in:ganjil,genap,pendek',
-          'status' => 'required|string|in:active,inactive',
-          'tahun_akademik' => 'required',
-          'tanggal_mulai' => 'required',
-          'tanggal_akhir' => 'required',
-          'deskripsi' => 'required'
-      ]);
+        $validated = $request->validate([
+            'year'   => 'required',
+            'semester'   => 'required|string|in:ganjil,genap,pendek',
+            'status' => 'required|string|in:active,inactive',
+            'tahun_akademik' => 'required',
+            'tanggal_mulai' => 'required',
+            'tanggal_akhir' => 'required',
+            'deskripsi' => 'required'
+        ]);
 
-      $data = [
-          'tahun' => $validated['year'],
-          'semester' => $validated['semester'],
-          'tanggal_mulai' => $validated['tanggal_mulai'],
-          'tanggal_akhir' => $validated['tanggal_akhir'],
-          'deskripsi' => $validated['deskripsi'],
-          'status'     => $validated['status'],
-          'created_by' => session('username'),
-      ];
+        $data = [
+            'tahun' => $validated['year'],
+            'semester' => $validated['semester'],
+            'tanggal_mulai' => $validated['tanggal_mulai'],
+            'tanggal_akhir' => $validated['tanggal_akhir'],
+            'deskripsi' => $validated['deskripsi'],
+            'status'     => $validated['status'],
+            'created_by' => session('username'),
+        ];
 
-      $url = PeriodAcademicService::getInstance()->store();
-      $response = postCurl($url, $data, getHeaders());
+        $url = PeriodAcademicService::getInstance()->store();
+        $response = postCurl($url, $data, getHeaders());
 
-      if ($request->ajax()) {
-          if (isset($response->success) && $response->success) {
-              return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
-          }
-          return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
-      }
+        if ($request->ajax()) {
+            if (isset($response->success) && $response->success) {
+                return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
+            }
+            return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
+        }
 
-      return redirect()->route('academics-periode.index')->with('success', 'Berhasil disimpan');
+        return redirect()->route('academics-periode.index')->with('success', 'Berhasil disimpan');
     }
 
-    public function periodeDelete($id) {
+    public function periodeDelete($id)
+    {
         $url = PeriodAcademicService::getInstance()->periodUrl($id);
         $response = deleteCurl($url, getHeaders());
-        dd($response);
+
         return $response;
     }
 
@@ -123,21 +121,20 @@ class AcademicController extends Controller
         $data = json_decode(json_encode($response), true)['data']['periode'];
 
         return view('academics.periode.edit', get_defined_vars());
-   }
-
+    }
 
     public function periodeUpdate(Request $request, $id)
     {
         $data = [
-        'tahun' => $request->tahun,
-        'semester' => $request->semester,
-        'tanggal_mulai' => Carbon::createFromFormat('d-m-Y, H:i', $request->tanggal_mulai)->format('Y-m-d H:i:s'),
-        'tanggal_akhir' => Carbon::createFromFormat('d-m-Y, H:i', $request->tanggal_akhir)->format('Y-m-d H:i:s'),
-        'deskripsi' => $request->deskripsi,
-        'status' => $request->status,
-        'update_at' => date('Y-m-d H:i:s'),
-        'updated_by' => session('username')
-      ];
+            'tahun' => $request->tahun,
+            'semester' => $request->semester,
+            'tanggal_mulai' => Carbon::createFromFormat('d-m-Y, H:i', $request->tanggal_mulai)->format('Y-m-d H:i:s'),
+            'tanggal_akhir' => Carbon::createFromFormat('d-m-Y, H:i', $request->tanggal_akhir)->format('Y-m-d H:i:s'),
+            'deskripsi' => $request->deskripsi,
+            'status' => $request->status,
+            'update_at' => date('Y-m-d H:i:s'),
+            'updated_by' => session('username')
+        ];
 
         $url = PeriodAcademicService::getInstance()->periodeUrl($id);
         $response = putCurl($url, $data, getHeaders());
@@ -181,7 +178,7 @@ class AcademicController extends Controller
         $data = $response->data->event;
 
         if ($request->ajax()) {
-          return view('academics.event._modal-view', get_defined_vars())->render();
+            return view('academics.event._modal-view', get_defined_vars())->render();
         }
         return redirect()->route('academics-event.index');
     }
@@ -197,35 +194,37 @@ class AcademicController extends Controller
         return view('academics.event.edit', get_defined_vars());
     }
 
-    public function eventUpdate(Request $request, $id) {
-      $request->validate([
-        'nama_event' => 'required'
-      ], [
-        'nama_event.required' => "Mohon diisi Nama Event sebelum disimpan"
-      ]);
+    public function eventUpdate(Request $request, $id)
+    {
+        $request->validate([
+            'nama_event' => 'required'
+        ], [
+            'nama_event.required' => "Mohon diisi Nama Event sebelum disimpan"
+        ]);
 
-      $data = [
-        'nama_event' => $request->nama_event,
-        'nilai_on' => $request->nilai_on ? true : false,
-        'irs_on' => $request->irs_on ? true : false,
-        'lulus_on' => $request->lulus_on ? true : false,
-        'registrasi_on' => $request->registrasi_on ? true : false,
-        'yudisium_on' => $request->yudisium_on ? true : false,
-        'survei_on' => $request->survei_on ? true : false,
-        'dosen_on' => $request->dosen_on ? true : false,
-        'status' => $request->status,
-        'updated_by' => session('username')
-      ];
-      $url = EventAcademicService::getInstance()->eventUrl($id);
-      $response = putCurl($url, $data, getHeaders());
+        $data = [
+            'nama_event' => $request->nama_event,
+            'nilai_on' => $request->nilai_on ? true : false,
+            'irs_on' => $request->irs_on ? true : false,
+            'lulus_on' => $request->lulus_on ? true : false,
+            'registrasi_on' => $request->registrasi_on ? true : false,
+            'yudisium_on' => $request->yudisium_on ? true : false,
+            'survei_on' => $request->survei_on ? true : false,
+            'dosen_on' => $request->dosen_on ? true : false,
+            'status' => $request->status,
+            'updated_by' => session('username')
+        ];
+        $url = EventAcademicService::getInstance()->eventUrl($id);
+        $response = putCurl($url, $data, getHeaders());
 
-      return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
+        return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
     }
 
-    public function eventDelete($id) {
-      $url = EventAcademicService::getInstance()->eventUrl($id);
-      $response = deleteCurl($url, getHeaders());
-      return $response;
+    public function eventDelete($id)
+    {
+        $url = EventAcademicService::getInstance()->eventUrl($id);
+        $response = deleteCurl($url, getHeaders());
+        return $response;
     }
 
     public function eventCreate(Request $request)
@@ -296,9 +295,18 @@ class AcademicController extends Controller
 
         return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
             private $rows;
-            public function __construct($rows) { $this->rows = $rows; }
-            public function array(): array { return array_slice($this->rows, 1); }
-            public function headings(): array { return $this->rows[0]; }
+            public function __construct($rows)
+            {
+                $this->rows = $rows;
+            }
+            public function array(): array
+            {
+                return array_slice($this->rows, 1);
+            }
+            public function headings(): array
+            {
+                return $this->rows[0];
+            }
         }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
     }
 
@@ -353,5 +361,4 @@ class AcademicController extends Controller
         }
         return redirect()->route('academics-event.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
     }
-
 }
