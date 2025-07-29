@@ -212,30 +212,10 @@
         const removeFileBtn = document.getElementById("removeFileBtn");
         const modal = document.getElementById("modalKonfirmasiUnggah");
         const btnYa = document.getElementById("btnYa");
-        const btnKembali = document.getElementById("btnKembali");
-        const btnYaBatal = document.getElementById("btnYaBatal");
-        const modalBatalUnggah = document.getElementById("modalBatalUnggah");
 
         if (batalButton) {
             batalButton.addEventListener("click", function () {
-                fileName.textContent = fileInput.files[0].name;
-                const fileNameText = document.getElementById("fileNameModal");
-                if (fileNameText) {
-                    fileNameText.textContent = fileInput.files[0].name;
-                }
-                modalBatalUnggah.style.display = "flex";
-            });
-        }
-
-        if (btnYaBatal) {
-            btnYaBatal.addEventListener("click", function () {
                 window.location.href = "{{ route('academics-event.index') }}";
-            });
-        }
-
-        if (btnKembali) {
-            btnKembali.addEventListener("click", function () {
-                modalBatalUnggah.style.display = "none";
             });
         }
 
@@ -391,23 +371,6 @@
             <div class="modal-custom-footer">
                 <button type="button" class="button button-clean" id="btnTidak">Tidak</button>
                 <button type="button" class="button button-outline" id="btnYa">Ya</button>
-            </div>
-            </div>
-        </div>
-
-        <div id="modalBatalUnggah" class="modal-custom" style="display:none;">
-            <div class="modal-custom-backdrop"></div>
-            <div class="modal-custom-content">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Batalkan impor data (csv/xlsx)?</span>
-                <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
-            </div>
-            <div class="modal-custom-body">
-                <div>Apakah Anda yakin ingin membatalkan unggah event akademik?</div>
-            </div>
-            <div class="modal-custom-footer">
-                <button type="button" class="button button-clean" id="btnKembali">Kembali</button>
-                <button type="button" class="button button-outline" id="btnYaBatal">Batalkan</button>
             </div>
             </div>
         </div>

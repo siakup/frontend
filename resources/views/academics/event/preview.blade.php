@@ -26,16 +26,59 @@
     border-radius: 4px;
     padding: 4px 10px;
 }
+
+.modal-custom-content {
+    max-width: 600px;
+    z-index: 2;
+    align-items: center;
+    align-self: auto;
+}
+
+.modal-custom-body {
+    padding: 12px 50px 12px 50px;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.modal-custom {
+    align-items: start;
+}
+
+@media (max-width: 600px) {
+    .modal-custom-content {
+        width: 90vw;
+        min-width: unset;
+        max-width: 98vw;
+        padding: 16px;
+    }
+    .modal-custom-title { font-size: 18px; }
+}
 </style>
 @endsection
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const batalButton = document.getElementById("btnBatal");
+        const btnKembali = document.getElementById("btnKembali");
+        const btnYaBatal = document.getElementById("btnYaBatal");
+        const modalBatalUnggah = document.getElementById("modalBatalUnggah");
 
         if (batalButton) {
             batalButton.addEventListener("click", function () {
+                modalBatalUnggah.style.display = "flex";
+            });
+        }
+
+        if (btnYaBatal) {
+            btnYaBatal.addEventListener("click", function () {
                 window.location.href = "{{ route('academics-event.upload') }}";
+            });
+        }
+
+        if (btnKembali) {
+            btnKembali.addEventListener("click", function () {
+                modalBatalUnggah.style.display = "none";
             });
         }
     });
@@ -99,5 +142,22 @@
                 <button type="submit" class="button button-outline" id="btnSimpan">Simpan Event Akademik</button>
             </div>
         </form>
+
+        <div id="modalBatalUnggah" class="modal-custom" style="display:none;">
+            <div class="modal-custom-backdrop"></div>
+            <div class="modal-custom-content">
+            <div class="modal-custom-header">
+                <span class="text-lg-bd">Batalkan impor data (csv/xlsx)?</span>
+                <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
+            </div>
+            <div class="modal-custom-body">
+                <div>Apakah Anda yakin ingin membatalkan unggah event akademik?</div>
+            </div>
+            <div class="modal-custom-footer">
+                <button type="button" class="button button-clean" id="btnKembali">Kembali</button>
+                <button type="button" class="button button-outline" id="btnYaBatal">Batalkan</button>
+            </div>
+            </div>
+        </div>
     </div>
 @endsection
