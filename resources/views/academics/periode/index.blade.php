@@ -83,8 +83,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-
-            document.getElementById('toggleSortDropdown').addEventListener('click', function(event) {
+            document.getElementById('toggleSortDropdown').addEventListener('click', function(e) {
                 const dropdown = document.getElementById('sortDropdown');
                 const toggleBtn = document.getElementById('toggleSortDropdown');
 
@@ -138,6 +137,23 @@
                 }
             });
 
+            //search
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    this.form.submit();
+                }
+            });
+
+            // delete button
+            document.addEventListener('click', function(e) {
+                const btn = e.target.closest('.btn-delete-periode-academic');
+                if (btn) {
+                    const idPeriode = btn.getAttribute('data-id');
+                    document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idPeriode);
+                    document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
+                }
+            });
+
             // detail
             document.addEventListener('click', function(e) {
                 const btn = e.target.closest('.btn-view-periode-academic');
@@ -156,23 +172,6 @@
                             }
                         });
                     }
-                }
-            });
-
-            //search
-            document.getElementById('searchInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    this.form.submit();
-                }
-            });
-
-            // delete button
-            document.addEventListener('click', function(e) {
-                const btn = e.target.closest('.btn-delete-periode-academic');
-                if (btn) {
-                    const idPeriode = btn.getAttribute('data-id');
-                    document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idPeriode);
-                    document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
                 }
             });
 
@@ -310,13 +309,13 @@
                                             href="{{ route('academics-periode.edit', ['id' => $periode->id]) }}"
                                             style="text-decoration: none; color: inherit;">
                                             <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                                            <span>Ubah</span>
+                                            <span style="color: #E62129">Ubah</span>
                                         </a>
 
                                         <button type="button" class="btn-icon btn-delete-periode-academic"
                                             data-id="{{ $periode->id }}" title="Hapus">
                                             <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                                            <span style="font-size: 14px;">Hapus</span>
+                                            <span>Hapus</span>
                                         </button>
                                     </td>
                                 </tr>
