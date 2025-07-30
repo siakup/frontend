@@ -34,5 +34,9 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'calendar'], function () {
       Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
+      Route::get('/event/{id}', [CalendarController::class, 'show'])->name('calendar.show');
+      Route::post('/event/{id}', [CalendarController::class, 'store'])->name('calendar.store');
+      Route::get('/event/{id}/upload', [CalendarController::class, 'upload'])->name('calendar.upload');
+      Route::post('/event/{id}/upload', [CalendarController::class, 'send'])->name('calendar.send');
     });
 });

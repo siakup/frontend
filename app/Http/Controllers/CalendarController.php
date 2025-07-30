@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use App\Traits\ApiResponse;
 
 use Exception;
+use Svg\Tag\Rect;
 
 class CalendarController extends Controller
 {
@@ -24,6 +25,21 @@ class CalendarController extends Controller
       $program_perkuliahan = $request->input('program_perkuliahan', 'reguler');
       $program_studi = $request->input('program_studi', 'ilmu komputer');
 
+      $data = [
+        [
+          'id' => 1,
+          'periode_akademik' => '2025-1',
+          'semester' => 'Ganjil',
+          'tanggal_mulai' => "2025-07-02 00:02:00+07",
+          'tanggal_akhir' => "2026-01-02 23:59:00+07",
+        ]
+      ];
+
+      $month = [
+          1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      ];
+
       $params = compact('program_perkuliahan', 'program_studi');
 
       return view('academics.calendar.index', get_defined_vars());
@@ -31,8 +47,36 @@ class CalendarController extends Controller
 
     public function show(Request $request, $id)
     {
-        return view('academics.calendar.show', get_defined_vars());
+      $data = [
+        [
+          'id' => 1,
+          'name_event' => "Masa Pembayaran Cicilan I",
+          'tanggal_mulai' => "2025-03-04 00:05:00+07",
+          'tanggal_selesai' => "2026-07-04 23:59:00+07",
+        ]
+      ];
+
+      $month = [
+          1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      ];
+      return view('academics.calendar.show', get_defined_vars());
     }
+
+    public function store(Request $request, $id) 
+    {
+      return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
+    } 
+    
+    public function upload(Request $request, $id)
+    {
+      return view('academics.calendar.upload', get_defined_vars());
+    }
+
+    public function send(Request $request, $id) 
+    {
+      return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+    } 
 
     public function edit(Request $request, $id)
     {

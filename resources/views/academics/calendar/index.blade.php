@@ -8,6 +8,26 @@
 
 @section('css')
 <style>
+  .center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .center .btn-icon {
+    display: flex; 
+    align-items: center;
+    justify-items: center;
+    text-decoration: none;
+    gap: 2px;
+    font-size: 12px;
+  }
+
+  .center .btn-view-event-academic {
+    color: #262626;
+  }
+
   .page-title-text.sub-title {
     font-size: 16px;
   }
@@ -27,6 +47,14 @@
       top: 41%;
       right: 39%;
       z-index: 999;
+  }
+  .label-status {
+    padding: 3.5px 12px;
+    background-color: #0097F5;
+    color: white;
+    font-size: 10px;
+    font-weight: 400;
+    border-radius: 16px;
   }
 </style>
 @endsection
@@ -158,7 +186,27 @@
                   </tr>
               </thead>
               <tbody>
-                 
+                 @foreach($data as $d)
+                  <tr>
+                      <td>{{$d['periode_akademik']}}</td>
+                      <td>{{$d['semester']}}</td>
+                      <td>{{(new DateTime($d['tanggal_mulai']))->format('d')." ".$month[(int)(new DateTime($d['tanggal_mulai']))->format('m')]." ".(new DateTime($d['tanggal_mulai']))->format('Y, H:i')}}</td>
+                      <td>{{(new DateTime($d['tanggal_akhir']))->format('d')." ".$month[(int)(new DateTime($d['tanggal_akhir']))->format('m')]." ".(new DateTime($d['tanggal_akhir']))->format('Y, H:i')}}</td>
+                      <td>
+                        <div class="center">
+                          <a href="{{route('calendar.show', ['id' => $d['id']])}}" class="btn-icon btn-view-event-academic" data-id="{{$d['id']}}" title="View" type="button">
+                              <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
+                              <span>Lihat</span>
+                          </a>
+                        </div>
+                      </td>
+                      <td>
+                        @if(new DateTime() >= new DateTime($d['tanggal_mulai']) && new DateTime() <= new DateTime($d['tanggal_akhir']))
+                          <span class="label-status">Sedang berlangsung</span>
+                        @endif
+                      </td>
+                  </tr>
+                 @endforeach
               </tbody>
           </table>
       </div>
