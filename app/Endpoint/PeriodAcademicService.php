@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Endpoint;
 
@@ -28,7 +28,7 @@ class PeriodAcademicService
 
     public function getListAllPeriode()
     {
-      
+
       return $this->url() . '/list';
     }
 
@@ -40,6 +40,11 @@ class PeriodAcademicService
     public function getPeriodDetails()
     {
       return $this->url() . 'period/detail';
+    }
+
+    public function periodUrl($id)
+    {
+        return $this->url() . '/' . $id;
     }
 }
 

@@ -279,7 +279,7 @@
     </a>
     <div class="content-card">
         <div class="text-lg-bd">
-            <span>Import Event Akademik</span>
+            <span>Impor Event Akademik</span>
             <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
         <div class="upload-flex-row">
@@ -366,7 +366,7 @@
                 <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
             </div>
             <div class="modal-custom-body">
-                <div>Apakah anda yakin untuk mengunggah event akademik dari <strong id="fileNameModal">(Nama File)</strong>?</div>
+                <div>Apakah Anda yakin untuk mengunggah event akademik dari <strong id="fileNameModal">(Nama File)</strong>?</div>
             </div>
             <div class="modal-custom-footer">
                 <button type="button" class="button button-clean" id="btnTidak">Tidak</button>
