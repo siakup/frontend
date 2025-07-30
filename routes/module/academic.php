@@ -33,8 +33,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/event/preview', [AcademicController::class, 'eventPreview'])->name('academics-event.preview');
     Route::delete('/event/delete/{id}', [AcademicController::class, 'eventDelete'])->name('academics-event.delete');
   });
-
+  
   Route::group(['prefix' => 'calendar'], function () {
     Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('/event/{id}', [CalendarController::class, 'show'])->name('calendar.show');
+    Route::post('/event/{id}', [CalendarController::class, 'store'])->name('calendar.store');
+    Route::get('/event/{id}/upload', [CalendarController::class, 'upload'])->name('calendar.upload');
+    Route::post('/event/{id}/upload', [CalendarController::class, 'send'])->name('calendar.send');
   });
 });
