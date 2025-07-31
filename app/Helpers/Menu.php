@@ -125,6 +125,12 @@ class Menu
                     ]
                 ]
             ],
+            'study' => [
+              'name' => 'Mata Kuliah',
+              'url' => '/mata-kuliah',
+              'parent' => 'study.index',
+              'isExpandable' => false,
+            ]
               
         ];
     }
