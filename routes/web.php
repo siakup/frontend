@@ -5,6 +5,10 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index']);
 
+Route::get('/style-guide', function (){
+    return view('style-guide');
+})->name('style-guide');
+
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('home', [HomeController::class, 'index'])->name('home');

@@ -1,14 +1,89 @@
-@import 'tailwindcss';
+/* START TAILWIND CSS */
+@import "tailwindcss";
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
-@source '../**/*.blade.php';
-@source '../**/*.js';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+  /* === Font === */
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
+
+  /* === Red (SIUP Red) === */
+  --color-red-50:  #FBDADB;
+  --color-red-100: #F7B6B8;
+  --color-red-200: #F39194;
+  --color-red-300: #EF6C70;
+  --color-red-400: #EB474D;
+  --color-red-500: #E62129;
+  --color-red-600: #CA161C;
+  --color-red-700: #A51217;
+  --color-red-800: #810E12;
+  --color-red-900: #5C0A0D;
+
+  /* === Green Pear === */
+  --color-green-pear-50:  #FAFBEE;
+  --color-green-pear-100: #EFF4CD;
+  --color-green-pear-200: #E5EDAB;
+  --color-green-pear-300: #DBE58A;
+  --color-green-pear-400: #D0DE68;
+  --color-green-pear-500: #C2D43D;
+  --color-green-pear-600: #B6C92C;
+  --color-green-pear-700: #98A725;
+  --color-green-pear-800: #7A861D;
+  --color-green-pear-900: #5B6416;
+
+  /* === Honolulu Blue === */
+  --color-honolulu-pear-50:  #FAFBEE;
+  --color-honolulu-pear-100: #70C8FF;
+  --color-honolulu-pear-200: #47B9FF;
+  --color-honolulu-pear-300: #1FA9FF;
+  --color-honolulu-pear-400: #0097F5;
+  --color-honolulu-pear-500: #0076BE;
+  --color-honolulu-pear-600: #0065A3;
+  --color-honolulu-pear-700: #004B7A;
+  --color-honolulu-pear-800: #003252;
+  --color-honolulu-pear-900: #001929;
+
+  /* === Beaver === */
+  --color-beaver-50:  #E5E1DC;
+  --color-beaver-100: #D4CDC4;
+  --color-beaver-200: #C2B9AD;
+  --color-beaver-300: #B1A595;
+  --color-beaver-400: #A0917E;
+  --color-beaver-500: #8A7A65;
+  --color-beaver-600: #756857;
+  --color-beaver-700: #5E5345;
+  --color-beaver-800: #463E34;
+  --color-beaver-900: #2F2A23;
+
+  /* === Neutral Gray === */
+  --color-gray-50:  #FFFFFF;
+  --color-gray-100: #FAFAFA;
+  --color-gray-200: #F5F5F5;
+  --color-gray-300: #E8E8E8;
+  --color-gray-400: #D9D9D9;
+  --color-gray-500: #BFBFBF;
+  --color-gray-600: #8C8C8C;
+  --color-gray-700: #595959;
+  --color-gray-800: #262626;
+  --color-gray-900: #1C1C1C;
+
+  /* === Yellow === */
+  --color-yellow-50:  #FFFBEB;
+  --color-yellow-100: #FEF3C0;
+  --color-yellow-400: #FDE05D;
+  --color-yellow-500: #FDD835;
+  --color-yellow-600: #E6C530;
+
+  /* === Crayola === */
+  --color-crayola-500: #F5A623;
 }
+
+
+/* END OF TAILWIND CSS  */
+
 
 .content-wrapper {
     position: relative;
@@ -274,7 +349,7 @@
     width: 180px;
     height: auto;
     display: block;
-    margin: 0 auto 0 ; 
+    margin: 0 auto 0 ;
     /* padding-top: 20px; */
 }
 
@@ -360,7 +435,7 @@
 
 .menu {
     flex: 1;
-    overflow-y: auto; 
+    overflow-y: auto;
     height: calc(100vh - 169px - 56px);
     scrollbar-width: thin;
     scrollbar-color: #D9D9D9 #FFFFFF;
@@ -391,7 +466,7 @@
 .main-content {
     margin-left: 240px;
     width: calc(100% - 240px);
-    min-height: calc(100vh - 136px); 
+    min-height: calc(100vh - 136px);
 }
 
 .line{
@@ -618,7 +693,7 @@
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px; 
+    line-height: 20px;
     padding: 16px 24px;
 }
 
@@ -637,7 +712,7 @@
 }
 
 .sidebar-footer {
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 /* CSS breadcrumbs */
@@ -796,9 +871,9 @@
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
-    line-height: 20px; 
+    line-height: 20px;
     padding: 20px;
-    flex: 1;    
+    flex: 1;
     align-items: center;
     text-align: center;
 }
@@ -837,7 +912,7 @@
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px; 
+    line-height: 20px;
 }
 
 .action-buttons {
@@ -892,7 +967,7 @@
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
-    line-height: 20px; 
+    line-height: 20px;
     text-decoration: none;
 }
 

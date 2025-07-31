@@ -22,10 +22,20 @@
     <nav class="menu">
         <ul class="menu-list">
             <li class="menu-item">
+                <a href="{{ route('style-guide') }}" class="menu-link {{ Request::is('style-guide') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <img src="{{ asset('assets/base/icon-home.svg') }}"
+                             alt="Home Icon"
+                             class="menu-icon">
+                        <span>Style Guide</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu-item">
                 <a href="{{ route('home') }}" class="menu-link {{ Request::is('home') ? 'active' : '' }}">
                     <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-home.svg') }}" 
-                            alt="Home Icon" 
+                        <img src="{{ asset('assets/base/icon-home.svg') }}"
+                            alt="Home Icon"
                             class="menu-icon">
                         <span>Beranda</span>
                     </div>
@@ -84,8 +94,8 @@
             <li class="menu-item">
                 <a href="{{ route('calendar.index') }}" class="menu-link {{ Request::is('calendar*') ? 'active' : '' }}">
                     <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-admin.svg') }}" 
-                            alt="Kalender Akademik Icon" 
+                        <img src="{{ asset('assets/base/icon-admin.svg') }}"
+                            alt="Kalender Akademik Icon"
                             class="menu-icon">
                         <span>Kalender Akademik</span>
                     </div>
