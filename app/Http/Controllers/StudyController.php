@@ -25,14 +25,19 @@ class StudyController extends Controller
       return view('study.index', get_defined_vars());
     }
 
+    public function upload(Request $request)
+    {
+      return view('study.upload', get_defined_vars());
+    }
+
+    public function uploadResult(Request $request)
+    {
+      dd($request->all());
+    }
+
     public function store(Request $request, $id) 
     {
       return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
-    } 
-    
-    public function upload(Request $request, $id)
-    {
-      return view('academics.calendar.upload', get_defined_vars());
     }
 
     public function send(Request $request, $id) 

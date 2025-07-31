@@ -32,6 +32,7 @@
     padding: var(--2x, 8px) var(--4x, 16px);
     cursor: not-allowed;
     pointer-events: none;
+    border: none;
 }
 
 .action-buttons {

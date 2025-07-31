@@ -75,8 +75,30 @@ class CalendarController extends Controller
 
     public function send(Request $request, $id) 
     {
-      return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+      $data = [
+        [
+          'name_event' => "Masa Pembayaran Cicilan I",
+          'tanggal_mulai' => "2025-03-04 00:05:00+07",
+          'tanggal_selesai' => "2026-07-04 23:59:00+07",
+        ],
+        [
+          'name_event' => "Masa Pembayaran Cicilan II",
+          'tanggal_mulai' => "2025-03-04 00:05:00+07",
+          'tanggal_selesai' => "2026-07-04 23:59:00+07",
+        ]
+      ];
+
+      $month = [
+          1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      ];
+      return view('academics.calendar.upload-result', get_defined_vars());
     } 
+    
+    public function save(Request $request, $id)
+    {
+      return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+    }
 
     public function edit(Request $request, $id)
     {

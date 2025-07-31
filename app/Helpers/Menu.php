@@ -129,7 +129,15 @@ class Menu
               'name' => 'Mata Kuliah',
               'url' => '/mata-kuliah',
               'parent' => 'study.index',
-              'isExpandable' => false,
+              'isExpandable' => true,
+              'children' => [
+                'upload-study' => [
+                  'name' => 'Upload Mata Kuliah',
+                  'url' => '/mata-kuliah/upload',
+                  'parent' => 'study.upload',
+                  'isExpandable' => false
+                ]
+              ]
             ]
               
         ];

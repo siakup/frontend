@@ -252,7 +252,7 @@
 
         if (btnBatalkan) {
             btnBatalkan.addEventListener("click", function () {
-                window.location.href = "{{ route('calendar.show', ['id' => $id]) }}";
+                window.location.href = "{{ route('study.index') }}";
             });
         }
 
@@ -264,15 +264,15 @@
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Unggah Event</div>
+        <div class="page-title-text">Upload Mata Kuliah</div>
     </div>
     
-    <a href="{{ route('calendar.show', ['id' => $id])}}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> View Event Kalender Akademik
+    <a href="{{ route('study.index')}}" class="button-no-outline-left">
+        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Mata Kuliah
     </a>
     <div class="content-card">
         <div class="text-lg-bd">
-            <span>Impor Event Kalender Akademik</span>
+            <span>Impor Mata Kuliah</span>
             <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
         <div class="upload-flex-row">
@@ -280,13 +280,13 @@
                 <div class="text-md-rg">
                     Allowed Type: [.xlsx, .xls, .csv]
                 </div>
-                <a href="{{ route('academics-event.template', ['type' => 'xlsx']) }}">Download Sample Data (.xlsx)</a>
-                <a href="{{ route('academics-event.template', ['type' => 'csv']) }}">Download Sample Data (.csv)</a>
+                <a href="{{ route('academics-event.template', ['type' => 'xlsx']) }}">Unduh Sample Data (.xlsx)</a>
+                <a href="{{ route('academics-event.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
             </div>
             <div class="upload-area">
-                <div class="upload-area-title">Impor CSV Event Akademik File</div>
+                <div class="upload-area-title">Impor CSV Mata Kuliah File</div>
                 <div class="upload-card-and-buttons">
-                    <form action="{{route('calendar.send', ['id' => $id])}}" method="POST" enctype="multipart/form-data" style="display: contents;" id="uploadForm">
+                    <form action="{{route('study.upload-result')}}" method="POST" enctype="multipart/form-data" style="display: contents;" id="uploadForm">
                     @csrf
                     <input type="hidden" name="filename" id="filenameInput">
                     <div class="upload-card">
@@ -360,11 +360,11 @@
             <div class="modal-custom-backdrop"></div>
             <div class="modal-custom-content">
             <div class="modal-custom-header">
-                <span class="text-lg-bd">Batalkan Data Impor Event Kalender Akademik (CSV/xlsx)</span>
+                <span class="text-lg-bd">Tunggu Sebentar</span>
                 <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
             </div>
             <div class="modal-custom-body">
-                <div>Apakah Anda yakin ingin membatalkan unggah Event Kalender Akademik?</div>
+                <div>Apakah Anda yakin ingin membatalkan unggah mata kuliah?</div>
             </div>
             <div class="modal-custom-footer">
                 <button type="button" class="button button-clean" id="btnKembali">Kembali</button>

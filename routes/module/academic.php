@@ -41,9 +41,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/event/{id}', [CalendarController::class, 'store'])->name('calendar.store');
     Route::get('/event/{id}/upload', [CalendarController::class, 'upload'])->name('calendar.upload');
     Route::post('/event/{id}/upload', [CalendarController::class, 'send'])->name('calendar.send');
+    Route::post('/event/{id}/save-upload', [CalendarController::class, 'save'])->name('calendar.save');
   });
 
   Route::group(['prefix' => 'mata-kuliah'], function () {
     Route::get('/', [StudyController::class, 'index'])->name('study.index');
+    Route::get('/upload', [StudyController::class, 'upload'])->name('study.upload');
+    Route::post('/upload', [StudyController::class, 'uploadResult'])->name('study.upload-result');
   });
 });
