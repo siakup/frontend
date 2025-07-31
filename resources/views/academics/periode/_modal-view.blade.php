@@ -29,7 +29,6 @@
         box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
         width: 45vw;
         min-width: 340px;
-        /* max-width: 600px; */
         margin: 0 auto;
         margin-top: 10%;
         display: flex;
@@ -74,10 +73,10 @@
         margin-bottom: 12px;
     }
 
-    .form-group label {
+    .form-group {
         font-weight: 600;
         font-size: 14px;
-        margin-right: 45px;
+        margin-right: 55px;
     }
 
     .form-group input[readonly],
@@ -139,9 +138,10 @@
         </div>
         <div class="modal-custom-body">
             <div class="expandable-section" id="section-detail">
-                <div onclick="toggleSection('detail')">
+                <div onclick="toggleSection('detail')" style="text-align: left;">
                     <span class="text-md-bd">Periode Akademik</span>
                 </div>
+
                 <div class="expandable-content" id="content-detail" style="display:block;">
                     <div class="form-group">
                         <label>Tahun</label>
@@ -174,7 +174,7 @@
                             value="{{ $data->tahun ?? '-' }}/{{ ($data->tahun ?? 0) + 1 }}" readonly>
                     </div>
                     <div class="form-group">
-                        <label>Tanggal Mulai / Tanggal Berakhir</label>
+                        <label>Tanggal Mulai - Berakhir</label>
                         <input type="text" class="form-control"
                             value="{{ \Carbon\Carbon::parse($data->tanggal_mulai)->format('d M Y') }} - {{ \Carbon\Carbon::parse($data->tanggal_akhir)->format('d M Y') }}"
                             readonly>
