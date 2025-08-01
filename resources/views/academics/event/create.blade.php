@@ -38,11 +38,8 @@
         gap: 8px;
     }
 
-    .toggle-row,
-    .btn-toggle {
-        width: 100%;
-        margin: 0;
-        padding: 0;
+    #toggleButton {
+        width: max-content !important;
     }
 
     .button-group {
@@ -240,7 +237,7 @@
             </div>
             <div class="form-group">
             <label>Status</label>
-            <button id="toggleButton" class="btn-toggle">
+            <button id="toggleButton" type="button" class="btn-toggle">
                 <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
                 <span class="toggle-info text-sm-bd" style="color: var(--Neutral-Gray-600, #8C8C8C)">Tidak Aktif</span>
             </button>

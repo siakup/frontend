@@ -108,9 +108,22 @@ class Menu
                 'url' => '/calendar',
                 'parent' => 'calendar.index',
                 'isExpandable' => true,
-                // 'children' => [
-                    
-                // ]
+                'children' => [
+                    'event-calendar-index' => [
+                      'name' => 'Lihat Event Kalender Akademik',
+                      'url' => '/calendar/event/*',
+                      'parent' => 'calendar.show',
+                      'isExpandable' => true,
+                      'children' => [
+                        'upload-event-calendar' => [
+                          'name' => 'Unggah Event',
+                          'url' => '/calendar/event/*/upload',
+                          'parent' => 'calendar.upload',
+                          'isExpandable' => false,
+                        ]
+                      ]
+                    ]
+                ]
             ],
               
         ];
@@ -162,7 +175,13 @@ class Menu
                     if (strpos($menuUrl, '*') !== false) {
                         $pattern = '#^' . str_replace('\*', '.*', preg_quote($menuUrl, '#')) . '$#';
                         if (preg_match($pattern, $target)) {
-                            return [$item];
+                          if (isset($item['children'])) {
+                              $result = $findMenuByPath($item['children'], $targetPath);
+                              if ($result !== null) {
+                                  return array_merge([$item], $result);
+                              }
+                          }
+                          return [$item];
                         }
                     } elseif ($menuUrl === $target) {
                         return [$item];

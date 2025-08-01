@@ -17,10 +17,7 @@ Route::group([], function () {
 
     Route::get('/periode-detail', [AcademicController::class, 'periodeDetail'])->name('academics-periode.detail');
     Route::get('/periode-edit/{id}', [AcademicController::class, 'periodeEdit'])->name('academics-periode.edit');
-
-    Route::get('/periode/detail', [AcademicController::class, 'periodeDetail'])->name('periode.detail');
     Route::delete('/periode/delete/{id}',  [AcademicController::class, 'periodeDelete'])->name('academics-periode.delete');
-
 
     //event akademik
     Route::get('/event', [AcademicController::class, 'indexEvent'])->name('academics-event.index');
@@ -40,5 +37,9 @@ Route::group([], function () {
 
   Route::group(['prefix' => 'calendar'], function () {
     Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('/event/{id}', [CalendarController::class, 'show'])->name('calendar.show');
+    Route::post('/event/{id}', [CalendarController::class, 'store'])->name('calendar.store');
+    Route::get('/event/{id}/upload', [CalendarController::class, 'upload'])->name('calendar.upload');
+    Route::post('/event/{id}/upload', [CalendarController::class, 'uploadStore'])->name('calendar.send');
   });
 });

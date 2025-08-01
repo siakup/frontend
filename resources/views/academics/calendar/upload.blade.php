@@ -275,15 +275,15 @@
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Tambah Event Akademik</div>
+        <div class="page-title-text">Unggah Event</div>
     </div>
 
-    <a href="{{ route('academics-event.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Event Akademik
+    <a href="{{ route('calendar.show', ['id' => $id]) }}" class="button-no-outline-left">
+        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> View Event Kalender Akademik
     </a>
     <div class="content-card">
         <div class="text-lg-bd">
-            <span>Impor Event Akademik</span>
+            <span>Import Event Kalender Akademik</span>
             <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="caution-icon"
                 style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
@@ -296,9 +296,9 @@
                 <a href="{{ route('academics-event.template', ['type' => 'csv']) }}">Download Sample Data (.csv)</a>
             </div>
             <div class="upload-area">
-                <div class="upload-area-title">Unggah File Event Akademik</div>
+                <div class="upload-area-title">Impor CSV Mata Kuliah File</div>
                 <div class="upload-card-and-buttons">
-                    <form action="{{ route('academics-event.preview') }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('calendar.send', ['id' => $id]) }}" method="POST" enctype="multipart/form-data"
                         style="display: contents;" id="uploadForm">
                         @csrf
                         <input type="hidden" name="filename" id="filenameInput">
@@ -314,7 +314,7 @@
                                 <input type="file" name="file" accept=".xlsx,.xls,.csv" style="display:none;">
                             </label>
                             <div class="text-sm-lg">
-                                .xlsx, .xls & .csv | 5MB
+                                .xsl & .csv | 5MB
                             </div>
                         </div>
                         <div id="filePreview" class="file-preview" style="display: none;">
@@ -340,27 +340,34 @@
 
         <div class="content-inside-card">
             <div style="font-weight: 500; margin-bottom: 12px;">
-                File yang diterima adalah file .xlsx atau .csv dengan pemisah antar kolom berupa titik koma ";"<br>
+                File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma ","<br>
                 Urutan kolom sebagai berikut:
             </div>
             <ul style="text-sm-rg-red">
-                <li>nama: nama event *)</li>
-                <li>event nilai: y/n</li>
-                <li>event krs: y/n</li>
-                <li>event kelulusan: y/n</li>
-                <li>event registrasi: y/n</li>
-                <li>event yudisium: y/n</li>
-                <li>event survei: y/n</li>
-                <li>event dosen: y/n</li>
-                <li>status: active/inactive *)</li>
-                <li>*) required, jika ada nilai kosong, upload ulang akan mengganti data sebelumnya</li>
+                <li>kode: kode mata kuliah*)</li>
+                <li>nama: nama mata kuliah *)</li>
+                <li>sks: jumlah sks mata kuliah *)</li>
+                <li>semester: semester mata kuliah *)</li>
+                <li>tujuan: tujuan mata kuliah</li>
+                <li>deskripsi: deskripsi singkat mata kuliah</li>
+                <li>jenis: jenis mata kuliah, pilih salah satu dari Mata Kuliah Dasar Teknik, Mata Kuliah Dasar Umum, Mata
+                    Kuliah Program Studi, Mata Kuliah Sains Dasar, Mata Kuliah Universitas Pertamina*)</li>
+                <li>koordinator: NIP Dosen koordinator</li>
+                <li>spesial: y/n, y jika mata kuliah spesial, n jika tidak *)</li>
+                <li>dibuka: y/n, y jika mata kuliah dibuka untuk prodi lain, n jika tidak *)</li>
+                <li>wajib: y/n, y jika mata kuliah wajib, n jika tidak *)</li>
+                <li>mbkm: y/n, y jika mata kuliah MBKM, n jika tidak *)</li>
+                <li>aktif: y/n, y jika mata kuliah aktif, n jika tidak *)</li>
+                <li>prasyarat mata kuliah: kode mata kuliah prasyarat</li>
+                <li>namasingkat: nama singkat atau akronim mata kuliah *)</li>
+                <li>*) regured, ika ma kliai nsongi, ika ad ulang akan menganti data sebelumnya, prasyarat mata kuliah hanya
+                    1</li>
             </ul>
             <div class="text-md-rg" style="margin-top: 5%;">
-                nama; event nilai; event krs; event kelulusan; event registrasi; event yudisium; event survei; event dosen;
-                status<br>
-                Perkuliahan Semester Ganjil; n; n; n; n; n; n; y; active<br>
-                Perkuliahan Semester Genap; n; n; n; n; n; n; y; active<br>
-                Pengisian Survei; n; n; n; n; n; y; n; active
+                kode; nama; sks; semester; tujuan; deskripsi; jenis; koordinator; spesial; dibuka; wajib; mbkm; aktif;
+                prasyarat; namasingkat<br>
+                UP001; Kalkulus; 3; 1; '', ', Mata Kuliah Dasar Umum; 116020; n; y; y; n; у; "*; K; у<br>
+                UP002; Kimia Dasar 2; 2; 1; *', * Mata Kuliah Dasar Umum; 116024; n; y; y; n; y; UP003-UP321; KD2; y<br>
             </div>
             <div class="text-md-rg" style="margin-top: 5%;">
                 <span>Jumlah Data : 0</span><br>
@@ -377,7 +384,7 @@
                     <img src="{{ asset('assets/icon-caution.svg') }}" alt="icon-caution">
                 </div>
                 <div class="modal-custom-body">
-                    <div>Apakah Anda yakin untuk mengunggah event akademik dari <strong id="fileNameModal">(Nama
+                    <div>Apakah anda yakin untuk mengunggah event akademik dari <strong id="fileNameModal">(Nama
                             File)</strong>?</div>
                 </div>
                 <div class="modal-custom-footer">
