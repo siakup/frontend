@@ -5,11 +5,19 @@ use App\Http\Controllers\HomeController;
 
 Route::get('/', [HomeController::class, 'index']);
 
-Route::get('/style-guide', function (){
-    return view('style-guide');
-})->name('style-guide');
+Route::get('/subject', function (){
+    $users = collect([
+        ['name' => 'Ahmad Arroziqi', 'email' => 'arroziqi@example.com', 'role' => 'Admin'],
+        ['name' => 'Putri Lestari', 'email' => 'putri@example.com', 'role' => 'Editor'],
+        ['name' => 'Budi Santoso', 'email' => 'budi@example.com', 'role' => 'Viewer'],
+    ])->map(fn($u) => (object) $u);
 
-Route::group(['middleware' => ['auth']], function () {
+
+    return view('subjects.index', compact('users'));
+})->name('subject');
+
+// Route::group(['middleware' => ['auth']], function () {
+Route::group([], function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('home', [HomeController::class, 'index'])->name('home');
 
