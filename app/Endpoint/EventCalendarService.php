@@ -21,28 +21,23 @@ class EventCalendarService
      * @return string The base URL for the calendar API.
      */
 
-    public function baseEventURL()
+    public function url()
     {
         return config('endpoint.calendar.url') . '/api/calendar';
     }
 
     public function getListAllPeriode()
     {
-        return $this->baseEventURL() . '/list';
+        return $this->url() . '/list';
     }
 
     public function eventUrl($idPeriode)
     {
-        return $this->baseEventURL() . '/event/' . $idPeriode;
-    }
-
-    public function getCalendarDetails()
-    {
-        return $this->baseEventURL() . 'events/detail';
+        return $this->url() . '/event/' . $idPeriode;
     }
 
     public function bulkStore()
     {
-        return $this->baseEventURL() . '/bulk-store';
+        return $this->url() . '/bulk-store';
     }
 }
