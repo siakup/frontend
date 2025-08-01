@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,109 +10,318 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelFormat;
 
-
+use App\Endpoint\EventCalendarService;
 use App\Traits\ApiResponse;
 
 use Exception;
+use Illuminate\Console\Scheduling\Event;
 use Svg\Tag\Rect;
 
 class CalendarController extends Controller
 {
-    use ApiResponse;
+  use ApiResponse;
 
-    public function index(Request $request)
-    {
-      $program_perkuliahan = $request->input('program_perkuliahan', 'reguler');
-      $program_studi = $request->input('program_studi', 'ilmu komputer');
+  public function index(Request $request)
+  {
+    $program_perkuliahan = $request->input('program_perkuliahan', 'reguler');
+    $program_studi = $request->input('program_studi', 'ilmu komputer');
 
-      $data = [
-        [
-          'id' => 1,
-          'periode_akademik' => '2025-1',
-          'semester' => 'Ganjil',
-          'tanggal_mulai' => "2025-07-02 00:02:00+07",
-          'tanggal_akhir' => "2026-01-02 23:59:00+07",
-        ]
-      ];
+    $params = compact('program_perkuliahan', 'program_studi');
 
-      $month = [
-          1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-      ];
+    $url = EventCalendarService::getInstance()->getListAllPeriode();
+    $response = getCurl($url, null, getHeaders());
 
-      $params = compact('program_perkuliahan', 'program_studi');
-
-      return view('academics.calendar.index', get_defined_vars());
+    if (!isset($response->data)) {
+      if ($request->ajax()) {
+        return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
+      }
+      $data = [];
+    } else {
+      $data = $response->data;
     }
 
-    public function show(Request $request, $id)
-    {
-      $data = [
-        [
-          'id' => 1,
-          'name_event' => "Masa Pembayaran Cicilan I",
-          'tanggal_mulai' => "2025-03-04 00:05:00+07",
-          'tanggal_selesai' => "2026-07-04 23:59:00+07",
-        ]
-      ];
+    // $data = [
+    //   [
+    //     'id' => 1,
+    //     'periode_akademik' => '2025-1',
+    //     'semester' => 'Ganjil',
+    //     'tanggal_mulai' => "2025-07-02 00:02:00+07",
+    //     'tanggal_akhir' => "2026-01-02 23:59:00+07",
+    //   ]
+    // ];
 
-      $month = [
-          1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-      ];
-      return view('academics.calendar.show', get_defined_vars());
+    if ($request->ajax()) {
+      return $this->successResponse($data, 'Berhasil Mendapatkan Data');
     }
 
-    public function store(Request $request, $id) 
-    {
-      return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
-    } 
-    
-    public function upload(Request $request, $id)
-    {
-      return view('academics.calendar.upload', get_defined_vars());
+    return view('academics.calendar.index', compact(
+      'data',
+      'program_perkuliahan',
+      'program_studi',
+    ));
+  }
+
+
+  public function show(Request $request, $id)
+  {
+
+    $idPeriode = $id;
+    $program_studi = $request->input('program_studi', 'ilmu komputer');
+
+    $params = compact('program_studi', 'idPeriode');
+    $url = EventCalendarService::getInstance()->eventUrl($idPeriode);
+    $response = getCurl($url, $params, getHeaders());
+
+    if (!isset($response->data)) {
+      if ($request->ajax()) {
+        return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
+      }
+      $data = [];
+      $eventAkademik = [];
+    } else {
+      $data = $response->data;
+      $eventAkademik = $response->eventAkademik;
+    }
+    $eventAkademik = [
+      ['id_event' => 1, 'name_event' => 'Perkuliahan Semester Pendek'],
+      ['id_event' => 2, 'name_event' => 'Perkuliahan Semester Ganjil'],
+      ['id_event' => 3, 'name_event' => 'Perkuliahan Semester Genap'],
+    ];
+
+    // $data = [
+    //   [
+    //     'id' => 1,
+    //     'name_event' => "Masa Pembayaran Cicilan I",
+    //     'tanggal_mulai' => "2025-03-04 00:05:00+07",
+    //     'tanggal_selesai' => "2026-07-04 23:59:00+07",
+    //   ]
+    // ];
+
+    if ($request->ajax()) {
+      return $this->successResponse($data, 'Berhasil Mendapatkan Data');
     }
 
-    public function send(Request $request, $id) 
-    {
-      $data = [
-        [
-          'name_event' => "Masa Pembayaran Cicilan I",
-          'tanggal_mulai' => "2025-03-04 00:05:00+07",
-          'tanggal_selesai' => "2026-07-04 23:59:00+07",
-        ],
-        [
-          'name_event' => "Masa Pembayaran Cicilan II",
-          'tanggal_mulai' => "2025-03-04 00:05:00+07",
-          'tanggal_selesai' => "2026-07-04 23:59:00+07",
-        ]
-      ];
+    return view('academics.calendar.show', compact('data', 'eventAkademik', 'id', 'program_studi'));
+  }
 
-      $month = [
-          1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+
+  public function store(Request $request, $id)
+  {
+
+    //validasi data
+    $validated = $request->validate([
+      'name_event' => 'required',
+      'tanggal_mulai' => 'required',
+      'tanggal_selesai' => 'required',
+    ]);
+
+    $data = [
+      'name_event' => $validated['name_event'],
+      'tanggal_mulai' => $validated['tanggal_mulai'],
+      'tanggal_selesai' => $validated['tanggal_selesai'],
+    ];
+
+    $url = EventCalendarService::getInstance()->store();
+    $response = getCurl($url, $data, getHeaders());
+
+    if ($request->ajax()) {
+      if (isset($response->success) && $response->success) {
+        return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
+      }
+      return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
+    }
+
+    return redirect()->back()->with('success', 'Event akademik berhasil ditambahkan.');
+  }
+
+  public function upload(Request $request, $id)
+  {
+    return view('academics.calendar.upload', get_defined_vars());
+  }
+
+  public function uploadStore(Request $request, $id)
+  {
+    $validator = Validator::make($request->all(), [
+      'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
+    ]);
+
+    if ($validator->fails()) {
+      return back()->withErrors($validator)->withInput();
+    }
+
+    $file = $request->file('file');
+    $path = $file->getRealPath();
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+    //validasi apakah menggunakan koma atau titik koma
+    $rows = array_map(function ($line) {
+      $delimiter = substr_count($line, ';') > substr_count($line, ',') ? ';' : ',';
+      return str_getcsv($line, $delimiter);
+    }, $lines);
+
+    $header = array_map('trim', $rows[0]);
+    unset($rows[0]);
+
+    $eventAkademik = [];
+    foreach ($rows as $index => $row) {
+      $row = array_map('trim', $row);
+
+      if (count($row) < 9) {
+        continue;
+      }
+
+      $eventAkademik[] = [
+        'nama'         => $row[0],
+        'event_nilai'  => strtolower($row[1]) === 'y',
+        'event_krs'    => strtolower($row[2]) === 'y',
+        'event_lulus'  => strtolower($row[3]) === 'y',
+        'registrasi'   => strtolower($row[4]) === 'y',
+        'yudisium'     => strtolower($row[5]) === 'y',
+        'survei'       => strtolower($row[6]) === 'y',
+        'event_dosen'  => strtolower($row[7]) === 'y',
+        'status'       => strtolower($row[8]) === 'active' ? 'active' : 'inactive',
+        'calendar_id'  => $id,
       ];
-      return view('academics.calendar.upload-result', get_defined_vars());
-    } 
-    
-    public function save(Request $request, $id)
-    {
+    }
+
+    $url = EventCalendarService::getInstance()->bulkStore();
+    $response = postCurl($url, [
+      'events' => $eventAkademik,
+      'idperiode' => $id,
+    ], getHeaders());
+
+    if (isset($response->success) && $response->success) {
       return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
     }
+      
+    return redirect()->route('calendar.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
+  }
 
-    public function edit(Request $request, $id)
+  public function send(Request $request, $id) 
     {
-        return view('academics.calendar.edit', get_defined_vars());
+    $data = [
+      [
+        'name_event' => "Masa Pembayaran Cicilan I",
+        'tanggal_mulai' => "2025-03-04 00:05:00+07",
+        'tanggal_selesai' => "2026-07-04 23:59:00+07",
+      ],
+      [
+        'name_event' => "Masa Pembayaran Cicilan II",
+        'tanggal_mulai' => "2025-03-04 00:05:00+07",
+        'tanggal_selesai' => "2026-07-04 23:59:00+07",
+      ]
+    ];
+    $month = [
+        1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+    return view('academics.calendar.upload-result', get_defined_vars());
+  } 
+  
+  public function save(Request $request, $id)
+  {
+    return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+  }
+
+  public function edit(Request $request, $id)
+  {
+    return view('academics.calendar.edit', get_defined_vars());
+  }
+
+  public function update(Request $request, $id)
+  {
+
+    return view('academics.calendar.update', get_defined_vars());
+  }
+
+  public function delete(Request $request, $id)
+  {
+    return redirect()->back();
+  }
+
+  public function eventDownloadTemplate(Request $request)
+  {
+    $type = $request->query('type', 'xlsx');
+    $allowed = ['xlsx', 'csv'];
+
+    if (!in_array($type, $allowed)) {
+      return redirect()->back()->with('error', 'Format file tidak valid');
     }
 
-    public function update(Request $request, $id)
-    {
-        
-    }
+    $data = [
+      [
+        'kode',
+        'nama',
+        'sks',
+        'semester',
+        'tujuan',
+        'deskripsi',
+        'jenis',
+        'koordinator',
+        'spesial',
+        'dibuka',
+        'wajib',
+        'mbkm',
+        'aktif',
+        'prasyarat',
+        'namasingkat'
+      ],
+      [
+        'UP001',
+        'Kalkulus',
+        '3',
+        '1',
+        '',
+        '',
+        'Mata Kuliah Dasar Umum',
+        '116020',
+        'n',
+        'y',
+        'y',
+        'n',
+        'y',
+        '',
+        'KAL'
+      ],
+      [
+        'UP002',
+        'Kimia Dasar 2',
+        '2',
+        '1',
+        '',
+        '',
+        'Mata Kuliah Dasar Umum',
+        '116024',
+        'n',
+        'y',
+        'y',
+        'n',
+        'y',
+        'UP001',
+        'KD2'
+      ],
+    ];
+    $filename = 'template-mata-kuliah.' . $type;
 
-    public function delete(Request $request, $id)
-    {
-        return redirect()->back();
-    }
+    return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+      private $rows;
+      public function __construct($rows)
+      {
+        $this->rows = $rows;
+      }
+
+      public function array(): array
+      {
+        return array_slice($this->rows, 1);
+      }
+
+      public function headings(): array
+      {
+        return $this->rows[0];
+      }
+    }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
+  }
 }
