@@ -1,9 +1,9 @@
 @extends('layouts.main')
 
-@section('title', 'Akademik')
+@section('title', 'Upload Mata Kuliah')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item active">Akademik</div>
+    <div class="breadcrumb-item active">Upload Mata Kuliah</div>
 @endsection
 
 @section('css')
@@ -214,21 +214,20 @@
         const filePreview = document.getElementById("filePreview");
         const fileNameSpan = document.getElementById("fileName");
         const removeFileBtn = document.getElementById("removeFileBtn");
-        const modal = document.getElementById("modalKonfirmasiUnggah");
-        const btnYa = document.getElementById("btnYa");
-
-        if (batalButton) {
-            batalButton.addEventListener("click", function() {
-                window.location.href = "{{ route('academics-event.index') }}";
-            });
-        }
+        const modal = document.getElementById("modalKonfirmasiBatal");
+        const btnBatalkan = document.getElementById("btnBatalkan");
 
         if (fileInput && unggahButton) {
             const container = document.querySelector('.upload-card-and-buttons');
             fileInput.addEventListener("change", function() {
                 if (fileInput.files.length) {
                     unggahButton.disabled = false;
+                    batalButton.disabled = false;
                     fileNameSpan.textContent = fileInput.files[0].name;
+                    
+                    const filenameInput = document.getElementById("filenameInput");
+                    filenameInput.value = fileInput.files[0]?.name || '';
+
                     filePreview.style.display = "flex";
                     container.style.gap = '20px';
                     document.querySelector('.upload-card').style.display = 'none';
@@ -238,13 +237,8 @@
                 }
             });
 
-            unggahButton.addEventListener("click", function() {
+            batalButton.addEventListener("click", function () {
                 if (fileInput.files.length) {
-                    fileNameSpan.textContent = fileInput.files[0].name;
-                    const fileNameModal = document.getElementById("fileNameModal");
-                    if (fileNameModal) {
-                        fileNameModal.textContent = fileInput.files[0].name;
-                    }
                     modal.style.display = 'flex';
                 }
             });
@@ -254,20 +248,19 @@
             removeFileBtn.addEventListener("click", function() {
                 fileInput.value = "";
                 unggahButton.disabled = true;
+                batalButton.disabled = true;
                 filePreview.style.display = "none";
                 document.querySelector('.upload-card').style.display = 'block';
             });
         }
 
-        if (btnYa) {
-            btnYa.addEventListener("click", function() {
-                const filenameInput = document.getElementById("filenameInput");
-                filenameInput.value = fileInput.files[0]?.name || '';
-                document.getElementById("uploadForm").submit();
+        if (btnBatalkan) {
+            btnBatalkan.addEventListener("click", function () {
+                window.location.href = "{{ route('calendar.show', ['id' => $id]) }}";
             });
         }
 
-        document.getElementById("btnTidak").addEventListener("click", function() {
+        document.getElementById("btnKembali").addEventListener("click", function () {
             modal.style.display = "none";
         });
     });
@@ -277,15 +270,14 @@
     <div class="page-header">
         <div class="page-title-text">Unggah Event</div>
     </div>
-
-    <a href="{{ route('calendar.show', ['id' => $id]) }}" class="button-no-outline-left">
+    
+    <a href="{{ route('calendar.show', ['id' => $id])}}" class="button-no-outline-left">
         <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> View Event Kalender Akademik
     </a>
     <div class="content-card">
         <div class="text-lg-bd">
-            <span>Import Event Kalender Akademik</span>
-            <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="caution-icon"
-                style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
+            <span>Impor Event Kalender Akademik</span>
+            <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
         <div class="upload-flex-row">
             <div class="upload-info-col">
@@ -296,10 +288,9 @@
                 <a href="{{ route('academics-event.template', ['type' => 'csv']) }}">Download Sample Data (.csv)</a>
             </div>
             <div class="upload-area">
-                <div class="upload-area-title">Impor CSV Mata Kuliah File</div>
+                <div class="upload-area-title">Impor CSV Event Akademik File</div>
                 <div class="upload-card-and-buttons">
-                    <form action="{{ route('calendar.send', ['id' => $id]) }}" method="POST" enctype="multipart/form-data"
-                        style="display: contents;" id="uploadForm">
+                  <form action="{{ route('calendar.send', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" style="display: contents;" id="uploadForm">
                         @csrf
                         <input type="hidden" name="filename" id="filenameInput">
                         <div class="upload-card">
@@ -326,14 +317,13 @@
                                 aria-label="Remove">&times;</button>
                         </div>
 
-                        <div class="upload-btn-group">
-                            <button type="button" class="button button-clean" id="btnBatalUnggah">Batal</button>
-                            <button type="button" class="button button-outline" id="btnUnggah" disabled>
-                                Unggah <span style="font-size:1.1em;"><img
-                                        src="{{ asset('assets/icon-upload-gray-600.svg') }}"></span>
-                            </button>
-                        </div>
-                    </form>
+                    <div class="upload-btn-group">
+                        <button type="button" class="button button-clean" id="btnBatalUnggah" disabled>Batal</button>
+                        <button type="submit" class="button button-outline" id="btnUnggah" disabled>
+                            Unggah <span style="font-size:1.1em;"><img src="{{ asset('assets/icon-upload-gray-600.svg') }}"></span>
+                        </button>
+                    </div>
+                  </form>
                 </div>
             </div>
         </div>
@@ -372,25 +362,24 @@
             <div class="text-md-rg" style="margin-top: 5%;">
                 <span>Jumlah Data : 0</span><br>
                 <span>Jumlah Data Sukses: 0</span><br>
-                <span>Jumlah Data Gagal: 0</span>
+                <span>Jumlah Data Gagal:</span>
             </div>
         </div>
 
-        <div id="modalKonfirmasiUnggah" class="modal-custom" style="display:none;">
+        <div id="modalKonfirmasiBatal" class="modal-custom" style="display:none;">
             <div class="modal-custom-backdrop"></div>
             <div class="modal-custom-content">
-                <div class="modal-custom-header">
-                    <span class="text-lg-bd">Tunggu Sebentar</span>
-                    <img src="{{ asset('assets/icon-caution.svg') }}" alt="icon-caution">
-                </div>
-                <div class="modal-custom-body">
-                    <div>Apakah anda yakin untuk mengunggah event akademik dari <strong id="fileNameModal">(Nama
-                            File)</strong>?</div>
-                </div>
-                <div class="modal-custom-footer">
-                    <button type="button" class="button button-clean" id="btnTidak">Tidak</button>
-                    <button type="button" class="button button-outline" id="btnYa">Ya</button>
-                </div>
+            <div class="modal-custom-header">
+                <span class="text-lg-bd">Batalkan Data Impor Event Kalender Akademik (CSV/xlsx)</span>
+                <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
+            </div>
+            <div class="modal-custom-body">
+                <div>Apakah Anda yakin ingin membatalkan unggah Event Kalender Akademik?</div>
+            </div>
+            <div class="modal-custom-footer">
+                <button type="button" class="button button-clean" id="btnKembali">Kembali</button>
+                <button type="button" class="button button-outline" id="btnBatalkan">Batalkan</button>
+            </div>
             </div>
         </div>
     </div>

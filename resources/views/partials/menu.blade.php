@@ -92,6 +92,16 @@
                 </a>
             </li>
             <li class="menu-item">
+                <a href="{{ route('study.index') }}" class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <img src="{{ asset('assets/base/icon-mata-kuliah.svg') }}" 
+                            alt="Mata Kuliah Icon" 
+                            class="menu-icon">
+                        <span>Mata Kuliah</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu-item">
                 <a href="{{ route('lectures.index') }}" class="menu-link {{ Request::is('lectures*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-prodi.svg') }}" alt="Staff Icon" class="menu-icon">
