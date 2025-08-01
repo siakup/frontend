@@ -290,13 +290,23 @@
             <div class="upload-area">
                 <div class="upload-area-title">Impor CSV Event Akademik File</div>
                 <div class="upload-card-and-buttons">
-                    <form action="{{route('calendar.send', ['id' => $id])}}" method="POST" enctype="multipart/form-data" style="display: contents;" id="uploadForm">
-                    @csrf
-                    <input type="hidden" name="filename" id="filenameInput">
-                    <div class="upload-card">
-                        <div class="text-md-bd">
-                            <img src="{{ asset('assets/icon-upload-gray-600.svg') }}" alt="upload" style="height: 1.5em; width: auto; margin-bottom: 8px;"><br>
-                            Tarik & letakkan file di sini
+                  <form action="{{ route('calendar.send', ['id' => $id]) }}" method="POST" enctype="multipart/form-data" style="display: contents;" id="uploadForm">
+                        @csrf
+                        <input type="hidden" name="filename" id="filenameInput">
+                        <div class="upload-card">
+                            <div class="text-md-bd">
+                                <img src="{{ asset('assets/icon-upload-gray-600.svg') }}" alt="upload"
+                                    style="height: 1.5em; width: auto; margin-bottom: 8px;"><br>
+                                Tarik & letakkan file di sini
+                            </div>
+                            <div style="margin-bottom: 12px;">Atau</div>
+                            <label class="button button-clean">
+                                Pilih File
+                                <input type="file" name="file" accept=".xlsx,.xls,.csv" style="display:none;">
+                            </label>
+                            <div class="text-sm-lg">
+                                .xsl & .csv | 5MB
+                            </div>
                         </div>
                         <div id="filePreview" class="file-preview" style="display: none;">
                             <span class="file-icon"><img src="{{ asset('assets/icon-file-gray.svg') }}"
@@ -313,7 +323,7 @@
                             Unggah <span style="font-size:1.1em;"><img src="{{ asset('assets/icon-upload-gray-600.svg') }}"></span>
                         </button>
                     </div>
-                    </form>
+                  </form>
                 </div>
             </div>
         </div>
