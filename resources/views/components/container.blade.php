@@ -1,3 +1,5 @@
+{{-- resources\views\components\container.blade.php --}}
+
 @props([
     'variant' => 'content',
     'class' => '',

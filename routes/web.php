@@ -6,15 +6,12 @@ use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/subject', function (){
-    $users = collect([
-        ['name' => 'Ahmad Arroziqi', 'email' => 'arroziqi@example.com', 'role' => 'Admin'],
-        ['name' => 'Putri Lestari', 'email' => 'putri@example.com', 'role' => 'Editor'],
-        ['name' => 'Budi Santoso', 'email' => 'budi@example.com', 'role' => 'Viewer'],
-    ])->map(fn($u) => (object) $u);
-
-
-    return view('subjects.index', compact('users'));
+    return view('subjects.index');
 })->name('subject');
+
+Route::get('/subject/create', function (){
+    return view('subjects.create');
+})->name('subject.create');
 
 // Route::group(['middleware' => ['auth']], function () {
 Route::group([], function () {
