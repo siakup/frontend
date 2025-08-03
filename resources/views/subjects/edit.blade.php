@@ -3,7 +3,7 @@
 @section('title', 'Mata Kuliah')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item active">Tambah Mata Kuliah</div>
+    <div class="breadcrumb-item active">Edit Mata Kuliah</div>
 @endsection
 
 @section('css')
@@ -18,7 +18,7 @@
 @section('content')
     <div class="px-5 flex flex-col gap-5">
         <x-typography variant="heading-h6" bold class="">
-            Tambah Mata Kuliah
+            Edit Mata Kuliah
         </x-typography>
         <x-container variant="content" class="gap-5 flex flex-col">
             <x-typography variant="body-medium-bold" class="">Detail Mata Kuliah</x-typography>
@@ -316,49 +316,11 @@
             {{-- TODO: Table prasyarat --}}
         </x-container>
 
-        <div x-data="{ showCancelConfirm: false, showSaveConfirm: false }">
-            <!-- Container Tombol -->
-            <x-container>
-                <div class="flex justify-end gap-5">
-                    <!-- Tombol Batal -->
-                    <x-button.secondary label="Batal"
-                        x-on:click="$dispatch('open-modal', {id: 'cancel-confirmation'})" />
-
-                    <!-- Tombol Simpan -->
-                    <x-button.primary label="Simpan" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})" />
-                </div>
-            </x-container>
-
-            <!-- Modal Konfirmasi Batal -->
-            <x-modal.confirmation id="cancel-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan"
-                cancelText="Kembali">
-                <p>Apakah Anda yakin ingin membatalkan tambah mata kuliah?</p>
-
-                <div
-                    x-on:confirmed.window="
-            // Aksi ketika konfirmasi batal diklik
-            console.log('Perubahan dibatalkan');
-            // Redirect atau reset form bisa dilakukan di sini
-            window.location.href = '/'; // Contoh redirect ke home
-        ">
-                </div>
-            </x-modal.confirmation>
-
-            <!-- Modal Konfirmasi Simpan -->
-            <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-                cancelText="Cek Kembali">
-                <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-
-                <div
-                    x-on:confirmed.window="
-            // Aksi ketika konfirmasi simpan diklik
-            console.log('Data disimpan');
-            // Submit form atau AJAX request bisa dilakukan di sini
-            document.getElementById('form-id').submit(); // Contoh submit form
-        ">
-                </div>
-            </x-modal.confirmation>
-        </div>
-
+        <x-container>
+            <div class="flex justify-end gap-5">
+                <x-button.secondary label="Batal" />
+                <x-button.primary label="Simpan" />
+            </div>
+        </x-container>
     </div>
 @endsection

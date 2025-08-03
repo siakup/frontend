@@ -4,7 +4,7 @@
             Daftar Mata Kuliah
         </x-typography>
 
-        <div class="flex flex-col gap-5">
+        <div class="flex flex-col gap-5" x-data="{ itemToDelete: null }" x-cloak>
             <!-- Search and Filters -->
             <div
                 class="p-5 flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-200 rounded-3xl">
@@ -94,10 +94,24 @@
                                 </span>
                             </x-table-cell>
                             <x-table-cell>
-                                <div class="flex gap-2">
-                                    <x-button.action type="view" label="Lihat" />
-                                    <x-button.action type="edit" label="Edit" />
-                                    <x-button.action type="delete" label="Hapus" />
+                                <div class="flex gap-3 justify-center">
+                                    <a href="{{ route('subject.view') }}" class="">
+                                        <x-button.action type="view" label="Lihat" />
+                                    </a>
+                                    <a href="{{ route('subject.edit') }}" class="">
+                                        <x-button.action type="edit" label="Edit" />
+                                    </a>
+                                    <!-- Tombol Delete -->
+                                    <x-button.action type="delete" label="Hapus"
+                                        x-on:click="
+                                    $dispatch('open-modal', {
+                                        id: 'delete-confirmation',
+                                        detail: {
+                                            id: '{{ $matkul['kode'] }}',
+                                            name: '{{ $matkul['nama'] }}'
+                                        }
+                                    });
+                                " />
                                 </div>
 
                             </x-table-cell>
@@ -128,3 +142,29 @@
     <!-- Pagination and Per Page Selector -->
     <livewire:custom-pagination :paginator="$mataKuliahList" />
 </div>
+
+@section('modals')
+    <div x-data class="text-gray-800">
+        <!-- Modal Konfirmasi Hapus -->
+        <x-modal.confirmation iconUrl="{{ asset('assets/icon-delete-gray-800.svg') }}" id="delete-confirmation"
+            title="Hapus Daftar Mata Kuliah" confirmText="Ya, Hapus" cancelText="Batal"
+            x-on:open-modal.window="if ($event.detail.id === 'delete-confirmation') {
+            item = $event.detail.detail;
+            show = true;
+        }">
+            <p class="text-gray-800">Apakah anda yakin ingin menghapus?</p>
+
+            <div
+                x-on:confirmed.window="
+            @this.call('deleteMataKuliah', item.id)
+                .then(() => {
+                    $dispatch('show-notification', {
+                        type: 'success',
+                        message: 'Mata kuliah berhasil dihapus'
+                    });
+                });
+        ">
+            </div>
+        </x-modal.confirmation>
+    </div>
+@endsection

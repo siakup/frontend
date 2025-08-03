@@ -19,6 +19,9 @@
         </main>
     </div>
 
+    <!-- Modals section -->
+    @yield('modals')
+
     @fluxScripts
 </body>
 

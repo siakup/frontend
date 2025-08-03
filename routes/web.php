@@ -13,6 +13,14 @@ Route::get('/subject/create', function (){
     return view('subjects.create');
 })->name('subject.create');
 
+Route::get('/subject/edit', function (){
+    return view('subjects.edit');
+})->name('subject.edit');
+
+Route::get('/subject/view', function (){
+    return view('subjects.view');
+})->name('subject.view');
+
 // Route::group(['middleware' => ['auth']], function () {
 Route::group([], function () {
     Route::get('/', [HomeController::class, 'index']);
