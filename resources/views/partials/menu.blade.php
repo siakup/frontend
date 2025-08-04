@@ -3,13 +3,13 @@
         <img src="{{ asset('images/uper.png') }}" alt="Logo" class="logo-image">
         <div class="logo-lines">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="5" viewBox="0 0 40 5" fill="none">
-                <path d="M0.5 2.5H39.5" stroke="#0076BE" stroke-width="8"/>
+                <path d="M0.5 2.5H39.5" stroke="#0076BE" stroke-width="8" />
             </svg>
             <svg xmlns="http://www.w3.org/2000/svg" width="56" height="5" viewBox="0 0 56 5" fill="none">
-                <path d="M0.5 2.5H55.5" stroke="#E62129" stroke-width="8"/>
+                <path d="M0.5 2.5H55.5" stroke="#E62129" stroke-width="8" />
             </svg>
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="5" viewBox="0 0 60 5" fill="none">
-                <path d="M0.5 2.5H59.5" stroke="#98A725" stroke-width="8"/>
+                <path d="M0.5 2.5H59.5" stroke="#98A725" stroke-width="8" />
             </svg>
         </div>
         <!-- <img src="{{ asset('images/siakad-.svg') }}" alt="Logo Text" class="logo-text"> -->
@@ -24,9 +24,7 @@
             <li class="menu-item">
                 <a href="{{ route('home') }}" class="menu-link {{ Request::is('home') ? 'active' : '' }}">
                     <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-home.svg') }}" 
-                            alt="Home Icon" 
-                            class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-home.svg') }}" alt="Home Icon" class="menu-icon">
                         <span>Beranda</span>
                     </div>
                 </a>
@@ -75,27 +73,28 @@
                         </a>
                     </li>
                     <li class="submenu-item">
-                        <a href="{{ route('academics-periode.index') }}" class="{{ Request::is('academics*') ? 'active' : '' }}">
+                        <a href="{{ route('academics-periode.index') }}"
+                            class="{{ Request::is('academics*') ? 'active' : '' }}">
                             <span>Akademik</span>
                         </a>
                     </li>
                 </ul>
             </li>
             <li class="menu-item">
-                <a href="{{ route('calendar.index') }}" class="menu-link {{ Request::is('calendar*') ? 'active' : '' }}">
+                <a href="{{ route('calendar.index') }}"
+                    class="menu-link {{ Request::is('calendar*') ? 'active' : '' }}">
                     <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-admin.svg') }}" 
-                            alt="Kalender Akademik Icon" 
+                        <img src="{{ asset('assets/base/icon-admin.svg') }}" alt="Kalender Akademik Icon"
                             class="menu-icon">
                         <span>Kalender Akademik</span>
                     </div>
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ route('study.index') }}" class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
+                <a href="{{ route('subject') }}" class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
                     <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-mata-kuliah.svg') }}" 
-                            alt="Mata Kuliah Icon" 
+                        <img src="{{ asset('assets/base/icon-mata-kuliah.svg') }}"
+                            alt="Mata Kuliah Icon"
                             class="menu-icon">
                         <span>Mata Kuliah</span>
                     </div>
@@ -112,15 +111,17 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                    <img src="{{ asset('assets/base/icon-masukan-komplain.svg') }}" alt="Research Icon" class="menu-icon">
-                    <span>Penelitian</span>
+                        <img src="{{ asset('assets/base/icon-masukan-komplain.svg') }}" alt="Research Icon"
+                            class="menu-icon">
+                        <span>Penelitian</span>
                     </div>
                 </a>
             </li>
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-pembayaran.svg') }}" alt="Payment Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-pembayaran.svg') }}" alt="Payment Icon"
+                            class="menu-icon">
                         <span>Pembayaran (Mahasiswa)</span>
                     </div>
                 </a>
@@ -136,7 +137,8 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-ekuivalensi.svg') }}" alt="Survey Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-ekuivalensi.svg') }}" alt="Survey Icon"
+                            class="menu-icon">
                         <span>Manajemen Survei</span>
                     </div>
                 </a>
@@ -152,7 +154,8 @@
             <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-document-book.svg') }}" alt="Guide Icon" class="menu-icon">
+                        <img src="{{ asset('assets/base/icon-document-book.svg') }}" alt="Guide Icon"
+                            class="menu-icon">
                         <span>Petunjuk Penggunaan</span>
                     </div>
                 </a>

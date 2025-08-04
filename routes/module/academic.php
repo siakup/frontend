@@ -5,7 +5,8 @@ use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\StudyController;
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
+Route::group([], function () {
   Route::group(['prefix' => 'academics'], function () {
     //periode akademik
     Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');

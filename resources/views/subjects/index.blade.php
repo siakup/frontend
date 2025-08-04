@@ -11,8 +11,9 @@
 @endsection
 
 @section('javascript')
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
+
 
 @section('content')
     <div class="px-5 flex flex-col gap-5">
