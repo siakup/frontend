@@ -196,12 +196,12 @@ class CalendarController extends Controller
     if (isset($response->success) && $response->success) {
       return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
     }
-      
+
     return redirect()->route('calendar.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
   }
 
-  public function send(Request $request, $id) 
-    {
+  public function send(Request $request, $id)
+  {
     $data = [
       [
         'name_event' => "Masa Pembayaran Cicilan I",
@@ -215,12 +215,22 @@ class CalendarController extends Controller
       ]
     ];
     $month = [
-        1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+      1 => 'Januari',
+      'Februari',
+      'Maret',
+      'April',
+      'Mei',
+      'Juni',
+      'Juli',
+      'Agustus',
+      'September',
+      'Oktober',
+      'November',
+      'Desember'
     ];
     return view('academics.calendar.upload-result', get_defined_vars());
-  } 
-  
+  }
+
   public function save(Request $request, $id)
   {
     return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');

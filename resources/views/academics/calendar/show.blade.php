@@ -313,8 +313,8 @@
                 const id = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $.ajax({
-                    url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id',
-                        id),
+                    url: "{{ route('calendar.delete', ['id' => 'ID_REPLACE']) }}".replace(
+                        'ID_REPLACE', id),
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': csrfToken,
