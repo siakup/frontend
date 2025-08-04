@@ -125,6 +125,20 @@ class Menu
                     ]
                 ]
             ],
+            'study' => [
+              'name' => 'Mata Kuliah',
+              'url' => '/mata-kuliah',
+              'parent' => 'study.index',
+              'isExpandable' => true,
+              'children' => [
+                'upload-study' => [
+                  'name' => 'Upload Mata Kuliah',
+                  'url' => '/mata-kuliah/upload',
+                  'parent' => 'study.upload',
+                  'isExpandable' => false
+                ]
+              ]
+            ]
               
         ];
     }

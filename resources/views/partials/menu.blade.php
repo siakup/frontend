@@ -22,14 +22,6 @@
     <nav class="menu">
         <ul class="menu-list">
             <li class="menu-item">
-                <a href="{{ route('subject') }}" class="menu-link {{ Request::is('subject') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-home.svg') }}" alt="Home Icon" class="menu-icon">
-                        <span>Subject</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
                 <a href="{{ route('home') }}" class="menu-link {{ Request::is('home') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-home.svg') }}" alt="Home Icon" class="menu-icon">
@@ -99,8 +91,17 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ route('lectures.index') }}"
-                    class="menu-link {{ Request::is('lectures*') ? 'active' : '' }}">
+                <a href="{{ route('subject') }}" class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <img src="{{ asset('assets/base/icon-mata-kuliah.svg') }}"
+                            alt="Mata Kuliah Icon"
+                            class="menu-icon">
+                        <span>Mata Kuliah</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu-item">
+                <a href="{{ route('lectures.index') }}" class="menu-link {{ Request::is('lectures*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-prodi.svg') }}" alt="Staff Icon" class="menu-icon">
                         <span>Manajemen Staf Pengajar</span>

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\StudyController;
 
 // Route::group(['middleware' => ['auth']], function () {
 Route::group([], function () {
@@ -40,6 +41,14 @@ Route::group([], function () {
     Route::get('/event/{id}', [CalendarController::class, 'show'])->name('calendar.show');
     Route::post('/event/{id}', [CalendarController::class, 'store'])->name('calendar.store');
     Route::get('/event/{id}/upload', [CalendarController::class, 'upload'])->name('calendar.upload');
-    Route::post('/event/{id}/upload', [CalendarController::class, 'uploadStore'])->name('calendar.send');
+    Route::post('/event/{id}/upload', [CalendarController::class, 'send'])->name('calendar.send');
+    Route::post('/event/{id}/save-upload', [CalendarController::class, 'save'])->name('calendar.save');
   });
+
+  Route::group(['prefix' => 'mata-kuliah'], function () {
+    Route::get('/', [StudyController::class, 'index'])->name('study.index');
+    Route::get('/upload', [StudyController::class, 'upload'])->name('study.upload');
+    Route::post('/upload', [StudyController::class, 'uploadResult'])->name('study.upload-result');
+    Route::post('/save-upload', [CalendarController::class, 'uploadStore'])->name('study.save');
+    });
 });
