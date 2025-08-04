@@ -1,43 +1,42 @@
-<?php 
+<?php
 
 namespace App\Endpoint;
 
 class EventAcademicService
 {
-    private static $instance = null;
+  private static $instance = null;
 
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
+  public static function getInstance()
+  {
+    if (self::$instance === null) {
+      self::$instance = new self();
     }
 
-    public function baseEventURL()
-    {
-        return config('endpoint.academics.url') . '/api/events';
-    }
+    return self::$instance;
+  }
 
-    public function getListAllEvents()
-    {
-      return $this->baseEventURL() . '/';
-    }
+  public function baseEventURL()
+  {
+    return config('endpoint.academics.url') . '/api/events';
+  }
 
-    public function eventUrl($id)
-    {
-      return $this->baseEventURL() . '/' . $id;
-    }
+  public function getListAllEvents()
+  {
+    return $this->baseEventURL() . '/';
+  }
 
-    public function getEventDetails()
-    {
-      return $this->baseEventURL() . 'events/detail';
-    }
+  public function eventUrl($id)
+  {
+    return $this->baseEventURL() . '/' . $id;
+  }
 
-    public function bulkStore()
-    {
-      return $this->baseEventURL() . '/bulk-store';
-    }
+  public function getEventDetails()
+  {
+    return $this->baseEventURL() . 'events/detail';
+  }
+
+  public function bulkStore()
+  {
+    return $this->baseEventURL() . '/bulk-store';
+  }
 }
-
