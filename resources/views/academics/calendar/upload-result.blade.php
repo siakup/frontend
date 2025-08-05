@@ -234,30 +234,6 @@
       }
     });
 
-    document.getElementById('btnSimpan').addEventListener('click', function() {
-      const id = document.getElementById('modalKonfirmasiUpload').getAttribute('data-id');
-      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      $.ajax({
-          url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id', id),
-          method: 'DELETE',
-          headers: { 
-            'X-CSRF-TOKEN': csrfToken,
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          success: function(response) {
-            document.getElementById('modalKonfirmasiUpload').removeAttribute('data-id');
-            document.getElementById('modalKonfirmasiUpload').style.display = 'none';
-            successToast('Berhasil dihapus');
-            setTimeout(() => {
-              window.location.href = "{{ route('academics-event.index') }}";
-            }, 5000);
-          },
-          error: function() {
-              $('tbody').html('<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>');
-          }
-      });
-    });
-  
     document.getElementById('btnCekKembaliSebelumHapus').addEventListener('click', function() {
       document.getElementById('modalKonfirmasiUpload').removeAttribute('data-id');
       document.getElementById('modalKonfirmasiUpload').style.display = 'none';
@@ -320,7 +296,7 @@
         </div>
       </div>
 
-      <form action="{{route('calendar.save', ['id' => $id])}}" method="POST">
+      <form action="{{route('study.save-upload', ['id' => $id])}}" method="POST">
         @csrf
         @foreach($data as $index => $event)
           <input type="hidden" name="data[{{$index}}][name_event]" value="{{$event['name_event']}}">
