@@ -43,6 +43,7 @@ Route::group([], function () {
     Route::get('/event/{id}/upload', [CalendarController::class, 'upload'])->name('calendar.upload');
     Route::post('/event/{id}/upload', [CalendarController::class, 'send'])->name('calendar.send');
     Route::post('/event/{id}/save-upload', [CalendarController::class, 'save'])->name('calendar.save');
+    Route::delete('/event/delete/{id}', [CalendarController::class, 'delete'])->name('calendar.delete');
   });
 
   Route::group(['prefix' => 'mata-kuliah'], function () {
@@ -50,6 +51,5 @@ Route::group([], function () {
     Route::get('/upload', [StudyController::class, 'upload'])->name('study.upload');
     Route::post('/upload', [StudyController::class, 'uploadResult'])->name('study.upload-result');
     Route::post('/save-upload', [StudyController::class, 'uploadStore'])->name('study.save-upload');
-
   });
 });
