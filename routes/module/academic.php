@@ -49,6 +49,7 @@ Route::group([], function () {
     Route::get('/', [StudyController::class, 'index'])->name('study.index');
     Route::get('/upload', [StudyController::class, 'upload'])->name('study.upload');
     Route::post('/upload', [StudyController::class, 'uploadResult'])->name('study.upload-result');
-    Route::post('/save-upload', [CalendarController::class, 'uploadStore'])->name('study.save');
-    });
+    Route::post('/save-upload', [StudyController::class, 'uploadStore'])->name('study.save-upload');
+
+  });
 });
