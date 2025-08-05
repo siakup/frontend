@@ -91,7 +91,7 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ route('subject') }}" class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
+                <a href="{{ route('study.index') }}" class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-mata-kuliah.svg') }}"
                             alt="Mata Kuliah Icon"

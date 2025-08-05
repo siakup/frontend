@@ -136,7 +136,25 @@ class Menu
                   'url' => '/mata-kuliah/upload',
                   'parent' => 'study.upload',
                   'isExpandable' => false
-                ]
+                ],
+                'study-add' => [
+                  'name' => 'Tambah Mata Kuliah',
+                  'url' => '/mata-kuliah/tambah',
+                  'parent' => 'study.create',
+                  'isExpandable' => false
+                ],
+                'study-view' => [
+                  'name' => 'Lihat Mata Kuliah',
+                  'url' => '/mata-kuliah/view/*',
+                  'parent' => 'study.view',
+                  'isExpandable' => false
+                ],
+                'study-edit' => [
+                  'name' => 'Edit Mata Kuliah',
+                  'url' => '/mata-kuliah/edit/*',
+                  'parent' => 'study.edit',
+                  'isExpandable' => false
+                ],
               ]
             ]
               

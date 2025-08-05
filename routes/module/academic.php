@@ -48,6 +48,9 @@ Route::group([], function () {
 
   Route::group(['prefix' => 'mata-kuliah'], function () {
     Route::get('/', [StudyController::class, 'index'])->name('study.index');
+    Route::get('/tambah', [StudyController::class, 'create'])->name('study.create');
+    Route::get('/edit/{id}', [StudyController::class, 'edit'])->name('study.edit');
+    Route::get('/view/{id}', [StudyController::class, 'view'])->name('study.view');
     Route::get('/upload', [StudyController::class, 'upload'])->name('study.upload');
     Route::post('/upload', [StudyController::class, 'uploadResult'])->name('study.upload-result');
     Route::post('/save-upload', [StudyController::class, 'uploadStore'])->name('study.save-upload');

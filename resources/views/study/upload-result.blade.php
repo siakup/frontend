@@ -12,6 +12,12 @@
     gap: 20px;
   }
 
+  .title {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+  }
+
   .modal-custom-content {
       max-width: 600px;
       z-index: 2;
@@ -75,8 +81,9 @@
         </x-typography>
         <div class="flex flex-col gap-5">
             <x-container variant="content" class="flex flex-col gap-5">
-                <x-typography variant="heading-h6" class="mb-2">
+                <x-typography variant="heading-h6" class="mb-2 title">
                     Impor Mata Kuliah
+                    <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
                 </x-typography>
         
                 <div class="flex flex-col gap-5">
@@ -124,41 +131,41 @@
                         </x-table-body>
                     </x-table>
                 </div>
-                <div class="card-header">
-                  <div class="right">
-                    <a href="" class="button-clean" id="">
-                        <span>Batal</span>
-                    </a>
-                    <button class="button-outline btn-add-course">Simpan</a>
-                  </div>
+              </x-container>
+              <x-container variant="content" class="flex flex-col gap-5" >
+                <div class="right">
+                  <a href="" class="button-clean" id="">
+                      <span>Batal</span>
+                  </a>
+                  <button class="button-outline btn-add-course">Simpan</a>
                 </div>
-                <form action="{{route('study.save-upload')}}" method="POST">
-                  @csrf
-                  @foreach($file_data as $index => $course)
-                    <input type="hidden" name="data[{{$index}}][kode]" value="{{$course['kode']}}">
-                    <input type="hidden" name="data[{{$index}}][nama]" value="{{$course['nama']}}">
-                    <input type="hidden" name="data[{{$index}}][sks]" value="{{$course['sks']}}">
-                    <input type="hidden" name="data[{{$index}}][semester]" value="{{$course['semester']}}">
-                    <input type="hidden" name="data[{{$index}}][jenis]" value="{{$course['jenis']}}">
-                  @endforeach
-                  <div id="modalKonfirmasiUpload" class="modal-custom" style="display:none;">
-                    <div class="modal-custom-backdrop"></div>
-                    <div class="modal-custom-content">
-                      <div class="modal-custom-header">
-                        <span class="text-lg-bd">Tunggu Sebentar</span>
-                        <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
-                      </div>
-                      <div class="modal-custom-body">
-                        <div>Apakah anda yakin untuk menyimpan Mata Kuliah dari (csv/xlsx)?</div>
-                      </div>
-                      <div class="modal-custom-footer">
-                        <button type="button" class="button button-clean" id="btnCekKembaliSebelumHapus">Cek Kembali</button>
-                        <button type="submit" class="button button-outline" id="btnSimpan">Ya, Simpan</button>
-                      </div>
+              </x-container>
+              <form action="{{route('study.save-upload')}}" method="POST">
+                @csrf
+                @foreach($file_data as $index => $course)
+                  <input type="hidden" name="data[{{$index}}][kode]" value="{{$course['kode']}}">
+                  <input type="hidden" name="data[{{$index}}][nama]" value="{{$course['nama']}}">
+                  <input type="hidden" name="data[{{$index}}][sks]" value="{{$course['sks']}}">
+                  <input type="hidden" name="data[{{$index}}][semester]" value="{{$course['semester']}}">
+                  <input type="hidden" name="data[{{$index}}][jenis]" value="{{$course['jenis']}}">
+                @endforeach
+                <div id="modalKonfirmasiUpload" class="modal-custom" style="display:none;">
+                  <div class="modal-custom-backdrop"></div>
+                  <div class="modal-custom-content">
+                    <div class="modal-custom-header">
+                      <span class="text-lg-bd">Tunggu Sebentar</span>
+                      <img src="{{ asset('assets/icon-caution.svg')}}" alt="icon-caution">
+                    </div>
+                    <div class="modal-custom-body">
+                      <div>Apakah anda yakin untuk menyimpan Mata Kuliah dari (csv/xlsx)?</div>
+                    </div>
+                    <div class="modal-custom-footer">
+                      <button type="button" class="button button-clean" id="btnCekKembaliSebelumHapus">Cek Kembali</button>
+                      <button type="submit" class="button button-outline" id="btnSimpan">Ya, Simpan</button>
                     </div>
                   </div>
-                </form>
-            </x-container>
+                </div>
+              </form>
         </div>
     </div>
 @endsection

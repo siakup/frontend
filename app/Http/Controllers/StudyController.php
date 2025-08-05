@@ -25,6 +25,21 @@ class StudyController extends Controller
       return view('study.index', get_defined_vars());
     }
 
+    public function create(Request $request)
+    {
+      return view('study.create', get_defined_vars());
+    }
+
+    public function edit(Request $request, $id)
+    {
+      return view('study.edit', get_defined_vars());
+    }
+
+    public function view(Request $request, $id)
+    {
+      return view('study.view', get_defined_vars());
+    }
+
     public function upload(Request $request)
     {
       return view('study.upload', get_defined_vars());
@@ -116,11 +131,6 @@ class StudyController extends Controller
     public function send(Request $request, $id) 
     {
       return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
-    } 
-
-    public function edit(Request $request, $id)
-    {
-        return view('academics.calendar.edit', get_defined_vars());
     }
 
     public function update(Request $request, $id)

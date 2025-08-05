@@ -8,7 +8,7 @@
 
 @section('css')
 <style>
-    .content-card{
+    .content-card {
         display: flex;
         padding: 20px 20px;
         flex-direction: column;
@@ -16,6 +16,12 @@
         gap: 10px;
         flex-shrink: 0;
         align-self: stretch;
+    }
+
+    .content-card .title {
+      display: flex;
+      align-items: center;
+      justify-items: center;
     }
 
     .content-inside-card{
@@ -67,6 +73,15 @@
         margin-right: 0;
         margin-left: 0;
         flex: 1;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+    
+    .upload-card .drop-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     .upload-area-title {
@@ -271,7 +286,7 @@
         <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Mata Kuliah
     </a>
     <div class="content-card">
-        <div class="text-lg-bd">
+        <div class="text-lg-bd title">
             <span>Impor Mata Kuliah</span>
             <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
@@ -290,7 +305,7 @@
                     @csrf
                     <input type="hidden" name="filename" id="filenameInput">
                     <div class="upload-card">
-                        <div class="text-md-bd">
+                        <div class="text-md-bd drop-label">
                             <img src="{{ asset('assets/icon-upload-gray-600.svg') }}" alt="upload" style="height: 1.5em; width: auto; margin-bottom: 8px;"><br>
                             Tarik & letakkan file di sini
                         </div>
