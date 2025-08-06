@@ -18,6 +18,12 @@
             align-self: stretch;
         }
 
+        .content-card .title {
+          display: flex;
+          align-items: center;
+          justify-items: center;
+        }
+
         .content-inside-card {
             margin: 0 auto 0 auto;
             display: block;
@@ -67,6 +73,15 @@
             margin-right: 0;
             margin-left: 0;
             flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .upload-card .drop-label {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
 
         .upload-area-title {
@@ -275,7 +290,7 @@
         <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> View Event Kalender Akademik
     </a>
     <div class="content-card">
-        <div class="text-lg-bd">
+        <div class="text-lg-bd title">
             <span>Impor Event Kalender Akademik</span>
             <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
@@ -294,7 +309,7 @@
                         @csrf
                         <input type="hidden" name="filename" id="filenameInput">
                         <div class="upload-card">
-                            <div class="text-md-bd">
+                            <div class="text-md-bd drop-label">
                                 <img src="{{ asset('assets/icon-upload-gray-600.svg') }}" alt="upload"
                                     style="height: 1.5em; width: auto; margin-bottom: 8px;"><br>
                                 Tarik & letakkan file di sini

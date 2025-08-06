@@ -95,10 +95,10 @@
                             </x-table-cell>
                             <x-table-cell>
                                 <div class="flex gap-3 justify-center">
-                                    <a href="{{ route('subject.view') }}" class="">
+                                    <a href="{{ route('study.view', ['id' => 1]) }}" class="">
                                         <x-button.action type="view" label="Lihat" />
                                     </a>
-                                    <a href="{{ route('subject.edit') }}" class="">
+                                    <a href="{{ route('study.edit', ['id' => 1]) }}" class="">
                                         <x-button.action type="edit" label="Edit" />
                                     </a>
                                     <!-- Tombol Delete -->
@@ -128,9 +128,11 @@
 
             <!-- Action Buttons -->
             <div class="flex justify-end items-center gap-5">
-                <x-button.secondary type="button" label="Unggah Mata Kuliah"
-                    icon="{{ asset('assets/icon-upload-red-500.svg') }}" iconPosition="right" />
-                <a href="{{ route('subject.create') }}">
+                <a href="{{ route('study.upload') }}">
+                  <x-button.secondary type="button" label="Unggah Mata Kuliah"
+                      icon="{{ asset('assets/icon-upload-red-500.svg') }}" iconPosition="right" />
+                </a>
+                <a href="{{ route('study.create') }}">
                     <x-button.primary type="button" label="Tambah Mata Kuliah"
                         icon="{{ asset('assets/icon-plus-white.svg') }}" iconPosition="right" />
                 </a>

@@ -2,7 +2,7 @@
 
 namespace App\Endpoint;
 
-class EventCalendarService
+class CourseService
 {
     private static $instance = null;
 
@@ -23,22 +23,11 @@ class EventCalendarService
 
     public function url()
     {
-        return config('endpoint.calendar.url') . '/api/calendar';
+        return config('endpoint.course.url') . '/api/course';
     }
-
-    public function getListAllPeriode()
+    public function eventUrl($id)
     {
-        return $this->url() . '/list';
-    }
-
-    public function eventUrl($idPeriode)
-    {
-        return $this->url() . '/event/' . $idPeriode;
-    }
-
-    public function store()
-    {
-        return $this->url() . '/store';
+        return $this->url() . '/' . $id;
     }
 
     public function bulkStore()

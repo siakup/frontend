@@ -223,7 +223,7 @@
         @include('academics.layouts.navbar-academic')
         <div class="academics-slicing-content content-card">
             <div class="academics-menu">
-                <button onclick="window.location.href='{{ route('periode.create') }}'" class="button button-outline">
+                <button onclick="window.location.href='{{ route('academics-periode.create') }}'" class="button button-outline">
                     Tambah Periode Akademik
                 </button>
             </div>
