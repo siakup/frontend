@@ -7,11 +7,11 @@
         <div class="flex flex-col gap-5" x-data="{ itemToDelete: null }" x-cloak>
             <!-- Search and Filters -->
             <div
-                class="p-5 flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-200 rounded-3xl">
+                class="p-5 flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-300 rounded-3xl">
                 <!-- Search Input -->
                 <div class="w-full md:w-1/3">
-                    <input type="text" wire:model.live.debounce.300ms="search"
-                        class="w-full border border-gray-300 rounded-lg px-4 py-2" placeholder="Cari mata kuliah...">
+                    <x-form.input placeholder="Kode Mata Kuliah / Nama Mata Kuliah / Jenis Mata Kuliah"
+                        iconUrl="{{ asset('assets/icon-search.svg') }}" />
                 </div>
 
                 <!-- Filter and Sort Buttons -->
@@ -55,17 +55,17 @@
                 <x-table-head>
                     <x-table-row>
                         <x-table-header wire:click="sort('kode')" class="cursor-pointer">
-                            Kode @if ($sortBy === 'kode')
+                            Kode Mata Kuliah @if ($sortBy === 'kode')
                                 ({{ $sortDirection === 'asc' ? '↑' : '↓' }})
                             @endif
                         </x-table-header>
                         <x-table-header wire:click="sort('nama')" class="cursor-pointer">
-                            Nama @if ($sortBy === 'nama')
+                            Nama Mata Kuliah @if ($sortBy === 'nama')
                                 ({{ $sortDirection === 'asc' ? '↑' : '↓' }})
                             @endif
                         </x-table-header>
                         <x-table-header wire:click="sort('sks')" class="cursor-pointer">
-                            SKS @if ($sortBy === 'sks')
+                            Jumlah SKS @if ($sortBy === 'sks')
                                 ({{ $sortDirection === 'asc' ? '↑' : '↓' }})
                             @endif
                         </x-table-header>
@@ -74,7 +74,7 @@
                                 ({{ $sortDirection === 'asc' ? '↑' : '↓' }})
                             @endif
                         </x-table-header>
-                        <x-table-header>Jenis</x-table-header>
+                        <x-table-header>Jenis Mata Kuliah</x-table-header>
                         <x-table-header>Aksi</x-table-header>
                     </x-table-row>
                 </x-table-head>
