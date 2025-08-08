@@ -12,7 +12,10 @@
 
 @section('javascript')
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
 @endsection
+
+{{-- END --}}
 
 
 @section('content')
@@ -308,12 +311,65 @@
         </x-container>
 
         <x-container variant="content">
-            <div class="flex justify-between">
+            <div class="flex justify-between mb-5" x-data="{ showTambahPrasyaratModal: false }">
                 <x-typography variant="body-medium-bold" class="mb-5">Mata Kuliah Prasyarat</x-typography>
-                <x-button.primary label="Tambah Mata Kuliah Prasyarat" />
+                <x-button.primary label="Tambah Mata Kuliah Prasyarat"
+                    x-on:click="$dispatch('open-modal', {id: 'tambah-prasyarat-modal'})" />
             </div>
 
             {{-- TODO: Table prasyarat --}}
+            <!-- Table -->
+            <x-table>
+                <x-table-head>
+                    <x-table-row>
+                        <x-table-header>
+                            Kode Mata Kuliah
+                        </x-table-header>
+                        <x-table-header>
+                            Nama Mata Kuliah Prasyarat
+                        </x-table-header>
+                        <x-table-header>
+                            Tipe Prasyarat
+                        </x-table-header>
+                        <x-table-header>Aksi</x-table-header>
+                    </x-table-row>
+                </x-table-head>
+
+                <x-table-body x-data="{ showDeleteConfirmation: false, item: null }">
+                    @if (count($addedPrasyarat) > 0)
+                        @foreach ($addedPrasyarat as $matkul)
+                            <x-table-row :odd="$loop->odd" :last="$loop->last">
+                                <x-table-cell>{{ $matkul['kode'] }}</x-table-cell>
+                                <x-table-cell>{{ $matkul['nama'] }}</x-table-cell>
+                                <x-table-cell>{{ $matkul['tipe'] }}</x-table-cell>
+                                <x-table-cell>
+                                    <div class="flex gap-3 justify-center">
+                                        <a href="{{ route('subject.edit') }}" class="">
+                                            <x-button.action type="edit" label="Edit" />
+                                        </a>
+                                        <x-button.action type="delete" label="Hapus"
+                                            x-on:click="
+                            $dispatch('open-modal', {
+                                id: 'delete-confirmation',
+                                detail: {
+                                    id: '{{ $matkul['kode'] }}',
+                                    name: '{{ $matkul['nama'] }}'
+                                }
+                            });
+                        " />
+                                    </div>
+                                </x-table-cell>
+                            </x-table-row>
+                        @endforeach
+                    @else
+                        <x-table-row>
+                            <x-table-cell colspan="6" class="text-center py-4">
+                                Tidak ada data prasyarat yang ditambahkan
+                            </x-table-cell>
+                        </x-table-row>
+                    @endif
+                </x-table-body>
+            </x-table>
         </x-container>
 
         <div x-data="{ showCancelConfirm: false, showSaveConfirm: false }">
@@ -328,37 +384,121 @@
                     <x-button.primary label="Simpan" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})" />
                 </div>
             </x-container>
+        </div>
 
-            <!-- Modal Konfirmasi Batal -->
-            <x-modal.confirmation id="cancel-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan"
-                cancelText="Kembali">
-                <p>Apakah Anda yakin ingin membatalkan tambah mata kuliah?</p>
+    </div>
+@endsection
 
-                <div
-                    x-on:confirmed.window="
+@section('modals')
+    <div x-data class="text-gray-800">
+        <!-- Modal Konfirmasi Batal -->
+        <x-modal.confirmation id="cancel-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan"
+            cancelText="Kembali">
+            <p>Apakah Anda yakin ingin membatalkan tambah mata kuliah?</p>
+
+            <div
+                x-on:confirmed.window="
             // Aksi ketika konfirmasi batal diklik
             console.log('Perubahan dibatalkan');
             // Redirect atau reset form bisa dilakukan di sini
             window.location.href = '/'; // Contoh redirect ke home
         ">
-                </div>
-            </x-modal.confirmation>
+            </div>
+        </x-modal.confirmation>
 
-            <!-- Modal Konfirmasi Simpan -->
-            <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-                cancelText="Cek Kembali">
-                <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+        <!-- Modal Konfirmasi Simpan -->
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali">
+            <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
 
-                <div
-                    x-on:confirmed.window="
+            <div
+                x-on:confirmed.window="
             // Aksi ketika konfirmasi simpan diklik
             console.log('Data disimpan');
             // Submit form atau AJAX request bisa dilakukan di sini
             document.getElementById('form-id').submit(); // Contoh submit form
         ">
-                </div>
-            </x-modal.confirmation>
-        </div>
+            </div>
+        </x-modal.confirmation>
 
+        <!-- Modal Konfirmasi Hapus Prasyarat Mata Kuliah -->
+        <x-modal.confirmation iconUrl="{{ asset('assets/icon-delete-gray-800.svg') }}" id="delete-confirmation"
+            title="Hapus Daftar Mata Kuliah" confirmText="Ya, Hapus" cancelText="Batal"
+            x-on:open-modal.window="if ($event.detail.id === 'delete-confirmation') {
+            item = $event.detail.detail;
+            show = true;
+        }">
+            <p class="text-gray-800">Apakah anda yakin ingin menghapus prasyarat mata kuliah ini?</p>
+
+            <div
+                x-on:confirmed.window="
+            // Aksi ketika konfirmasi batal diklik
+            console.log('Prasyarat mata kuliah dihapus');
+            // Redirect atau reset form bisa dilakukan di sini
+            window.location.href = '/subject/create'; 
+        ">
+            </div>
+
+        </x-modal.confirmation>
+
+        {{-- MODAL TAMBAH PRASYARAT --}}
+        <x-modal.container id="prasyarat-modal" maxWidth="7xl"
+            x-on:open-modal.window="if ($event.detail.id === 'tambah-prasyarat-modal') { show = true }">
+            <x-slot name="header">
+                <div class="w-full relative">
+                    <x-typography variant="heading-h5" class="w-full inline-block text-center text-gray-800">
+                        Daftar Mata Kuliah Prasyarat
+                    </x-typography>
+                    <button x-on:click.stop="close()"
+                        class="text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0">
+                        <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="w-[32px] h-[32px]" />
+                    </button>
+                </div>
+            </x-slot>
+
+            <div class="p-4">
+                <!-- Konten modal -->
+                <div>
+                    <x-table>
+                        <x-table-head>
+                            <x-table-row>
+                                <x-table-header></x-table-header>
+                                <x-table-header>Kode Mata Kuliah</x-table-header>
+                                <x-table-header>Nama Mata Kuliah</x-table-header>
+                                <x-table-header>SKS</x-table-header>
+                                <x-table-header>Semester</x-table-header>
+                                <x-table-header>Jenis Mata Kuliah</x-table-header>
+                                <x-table-header>Tipe Prasyarat</x-table-header>
+                            </x-table-row>
+                        </x-table-head>
+                        <x-table-body>
+                            @foreach ($prasyaratMataKuliahList as $index => $item)
+                                <x-table-row :odd="$loop->odd" :last="$loop->last">
+                                    <x-table-cell>
+                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
+                                            name="selected[]" value="{{ $item['kode'] }}">
+                                    </x-table-cell>
+                                    <x-table-cell>{{ $item['kode'] }}</x-table-cell>
+                                    <x-table-cell>{{ $item['nama'] }}</x-table-cell>
+                                    <x-table-cell>{{ $item['sks'] }}</x-table-cell>
+                                    <x-table-cell>{{ $item['semester'] }}</x-table-cell>
+                                    <x-table-cell>{{ $item['jenis'] }}</x-table-cell>
+                                    <x-table-cell>{{ $item['tipe'] }}</x-table-cell>
+                                </x-table-row>
+                            @endforeach
+
+                        </x-table-body>
+                    </x-table>
+                </div>
+            </div>
+
+            <x-slot name="footer">
+                <div class="flex justify-center gap-4 w-full">
+                    <x-pagination :currentPage="$currentPage" :totalPages="$totalPages" :perPageInput="$perPage" />
+                    <x-button.secondary label="Batal" x-on:click.stop="close()" />
+                    <x-button.primary label="Simpan" x-on:click.stop="close()" />
+                </div>
+            </x-slot>
+        </x-modal.container>
     </div>
 @endsection
