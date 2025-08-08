@@ -117,6 +117,9 @@
     <div class="modal-custom-backdrop"></div>
     <form action="{{ route('calendar.store', ['id' => $id]) }}" method="POST">
         @csrf
+        <input type="hidden" name="id_program" value="{{$id_program}}">
+        <input type="hidden" name="id_prodi" value="{{$id_prodi}}">
+        <input type="hidden" name="id_periode" value="{{$id_periode}}">
         <div class="modal-custom-content">
             <span class="text-lg-bd">Tambah Event Akademik</span>
             <div class="modal-custom-body">
@@ -129,8 +132,8 @@
                         </button>
                         <div id="eventList" class="sort-dropdown select" style="display: none;">
                             @foreach ($eventAkademik as $event)
-                                <div class="dropdown-item" data-event="{{ $event['id_event'] }}">
-                                    {{ $event['name_event'] }}
+                                <div class="dropdown-item" data-event="{{ $event->id }}">
+                                    {{ $event->nama_event }}
                                 </div>
                             @endforeach
                         </div>

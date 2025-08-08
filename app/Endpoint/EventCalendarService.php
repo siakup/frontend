@@ -23,26 +23,41 @@ class EventCalendarService
 
     public function url()
     {
-        return config('endpoint.calendar.url') . '/api/calendar';
+        return config('endpoint.academics.url') . '/api';
+    }
+
+    public function getListStudyProgram()
+    {
+      return config('endpoint.users.url') . '/api/institutions/list-by-user';
+    }
+
+    public function getListUniversityProgram()
+    {
+      return config('endpoint.users.url') . '/api/programs/list-by-user';
     }
 
     public function getListAllPeriode()
     {
-        return $this->url() . '/list';
+        return $this->url() . '/period/';
     }
 
-    public function eventUrl($idPeriode)
+    public function eventUrl()
     {
-        return $this->url() . '/event/' . $idPeriode;
+        return $this->url() . '/calendars';
     }
 
     public function store()
     {
-        return $this->url() . '/store';
+        return $this->url() . '/calendars';
     }
 
     public function bulkStore()
     {
         return $this->url() . '/bulk-store';
+    }
+
+    public function edit($id)
+    {
+      return $this->url() . '/calendars' . '/' . $id;
     }
 }
