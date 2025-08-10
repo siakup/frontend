@@ -34,4 +34,9 @@ class CourseService
     {
         return $this->url() . '/bulk-store';
     }
+
+    public function getMataKuliahPrasyarat()
+    {
+        return $this->url() . '/mata-kuliah-prasyarat';
+    }
 }

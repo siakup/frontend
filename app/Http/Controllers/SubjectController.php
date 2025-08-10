@@ -4,8 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
+use App\Traits\ApiResponse;
+
+use Exception;
+
 class SubjectController extends Controller
 {
+
+    use ApiResponse;
+
+
     /**
      * Display a listing of the resource.
      */
@@ -61,4 +70,6 @@ class SubjectController extends Controller
     {
         //
     }
+
+
 }
