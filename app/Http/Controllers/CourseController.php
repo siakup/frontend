@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+use App\Endpoint\CourseService;
+
+use App\Traits\ApiResponse;
+
+use Exception;
+
 class CourseController extends Controller
 {
+    use ApiResponse;
+
     public function index()
     {
         return view('courses.index', compact('courses'));
@@ -46,5 +53,22 @@ class CourseController extends Controller
         return redirect()->route('courses.index')->with('success', 'Course berhasil dihapus.');
     }
 
-    public function getAllKurikulum(Request $request) {}
+    public function getListMataKuliah(Request $request)
+    {
+        $prodi = $request->input('prodi');
+
+        $params = compact('prodi');
+
+        $url = CourseService::getInstance()->getMataKuliahPrasyarat();
+        $response = getCurl($url, $params, getHeaders());
+
+        if ($request->ajax()) {
+            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+        }
+
+        return view('subject.index', [
+            'data' => $response,
+            'prodi' => $prodi,
+        ]);
+    }
 }

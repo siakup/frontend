@@ -36,7 +36,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Route::delete('/event/delete/{id}', [AcademicController::class, 'eventDelete'])->name('academics-event.delete');
   });
 
-//   Route::group(['prefix' => 'calendar'], function () {
-//     Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
-//   });
+  //   Route::group(['prefix' => 'calendar'], function () {
+  //     Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
+  //   });
 });
