@@ -27,11 +27,11 @@ class CalendarController extends Controller
   use ApiResponse;
 
   public function index(Request $request)
-  { 
+  {
     $url = PeriodAcademicService::getInstance()->getListAllPeriode();
-    
+
     $response = getCurl($url, null, getHeaders());
-    
+
     if (!isset($response->data)) {
       if ($request->ajax()) {
         return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
@@ -57,22 +57,22 @@ class CalendarController extends Controller
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
     $programStudiList = $responseProgramStudiList->data;
     $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
-    
+
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
     $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->id);
-    
+
     $id_periode = $id;
 
     $params = compact('id_program', 'id_prodi', 'id_periode');
     $url = EventCalendarService::getInstance()->eventUrl();
     $response = getCurl($url, $params, getHeaders());
-    
+
     $urlPeriod = PeriodAcademicService::getInstance()->periodUrl($id);
     $responsePeriod = getCurl($urlPeriod, '', getHeaders());
     $period = $responsePeriod->data->periode;
-    
+
     $url = EventAcademicService::getInstance()->baseEventURL();
     $responseEvent = getCurl($url, $params, getHeaders());
     $eventAkademik = $responseEvent->data;
@@ -82,7 +82,6 @@ class CalendarController extends Controller
         return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
       }
       $data = [];
-
     } else {
       $data = $response->data;
     }
@@ -112,10 +111,11 @@ class CalendarController extends Controller
       'id_program' => $validated['id_program'],
       'id_prodi' => $validated['id_prodi'],
       'id_periode' => $validated['id_periode'],
+      'status' => 'active',
       'tanggal_awal' => DateTime::createFromFormat('d-m-Y, H:i', $validated['tanggal_mulai'])->format('Y-m-d H:i:s'),
       'tanggal_akhir' => DateTime::createFromFormat('d-m-Y, H:i', $validated['tanggal_selesai'])->format('Y-m-d H:i:s'),
     ];
-    
+
     $url = EventCalendarService::getInstance()->store();
     $response = postCurl($url, $data, getHeaders());
 
@@ -250,7 +250,7 @@ class CalendarController extends Controller
       'status' => $validated['status']
     ];
 
-    
+
     $url = EventCalendarService::getInstance()->edit($request->id_calendar);
     $response = putCurl($url, $data, getHeaders());
 
