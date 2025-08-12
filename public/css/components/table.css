@@ -28,31 +28,31 @@
 }
 
 .table {
-    width: 100%;
-    border-collapse: collapse;
-    border-radius: 12px 12px 0px 0px;
-    overflow: hidden;
-    table-layout: fixed;
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border-radius: 12px 12px 0px 0px !important;
+    overflow: hidden !important;
+    table-layout: fixed !important;
 }
 
 .table thead {
-    background: linear-gradient(90deg, #FFF 0%, #FFECED 100%);
-    border-radius: 0px 0px 0 0;
-    width: 100%;
-    border-bottom: 1px solid var(--Surface-Border-Primary, #D9D9D9);
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    background: linear-gradient(90deg, #FFF 0%, #FFECED 100%) !important;
+    border-radius: 0px 0px 0 0 !important;
+    width: 100% !important;
+    border-bottom: 1px solid var(--Surface-Border-Primary, #D9D9D9) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1 !important;
 }
 
 .table thead tr,
-.table tr {
-    display: grid;
-    grid-template-columns: repeat(var(--table-cols, 4), 1fr);
-    width: 100%;
-    align-items: center;
-    margin: 0;
-    padding: 0;
+.table tbody tr {
+    display: grid !important;
+    grid-template-columns: repeat(var(--table-cols, 4), 1fr) !important;
+    width: 100% !important;
+    align-items: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 .table th, .table td {
@@ -62,7 +62,7 @@
     font-size: 14px;
     font-weight: 400;
     padding: 16px 8px;
-    border-bottom: 1px solid var(--Surface-Border-Primary, #D9D9D9);
+    /* border-bottom: 1px solid var(--Surface-Border-Primary, #D9D9D9); */
     vertical-align: middle;
 }
 
@@ -84,8 +84,8 @@
 }
 
 .table thead tr,
-.table tr {
-    display: table-row; 
+.table tbody tr {
+    display: table-row !important; 
 }
 
 /* Utility: set --table-cols on .table for different column counts */

@@ -21,7 +21,8 @@
             justify-items: center;
             text-decoration: none;
             gap: 2px;
-            font-size: 12px;
+            font-size: 12px !important;
+            width: auto !important;
         }
 
         .center .btn-delete-event-academic {
@@ -114,7 +115,6 @@
 
         #btnUpload:hover img {
             filter: brightness(0) invert(1);
-
         }
     </style>
 @endsection
@@ -366,7 +366,7 @@
                 </div>
             </div>
             <div class="table-responsive">
-                <table class="table" id="list-user" style="--table-cols:9">
+                <table class="table" id="list-user" style="--table-cols:10">
                     <thead>
                         <tr>
                             <th style="width: 45%;">Nama Event</th>
@@ -394,7 +394,8 @@
                                 <td>{{ $event['dosen_on'] ? 'Ya' : 'Tidak' }}</td>
                                 <td>
                                     <span
-                                        class="{{ $event['status'] }}-lable status-lable">{{ $event['status'] === 'active' ? 'Aktif' : 'Tidak Aktif' }}</span>
+                                        class="{{ $event['status'] }}-lable status-lable">{{ $event['status'] === 'active' ? 'Aktif' : 'Tidak Aktif' }}
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="center">
