@@ -106,9 +106,22 @@ class CourseController extends Controller
 
     public function delete($id)
     {
+        $url = CourseService::getInstance()->courseUrl($id);
+        $response = deleteCurl($url, getHeaders());
 
-        return redirect()->route('courses.index')->with('success', 'Course berhasil dihapus.');
+        if (isset($response['status']) && $response['status'] == 'success') {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Mata kuliah berhasil dihapus'
+            ], 200);
+        }
+
+        return response()->json([
+            'status' => 'error',
+            'message' => $response['message'] ?? 'Gagal menghapus mata kuliah'
+        ], 400);
     }
+
 
     public function getListMataKuliah(Request $request)
     {
