@@ -25,7 +25,7 @@ class CourseService
     {
         return config('endpoint.course.url') . '/api/course';
     }
-    public function eventUrl($id)
+    public function courseUrl($id)
     {
         return $this->url() . '/' . $id;
     }
