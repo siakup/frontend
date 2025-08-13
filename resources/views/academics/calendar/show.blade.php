@@ -51,7 +51,13 @@
 
         .sort-dropdown.study {
             top: 11%;
-            left: 25%;
+            left: 74%;
+            z-index: 999;
+        }
+
+        .sort-dropdown.campus {
+            top: 21%;
+            left: 19%;
             z-index: 999;
         }
 
@@ -388,7 +394,7 @@
                     <span>{{ count(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; })) > 0 ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "" }}</span>
                     <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
                 </button>
-                <div id="sortDropdown" class="sort-dropdown left campus" style="display: none;">
+                <div id="sortDropdown" class="sort-dropdown campus" style="display: none;">
                   @foreach($programPerkuliahanList as $programPerkuliahan)
                     <div class="dropdown-item" data-sort="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
                   @endforeach
@@ -400,7 +406,7 @@
                     <span>{{ count(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; })) > 0 ? array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama : ""}}</span>
                     <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
                 </button>
-                <div id="sortDropdown" class="sort-dropdown right study" style="display: none;">
+                <div id="sortDropdown" class="sort-dropdown study" style="display: none;">
                   @foreach($programStudiList as $programStudi)
                     <div class="dropdown-item" data-sort="{{$programStudi->id}}">{{$programStudi->nama}}</div>
                   @endforeach
@@ -410,7 +416,7 @@
         </div>
         <div class="table-responsive">
             <div class="table-title">Event Kalender Akademik</div>
-            <table class="table" id="list-user" style="--table-cols:7;">
+            <table class="table" id="list-user" style="--table-cols:4;">
                 <thead>
                     <tr>
                         <th>Nama Event</th>
