@@ -256,6 +256,15 @@
                 }
             });
 
+            document.addEventListener('click', (e) => {
+                const dropdownCampus = e.target.closest('#CampusProgramSection');
+                if (dropdownCampus == null) {
+                    sortDropdownCampusProgram.style.display = 'none'
+                    sortBtnCampusProgram.querySelector('img').src =
+                        "{{ asset('assets/active/icon-arrow-down.svg') }}";
+                }
+            });
+
             // Toggle dropdown on button click
             sortBtnCampusProgram.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -412,7 +421,7 @@
                   @endforeach
                 </div>
             </div>
-        </div>
+          </div>
         </div>
         <div class="table-responsive">
             <div class="table-title">Event Kalender Akademik</div>
