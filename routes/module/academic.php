@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\StudyController;
 
 // Route::group(['middleware' => ['auth']], function () {
@@ -55,5 +56,11 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/upload', [StudyController::class, 'upload'])->name('study.upload');
     Route::post('/upload', [StudyController::class, 'uploadResult'])->name('study.upload-result');
     Route::post('/save-upload', [StudyController::class, 'uploadStore'])->name('study.save-upload');
+  });
+
+  Route::group(['prefix' => 'kurikulum'], function () {
+    Route::get('/daftar-kurikulum', [CurriculumController::class, 'curriculumList'])->name('curriculum.list');
+    Route::get('/struktur-kurikulum')->name('curriculum.structure');
+    Route::get('/ekuivalensi-kurikulum')->name('curriculum.equivalence');
   });
 });

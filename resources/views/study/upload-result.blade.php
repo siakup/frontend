@@ -80,7 +80,7 @@
             Unggah Mata Kuliah
         </x-typography>
         <div class="flex flex-col gap-5">
-            <x-container variant="content" class="flex flex-col gap-5">
+            <x-container variant="content" class="flex flex-col gap-5 overflow-scroll max-h-[70vh] min-h-[50vh]">
                 <x-typography variant="heading-h6" class="mb-2 title">
                     Impor Mata Kuliah
                     <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
