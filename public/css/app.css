@@ -279,7 +279,7 @@
     flex-direction: column;
     align-items: stretch;
     margin: 0 16px 0 16px !important;
-    border-top: solid 1px #f39194;
+    border-top: solid 1px #f39194 !important;
 }
 
 .academics-menu {

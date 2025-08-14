@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Daftar Kurikulum')
+@section('title', 'Ekuivalensi Kurikulum')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Daftar Kurikulum</div>
@@ -11,9 +11,13 @@
     .card-header.option-list {
         justify-content: left;
     }
-    .sort-dropdown {
-      top: 16.2% !important;
-      left: 34.2% !important;
+    .sort-dropdown.campus {
+      top: 23.2% !important;
+      left: 23.7% !important;
+    }
+    .sort-dropdown.study {
+      top: 23.2% !important;
+      left: 49.1% !important;
     }
     .center {
         display: flex;
@@ -50,6 +54,18 @@
     document.addEventListener('DOMContentLoaded', function() {
       const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
       const sortDropdownCampusProgram = document.querySelector('#sortDropdown.campus');
+      const sortBtnStudyProgram = document.querySelector('#sortButton.study');
+      const sortDropdownStudyProgram = document.querySelector('#sortDropdown.study');
+      
+      document.addEventListener('click', (e) => {
+          const dropdownStudy = e.target.closest('#StudyProgramSection');
+          if (dropdownStudy == null) {
+              sortDropdownStudyProgram.style.display = 'none'
+              sortBtnStudyProgram.querySelector('img').src =
+                  "{{ asset('assets/active/icon-arrow-down.svg') }}";
+          }
+      });
+
       sortBtnCampusProgram.addEventListener('click', function(e) {
           e.stopPropagation();
           sortDropdownCampusProgram.style.display = (sortDropdownCampusProgram.style.display ===
@@ -77,6 +93,26 @@
                   "{{ asset('assets/active/icon-arrow-down.svg') }}";
           }
       });
+
+      sortBtnStudyProgram.addEventListener('click', function(e) {
+          e.stopPropagation();
+          sortDropdownStudyProgram.style.display = (sortDropdownStudyProgram.style.display ===
+              'block') ? 'none' : 'block';
+          sortBtnStudyProgram.querySelector('img').src = (sortBtnStudyProgram.querySelector('img')
+                  .src === "{{ asset('assets/active/icon-arrow-up.svg') }}") ?
+              "{{ asset('assets/active/icon-arrow-down.svg') }}" :
+              "{{ asset('assets/active/icon-arrow-up.svg') }}";
+      });
+      sortDropdownStudyProgram.querySelectorAll('.dropdown-item').forEach(item => {
+          item.addEventListener('click', function() {
+              sortDropdownStudyProgram.querySelectorAll('.dropdown-item').forEach(i => i
+                  .classList.remove('active'));
+              const url = new URL(window.location.href);
+              const sortKey = this.getAttribute('data-sort');
+              url.searchParams.set('program_studi', sortKey);
+              window.location.href = url.toString();
+          });
+      });
     });
   </script>
 @endsection
@@ -89,7 +125,7 @@
     @include('curriculums.layout.navbar-curriculum')
     <div class="academics-slicing-content content-card">
       <x-typography variant="heading-h6" class="mb-2 p-[20px]">
-        Daftar Kurikulum - Teknik Kimia
+        Ekuivalensi Mata Kuliah
       </x-typography>
       <div class="card-header option-list">
         <div class="card-header center" id="CampusProgramSection">
@@ -104,6 +140,18 @@
               @endforeach
             </div>
         </div>
+        <div class="card-header" id="StudyProgramSection">
+            <div class="page-title-text sub-title">Program Studi</div>
+            <button class="button-clean study" id="sortButton">
+                <span>{{ count(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; })) > 0 ? array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama : ""}}</span>
+                <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
+            </button>
+            <div id="sortDropdown" class="sort-dropdown study" style="display: none;">
+              @foreach($programStudiList as $programStudi)
+                <div class="dropdown-item" data-sort="{{$programStudi->id}}">{{$programStudi->nama}}</div>
+              @endforeach
+            </div>
+        </div>
       </div>
       <x-container class="border-none">
         <div class="flex flex-col gap-5">
@@ -111,40 +159,33 @@
               <x-table-head>
                   <x-table-row>
                       <x-table-header class="cursor-pointer">
-                          Nama
+                          Kode Lama
                       </x-table-header>
                       <x-table-header class="cursor-pointer">
-                          Program Perkuliahan
+                          Matkul Kurikulum Lama
                       </x-table-header>
                       <x-table-header class="cursor-pointer">
-                          Deskripsi
+                          SKS Lama
                       </x-table-header>
                       <x-table-header class="cursor-pointer">
-                          Total SKS
+                          Kode Baru
                       </x-table-header>
-                      <x-table-header>Status</x-table-header>
+                      <x-table-header>Matkul Kurikulum Baru</x-table-header>
+                      <x-table-header>SKS Baru</x-table-header>
+                      <x-table-header>Program Studi</x-table-header>
                       <x-table-header>Aksi</x-table-header>
                   </x-table-row>
               </x-table-head>
               <x-table-body>
                   @forelse ($data as $d)
                       <x-table-row>
-                          <x-table-cell>{{ $d['nama'] }}</x-table-cell>
-                          <x-table-cell class="{{ 
-                              $d['program_perkuliahan'] == 'Double Degree' ? 'bg-[#E5EDAB]' : 
-                              ($d['program_perkuliahan'] == 'International' ? 'bg-[#99D8FF]' : 
-                              ($d['program_perkuliahan'] == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
-                          }}"
-                          >{{ $d['program_perkuliahan'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['deskripsi'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['total_sks'] }}</x-table-cell>
-                          <x-table-cell>
-                            @if ($d['status'] === 'active')
-                                <span class="badge badge-active" style="min-width:max-content">Aktif</span>
-                            @else
-                                <span class="badge badge-inactive" style="min-width:max-content">Tidak Aktif</span>
-                            @endif
-                          </x-table-cell>
+                          <x-table-cell>{{ $d['kode_lama'] }}</x-table-cell>
+                          <x-table-cell>{{ $d['matkul_kurikulum_lama'] }}</x-table-cell>
+                          <x-table-cell>{{ $d['sks_lama'] }}</x-table-cell>
+                          <x-table-cell>{{ $d['kode_baru'] !== null ? $d['kode_baru'] : '-' }}</x-table-cell>
+                          <x-table-cell>{{ $d['matkul_kurikulum_baru'] !== null ? $d['matkul_kurikulum_baru'] : '-' }}</x-table-cell>
+                          <x-table-cell>{{ $d['sks_baru'] !== null ? $d['sks_baru'] : '-' }}</x-table-cell>
+                          <x-table-cell>{{ $d['program_studi'] }}</x-table-cell>
                           <x-table-cell>
                             <div class="center">
                               <button type="button" class="btn-icon btn-view-periode-academic"
@@ -177,8 +218,20 @@
         </div>
       </x-container>
       <div class="right">
-          <a href="" class="button button-outline">Tambah Kurikulum</a>
+        <a href="" class="button-clean" id="">
+            <span>Unggah Ekuivalensi</span>
+            <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
+        </a>
+        <a href="" class="button button-outline">Tambah Ekuivalensi</a>
       </div>
     </div>
+    @if (isset($data))
+        @include('partials.pagination', [
+            'currentPage' => 1,
+            'lastPage' => 3,
+            'limit' => 10,
+            'routes' => route('curriculum.equivalence'),
+        ])
+    @endif
   </div>
 @endsection

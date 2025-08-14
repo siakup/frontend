@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Daftar Kurikulum')
+@section('title', 'Kurikulum Mata Kuliah Pilihan')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Daftar Kurikulum</div>
@@ -50,6 +50,9 @@
     document.addEventListener('DOMContentLoaded', function() {
       const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
       const sortDropdownCampusProgram = document.querySelector('#sortDropdown.campus');
+      const detailClickable = document.querySelectorAll('.detail-clickable');
+      const showDetailClickable = document.querySelectorAll('.detail-show');
+
       sortBtnCampusProgram.addEventListener('click', function(e) {
           e.stopPropagation();
           sortDropdownCampusProgram.style.display = (sortDropdownCampusProgram.style.display ===
@@ -77,6 +80,35 @@
                   "{{ asset('assets/active/icon-arrow-down.svg') }}";
           }
       });
+
+      function resetDetail(showDetailClickable) {
+        showDetailClickable.map(detail => {
+          const image = detail.parentElement.querySelector('.detail-clickable img');
+          console.log(image);
+          if(detail.classList.contains('grid')) {
+            detail.classList.remove('grid');
+            detail.classList.add('hidden');
+            image.src = "{{asset('assets/icon-arrow-down-black-20.svg')}}"
+          }
+        });
+      }
+
+      Array.from(detailClickable).map(clickable => {
+        clickable.addEventListener('click', (e) => {
+          const image = e.target.querySelector('img');
+          const sibling = e.target.parentElement.querySelector('.detail-show');
+          resetDetail(Array.from(showDetailClickable).filter(detail => detail !== sibling));
+          if(sibling.classList.contains('hidden')) {
+            sibling.classList.remove('hidden');
+            sibling.classList.add('grid');
+            image.src = "{{asset('assets/icon-arrow-up-black-20.svg')}}"
+          } else {
+            sibling.classList.remove('grid');
+            sibling.classList.add('hidden');
+            image.src = "{{asset('assets/icon-arrow-down-black-20.svg')}}"
+          }
+        });
+      });
     });
   </script>
 @endsection
@@ -89,7 +121,7 @@
     @include('curriculums.layout.navbar-curriculum')
     <div class="academics-slicing-content content-card">
       <x-typography variant="heading-h6" class="mb-2 p-[20px]">
-        Daftar Kurikulum - Teknik Kimia
+        Struktur Kurikulum
       </x-typography>
       <div class="card-header option-list">
         <div class="card-header center" id="CampusProgramSection">
@@ -105,77 +137,30 @@
             </div>
         </div>
       </div>
-      <x-container class="border-none">
-        <div class="flex flex-col gap-5">
-          <x-table>
-              <x-table-head>
-                  <x-table-row>
-                      <x-table-header class="cursor-pointer">
-                          Nama
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Program Perkuliahan
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Deskripsi
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Total SKS
-                      </x-table-header>
-                      <x-table-header>Status</x-table-header>
-                      <x-table-header>Aksi</x-table-header>
-                  </x-table-row>
-              </x-table-head>
-              <x-table-body>
-                  @forelse ($data as $d)
-                      <x-table-row>
-                          <x-table-cell>{{ $d['nama'] }}</x-table-cell>
-                          <x-table-cell class="{{ 
-                              $d['program_perkuliahan'] == 'Double Degree' ? 'bg-[#E5EDAB]' : 
-                              ($d['program_perkuliahan'] == 'International' ? 'bg-[#99D8FF]' : 
-                              ($d['program_perkuliahan'] == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
-                          }}"
-                          >{{ $d['program_perkuliahan'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['deskripsi'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['total_sks'] }}</x-table-cell>
-                          <x-table-cell>
-                            @if ($d['status'] === 'active')
-                                <span class="badge badge-active" style="min-width:max-content">Aktif</span>
-                            @else
-                                <span class="badge badge-inactive" style="min-width:max-content">Tidak Aktif</span>
-                            @endif
-                          </x-table-cell>
-                          <x-table-cell>
-                            <div class="center">
-                              <button type="button" class="btn-icon btn-view-periode-academic"
-                                  data-periode-akademik="" title="Lihat">
-                                  <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
-                                  <span>Lihat</span>
-                              </button>
-                              <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                                  href=""
-                                  style="text-decoration: none; color: inherit;">
-                                  <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                                  <span style="color: #E62129">Ubah</span>
-                              </a>
-                              <button type="button" class="btn-icon btn-delete-periode-academic" data-id="" title="Hapus">
-                                  <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                                  <span>Hapus</span>
-                              </button>
-                            </div>
-                          </x-table-cell>
-                      </x-table-row>
-                  @empty
-                      <x-table-row>
-                          <x-table-cell colspan="6" class="text-center py-4">
-                              Tidak ada data ditemukan
-                          </x-table-cell>
-                      </x-table-row>
-                  @endforelse
-              </x-table-body>
-          </x-table>
-        </div>
-      </x-container>
+      @include('curriculums.structure.layout.navbar-curriculum-structure')
+      <div class="academics-slicing-content content-card" style="background-color: #E8E8E8; border-top: ">
+        @foreach($data as $d)
+          <div class="flex flex-col gap-[10px]">
+            <div class="flex py-[18px] justify-between px-[12px] detail-clickable cursor-pointer">
+              <div class="flex gap-1">
+                <h1 class="font-bold">Semester {{$d['semester']}}</h1>
+                <p>(Total {{$d['total_sks']}} SKS)</p>
+              </div>
+              <img src="{{asset('assets/icon-arrow-down-black-20.svg')}}" alt="">
+            </div>
+            <div class="hidden grid-cols-3 grid-rows-3 gap-[10px] px-[12px] detail-show">
+              @foreach($d['matkul_list'] as $matkulList)
+                <div class="w-full rounded-xl border-[#E8E8E8] bg-white p-[20px] bg-cover bg-center bg-no-repeat" style="background-image: url('/images/bg-study-list.png')">
+                  <h1 class="font-bold text-xl">{{$matkulList['nama_matkul']}}</h1>
+                  <span class="text-sm flex gap-1">
+                    <p class="font-bold">{{$matkulList['sks']}} SKS </p> | <p>{{$matkulList['kode']}}</p>
+                  </span>
+                </div>
+              @endforeach
+            </div>
+          </div>
+        @endforeach
+      </div>
       <div class="right">
           <a href="" class="button button-outline">Tambah Kurikulum</a>
       </div>
