@@ -51,7 +51,13 @@
 
         .sort-dropdown.study {
             top: 11%;
-            left: 25%;
+            left: 74%;
+            z-index: 999;
+        }
+
+        .sort-dropdown.campus {
+            top: 21%;
+            left: 19%;
             z-index: 999;
         }
 
@@ -235,31 +241,52 @@
     <script src="{{ asset('js/plugins/flatpckr.js') }}"></script>
     <script src="{{ asset('js/plugins/flatpckr-id.js') }}"></script>
     <script>
-        function sortTable(value) {
-            $.ajax({
-                url: "{{ route('calendar.index') }}",
-                method: 'GET',
-                data: {
-                    sort: value
-                },
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                success: function(response) {
-                    window.location.href = "{{ route('academics-event.index') }}" + '?sort=' +
-                        encodeURIComponent(value);
-                },
-                error: function() {
-                    $('tbody').html(
-                        '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                    );
-                }
-            });
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
+            const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
+            const sortDropdownCampusProgram = document.querySelector('#sortDropdown.campus');
             const sortBtnStudyProgram = document.querySelector('#sortButton.study');
             const sortDropdownStudyProgram = document.querySelector('#sortDropdown.study');
+
+            document.addEventListener('click', (e) => {
+                const dropdownStudy = e.target.closest('#StudyProgramSection');
+                if (dropdownStudy == null) {
+                    sortDropdownStudyProgram.style.display = 'none'
+                    sortBtnStudyProgram.querySelector('img').src =
+                        "{{ asset('assets/active/icon-arrow-down.svg') }}";
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                const dropdownCampus = e.target.closest('#CampusProgramSection');
+                if (dropdownCampus == null) {
+                    sortDropdownCampusProgram.style.display = 'none'
+                    sortBtnCampusProgram.querySelector('img').src =
+                        "{{ asset('assets/active/icon-arrow-down.svg') }}";
+                }
+            });
+
+            // Toggle dropdown on button click
+            sortBtnCampusProgram.addEventListener('click', function(e) {
+                e.stopPropagation();
+                sortDropdownCampusProgram.style.display = (sortDropdownCampusProgram.style.display ===
+                    'block') ? 'none' : 'block';
+                sortBtnCampusProgram.querySelector('img').src = (sortBtnCampusProgram.querySelector('img')
+                        .src === "{{ asset('assets/active/icon-arrow-up.svg') }}") ?
+                    "{{ asset('assets/active/icon-arrow-down.svg') }}" :
+                    "{{ asset('assets/active/icon-arrow-up.svg') }}";
+            });
+            sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(i => i
+                        .classList.remove('active'));
+                    const url = new URL(window.location.href);
+
+                    const sortKey = this.getAttribute('data-sort');
+
+                    url.searchParams.set('program_perkuliahan', sortKey);
+                    window.location.href = url.toString();
+                });
+            });
 
             sortBtnStudyProgram.addEventListener('click', function(e) {
                 e.stopPropagation();
@@ -270,14 +297,17 @@
                     "{{ asset('assets/active/icon-arrow-down.svg') }}" :
                     "{{ asset('assets/active/icon-arrow-up.svg') }}";
             });
+            sortDropdownStudyProgram.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    sortDropdownStudyProgram.querySelectorAll('.dropdown-item').forEach(i => i
+                        .classList.remove('active'));
+                    const url = new URL(window.location.href);
 
-            document.addEventListener('click', (e) => {
-                const dropdownStudy = e.target.closest('#StudyProgramSection');
-                if (dropdownStudy == null) {
-                    sortDropdownStudyProgram.style.display = 'none'
-                    sortBtnStudyProgram.querySelector('img').src =
-                        "{{ asset('assets/active/icon-arrow-down.svg') }}";
-                }
+                    const sortKey = this.getAttribute('data-sort');
+
+                    url.searchParams.set('program_studi', sortKey);
+                    window.location.href = url.toString();
+                });
             });
 
             const calendarInput = Array.from(document.getElementsByClassName('calendar-input'));
@@ -298,7 +328,7 @@
             document.addEventListener('click', function(e) {
                 const addBtn = e.target.closest('.btn-add-event');
                 const deleteBtn = e.target.closest('.btn-delete-event-academic');
-                console.log(deleteBtn);
+                
                 if (addBtn) {
                     document.getElementById('modalAddEvent').style.display = 'flex';
                 }
@@ -309,9 +339,9 @@
                 }
             });
 
-            document.getElementById('btnSimpan').addEventListener('click', function() {
-                const id = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            document.getElementById('btnHapus').addEventListener('click', function() {
+              const id = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
+              const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $.ajax({
                     url: "{{ route('calendar.delete', ['id' => 'ID_REPLACE']) }}".replace(
                         'ID_REPLACE', id),
@@ -327,7 +357,7 @@
                         successToast('Berhasil dihapus');
                         setTimeout(() => {
                             window.location.href =
-                                "{{ route('academics-event.index') }}";
+                                "{{ route('calendar.show', ['id' => 'ID_REPLACE']) }}".replace('ID_REPLACE', "{{$id}}");
                         }, 5000);
                     },
                     error: function() {
@@ -359,34 +389,43 @@
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Lihat Event Kalender Akademik - Universitas Pertamina</div>
+        <div class="page-title-text">Lihat Event Kalender Akademik - Universitas Pertamina - Periode Akademik {{$period->tahun}} - {{$period->semester}} ({{$period->semester == 1 ? 'Ganjil' : ($period->semester == 2 ? 'Genap' : 'Pendek')}})</div>
     </div>
     <a href="{{ route('calendar.index') }}" class="button-no-outline-left">
         <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Kalender Akademik
     </a>
     <div class="content-card">
         <div class="card-header option-list">
-            <div class="card-header" id="StudyProgramSection">
-                <div class="sub-title">Program Studi</div>
-                <button class="button-clean study" id="sortButton">
-                    <span>{{ empty($_GET['program_studi']) ? 'Ilmu Komputer' : ucwords(str_replace('-', ' ', strtolower($params['program_studi']))) }}</span>
+          <div class="card-header option-list">
+            <div class="card-header" id="CampusProgramSection">
+                <div class="page-title-text sub-title">Program Perkuliahan</div>
+                <button class="button-clean campus" id="sortButton">
+                    <span>{{ count(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; })) > 0 ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "" }}</span>
                     <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
                 </button>
-                <div id="sortDropdown" class="sort-dropdown study" style="display: none;">
-                    <div class="dropdown-item" data-sort="1">Ilmu Komputer</div>
-                    <div class="dropdown-item" data-sort="2">Teknik Kimia</div>
-                    <div class="dropdown-item" data-sort="3">Teknik Sipil</div>
-                    <div class="dropdown-item" data-sort="4">Teknik Industri</div>
+                <div id="sortDropdown" class="sort-dropdown campus" style="display: none;">
+                  @foreach($programPerkuliahanList as $programPerkuliahan)
+                    <div class="dropdown-item" data-sort="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
+                  @endforeach
                 </div>
             </div>
             <div class="card-header" id="StudyProgramSection">
-                <div class="sub-title">Program Studi :</div>
-                <div class="sub-title-value">2025-1</div>
+                <div class="page-title-text sub-title">Program Studi</div>
+                <button class="button-clean study" id="sortButton">
+                    <span>{{ count(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; })) > 0 ? array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama : ""}}</span>
+                    <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
+                </button>
+                <div id="sortDropdown" class="sort-dropdown study" style="display: none;">
+                  @foreach($programStudiList as $programStudi)
+                    <div class="dropdown-item" data-sort="{{$programStudi->id}}">{{$programStudi->nama}}</div>
+                  @endforeach
+                </div>
             </div>
+          </div>
         </div>
         <div class="table-responsive">
             <div class="table-title">Event Kalender Akademik</div>
-            <table class="table" id="list-user" style="--table-cols:7;">
+            <table class="table" id="list-user" style="--table-cols:4;">
                 <thead>
                     <tr>
                         <th>Nama Event</th>
@@ -398,8 +437,8 @@
                 <tbody>
                     @foreach ($data as $d)
                         @php
-                            $tanggalMulai = new DateTime($d['tanggal_mulai']);
-                            $tanggalSelesai = new DateTime($d['tanggal_selesai']);
+                            $tanggalMulai = new DateTime($d->tanggal_awal);
+                            $tanggalSelesai = new DateTime($d->tanggal_akhir);
 
                             $tglMulaiStr =
                                 $tanggalMulai->format('d') .
@@ -416,22 +455,22 @@
                                 $tanggalSelesai->format('Y, H:i');
                         @endphp
                         <tr>
-                            <td>{{ $d['name_event'] }}</td>
+                            <td>{{ $d->nama_event }}</td>
                             <td>{{ $tglMulaiStr }}</td>
                             <td>{{ $tglSelesaiStr }}</td>
                             <td>
                                 <div class="center">
-                                    <button class="btn-icon btn-edit-event-academic" data-id="{{ $d['id'] }}"
+                                    <button class="btn-icon btn-edit-event-academic" data-id="{{ $d->id }}"
                                         title="Edit" type="button">
                                         <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                                         <span>Ubah</span>
                                     </button>
-                                    <button class="btn-icon btn-delete-event-academic" data-id="{{ $d['id'] }}"
+                                    <button class="btn-icon btn-delete-event-academic" data-id="{{ $d->id }}"
                                         title="Delete" type="button">
                                         <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Delete">
                                         <span>Hapus</span>
                                     </button>
-                                    <button class="btn-icon" data-id="{{ $d['id'] }}" title="Sync" type="button">
+                                    <button class="btn-icon" data-id="{{ $d->id }}" title="Sync" type="button">
                                         <img src="{{ asset('assets/icon-sync.svg') }}" alt="Sync">
                                         <span>Sync</span>
                                     </button>
@@ -467,9 +506,10 @@
                 <div class="modal-custom-body">
                     <div>Apakah anda yakin ingin menghapus event kalender akademik ini?</div>
                 </div>
+                <meta name="csrf-token" content="{{ csrf_token() }}">
                 <div class="modal-custom-footer">
                     <button type="button" class="button button-clean" id="btnCekKembaliSebelumHapus">Batal</button>
-                    <button type="button" class="button button-outline" id="btnSimpan">Hapus</button>
+                    <button type="button" class="button button-outline" id="btnHapus">Hapus</button>
                 </div>
             </div>
         </div>

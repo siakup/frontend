@@ -5,6 +5,9 @@
     const sortEditBtnEventName = modalEditEvent.querySelector('#sortEvent');
     const sortEditDropdownEventName  = modalEditEvent.querySelector('#eventList');
     const eventNameData = modalEditEvent.querySelector('input[name="name_event"]');
+    const eventStatusData = modalEditEvent.querySelector('input[name="status"]');
+    const idCalendar = modalEditEvent.querySelector('input[name="id_calendar"]');
+    const eventAkademik = @json($eventAkademik);
     let editTanggalMulaiInput, editTanggalSelesaiInput;
 
     modalEditEvent.querySelectorAll('#eventList .dropdown-item').forEach((dropdownItem) => {
@@ -38,9 +41,11 @@
         const id = btn.getAttribute('data-id');
         const data = listData.find(list => list.id == id);
         const span = modalEditEvent.querySelector('#sortEvent span');
-        modalEditEvent.querySelector('input[name="name_event"]').value = data.name_event;
+        modalEditEvent.querySelector('input[name="name_event"]').value = data.id_event;
+        modalEditEvent.querySelector('input[name="status"]').value = data.status;
+        modalEditEvent.querySelector('input[name="id_calendar"]').value = data.id;
       
-        span.innerHTML = data.name_event;
+        span.innerHTML = data.nama_event;
         span.style.color = "black";
         modalEditEvent.style.display = 'flex';
 
@@ -55,8 +60,8 @@
                 }
             },
             onReady: function (selectedDates, dateStr, instance) {
-                if (data?.tanggal_mulai) {
-                    instance.setDate(new Date(data.tanggal_mulai), false); // false: jangan trigger onChange
+                if (data?.tanggal_awal) {
+                    instance.setDate(new Date(data.tanggal_awal), false); // false: jangan trigger onChange
                 }
             }
         });
@@ -72,14 +77,14 @@
                 }
             },
             onReady: function (selectedDates, dateStr, instance) {
-                if (data?.tanggal_selesai) {
-                    instance.setDate(new Date(data.tanggal_selesai), false);
+                if (data?.tanggal_akhir) {
+                    instance.setDate(new Date(data.tanggal_akhir), false);
                 }
             }
         });
 
-        editTanggalSelesaiInput.set('minDate', new Date(data.tanggal_mulai));
-        editTanggalMulaiInput.set('maxDate', new Date(data.tanggal_selesai));
+        editTanggalSelesaiInput.set('minDate', new Date(data.tanggal_awal));
+        editTanggalMulaiInput.set('maxDate', new Date(data.tanggal_akhir));
 
         updateSaveEditButtonState();
       })
@@ -104,8 +109,9 @@
 </script>
 <div id="modalEditEvent" class="modal-custom" style="display:none;">
   <div class="modal-custom-backdrop"></div>
-  <form action="{{route('calendar.store', ['id' => $id])}}" method="POST">
+  <form action="{{route('calendar.update', ['id' => $id])}}" method="POST">
     @csrf
+    @method('PUT')
     <div class="modal-custom-content">
       <span class="text-lg-bd">Ubah Event Akademik</span>
       <div class="modal-custom-body">
@@ -117,14 +123,15 @@
                   <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
               </button>
               <div id="eventList" class="sort-dropdown select" style="display: none;">
-                  <div class="dropdown-item" data-event="active">Aktif</div>
-                  <div class="dropdown-item" data-event="inactive">Tidak Aktif</div>
-                  <div class="dropdown-item" data-event="nama,asc">A-Z</div>
-                  <div class="dropdown-item" data-event="nama,desc">Z-A</div>
-                  <div class="dropdown-item" data-event="created_at,desc">Terbaru</div>
-                  <div class="dropdown-item" data-event="created_at,asc">Terlama</div>
+                  @foreach ($eventAkademik as $event)
+                      <div class="dropdown-item" data-event="{{ $event->id }}">
+                          {{ $event->nama_event }}
+                      </div>
+                  @endforeach
               </div>
               <input type="hidden" value="" name="name_event">
+              <input type="hidden" value="" name="status">
+              <input type="hidden" value="" name="id_calendar">
             </div>
         </div>
         <div class="form-group">

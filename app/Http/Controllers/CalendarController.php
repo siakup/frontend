@@ -14,8 +14,10 @@ use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Excel as ExcelFormat;
 
 use App\Endpoint\EventCalendarService;
+use App\Endpoint\EventAcademicService;
+use App\Endpoint\PeriodAcademicService;
 use App\Traits\ApiResponse;
-
+use DateTime;
 use Exception;
 use Illuminate\Console\Scheduling\Event;
 use Svg\Tag\Rect;
@@ -26,12 +28,8 @@ class CalendarController extends Controller
 
   public function index(Request $request)
   {
-    $program_perkuliahan = $request->input('program_perkuliahan', 'reguler');
-    $program_studi = $request->input('program_studi', 'ilmu komputer');
+    $url = PeriodAcademicService::getInstance()->getListAllPeriode();
 
-    $params = compact('program_perkuliahan', 'program_studi');
-
-    $url = EventCalendarService::getInstance()->getListAllPeriode();
     $response = getCurl($url, null, getHeaders());
 
     if (!isset($response->data)) {
@@ -43,89 +41,83 @@ class CalendarController extends Controller
       $data = $response->data;
     }
 
-    // $data = [
-    //   [
-    //     'id' => 1,
-    //     'periode_akademik' => '2025-1',
-    //     'semester' => 'Ganjil',
-    //     'tanggal_mulai' => "2025-07-02 00:02:00+07",
-    //     'tanggal_akhir' => "2026-01-02 23:59:00+07",
-    //   ]
-    // ];
 
     if ($request->ajax()) {
       return $this->successResponse($data, 'Berhasil Mendapatkan Data');
     }
 
-    return view('academics.calendar.index', compact(
-      'data',
-      'program_perkuliahan',
-      'program_studi',
-    ));
+    return view('academics.calendar.index', get_defined_vars());
   }
 
 
   public function show(Request $request, $id)
   {
 
-    $idPeriode = $id;
-    $program_studi = $request->input('program_studi', 'ilmu komputer');
+    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+    $programStudiList = $responseProgramStudiList->data;
+    $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
 
-    $params = compact('program_studi', 'idPeriode');
-    $url = EventCalendarService::getInstance()->eventUrl($idPeriode);
+    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+    $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->id);
+
+    $id_periode = $id;
+
+    $params = compact('id_program', 'id_prodi', 'id_periode');
+    $url = EventCalendarService::getInstance()->eventUrl();
     $response = getCurl($url, $params, getHeaders());
+
+    $urlPeriod = PeriodAcademicService::getInstance()->periodUrl($id);
+    $responsePeriod = getCurl($urlPeriod, '', getHeaders());
+    $period = $responsePeriod->data->periode;
+
+    $url = EventAcademicService::getInstance()->baseEventURL();
+    $responseEvent = getCurl($url, $params, getHeaders());
+    $eventAkademik = $responseEvent->data;
 
     if (!isset($response->data)) {
       if ($request->ajax()) {
         return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
       }
       $data = [];
-      $eventAkademik = [];
     } else {
       $data = $response->data;
-      $eventAkademik = $response->eventAkademik;
     }
-    $eventAkademik = [
-      ['id_event' => 1, 'name_event' => 'Perkuliahan Semester Pendek'],
-      ['id_event' => 2, 'name_event' => 'Perkuliahan Semester Ganjil'],
-      ['id_event' => 3, 'name_event' => 'Perkuliahan Semester Genap'],
-    ];
-
-    // $data = [
-    //   [
-    //     'id' => 1,
-    //     'name_event' => "Masa Pembayaran Cicilan I",
-    //     'tanggal_mulai' => "2025-03-04 00:05:00+07",
-    //     'tanggal_selesai' => "2026-07-04 23:59:00+07",
-    //   ]
-    // ];
 
     if ($request->ajax()) {
       return $this->successResponse($data, 'Berhasil Mendapatkan Data');
     }
 
-    return view('academics.calendar.show', compact('data', 'eventAkademik', 'id', 'program_studi'));
+    return view('academics.calendar.show', get_defined_vars());
   }
 
 
   public function store(Request $request, $id)
   {
-
     //validasi data
     $validated = $request->validate([
       'name_event' => 'required',
+      'id_program' => 'required',
+      'id_prodi' => 'required',
+      'id_periode' => 'required',
       'tanggal_mulai' => 'required',
       'tanggal_selesai' => 'required',
     ]);
 
     $data = [
-      'name_event' => $validated['name_event'],
-      'tanggal_mulai' => $validated['tanggal_mulai'],
-      'tanggal_selesai' => $validated['tanggal_selesai'],
+      'id_event' => $validated['name_event'],
+      'id_program' => $validated['id_program'],
+      'id_prodi' => $validated['id_prodi'],
+      'id_periode' => $validated['id_periode'],
+      'status' => 'active',
+      'tanggal_awal' => DateTime::createFromFormat('d-m-Y, H:i', $validated['tanggal_mulai'])->format('Y-m-d H:i:s'),
+      'tanggal_akhir' => DateTime::createFromFormat('d-m-Y, H:i', $validated['tanggal_selesai'])->format('Y-m-d H:i:s'),
     ];
 
     $url = EventCalendarService::getInstance()->store();
-    $response = getCurl($url, $data, getHeaders());
+    $response = postCurl($url, $data, getHeaders());
 
     if ($request->ajax()) {
       if (isset($response->success) && $response->success) {
@@ -243,13 +235,40 @@ class CalendarController extends Controller
 
   public function update(Request $request, $id)
   {
+    $validated = $request->validate([
+      'name_event' => 'required',
+      'status' => 'required',
+      'tanggal_mulai' => 'required',
+      'tanggal_selesai' => 'required',
+      'id_calendar' => 'required'
+    ]);
 
-    return view('academics.calendar.update', get_defined_vars());
+    $data = [
+      'id_event' => $validated['name_event'],
+      'tanggal_awal' => DateTime::createFromFormat('d-m-Y, H:i', $validated['tanggal_mulai'])->format('Y-m-d H:i:s'),
+      'tanggal_akhir' => DateTime::createFromFormat('d-m-Y, H:i', $validated['tanggal_selesai'])->format('Y-m-d H:i:s'),
+      'status' => $validated['status']
+    ];
+
+
+    $url = EventCalendarService::getInstance()->edit($request->id_calendar);
+    $response = putCurl($url, $data, getHeaders());
+
+    if ($request->ajax()) {
+      if (isset($response->success) && $response->success) {
+        return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
+      }
+      return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
+    }
+
+    return redirect()->back()->with('success', 'Event akademik berhasil ditambahkan.');
   }
 
   public function delete(Request $request, $id)
   {
-    return redirect()->back();
+    $url = EventCalendarService::getInstance()->edit($id);
+    $response = deleteCurl($url, getHeaders());
+    return $response;
   }
 
   public function eventDownloadTemplate(Request $request)

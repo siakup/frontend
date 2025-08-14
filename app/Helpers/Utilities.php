@@ -223,3 +223,20 @@ if (!function_exists('getHeaders')) {
         return $headers;
     }
 }
+
+if(!function_exists('convertFileDataExcelToObject')) {
+  function convertFileDataExcelToObject($file) 
+  {
+    $data = Maatwebsite\Excel\Facades\Excel::toArray([], $file)[0];
+    $key = array_map(function ($value) {
+        return str_replace(' ', '_', strtolower(trim($value)));
+    }, $data[0]);
+
+    $value = [];
+
+    for ($i = 1; $i < count($data); $i++) {
+      $value[] = array_combine($key, $data[$i]);
+    }
+    return $value;
+  } 
+}

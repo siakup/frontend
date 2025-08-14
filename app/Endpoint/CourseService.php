@@ -25,7 +25,7 @@ class CourseService
     {
         return config('endpoint.course.url') . '/api/course';
     }
-    public function eventUrl($id)
+    public function courseUrl($id)
     {
         return $this->url() . '/' . $id;
     }
@@ -33,5 +33,10 @@ class CourseService
     public function bulkStore()
     {
         return $this->url() . '/bulk-store';
+    }
+
+    public function getMataKuliahPrasyarat()
+    {
+        return $this->url() . '/mata-kuliah-prasyarat';
     }
 }

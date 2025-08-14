@@ -156,7 +156,25 @@ class Menu
                   'isExpandable' => false
                 ],
               ]
-            ]
+            ],
+            'curriculum-list' => [
+              'name' => 'Daftar Kurikulum',
+              'url' => '/kurikulum/daftar-kurikulum',
+              'parent' => 'curriculum.list',
+              'isExpandable' => true,
+            ],
+            'curriculum-structure' => [
+              'name' => 'Struktur Kurikulum',
+              'url' => '/kurikulum/struktur-kurikulum',
+              'parent' => 'curriculum.structure',
+              'isExpandable' => false,
+            ],
+            'curriculum-equivalence' => [
+              'name' => 'Ekuivalensi Kurikulum',
+              'url' => '/kurikulum/ekuivalensi-kurikulum',
+              'parent' => 'curriculum.equivalence',
+              'isExpandable' => false,
+            ],
               
         ];
     }

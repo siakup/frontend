@@ -12,6 +12,7 @@ use Carbon\Carbon;
 
 
 use App\Traits\ApiResponse;
+use Maatwebsite\Excel\Facades\Excel;
 
 use Exception;
 use Svg\Tag\Rect;
@@ -47,25 +48,29 @@ class StudyController extends Controller
 
     public function uploadResult(Request $request)
     {
-      // dd($request->all());
-      $file_data = [
-        ['kode' => 'MK001', 'nama' => 'Algoritma dan Pemrograman', 'sks' => 3, 'semester' => 1, 'jenis' => 'Wajib', 'prodi' => 'Teknik Informatika'],
-        ['kode' => 'MK002', 'nama' => 'Struktur Data', 'sks' => 3, 'semester' => 2, 'jenis' => 'Wajib', 'prodi' => 'Teknik Informatika'],
-        ['kode' => 'MK003', 'nama' => 'Basis Data', 'sks' => 3, 'semester' => 3, 'jenis' => 'Wajib', 'prodi' => 'Sistem Informasi'],
-        ['kode' => 'MK004', 'nama' => 'Pemrograman Web', 'sks' => 3, 'semester' => 4, 'jenis' => 'Wajib', 'prodi' => 'Sistem Informasi'],
-        ['kode' => 'MK005', 'nama' => 'Jaringan Komputer', 'sks' => 3, 'semester' => 5, 'jenis' => 'Wajib', 'prodi' => 'Teknik Komputer'],
-        ['kode' => 'MK006', 'nama' => 'Kecerdasan Buatan', 'sks' => 3, 'semester' => 6, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-        ['kode' => 'MK007', 'nama' => 'Sistem Operasi', 'sks' => 3, 'semester' => 3, 'jenis' => 'Wajib', 'prodi' => 'Teknik Komputer'],
-        ['kode' => 'MK008', 'nama' => 'Pemrograman Mobile', 'sks' => 3, 'semester' => 5, 'jenis' => 'Pilihan', 'prodi' => 'Sistem Informasi'],
-        ['kode' => 'MK009', 'nama' => 'Data Mining', 'sks' => 3, 'semester' => 6, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-        ['kode' => 'MK010', 'nama' => 'Keamanan Jaringan', 'sks' => 3, 'semester' => 5, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Komputer']
-      ];
+      $validator = Validator::make($request->all(), [
+        'file' => 'required|file|mimes:csv,xlsx|max:5120'
+      ]);
+      $file = $request->file('file');
+      $file_data = [];
+      $errors = [];
+
+      $file_data = convertFileDataExcelToObject($file);
+      $file_data = array_map(function ($value) {
+        return [
+          'kode' => $value['kode_mk'],
+          'nama' => $value['nama_mk'],
+          'sks' => $value['sks'],
+          'jenis' => $value['jenis_mk'],
+          'semester' => $value['semester']
+        ];
+      }, $file_data);
+      
       return view('study.upload-result', get_defined_vars());
     }
 
     public function uploadStore(Request $request)
     {
-      dd($request->all());
       $validator = Validator::make($request->all(), [
         'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
       ]);
