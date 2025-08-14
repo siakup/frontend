@@ -15,9 +15,32 @@ class CourseController extends Controller
 {
     use ApiResponse;
 
-    public function index()
+    public function index(Request $request)
     {
-        return view('courses.index', compact('courses'));
+        $search = $request()->input('search');
+        $page = $request->input('page', 1);
+        $limit = $request->input('limit', 10);
+        $idJenisMataKuliah   = $request->input('idJenisMataKuliah');
+
+        $params = [
+            'search' => $search,
+            'page' => $page,
+            'limit' => $limit,
+            'idJenisMataKuliah'  => $idJenisMataKuliah,
+        ];
+
+        $url = CourseService::getInstance()->baseCourseURL();
+        $response = getCurl($url, $params, getHeaders());
+        $data = json_decode(json_encode($response), true);
+
+        if ($request->ajax()) {
+            if (!isset($response->data)) {
+                return $this->errorResponse($response->message);
+            }
+            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+        }
+
+        return view('courses.index',  get_defined_vars());
     }
 
     public function create()
