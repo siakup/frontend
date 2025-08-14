@@ -162,6 +162,14 @@ class Menu
               'url' => '/kurikulum/daftar-kurikulum',
               'parent' => 'curriculum.list',
               'isExpandable' => true,
+              'children' => [
+                'create-curriculum-list' => [
+                  'name' => 'Tambah Kurikulum',
+                  'url' => '/kurikulum/daftar-kurikulum/tambah',
+                  'parent' => 'curriculum.list.create',
+                  'isExpandable' => false
+                ]
+              ]
             ],
             'curriculum-structure' => [
               'name' => 'Struktur Kurikulum',
