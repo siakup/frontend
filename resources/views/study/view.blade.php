@@ -13,13 +13,85 @@
 @section('javascript')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('mataKuliahDetail', () => ({
+                subject: {
+                    study_program: '',
+                    code: '',
+                    name: '',
+                    english_name: '',
+                    short_name: '',
+                    credits: '',
+                    semester: '',
+                    objective: '',
+                    description: '',
+                    bibliography: '',
+                    course_type: '',
+                    coordinator: '',
+                    special_course: '',
+                    open_for_other: '',
+                    mandatory: '',
+                    merdeka_campus: '',
+                    capstone: '',
+                    internship: '',
+                    final_assignment: '',
+                    minor: '',
+                    user_active: ''
+                },
+                async fetchDetail() {
+                    try {
+                        const id = window.location.pathname.split('/').pop();
+                        const url = `${window.LECTURER_API_URL}/courses/${id}`;
+                        const res = await fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (!res.ok) throw new Error('Gagal memuat data');
+                        const result = await res.json();
+                        const data = result.data[0] ?? {};
+
+                        this.subject = {
+                            study_program: data.id_prodi ?? '',
+                            code: data.kode ?? '',
+                            name: data.nama_id ?? '',
+                            english_name: data.nama_en ?? '',
+                            short_name: data.short_name ?? '',
+                            credits: data.sks ?? '',
+                            semester: data.semester ?? '',
+                            objective: data.tujuan ?? '',
+                            description: data.deskripsi ?? '',
+                            bibliography: data.daftar_pustaka ?? '',
+                            course_type: data.course_type ?? '',
+                            coordinator: data.coordinator ?? '',
+                            special_course: data.special_course ?? '',
+                            open_for_other: data.open_for_other ?? '',
+                            mandatory: data.mandatory ?? '',
+                            merdeka_campus: data.merdeka_campus ?? '',
+                            capstone: data.capstone ?? '',
+                            internship: data.internship ?? '',
+                            final_assignment: data.final_assignment ?? '',
+                            minor: data.minor ?? '',
+                            user_active: data.status === 'active' ? 'ya' : 'tidak'
+                        };
+                    } catch (err) {
+                        console.error(err);
+                    }
+                }
+            }))
+        });
+    </script>
+
 @endsection
 
 {{-- END --}}
 
 
 @section('content')
-    <div class="px-5 flex flex-col gap-5">
+    <div class="px-5 flex flex-col gap-5" x-data="mataKuliahDetail" x-init="fetchDetail()">
         <x-typography variant="heading-h6" bold class="">
             Lihat Mata Kuliah
         </x-typography>
@@ -36,7 +108,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="study_program" type="select" placeholder="Pilih Program Studi"
-                            :value="$subject['study_program']" :options="[
+                            x-model="subject.study_program" :options="[
                                 '' => 'Pilih Program Studi',
                                 'ti' => 'Teknik Informatika',
                                 'si' => 'Sistem Informasi',
@@ -57,7 +129,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="code" type="text" placeholder="Contoh: IF184101"
-                            :value="$subject['code']" />
+                            x-model="subject.code" />
                     </div>
                 </div>
 
@@ -69,7 +141,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="name" type="text" placeholder="Nama Mata Kuliah"
-                            :value="$subject['name']" />
+                            x-model="subject.name" />
                     </div>
                 </div>
 
@@ -81,7 +153,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="english_name" type="text" placeholder="Course Name (English)"
-                            :value="$subject['english_name']" />
+                            x-model="subject.english_name" />
                     </div>
                 </div>
 
@@ -93,7 +165,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="short_name" type="text" placeholder="Singkatan resmi MK"
-                            :value="$subject['short_name']" />
+                            x-model="subject.short_name" />
                     </div>
                 </div>
 
@@ -105,7 +177,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="credits" type="number" placeholder="1-6 SKS" min="1"
-                            max="6" :value="$subject['credits']" />
+                            max="6" x-model="subject.credits" />
                     </div>
                 </div>
 
@@ -117,7 +189,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="semester" type="number" placeholder="1-8" min="1"
-                            max="8" :value="$subject['semester']" />
+                            max="8" x-model="subject.semester" />
                     </div>
                 </div>
 
@@ -129,7 +201,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="objective" type="textarea"
-                            placeholder="Tujuan pembelajaran mata kuliah" :value="$subject['objective']" rows="3" />
+                            placeholder="Tujuan pembelajaran mata kuliah" x-model="subject.objective" rows="3" />
                     </div>
                 </div>
 
@@ -141,7 +213,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="description" type="textarea"
-                            placeholder="Deskripsi singkat mata kuliah" :value="$subject['description']" rows="3" />
+                            placeholder="Deskripsi singkat mata kuliah" x-model="subject.description" rows="3" />
                     </div>
                 </div>
 
@@ -153,7 +225,7 @@
                     </div>
                     <div class="col-span-10">
                         <x-form.input disabled name="bibliography" type="textarea"
-                            placeholder="Referensi utama dan pendukung" :value="$subject['bibliography']" rows="3" />
+                            placeholder="Referensi utama dan pendukung" x-model="subject.bibliography" rows="3" />
                     </div>
                 </div>
 
@@ -165,13 +237,14 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="course_type" type="select" :value="$subject['course_type']" :options="[
-                            '' => 'Pilih Jenis MK',
-                            'wajib' => 'Wajib Program Studi',
-                            'pilihan' => 'Pilihan Program Studi',
-                            'konsentrasi' => 'Wajib Konsentrasi',
-                            'umum' => 'Mata Kuliah Umum',
-                        ]" />
+                        <x-form.input disabled name="course_type" type="select" x-model="subject.course_type"
+                            :options="[
+                                '' => 'Pilih Jenis MK',
+                                'wajib' => 'Wajib Program Studi',
+                                'pilihan' => 'Pilihan Program Studi',
+                                'konsentrasi' => 'Wajib Konsentrasi',
+                                'umum' => 'Mata Kuliah Umum',
+                            ]" />
                     </div>
                     <div class="col-span-2">
                         <x-typography variant="body-small-regular" class="font-semibold">
@@ -179,13 +252,14 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="coordinator" type="select" :value="$subject['coordinator']" :options="[
-                            '' => 'Pilih Koordinator',
-                            'D001' => 'Prof. Dr. Ahmad Fauzi, M.Kom.',
-                            'D002' => 'Dr. Budi Santoso, S.Kom., M.T.',
-                            'D003' => 'Dr. Citra Dewi, S.Si., M.Sc.',
-                            'D004' => 'Diana Putri, S.Kom., M.Kom.',
-                        ]" />
+                        <x-form.input disabled name="coordinator" type="select" x-model="subject.coordinator"
+                            :options="[
+                                '' => 'Pilih Koordinator',
+                                'D001' => 'Prof. Dr. Ahmad Fauzi, M.Kom.',
+                                'D002' => 'Dr. Budi Santoso, S.Kom., M.T.',
+                                'D003' => 'Dr. Citra Dewi, S.Si., M.Sc.',
+                                'D004' => 'Diana Putri, S.Kom., M.Kom.',
+                            ]" />
                     </div>
                 </div>
 
@@ -196,7 +270,7 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="special_course" type="select" :value="$subject['special_course']"
+                        <x-form.input disabled name="special_course" type="select" x-model="subject.special_course"
                             :options="[
                                 '' => 'Pilih Status',
                                 'ya' => 'Ya (MK Khusus)',
@@ -209,7 +283,7 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="open_for_other" type="select" :value="$subject['open_for_other']"
+                        <x-form.input disabled name="open_for_other" type="select" x-model="subject.open_for_other"
                             :options="[
                                 '' => 'Pilih Status',
                                 'ya' => 'Ya (Terbuka)',
@@ -225,11 +299,12 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="mandatory" type="select" :value="$subject['mandatory']" :options="[
-                            '' => 'Pilih Status',
-                            'ya' => 'Ya (Harus Diambil)',
-                            'tidak' => 'Tidak (Opsional)',
-                        ]" />
+                        <x-form.input disabled name="mandatory" type="select" x-model="subject.mandatory"
+                            :options="[
+                                '' => 'Pilih Status',
+                                'ya' => 'Ya (Harus Diambil)',
+                                'tidak' => 'Tidak (Opsional)',
+                            ]" />
                     </div>
                     <div class="col-span-2">
                         <x-typography variant="body-small-regular" class="font-semibold">
@@ -237,7 +312,7 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="merdeka_campus" type="select" :value="$subject['merdeka_campus']"
+                        <x-form.input disabled name="merdeka_campus" type="select" x-model="subject.merdeka_campus"
                             :options="[
                                 '' => 'Pilih Status',
                                 'ya' => 'Ya (Program Merdeka)',
@@ -253,11 +328,12 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="capstone" type="select" :value="$subject['capstone']" :options="[
-                            '' => 'Pilih Status',
-                            'ya' => 'Ya (Proyek Akhir)',
-                            'tidak' => 'Tidak (MK Biasa)',
-                        ]" />
+                        <x-form.input disabled name="capstone" type="select" x-model="subject.capstone"
+                            :options="[
+                                '' => 'Pilih Status',
+                                'ya' => 'Ya (Proyek Akhir)',
+                                'tidak' => 'Tidak (MK Biasa)',
+                            ]" />
                     </div>
                     <div class="col-span-2">
                         <x-typography variant="body-small-regular" class="font-semibold">
@@ -265,11 +341,12 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="internship" type="select" :value="$subject['internship']" :options="[
-                            '' => 'Pilih Status',
-                            'ya' => 'Ya (Program Magang)',
-                            'tidak' => 'Tidak (Non-Magang)',
-                        ]" />
+                        <x-form.input disabled name="internship" type="select" x-model="subject.internship"
+                            :options="[
+                                '' => 'Pilih Status',
+                                'ya' => 'Ya (Program Magang)',
+                                'tidak' => 'Tidak (Non-Magang)',
+                            ]" />
                     </div>
                 </div>
 
@@ -280,7 +357,7 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="final_assignment" type="select" :value="$subject['final_assignment']"
+                        <x-form.input disabled name="final_assignment" type="select" x-model="subject.final_assignment"
                             :options="[
                                 '' => 'Pilih Status',
                                 'ya' => 'Ya (Skripsi/Tesis)',
@@ -293,11 +370,12 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-form.input disabled name="minor" type="select" :value="$subject['minor']" :options="[
-                            '' => 'Pilih Status',
-                            'ya' => 'Ya (Program Minor)',
-                            'tidak' => 'Tidak (Non-Minor)',
-                        ]" />
+                        <x-form.input disabled name="minor" type="select" x-model="subject.minor"
+                            :options="[
+                                '' => 'Pilih Status',
+                                'ya' => 'Ya (Program Minor)',
+                                'tidak' => 'Tidak (Non-Minor)',
+                            ]" />
                     </div>
                 </div>
 
@@ -308,7 +386,7 @@
                         </x-typography>
                     </div>
                     <div class="col-span-4">
-                        <x-button.switch name="user_active" :value="$subject['user_active']" externalOnLabel="Aktif"
+                        <x-button.switch name="user_active" x-model="subject.user_active" externalOnLabel="Aktif"
                             externalOffLabel="Tidak Aktif" />
                     </div>
                     <div class="col-span-2">
@@ -347,7 +425,7 @@
                 </x-table-head>
 
                 <x-table-body x-data="{ showDeleteConfirmation: false, item: null }">
-                    @if (count($addedPrasyarat) > 0)
+                    {{-- @if (count($addedPrasyarat) > 0)
                         @foreach ($addedPrasyarat as $matkul)
                             <x-table-row :odd="$loop->odd" :last="$loop->last">
                                 <x-table-cell>{{ $matkul['kode'] }}</x-table-cell>
@@ -378,7 +456,7 @@
                                 Tidak ada data prasyarat yang ditambahkan
                             </x-table-cell>
                         </x-table-row>
-                    @endif
+                    @endif --}}
                 </x-table-body>
             </x-table>
         </x-container>
@@ -483,7 +561,7 @@
                             </x-table-row>
                         </x-table-head>
                         <x-table-body>
-                            @foreach ($prasyaratMataKuliahList as $index => $item)
+                            {{-- @foreach ($prasyaratMataKuliahList as $index => $item)
                                 <x-table-row :odd="$loop->odd" :last="$loop->last">
                                     <x-table-cell>
                                         <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
@@ -496,7 +574,7 @@
                                     <x-table-cell>{{ $item['jenis'] }}</x-table-cell>
                                     <x-table-cell>{{ $item['tipe'] }}</x-table-cell>
                                 </x-table-row>
-                            @endforeach
+                            @endforeach --}}
 
                         </x-table-body>
                     </x-table>
@@ -505,9 +583,9 @@
 
             <x-slot name="footer">
                 <div class="flex justify-center gap-4 w-full">
-                    <x-pagination :currentPage="$currentPage" :totalPages="$totalPages" :perPageInput="$perPage" />
+                    {{-- <x-pagination :currentPage="$currentPage" :totalPages="$totalPages" :perPageInput="$perPage" />
                     <x-button.secondary label="Batal" x-on:click.stop="close()" />
-                    <x-button.primary label="Simpan" x-on:click.stop="close()" />
+                    <x-button.primary label="Simpan" x-on:click.stop="close()" /> --}}
                 </div>
             </x-slot>
         </x-modal.container>

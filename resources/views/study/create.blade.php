@@ -12,7 +12,70 @@
 
 @section('javascript')
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('mataKuliahForm', () => ({
+                async submitForm() {
+                    // 1. Stop semua event bubbling
+                    if (window.event) {
+                        window.event.stopImmediatePropagation();
+                        window.event.preventDefault();
+                    }
 
+                    // 2. Debugging - tampilkan di console
+                    console.log('SubmitForm dijalankan');
+
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content');
+
+                    // Payload lengkap sesuai API
+                    const payload = {
+                        kode: document.querySelector('[name="code"]').value,
+                        nama_id: document.querySelector('[name="name"]').value,
+                        nama_en: document.querySelector('[name="english_name"]').value,
+                        sks: parseInt(document.querySelector('[name="credits"]').value || 0),
+                        semester: parseInt(document.querySelector('[name="semester"]').value ||
+                            0),
+                        id_prodi: document.querySelector('[name="study_program"]').value,
+                        tujuan: document.querySelector('[name="objective"]').value,
+                        deskripsi: document.querySelector('[name="description"]').value,
+                        daftar_pustaka: document.querySelector('[name="bibliography"]').value,
+                        status: document.querySelector('[name="user_active"]').checked ? 1 : 0,
+                        created_by: 1,
+                        updated_by: 1
+                    };
+
+                    console.log('Payload:', payload);
+
+                    // 4. Simulasi delay untuk testing
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    console.log('Simulasi proses simpan selesai');
+
+                    // try {
+                    //     const res = await fetch('http://localhost:8005/api/courses', {
+                    //         method: 'POST',
+                    //         headers: {
+                    //             'Content-Type': 'application/json',
+                    //             'Accept': 'application/json',
+                    //             'X-CSRF-TOKEN': token
+                    //         },
+                    //         body: JSON.stringify(payload)
+                    //     });
+                    //
+                    //     if (!res.ok) throw new Error('Gagal menyimpan');
+                    //
+                    //     const data = await res.json();
+                    //     console.log('Berhasil:', data);
+                    //     alert('Mata kuliah berhasil ditambahkan!');
+                    //     window.location.href = '/subject'; // Redirect hanya setelah berhasil
+                    // } catch (error) {
+                    //     console.error(error);
+                    //     alert('Terjadi kesalahan: ' + error.message);
+                    // }
+                }
+            }));
+        });
+    </script>
 @endsection
 
 {{-- END --}}
@@ -45,6 +108,7 @@
                                 'if' => 'Informatika',
                                 'ti' => 'Teknik Industri',
                             ]" />
+
                     </div>
                 </div>
 
@@ -335,6 +399,10 @@
                     </x-table-row>
                 </x-table-head>
 
+                @php
+                    $addedPrasyarat = $addedPrasyarat ?? [];
+                @endphp
+
                 <x-table-body x-data="{ showDeleteConfirmation: false, item: null }">
                     @if (count($addedPrasyarat) > 0)
                         @foreach ($addedPrasyarat as $matkul)
@@ -381,7 +449,8 @@
                         x-on:click="$dispatch('open-modal', {id: 'cancel-confirmation'})" />
 
                     <!-- Tombol Simpan -->
-                    <x-button.primary label="Simpan" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})" />
+                    <x-button.primary label="Simpan" x-data
+                        x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})" />
                 </div>
             </x-container>
         </div>
@@ -408,17 +477,13 @@
 
         <!-- Modal Konfirmasi Simpan -->
         <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-            cancelText="Cek Kembali">
+            cancelText="Cek Kembali" x-data="{
+                handleConfirm() {
+                    $event.stopImmediatePropagation();
+                    $nextTick(() => Alpine.data('mataKuliahForm').submitForm())
+                }
+            }">
             <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-
-            <div
-                x-on:confirmed.window="
-            // Aksi ketika konfirmasi simpan diklik
-            console.log('Data disimpan');
-            // Submit form atau AJAX request bisa dilakukan di sini
-            document.getElementById('form-id').submit(); // Contoh submit form
-        ">
-            </div>
         </x-modal.confirmation>
 
         <!-- Modal Konfirmasi Hapus Prasyarat Mata Kuliah -->
@@ -434,8 +499,6 @@
                 x-on:confirmed.window="
             // Aksi ketika konfirmasi batal diklik
             console.log('Prasyarat mata kuliah dihapus');
-            // Redirect atau reset form bisa dilakukan di sini
-            window.location.href = '/subject/create'; 
         ">
             </div>
 
@@ -471,6 +534,11 @@
                                 <x-table-header>Tipe Prasyarat</x-table-header>
                             </x-table-row>
                         </x-table-head>
+
+                        @php
+                            $prasyaratMataKuliahList = $prasyaratMataKuliahList ?? [];
+                        @endphp
+
                         <x-table-body>
                             @foreach ($prasyaratMataKuliahList as $index => $item)
                                 <x-table-row :odd="$loop->odd" :last="$loop->last">
@@ -494,7 +562,7 @@
 
             <x-slot name="footer">
                 <div class="flex justify-center gap-4 w-full">
-                    <x-pagination :currentPage="$currentPage" :totalPages="$totalPages" :perPageInput="$perPage" />
+                    {{-- TODO: Pagination --}}
                     <x-button.secondary label="Batal" x-on:click.stop="close()" />
                     <x-button.primary label="Simpan" x-on:click.stop="close()" />
                 </div>
