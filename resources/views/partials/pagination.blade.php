@@ -41,7 +41,7 @@
         <div class="paginate-search">
             <div class="paginate-button">
                 <img src="{{ asset('assets/icon-search.svg') }}" alt="search-icon" class="paginate-icon">
-                <span id="open-search-form">Cari</span>
+                <span id="open-search-form">Cari Halaman</span>
             </div>
 
             <form action="{{ $routes }}" method="GET" class="paginate-search-form" style="display: none;">

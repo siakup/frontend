@@ -60,7 +60,8 @@ Route::group(['middleware' => ['auth']], function () {
 
   Route::group(['prefix' => 'kurikulum'], function () {
     Route::get('/daftar-kurikulum', [CurriculumController::class, 'curriculumList'])->name('curriculum.list');
-    Route::get('/struktur-kurikulum')->name('curriculum.structure');
-    Route::get('/ekuivalensi-kurikulum')->name('curriculum.equivalence');
+    Route::get('/struktur-kurikulum/wajib', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
+    Route::get('/struktur-kurikulum/pilihan', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
+    Route::get('/ekuivalensi-kurikulum', [CurriculumController::class, 'curriculumEquivalence'])->name('curriculum.equivalence');
   });
 });
