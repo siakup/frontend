@@ -71,7 +71,6 @@ class StudyController extends Controller
 
     public function uploadStore(Request $request)
     {
-      dd($request->all());
       $validator = Validator::make($request->all(), [
         'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
       ]);
