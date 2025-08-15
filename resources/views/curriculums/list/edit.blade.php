@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Tambah Kurikulum')
+@section('title', 'Ubah Kurikulum')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Kurikulum</div>
@@ -141,6 +141,19 @@
         const totalSKS = document.querySelector('input[name="total_sks"]');
         const programPerkuliahan = document.querySelector('input[name="program_perkuliahan"]');
 
+        const status = @json($data['status']);
+        if (status === 'active') {
+            icon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
+            text.textContent = "Aktif";
+            text.style.color = "#262626";
+            hiddenInput.value = "active";
+        } else {
+            icon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
+            text.textContent = "Tidak Aktif";
+            text.style.color = "#8C8C8C";
+            hiddenInput.value = "inactive";
+        }
+
         function updateSaveButtonState() {
           const programPerkuliahanFilled = programPerkuliahan.value.trim() !== '';
           const namaFilled = nama.value.trim() !== '';
@@ -149,10 +162,13 @@
           const sksPilihanFilled = sksPilihan.value.trim() !== '';
           const totalSKSFilled = totalSKS.value.trim() !== '';
           const statusFilled = hiddenInput.value === 'active' || hiddenInput.value === 'inactive' ? true : false;
+
           if (programPerkuliahanFilled && namaFilled && deskripsiFilled && sksWajibFilled && sksPilihanFilled && totalSKSFilled && statusFilled) {
               btnSave.disabled = false;
-          } else {
+              document.getElementById('btnBatal').disabled = false;
+            } else {
               btnSave.disabled = true;
+              document.getElementById('btnBatal').disabled = true;
           }
         }
 
@@ -275,7 +291,7 @@
 </script>
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Tambah Kurikulum</div>
+        <div class="page-title-text">Ubah Kurikulum</div>
     </div>
     
     <a href="{{ route('curriculum.list') }}" class="button-no-outline-left">
@@ -284,19 +300,19 @@
     <form action="{{route('curriculum.list.store')}}" method="POST">
       @csrf
       <div class="content-card">
-          <div class="form-title-text" style="padding: 20px;">Detail Kurikulum 2025 - Teknik Kimia</div>
+          <div class="form-title-text" style="padding: 20px;">Detail Kurikulum</div>
           <div class="form-section">
               <div class="form-group">
                   <label for="program_studi">Program Studi</label>
                   <div>
-                      <input placeholder="Nama Kurikulum" name="program_studi" type="text" id="program_studi" class="form-control" value="Teknik Kimia" readonly>
+                      <input placeholder="Nama Kurikulum" name="program_studi" type="text" id="program_studi" class="form-control" value="{{$data['program_studi']}}" readonly>
                   </div>
               </div>
               <div class="form-group">
                   <label for="name">Program Perkuliahan</label>
                   <div class="filter-box" id="program_perkuliahan">
                       <button type="button" class="button-clean input" id="sortEvent">
-                          <span id="selectedEventLabel">Program Perkuliahan</span>
+                          <span id="selectedEventLabel" class="text-black">{{current(array_filter($programPerkuliahanList, function($program) use($data) { return $program->id == $data['program_perkuliahan']; }))->nama}}</span>
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                       </button>
                       <div id="Option-Program-Perkuliahan" class="sort-dropdown select" style="display: none;">
@@ -304,41 +320,41 @@
                             <div class="dropdown-item" data-event="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
                           @endforeach
                       </div>
-                      <input type="hidden" value="" name="program_perkuliahan">
+                      <input type="hidden" value="{{$data['program_perkuliahan']}}" name="program_perkuliahan">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Curriculum-Name">Nama Kurikulum</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="Nama Kurikulum" name="curriculum_nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="">
+                      <input placeholder="Nama Kurikulum" name="curriculum_nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="{{$data['curriculum_nama']}}">
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Deskripsi">Deskripsi</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="Deskripsi" name="deskripsi" type="text" id="Deskripsi" class="!border-transparent focus:outline-none" value="">
+                      <input placeholder="Deskripsi" name="deskripsi" type="text" id="Deskripsi" class="!border-transparent focus:outline-none" value="{{$data['deskripsi']}}">
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Wajib">SKS Mata Kuliah Wajib</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="SKS Mata Kuliah Wajib" name="sks_wajib" type="text" id="Wajib" class="!border-transparent focus:outline-none" value="">
+                      <input placeholder="SKS Mata Kuliah Wajib" name="sks_wajib" type="text" id="Wajib" class="!border-transparent focus:outline-none" value="{{$data['sks_wajib']}}">
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Pilihan">SKS Mata Kuliah Pilihan</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="SKS Mata Kuliah Pilihan" name="sks_pilihan" type="text" id="Pilihan" class="!border-transparent focus:outline-none" value="">
+                      <input placeholder="SKS Mata Kuliah Pilihan" name="sks_pilihan" type="text" id="Pilihan" class="!border-transparent focus:outline-none" value="{{$data['sks_pilihan']}}">
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Total">Total SKS</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="Total SKS" name="total_sks" type="text" id="Total" class="!border-transparent focus:outline-none" value="">
+                      <input placeholder="Total SKS" name="total_sks" type="text" id="Total" class="!border-transparent focus:outline-none" value="{{$data['total_sks']}}">
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
@@ -348,7 +364,7 @@
                       <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
                       <span class="toggle-info text-sm-bd" style="color: var(--Neutral-Gray-600, #8C8C8C)">Tidak Aktif</span>
                   </button>
-                <input type="hidden" name="status" id="statusValue" value="inactive">
+                <input type="hidden" name="status" id="statusValue" value="{{$data['status']}}">
               </div>
           </div>
       </div>
@@ -370,7 +386,7 @@
                           <td class="py-[12px] !w-[25%]"></td>
                           <td class="py-[12px] !w-[25%]">
                             <div class="border-[1px] border-[#BFBFBF] rounded-lg py-[9px] ps-[39.5px] pe-[12px] flex">
-                              <input class="w-full bg-white !border-transparent focus:outline-none text-[14px]" placeholder="Minimum SKS" type="number" value="" name="{{str_replace(' ', '_', strtolower($jenis['nama']))}}" />
+                              <input class="w-full bg-white !border-transparent focus:outline-none text-[14px]" placeholder="Minimum SKS" type="number" value="{{$data[str_replace(' ', '_', strtolower($jenis['nama']))]}}" name="{{str_replace(' ', '_', strtolower($jenis['nama']))}}" />
                               <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                             </div>
                           </td>
@@ -380,10 +396,20 @@
               </table>
           </div>
       </div>
-      <div class="content-card flex">
-        <div class="button-group self-start">
-            <button type="button" class="button button-clean disabled:!bg-white disabled:!border-[#D9D9D9] disabled:!border-1" id="btnBatal" disabled>Batal</button>
-            <button type="button" class="button button-outline" id="btnSimpan" disabled>Simpan</button>
+      <div class="content-card flex justify-between">
+        <div class="button-group">
+          <button type="button" class="button button-clean disabled:!bg-white disabled:!border-[#D9D9D9] disabled:!border-1" id="btnBatal" disabled>Batal</button>
+          <button type="button" class="button button-outline" id="btnSimpan" disabled>Simpan</button>
+        </div>
+        <div class="button-group">
+            <a href="{{route('curriculum.list.edit.show-study', ['id' => $id])}}" class="button button-clean flex items-center justify-center" id="">
+              <span>Lihat Daftar Mata Kuliah</span>
+              <img src="{{asset('assets/icon-eye-red.svg')}}" alt="button-icon">
+            </a>
+            <button type="button" class="button button-outline" id="">
+              <span>Tetapkan Mata Kuliah</span>
+              <img src="{{asset('assets/icon-mata-kuliah-white.svg')}}" alt="button-icon">
+            </button>
         </div>
       </div>
       <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
