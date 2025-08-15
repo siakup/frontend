@@ -30,6 +30,7 @@ class CurriculumController extends Controller
 
       $data = [
         [
+          'id' => 1,
           'nama' => 'Kurikulum 2025 - Teknik Kimia - DD',
           'program_perkuliahan' => 'Double Degree',
           'deskripsi' => 'Kurikulum 2025 - Double Degree',
@@ -37,6 +38,7 @@ class CurriculumController extends Controller
           'status' => 'active',
         ],
         [
+          'id' => 2,
           'nama' => 'Kurikulum 2025 - Teknik Kimia - Int',
           'program_perkuliahan' => 'International',
           'deskripsi' => 'Kurikulum 2025 - International',
@@ -44,6 +46,7 @@ class CurriculumController extends Controller
           'status' => 'active',
         ],
         [
+          'id' => 3,
           'nama' => 'Kurikulum 2025 - Teknik Kimia - R',
           'program_perkuliahan' => 'Reguler',
           'deskripsi' => 'Kurikulum 2020 - Reguler',
@@ -51,6 +54,7 @@ class CurriculumController extends Controller
           'status' => 'inactive',
         ],
         [
+          'id' => 4,
           'nama' => 'Kurikulum 2025 - Teknik Kimia - K',
           'program_perkuliahan' => 'Karyawan',
           'deskripsi' => 'Kurikulum 2020 - Karyawan',
@@ -59,6 +63,49 @@ class CurriculumController extends Controller
         ],
       ];
       return view('curriculums.list.index', get_defined_vars());
+    }
+
+    public function createCurriculumList(Request $request)
+    {
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      $programStudiList = $responseProgramStudiList->data;
+      $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
+
+      $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+      $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      $id_program = $request->input('program_perkuliahan');
+
+      $jenis_mata_kuliah = [
+        [
+          'nama' => 'Mata Kuliah Dasar Teknik',
+        ],
+        [
+          'nama' => 'Mata Kuliah Dasar Umum',
+        ],
+        [
+          'nama' => 'Mata Kuliah Program Studi',
+        ],
+        [
+          'nama' => 'Mata Kuliah Sains Dasar',
+        ],
+        [
+          'nama' => 'Mata Kuliah Universitas Pertamina',
+        ],
+      ];
+
+      return view('curriculums.list.create', get_defined_vars());
+    }
+
+    public function storeCurriculumList(Request $request) 
+    {
+      dd($request->all());
+    }
+
+    public function editCurriculumList(Request $request, $id)
+    {
+      dd($id);
     }
 
     public function curriculumEquivalence(Request $request) 

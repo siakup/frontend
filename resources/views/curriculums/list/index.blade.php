@@ -153,7 +153,7 @@
                                   <span>Lihat</span>
                               </button>
                               <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                                  href=""
+                                  href="{{route('curriculum.list.edit', ['id' => $d['id']])}}"
                                   style="text-decoration: none; color: inherit;">
                                   <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                                   <span style="color: #E62129">Ubah</span>
@@ -177,7 +177,7 @@
         </div>
       </x-container>
       <div class="right">
-          <a href="" class="button button-outline">Tambah Kurikulum</a>
+          <a href="{{route('curriculum.list.create')}}" class="button button-outline">Tambah Kurikulum</a>
       </div>
     </div>
   </div>

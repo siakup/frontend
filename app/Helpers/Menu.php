@@ -162,11 +162,25 @@ class Menu
               'url' => '/kurikulum/daftar-kurikulum',
               'parent' => 'curriculum.list',
               'isExpandable' => true,
+              'children' => [
+                'create-curriculum-list' => [
+                  'name' => 'Tambah Kurikulum',
+                  'url' => '/kurikulum/daftar-kurikulum/tambah',
+                  'parent' => 'curriculum.list.create',
+                  'isExpandable' => false
+                ]
+              ]
             ],
-            'curriculum-structure' => [
+            'curriculum-structure-required' => [
               'name' => 'Struktur Kurikulum',
-              'url' => '/kurikulum/struktur-kurikulum',
-              'parent' => 'curriculum.structure',
+              'url' => '/kurikulum/struktur-kurikulum/wajib',
+              'parent' => 'curriculum.required-structure',
+              'isExpandable' => false,
+            ],
+            'curriculum-structure-optional' => [
+              'name' => 'Struktur Kurikulum',
+              'url' => '/kurikulum/struktur-kurikulum/pilihan',
+              'parent' => 'curriculum.optional-structure',
               'isExpandable' => false,
             ],
             'curriculum-equivalence' => [
