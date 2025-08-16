@@ -168,6 +168,12 @@ class Menu
                   'url' => '/kurikulum/daftar-kurikulum/tambah',
                   'parent' => 'curriculum.list.create',
                   'isExpandable' => false
+                ],
+                'edit-curriculum-list' => [
+                  'name' => 'Ubah Kurikulum',
+                  'url' => '/kurikulum/daftar-kurikulum/ubah/*',
+                  'parent' => 'curriculum.list.edit',
+                  'isExpandable' => false
                 ]
               ]
             ],
