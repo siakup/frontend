@@ -58,7 +58,20 @@ use App\Http\Controllers\CplMapping;
     Route::post('/save-upload', [StudyController::class, 'uploadStore'])->name('study.save-upload');
   });
 
-  Route::group(['prefix' => 'pemetaan-cpl'], function () {
+  Route::group(['prefix' => 'kurikulum'], function () {
+    Route::get('/daftar-kurikulum', [CurriculumController::class, 'curriculumList'])->name('curriculum.list');
+    Route::get('/daftar-kurikulum/tambah', [CurriculumController::class, 'createCurriculumList'])->name('curriculum.list.create');
+    Route::post('/daftar-kurikulum/tambah', [CurriculumController::class, 'storeCurriculumList'])->name('curriculum.list.store');
+    Route::group(['prefix' => '/daftar-kurikulum/ubah'], function () {
+      Route::get('/{id}', [CurriculumController::class, 'editCurriculumList'])->name('curriculum.list.edit');
+      Route::get('/{id}/lihat-mata-kuliah', [CurriculumController::class, 'showCurriculumStudyList'])->name('curriculum.list.edit.show-study');
+    });
+    Route::get('/struktur-kurikulum/wajib', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
+    Route::get('/struktur-kurikulum/pilihan', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
+    Route::get('/ekuivalensi-kurikulum', [CurriculumController::class, 'curriculumEquivalence'])->name('curriculum.equivalence');
+  });
+
+Route::group(['prefix' => 'pemetaan-cpl'], function () {
     Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
     Route::get('/tambah', [CplMapping::class, 'create'])->name('cpl-mapping.create');
     Route::get('/edit/{id}', [CplMapping::class, 'edit'])->name('cpl-mapping.edit');
@@ -66,4 +79,4 @@ use App\Http\Controllers\CplMapping;
     Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
     Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
     Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
-  });
+});
