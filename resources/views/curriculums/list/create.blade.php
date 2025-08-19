@@ -218,7 +218,7 @@
         });
 
         document.getElementById('btnBatal').addEventListener('click', function() {
-            window.location.href = "{{ route('academics-event.index') }}";
+            window.location.href = "{{ route('curriculum.list') }}";
         });
 
         document.getElementById('btnCekKembali').addEventListener('click', function() {
