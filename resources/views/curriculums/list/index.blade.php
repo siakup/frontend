@@ -42,10 +42,32 @@
     .sub-title {
       padding: 10px 20px !important;
     }
+    .modal-custom-content {
+        max-width: 600px;
+        z-index: 2;
+        align-items: center;
+        gap: 16px;
+        align-self: auto;
+    }
+    .modal-custom {
+        align-items: start;
+    }
+    @media (max-width: 900px) {
+        .modal-custom-content {
+            width: 90vw;
+            min-width: unset;
+            max-width: 98vw;
+            padding: 16px;
+        }
+        .modal-custom-title {
+            font-size: 18px;
+        }
+    }
   </style>
 @endsection
 
 @section('javascript')
+<meta name="csrf-token" content="{{ csrf_token() }}">
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
@@ -77,8 +99,66 @@
                   "{{ asset('assets/active/icon-arrow-down.svg') }}";
           }
       });
+
+      document.addEventListener('click', function(e) {
+          const btn = e.target.closest('.btn-delete');
+          if (btn) {
+              const idEvent = btn.getAttribute('data-id');
+              document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idEvent);
+              document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
+          }
+      });
+
+      document.getElementById('btnCekKembali').addEventListener('click', function() {
+          document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
+          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+      });
+
+      document.getElementById('btnSimpan').addEventListener('click', function() {
+         const dataId = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
+         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+         document.getElementById('modalKonfirmasiSimpan').removeAttribute(
+              'data-id');
+          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+          successToast('Berhasil dihapus');
+          setTimeout(() => {
+            window.location.href = "{{route('curriculum.list')}}"
+          }, 5000);
+        //  $.ajax({
+        //      url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id',
+        //          id),
+        //      method: 'DELETE',
+        //      headers: {
+        //          'X-CSRF-TOKEN': csrfToken,
+        //          'X-Requested-With': 'XMLHttpRequest'
+        //      },
+        //      success: function(response) {
+        //          document.getElementById('modalKonfirmasiSimpan').removeAttribute(
+        //              'data-id');
+        //          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+        //          successToast('Berhasil dihapus');
+        //          setTimeout(() => {
+        //              window.location.href =
+        //                  "{{ route('academics-event.index') }}";
+        //          }, 5000);
+        //      },
+        //      error: function() {
+        //          $('tbody').html(
+        //              '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
+        //          );
+        //      }
+        //  });
+      });
     });
   </script>
+  @if (session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
+            setTimeout(() => {}, 3000);
+        })
+    </script>
+  @endif
 @endsection
 
 @section('content')
@@ -147,18 +227,18 @@
                           </x-table-cell>
                           <x-table-cell>
                             <div class="center">
-                              <button type="button" class="btn-icon btn-view-periode-academic"
+                              <a href="{{route('curriculum.list.view', ['id' => $d['id']])}}" type="button" class="btn-icon btn-view-periode-academic"
                                   data-periode-akademik="" title="Lihat">
                                   <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
                                   <span>Lihat</span>
-                              </button>
+                            </a>
                               <a class="btn-icon btn-edit-periode-academic" title="Ubah"
                                   href="{{route('curriculum.list.edit', ['id' => $d['id']])}}"
                                   style="text-decoration: none; color: inherit;">
                                   <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                                   <span style="color: #E62129">Ubah</span>
                               </a>
-                              <button type="button" class="btn-icon btn-delete-periode-academic" data-id="" title="Hapus">
+                              <button type="button" class="btn-icon btn-delete" data-id="{{$d['id']}}" title="Hapus">
                                   <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
                                   <span>Hapus</span>
                               </button>
@@ -179,6 +259,22 @@
       <div class="right">
           <a href="{{route('curriculum.list.create')}}" class="button button-outline">Tambah Kurikulum</a>
       </div>
+    </div>
+    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
+        <div class="modal-custom-backdrop"></div>
+        <div class="modal-custom-content bg-white">
+            <div class="modal-custom-header">
+                <span class="text-lg-bd">Hapus Daftar Kurikulum</span>
+                <img src="{{ asset('assets/icon-delete-gray-800.svg') }}" alt="ikon peringatan">
+            </div>
+            <div class="modal-custom-body">
+                <div>Apakah anda yakin ingin menghapus kurikulum ini?</div>
+            </div>
+            <div class="modal-custom-footer w-full">
+                <button type="button" class="button button-clean !w-full" id="btnCekKembali">Batal</button>
+                <button type="submit" class="button button-outline !w-full" id="btnSimpan">Hapus</button>
+            </div>
+        </div>
     </div>
   </div>
 @endsection

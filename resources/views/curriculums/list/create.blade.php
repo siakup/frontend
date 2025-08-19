@@ -151,8 +151,10 @@
           const statusFilled = hiddenInput.value === 'active' || hiddenInput.value === 'inactive' ? true : false;
           if (programPerkuliahanFilled && namaFilled && deskripsiFilled && sksWajibFilled && sksPilihanFilled && totalSKSFilled && statusFilled) {
               btnSave.disabled = false;
+              document.querySelector('#btnBatal').disabled = false;
           } else {
               btnSave.disabled = true;
+              document.querySelector('#btnBatal').disabled = true;
           }
         }
 
