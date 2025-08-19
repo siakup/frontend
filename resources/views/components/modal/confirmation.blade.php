@@ -32,7 +32,7 @@
             <x-button.primary :label="$confirmText" class="w-full"
                 x-on:click.stop="
                     close();
-                    $dispatch('confirmed');
+                    $dispatch('on-submit');
                 " />
         </div>
     </x-slot>

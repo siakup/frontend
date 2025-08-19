@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Middleware;
 
 use Closure;
@@ -22,7 +22,7 @@ class Authenticate
         $response = postCurl($url, null, $headers);
 
         if (
-            $response 
+            $response
             && $response->success ?? false
             && $response->data ?? false
             && $response->data->cookie ?? false

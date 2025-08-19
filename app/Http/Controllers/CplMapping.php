@@ -61,4 +61,32 @@ class CplMapping extends Controller
     {
         //
     }
+
+    public function upload(Request $request)
+    {
+      return view('cpl-mapping.upload', get_defined_vars());
+    }
+
+    public function uploadResult(Request $request)
+    {
+    //   $validator = Validator::make($request->all(), [
+    //     'file' => 'required|file|mimes:csv,xlsx|max:5120'
+    //   ]);
+    //   $file = $request->file('file');
+    //   $file_data = [];
+    //   $errors = [];
+
+    //   $file_data = convertFileDataExcelToObject($file);
+    //   $file_data = array_map(function ($value) {
+    //     return [
+    //       'kode' => $value['kode_mk'],
+    //       'nama' => $value['nama_mk'],
+    //       'sks' => $value['sks'],
+    //       'jenis' => $value['jenis_mk'],
+    //       'semester' => $value['semester']
+    //     ];
+    //   }, $file_data);
+
+      return view('cpl-mapping.upload-result', get_defined_vars());
+    }
 }

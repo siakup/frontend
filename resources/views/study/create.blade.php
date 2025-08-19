@@ -15,20 +15,58 @@
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('mataKuliahForm', () => ({
+                courses: [], // Untuk menyimpan data mata kuliah
+                isLoading: false,
+                errorMessage: null,
+
+                // Fungsi untuk mengambil data mata kuliah
+                async fetchCourses() {
+                    this.isLoading = true;
+                    this.errorMessage = null;
+
+                    try {
+                        const url = `${window.LECTURER_API_URL}/courses`;
+                        const res = await fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (!res.ok) throw new Error('Gagal memuat data');
+
+                        const data = await res.json();
+                        console.log('API Response:', data);
+
+                        // Handle both array and object responses
+                        if (Array.isArray(data)) {
+                            this.courses = data;
+                        } else if (data.data) {
+                            this.courses = Array.isArray(data.data) ? data.data : [data.data];
+                        } else {
+                            this.courses = [];
+                        }
+
+                    } catch (err) {
+                        console.error('Fetch error:', err);
+                        this.errorMessage = 'Gagal memuat data: ' + err.message;
+                        this.courses = [];
+                    } finally {
+                        this.isLoading = false;
+                    }
+                },
+
+                // Fungsi submit form yang sudah ada
                 async submitForm() {
-                    // 1. Stop semua event bubbling
                     if (window.event) {
                         window.event.stopImmediatePropagation();
                         window.event.preventDefault();
                     }
 
-                    // 2. Debugging - tampilkan di console
                     console.log('SubmitForm dijalankan');
-
                     const token = document.querySelector('meta[name="csrf-token"]').getAttribute(
                         'content');
 
-                    // Payload lengkap sesuai API
                     const payload = {
                         kode: document.querySelector('[name="code"]').value,
                         nama_id: document.querySelector('[name="name"]').value,
@@ -47,7 +85,6 @@
 
                     console.log('Payload:', payload);
 
-                    // 4. Simulasi delay untuk testing
                     await new Promise(resolve => setTimeout(resolve, 1000));
                     console.log('Simulasi proses simpan selesai');
 
@@ -67,17 +104,21 @@
                     //     const data = await res.json();
                     //     console.log('Berhasil:', data);
                     //     alert('Mata kuliah berhasil ditambahkan!');
-                    //     window.location.href = '/subject'; // Redirect hanya setelah berhasil
+                    //     window.location.href = '/subject';
                     // } catch (error) {
                     //     console.error(error);
                     //     alert('Terjadi kesalahan: ' + error.message);
                     // }
+                },
+
+                // Init function yang akan dijalankan ketika komponen dimuat
+                init() {
+                    this.fetchCourses(); // Otomatis fetch data saat komponen dimuat
                 }
             }));
         });
     </script>
 @endsection
-
 {{-- END --}}
 
 
@@ -476,15 +517,12 @@
         </x-modal.confirmation>
 
         <!-- Modal Konfirmasi Simpan -->
-        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-            cancelText="Cek Kembali" x-data="{
-                handleConfirm() {
-                    $event.stopImmediatePropagation();
-                    $nextTick(() => Alpine.data('mataKuliahForm').submitForm())
-                }
-            }">
-            <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-        </x-modal.confirmation>
+        <div class="" x-data="mataKuliahForm" @on-submit.window="await submitForm()">
+            <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+                cancelText="Cek Kembali">
+                <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+            </x-modal.confirmation>
+        </div>
 
         <!-- Modal Konfirmasi Hapus Prasyarat Mata Kuliah -->
         <x-modal.confirmation iconUrl="{{ asset('assets/icon-delete-gray-800.svg') }}" id="delete-confirmation"
@@ -505,7 +543,7 @@
         </x-modal.confirmation>
 
         {{-- MODAL TAMBAH PRASYARAT --}}
-        <x-modal.container id="prasyarat-modal" maxWidth="7xl"
+        <x-modal.container x-data='mataKuliahForm' id="prasyarat-modal" maxWidth="7xl"
             x-on:open-modal.window="if ($event.detail.id === 'tambah-prasyarat-modal') { show = true }">
             <x-slot name="header">
                 <div class="w-full relative">
@@ -535,26 +573,52 @@
                             </x-table-row>
                         </x-table-head>
 
-                        @php
-                            $prasyaratMataKuliahList = $prasyaratMataKuliahList ?? [];
-                        @endphp
-
                         <x-table-body>
-                            @foreach ($prasyaratMataKuliahList as $index => $item)
-                                <x-table-row :odd="$loop->odd" :last="$loop->last">
-                                    <x-table-cell>
-                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
-                                            name="selected[]" value="{{ $item['kode'] }}">
+                            <template x-if="isLoading">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4">
+                                        Memuat data...
                                     </x-table-cell>
-                                    <x-table-cell>{{ $item['kode'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['nama'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['sks'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['semester'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['jenis'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['tipe'] }}</x-table-cell>
                                 </x-table-row>
-                            @endforeach
+                            </template>
 
+                            <template x-if="errorMessage">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4 text-red-500"
+                                        x-text="errorMessage">
+                                    </x-table-cell>
+                                </x-table-row>
+                            </template>
+
+                            <template x-if="!isLoading && courses.length > 0">
+                                <template x-for="(item, index) in courses" :key="item.id">
+                                    <x-table-row>
+                                        <x-table-cell>
+                                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
+                                                x-bind:name="'selected[' + index + ']'" x-bind:value="item.kode">
+                                        </x-table-cell>
+                                        <x-table-cell x-text="item.kode"></x-table-cell>
+                                        <x-table-cell x-text="item.nama_id"></x-table-cell>
+                                        <x-table-cell x-text="item.sks"></x-table-cell>
+                                        <x-table-cell x-text="item.semester"></x-table-cell>
+                                        <x-table-cell x-text="item.jenis"></x-table-cell>
+                                        <x-table-cell>
+                                            <span x-text="item.status === 'active' ? 'Aktif' : 'Nonaktif'"
+                                                :class="{ 'text-green-500': item.status === 'active', 'text-red-500': item
+                                                        .status !== 'active' }">
+                                            </span>
+                                        </x-table-cell>
+                                    </x-table-row>
+                                </template>
+                            </template>
+
+                            <template x-if="!isLoading && courses.length === 0">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4">
+                                        Tidak ada data mata kuliah
+                                    </x-table-cell>
+                                </x-table-row>
+                            </template>
                         </x-table-body>
                     </x-table>
                 </div>

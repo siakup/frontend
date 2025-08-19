@@ -8,7 +8,6 @@ use App\Http\Controllers\StudyController;
 use App\Http\Controllers\CplMapping;
 
 // Route::group(['middleware' => ['auth']], function () {
-Route::group(['middleware' => ['auth']], function () {
   Route::group(['prefix' => 'academics'], function () {
     //periode akademik
     Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
@@ -68,4 +67,3 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
     Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
   });
-});
