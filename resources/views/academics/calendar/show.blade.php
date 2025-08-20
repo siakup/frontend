@@ -248,19 +248,13 @@
 
             document.addEventListener('click', function(e) {
                 const addBtn = e.target.closest('.btn-add-event');
-                const deleteBtn = e.target.closest('.btn-delete-event-academic');
                 
                 if (addBtn) {
                     document.getElementById('modalAddEvent').style.display = 'flex';
                 }
-                if (deleteBtn) {
-                    const id = deleteBtn.getAttribute('data-id');
-                    document.getElementById('modalKonfirmasiHapus').setAttribute('data-id', id);
-                    document.getElementById('modalKonfirmasiHapus').style.display = 'flex';
-                }
             });
 
-            document.getElementById('btnHapus').addEventListener('click', function() {
+            document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
               const id = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
               const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 $.ajax({
@@ -287,11 +281,6 @@
                         );
                     }
                 });
-            });
-
-            document.getElementById('btnCekKembaliSebelumHapus').addEventListener('click', function() {
-                document.getElementById('modalKonfirmasiHapus').removeAttribute('data-id');
-                document.getElementById('modalKonfirmasiHapus').style.display = 'none';
             });
         });
     </script>
@@ -421,22 +410,14 @@
 
         @include('academics.calendar.create', ['id' => $id]);
         @include('academics.calendar.edit', ['id' => $id, 'data' => $data]);
-        <div id="modalKonfirmasiHapus" class="modal-custom" style="display:none;">
-            <div class="modal-custom-backdrop"></div>
-            <div class="modal-custom-content">
-                <div class="modal-custom-header">
-                    <span class="text-lg-bd">Hapus Event Kalender Akademik</span>
-                    <img src="{{ asset('assets/icon-delete-gray-800.svg') }}" alt="ikon peringatan">
-                </div>
-                <div class="modal-custom-body">
-                    <div>Apakah anda yakin ingin menghapus event kalender akademik ini?</div>
-                </div>
-                <meta name="csrf-token" content="{{ csrf_token() }}">
-                <div class="modal-custom-footer">
-                    <button type="button" class="button button-clean" id="btnCekKembaliSebelumHapus">Batal</button>
-                    <button type="button" class="button button-outline" id="btnHapus">Hapus</button>
-                </div>
-            </div>
-        </div>
+        @include('partials.modal', [
+          'modalId' => 'modalKonfirmasiHapus',
+          'modalTitle' => 'Hapus Event Kalender Akademik',
+          'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
+          'modalMessage' => 'Apakah Anda yakin ingin menghapus event kalender akademik ini?',
+          'triggerButton' => 'btn-delete-event-academic',
+          'cancelButtonLabel' => 'Batal',
+          'actionButtonLabel' => 'Hapus'
+        ]);
     </div>
 @endsection

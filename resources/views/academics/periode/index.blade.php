@@ -46,31 +46,6 @@
             color: #E62129;
         }
 
-        .modal-custom-content {
-            max-width: 600px;
-            z-index: 2;
-            align-items: center;
-            gap: 16px;
-            align-self: auto;
-        }
-
-        .modal-custom {
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .modal-custom-content {
-                width: 90vw;
-                min-width: unset;
-                max-width: 98vw;
-                padding: 16px;
-            }
-
-            .modal-custom-title {
-                font-size: 18px;
-            }
-        }
-
         #btnUpload:hover img {
             filter: brightness(0) invert(1);
         }
@@ -102,16 +77,6 @@
                 }
             });
 
-            // delete button
-            document.addEventListener('click', function(e) {
-                const btn = e.target.closest('.btn-delete-periode-academic');
-                if (btn) {
-                    const idPeriode = btn.getAttribute('data-id');
-                    document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idPeriode);
-                    document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
-                }
-            });
-
             // detail
             document.addEventListener('click', function(e) {
                 const btn = e.target.closest('.btn-view-periode-academic');
@@ -136,8 +101,8 @@
                 }
             });
 
-            document.getElementById('btnSimpan').addEventListener('click', function() {
-                const id = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
+            document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
+                const id = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
                 $.ajax({
@@ -148,9 +113,9 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     success: function(response) {
-                        document.getElementById('modalKonfirmasiSimpan').removeAttribute(
+                        document.getElementById('modalKonfirmasiHapus').removeAttribute(
                             'data-id');
-                        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+                        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
                         successToast('Berhasil dihapus');
                         setTimeout(() => {
                             window.location.href =
@@ -164,11 +129,6 @@
                     }
                 });
 
-            });
-
-            document.getElementById('btnCekKembali').addEventListener('click', function() {
-                document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
-                document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
             });
         });
     </script>
@@ -299,21 +259,14 @@
         ])
     </div>
     <div id="periodeDetailModalContainer"></div>
-    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content" style="height: 300px;">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Tunggu Sebentar</span>
-                <img src="{{ asset('assets/icon-delete-gray-800.svg') }}" alt="ikon peringatan">
-            </div>
-            <div class="modal-custom-body">
-                <div>Apakah anda yakin ingin menghapus periode akademik ini?</div>
-            </div>
-            <div class="modal-custom-footer" style="align-self: center">
-                <button type="button" class="button button-clean" id="btnCekKembali">Batal</button>
-                <button type="submit" class="button button-outline" id="btnSimpan">Hapus</button>
-            </div>
-        </div>
-    </div>
+    @include('partials.modal', [
+      'modalId' => 'modalKonfirmasiHapus',
+      'modalTitle' => 'Tunggu Sebentar',
+      'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
+      'modalMessage' => 'Apakah Anda yakin ingin menghapus periode akademik ini?',
+      'triggerButton' => 'btn-delete-periode-academic',
+      'cancelButtonLabel' => 'Batal',
+      'actionButtonLabel' => 'Hapus'
+    ]);
     @include('partials.success-modal')
 @endsection

@@ -38,27 +38,6 @@
     .sub-title {
       padding: 10px 20px !important;
     }
-    .modal-custom-content {
-        max-width: 600px;
-        z-index: 2;
-        align-items: center;
-        gap: 16px;
-        align-self: auto;
-    }
-    .modal-custom {
-        align-items: start;
-    }
-    @media (max-width: 900px) {
-        .modal-custom-content {
-            width: 90vw;
-            min-width: unset;
-            max-width: 98vw;
-            padding: 16px;
-        }
-        .modal-custom-title {
-            font-size: 18px;
-        }
-    }
   </style>
 @endsection
 
@@ -66,26 +45,11 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      document.addEventListener('click', function(e) {
-          const btn = e.target.closest('.btn-delete');
-          if (btn) {
-              const idEvent = btn.getAttribute('data-id');
-              document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idEvent);
-              document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
-          }
-      });
-
-      document.getElementById('btnCekKembali').addEventListener('click', function() {
-          document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
-          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-      });
-
-      document.getElementById('btnSimpan').addEventListener('click', function() {
-         const dataId = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
+      document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
+         const dataId = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
          const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-         document.getElementById('modalKonfirmasiSimpan').removeAttribute(
-              'data-id');
-          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+         document.getElementById('modalKonfirmasiHapus').removeAttribute('data-id');
+          document.getElementById('modalKonfirmasiHapus').style.display = 'none';
           successToast('Berhasil dihapus');
           setTimeout(() => {
             window.location.href = "{{route('curriculum.list')}}"
@@ -228,21 +192,14 @@
           <a href="{{route('curriculum.list.create')}}" class="button button-outline">Tambah Kurikulum</a>
       </div>
     </div>
-    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content bg-white">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Hapus Daftar Kurikulum</span>
-                <img src="{{ asset('assets/icon-delete-gray-800.svg') }}" alt="ikon peringatan">
-            </div>
-            <div class="modal-custom-body">
-                <div>Apakah anda yakin ingin menghapus kurikulum ini?</div>
-            </div>
-            <div class="modal-custom-footer w-full">
-                <button type="button" class="button button-clean !w-full" id="btnCekKembali">Batal</button>
-                <button type="submit" class="button button-outline !w-full" id="btnSimpan">Hapus</button>
-            </div>
-        </div>
-    </div>
+    @include('partials.modal', [
+      'modalId' => 'modalKonfirmasiHapus',
+      'modalTitle' => 'Hapus Daftar kurikulum',
+      'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
+      'modalMessage' => 'Apakah Anda yakin ingin menghapus kurikulum ini?',
+      'triggerButton' => 'btn-delete',
+      'cancelButtonLabel' => 'Batal',
+      'actionButtonLabel' => 'Hapus'
+    ]);
   </div>
 @endsection

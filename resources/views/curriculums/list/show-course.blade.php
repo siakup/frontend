@@ -81,6 +81,7 @@
             "{{ asset('assets/icon-arrow-down-grey-20.svg') }}" :
             "{{ asset('assets/icon-arrow-up-black-20.svg') }}";
     });
+
     document.addEventListener('click', (e) => {
         const dropdownStudy = e.target.closest('#jenis_mata_kuliah');
         if (dropdownStudy == null) {
@@ -89,6 +90,7 @@
                 "{{ asset('assets/icon-arrow-down-grey-20.svg') }}";
         }
     });
+
     document.querySelectorAll('#Option-Program-Perkuliahan .dropdown-item').forEach((dropdownItem) => {
         dropdownItem.addEventListener('click', () => {
             const value = dropdownItem.getAttribute('data-event');
@@ -99,27 +101,13 @@
             updateSaveButtonState();
         });
     });
-
-    document.addEventListener('click', function(e) {
-        const btn = e.target.closest('.btn-delete');
-        if (btn) {
-            const idEvent = btn.getAttribute('data-id');
-            document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idEvent);
-            document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
-        }
-    });
-
-    document.getElementById('btnCekKembali').addEventListener('click', function() {
-        document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
-        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-    });
     
-    document.getElementById('btnHapus').addEventListener('click', function() {
-       const dataId = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
+    document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
+       const dataId = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-       document.getElementById('modalKonfirmasiSimpan').removeAttribute(
+       document.getElementById('modalKonfirmasiHapus').removeAttribute(
             'data-id');
-        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
         successToast('Berhasil dihapus');
         setTimeout(() => {
           window.location.href = "{{route('curriculum.list.edit.show-study', ['id' => $id])}}"
@@ -244,7 +232,7 @@
                                 </a>
                                 <button type="button" class="btn-icon btn-delete" data-id="{{$d['id']}}" title="Hapus">
                                     <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                                    <span>Hapus</span>
+                                    <span class="text-[#8C8C8C]">Hapus</span>
                                 </button>
                               </div>
                             </x-table-cell>
@@ -261,22 +249,15 @@
           </x-table>
         </div>
     </x-container>
-    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content bg-white">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Hapus Daftar Mata Kuliah</span>
-                <img src="{{ asset('assets/icon-delete-gray-800.svg') }}" alt="ikon peringatan">
-            </div>
-            <div class="modal-custom-body">
-                <div>Apakah anda yakin ingin menghapus ini?</div>
-            </div>
-            <div class="modal-custom-footer w-full">
-                <button type="button" class="button button-clean !w-full" id="btnCekKembali">Batal</button>
-                <button type="submit" class="button button-outline !w-full" id="btnHapus">Hapus</button>
-            </div>
-        </div>
-    </div>
+    @include('partials.modal', [
+      'modalId' => 'modalKonfirmasiHapus',
+      'modalTitle' => 'Hapus Daftar Mata Kuliah',
+      'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
+      'modalMessage' => 'Apakah Anda yakin ingin menghapus ini?',
+      'triggerButton' => 'btn-delete',
+      'cancelButtonLabel' => 'Batal',
+      'actionButtonLabel' => 'Hapus'
+    ]);
   </div>
   @include('partials.pagination', [
       'currentPage' => 1,
