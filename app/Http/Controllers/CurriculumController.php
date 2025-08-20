@@ -105,7 +105,7 @@ class CurriculumController extends Controller
 
     public function updateCurriculumList(Request $request, $id)
     {
-      return redirect()->route('curriculum.list')->with('success', 'Tambah Kurikulum Berhasil Disimpan');
+      return redirect()->route('curriculum.list.edit', ['id' => $id])->with('success', 'Berhasil Disimpan');
     }
 
     public function editCurriculumList(Request $request, $id)
@@ -341,7 +341,8 @@ class CurriculumController extends Controller
     }
 
     public function showCurriculumStudyList(Request $request, $id) {
-      $isOnlyView = boolval($request->input('view', false) === 'true');
+      $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
+      $nama_mata_kuliah = $request->input('nama', '');
       $data = [
         [
           'id' => 1,

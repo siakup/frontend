@@ -203,40 +203,6 @@
                 });
             }
 
-            function sortTable(value) {
-                $.ajax({
-                    url: '{{ route('academics-event.index') }}',
-                    method: 'GET',
-                    data: {
-                        sort: value
-                    },
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(response) {
-                        window.location.href = '{{ route('academics-event.index') }}' + '?sort=' +
-                            encodeURIComponent(value);
-                    },
-                    error: function() {
-                        $('tbody').html(
-                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                        );
-                    }
-                });
-            }
-
-            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    sortDropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove(
-                        'active'));
-                    const sortKey = this.getAttribute('data-sort');
-
-                    this.classList.add('active');
-                    sortDropdown.style.display = 'none';
-                    sortTable(sortKey); // Panggil AJAX sortTable
-                });
-            });
-
             document.addEventListener('click', function(e) {
                 const btn = e.target.closest('.btn-view-event-academic');
                 if (btn) {
@@ -302,16 +268,6 @@
                 document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
                 document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
             });
-
-            // sort dropdown
-            const sortBtn = document.getElementById('sortButton');
-            const sortDropdown = document.getElementById('sortDropdown');
-
-            // Toggle dropdown on button click
-            sortBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                sortDropdown.style.display = (sortDropdown.style.display === 'block') ? 'none' : 'block';
-            });
         })
     </script>
 
@@ -349,20 +305,24 @@
                             <div class="search-dropdown" id="searchDropdown"></div>
                         </div>
                     </div>
-                    <div class="filter-box">
-                        <button class="button-clean" id="sortButton">
-                            {{ empty($_GET) ? 'Terbaru' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))) }}
-                            <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
-                        </button>
-                        <div id="sortDropdown" class="sort-dropdown" style="display: none;">
-                            <div class="dropdown-item" data-sort="active">Aktif</div>
-                            <div class="dropdown-item" data-sort="inactive">Tidak Aktif</div>
-                            <div class="dropdown-item" data-sort="nama,asc">A-Z</div>
-                            <div class="dropdown-item" data-sort="nama,desc">Z-A</div>
-                            <div class="dropdown-item" data-sort="created_at,desc">Terbaru</div>
-                            <div class="dropdown-item" data-sort="created_at,asc">Terlama</div>
-                        </div>
-                    </div>
+                    @include('partials.dropdown-filter', [
+                      'buttonId' => 'sortButton',
+                      'dropdownId' => 'sortDropdown',
+                      'dropdownItem' => [
+                        'Aktif' => 'active',
+                        'Tidak Aktif' => 'inactive',
+                        'A-Z' => 'nama, asc',
+                        'Z-A' => 'nama, desc',
+                        'Terbaru' => 'created_at,desc',
+                        'Terlama' => 'created_at,asc'
+                      ],
+                      'label' => empty($_GET) ? 'Terbaru' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))),
+                      'url' => route('academics-event.index'),
+                      'imgSrc' => asset('assets/icon-filter.svg'),
+                      'dropdownClass' => '',
+                      'isIconCanRotate' => false,
+                      'imgInvertSrc' => ''
+                    ])
                 </div>
             </div>
             <div class="table-responsive">

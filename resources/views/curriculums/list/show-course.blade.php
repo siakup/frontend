@@ -59,34 +59,43 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const eventName = document.querySelector('input[name="program_perkuliahan"]');
-    const sortBtnEventName = document.querySelector('#sortEvent');
-    const sortDropdownEventName = document.querySelector('#Option-Program-Perkuliahan');
+    const courseType = document.querySelector('input[name="jenis_mata_kuliah"]');
+    const sortBtnCourseType = document.querySelector('#sortEvent');
+    const sortDropdownCourseType = document.querySelector('#Option-Program-Perkuliahan');
+
+    function updateSaveButtonState() {
+      const courseTypeFilled = courseType.value.trim() !== '';
+      if(courseTypeFilled) {
+        document.querySelector('#btnCari').disabled = false;
+      } else {
+        document.querySelector('#btnCari').disabled = true;
+      }
+    }
   
-    sortBtnEventName.addEventListener('click', function(e) {
+    sortBtnCourseType.addEventListener('click', function(e) {
         e.stopPropagation();
-        sortDropdownEventName.style.display = (sortDropdownEventName.style.display === 'block') ?
+        sortDropdownCourseType.style.display = (sortDropdownCourseType.style.display === 'block') ?
             'none' : 'block';
-        sortBtnEventName.querySelector('img').src = (sortBtnEventName.querySelector('img').src ===
+        sortBtnCourseType.querySelector('img').src = (sortBtnCourseType.querySelector('img').src ===
                 "{{ asset('assets/icon-arrow-up-black-20.svg') }}") ?
             "{{ asset('assets/icon-arrow-down-grey-20.svg') }}" :
             "{{ asset('assets/icon-arrow-up-black-20.svg') }}";
     });
     document.addEventListener('click', (e) => {
-        const dropdownStudy = e.target.closest('#program_perkuliahan');
+        const dropdownStudy = e.target.closest('#jenis_mata_kuliah');
         if (dropdownStudy == null) {
-            sortDropdownEventName.style.display = 'none'
-            sortBtnEventName.querySelector('img').src =
+            sortDropdownCourseType.style.display = 'none'
+            sortBtnCourseType.querySelector('img').src =
                 "{{ asset('assets/icon-arrow-down-grey-20.svg') }}";
         }
     });
     document.querySelectorAll('#Option-Program-Perkuliahan .dropdown-item').forEach((dropdownItem) => {
         dropdownItem.addEventListener('click', () => {
             const value = dropdownItem.getAttribute('data-event');
-            const span = sortBtnEventName.querySelector('span');
+            const span = sortBtnCourseType.querySelector('span');
             span.innerHTML = dropdownItem.innerHTML;
             span.style.color = "black";
-            eventName.value = value;
+            courseType.value = value;
             updateSaveButtonState();
         });
     });
@@ -162,33 +171,35 @@
   @endif
   <div class="content-card">
     <div class="form-title-text">Daftar Mata Kuliah</div>
-    <div class="form-section">
-      <div class="form-group">
-          <label for="name">Program Perkuliahan</label>
-          <div class="filter-box w-full" id="program_perkuliahan">
-              <button type="button" class="button-clean input border-[1px] !border-[#BFBFBF] w-full flex items-center justify-between" id="sortEvent">
-                  <span id="selectedEventLabel" class="text-black">Semua Mata Kuliah</span>
-                  <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
-              </button>
-              <div id="Option-Program-Perkuliahan" class="sort-dropdown select !top-[9.8%] !left-[15.2%]" style="display: none;">
-                <div class="dropdown-item" data-event="">Mata Kuliah Dasar Umum</div>
-                <div class="dropdown-item" data-event="">Mata Kuliah Program Studi</div>
-              </div>
-              <input type="hidden" value="" name="program_perkuliahan">
-          </div>
+    <form action="{{Request::routeIs('curriculum.list.view.show-study') ? route('curriculum.list.view.show-study', ['id' => $id]) : route('curriculum.list.edit.show-study', ['id' => $id])}}" method="GET">
+      <div class="form-section">
+        <div class="form-group">
+            <label for="name">Program Perkuliahan</label>
+            <div class="filter-box w-full" id="jenis_mata_kuliah">
+                <button type="button" class="button-clean input border-[1px] !border-[#BFBFBF] w-full flex items-center justify-between" id="sortEvent">
+                    <span id="selectedEventLabel" class="{{Request::routeIs('curriculum.list.view.show-study') && $jenis_mata_kuliah == '' ? 'text-[#8C8C8C]' : 'text-black'}}">{{$jenis_mata_kuliah != '' ? ($jenis_mata_kuliah == 1 ? 'Mata Kuliah Dasar Umum' : 'Mata Kuliah Program Studi'): "Pilih Mata Kuliah"}}</span>
+                    <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
+                </button>
+                <div id="Option-Program-Perkuliahan" class="sort-dropdown select !top-[9.8%] !left-[15.2%]" style="display: none;">
+                  <div class="dropdown-item" data-event="1">Mata Kuliah Dasar Umum</div>
+                  <div class="dropdown-item" data-event="2">Mata Kuliah Program Studi</div>
+                </div>
+                <input type="hidden" value="{{$jenis_mata_kuliah}}" name="jenis_mata_kuliah">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Curriculum-Name">Nama Mata Kuliah</label>
+            <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg w-full">
+                <input placeholder="Ketik Mata Kuliah" name="nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="">
+                <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
+            </div>
+        </div>
+        <div class="button-group flex w-full justify-end items-stretch">
+          <button type="button" class="button button-clean disabled:!bg-white disabled:!border-[#BFBFBF] disabled:!border-[1px] min-w-[151px]" id="btnBatal" @if($jenis_mata_kuliah == '' && $nama_mata_kuliah == '') disabled @endif>Batal</button>
+          <button type="submit" class="button button-outline min-w-[151px]" id="btnCari" @if($jenis_mata_kuliah == '' && $nama_mata_kuliah == '') disabled @endif>Cari</button>
+        </div>
       </div>
-      <div class="form-group">
-          <label for="Curriculum-Name">Nama Mata Kuliah</label>
-          <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px] w-full">
-              <input placeholder="Ketik Mata Kuliah" name="nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="">
-              <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
-          </div>
-      </div>
-      <div class="button-group flex w-full justify-end">
-        <button type="button" class="button button-clean" id="btnBatal">Batal</button>
-        <button type="button" class="button button-outline" id="btnSimpan">Cari</button>
-      </div>
-    </div>
+    </form>
     <x-container class="border-none">
         <div class="flex flex-col gap-5">
           <x-table>

@@ -82,39 +82,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('toggleSortDropdown').addEventListener('click', function(e) {
-                const dropdown = document.getElementById('sortDropdown');
-                const toggleBtn = document.getElementById('toggleSortDropdown');
-
-                const isOpen = dropdown.style.display === 'none' || dropdown.style.display === '';
-                dropdown.style.display = isOpen ? 'block' : 'none';
-
-                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                    toggleBtn.classList.remove('active');
-                }
-                toggleBtn.classList.toggle('active', isOpen);
-
-                event.stopPropagation();
-            });
-
-            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const sortValue = this.dataset.sort;
-                    const sortText = this.textContent.trim();
-
-                    const sortLabel = document.getElementById('sortLabel');
-                    if (sortLabel) {
-                        sortLabel.textContent = sortText;
-                    }
-
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('sort', sortValue);
-                    url.searchParams.set('page', 1);
-                    window.location.href = url.toString();
-                });
-            });
-
             const params = new URLSearchParams(window.location.search);
             const currentSort = params.get('sort');
             if (currentSort) {
@@ -127,14 +94,6 @@
                     }
                 }
             }
-            document.addEventListener('click', function(e) {
-                const toggleBtn = document.getElementById('toggleSortDropdown');
-                const dropdown = document.getElementById('sortDropdown');
-
-                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
 
             //search
             document.getElementById('searchInput').addEventListener('keypress', function(e) {
@@ -211,7 +170,6 @@
                 document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
                 document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
             });
-
         });
     </script>
 @endsection
@@ -246,20 +204,25 @@
                     </form>
 
                     {{-- start filter --}}
-                    <div class="filter-box">
-                        <button class="button-clean sort-toggle-btn" id="toggleSortDropdown">
-                            <span id="sortLabel">Terbaru</span>
-                            <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
-                        </button>
-                        <div id="sortDropdown" class="sort-dropdown" style="display: none;">
-                            <div class="dropdown-item" data-sort="active">Aktif</div>
-                            <div class="dropdown-item" data-sort="inactive">Tidak Aktif</div>
-                            <div class="dropdown-item" data-sort="semester,asc">A-Z</div>
-                            <div class="dropdown-item" data-sort="semester,desc">Z-A</div>
-                            <div class="dropdown-item" data-sort="created_at,desc">Terbaru</div>
-                            <div class="dropdown-item" data-sort="created_at,asc">Terlama</div>
-                        </div>
-                    </div>
+
+                    @include('partials.dropdown-filter', [
+                      'buttonId' => 'sortButton',
+                      'dropdownId' => 'sortDropdown',
+                      'dropdownItem' => [
+                        'Aktif' => 'active',
+                        'Tidak Aktif' => 'inactive',
+                        'A-Z' => 'nama, asc',
+                        'Z-A' => 'nama, desc',
+                        'Terbaru' => 'created_at,desc',
+                        'Terlama' => 'created_at,asc'
+                      ],
+                      'label' => empty($_GET) ? 'Terbaru' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))),
+                      'url' => route('academics-periode.index'),
+                      'imgSrc' => asset('assets/icon-filter.svg'),
+                      'dropdownClass' => '',
+                      'isIconCanRotate' => false,
+                      'imgInvertSrc' => ''
+                    ])
                 </div>
             </div>
 
