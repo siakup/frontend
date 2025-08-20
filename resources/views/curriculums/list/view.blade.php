@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Ubah Kurikulum')
+@section('title', 'Lihat Detail Kurikulum')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item active">Kurikulum</div>
@@ -142,7 +142,7 @@
 
         const status = @json($data['status']);
         if (status === 'active') {
-            icon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
+            icon.src = "{{ asset('components/toggle-on-disabled-true-grey.svg') }}";
             text.textContent = "Aktif";
             text.style.color = "#262626";
             hiddenInput.value = "active";
@@ -227,7 +227,7 @@
         })
 
         document.getElementById('btnBatal').addEventListener('click', function() {
-            window.location.href = "{{ route('curriculum.list') }}";
+            window.location.href = "{{ route('academics-event.index') }}";
         });
 
         btnToggle.addEventListener('click', () => {
@@ -288,7 +288,7 @@
 @endif
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Ubah Kurikulum</div>
+        <div class="page-title-text">Lihat Detail Kurikulum</div>
     </div>
     
     <a href="{{ route('curriculum.list') }}" class="button-no-outline-left">
@@ -308,50 +308,45 @@
               <div class="form-group">
                   <label for="name">Program Perkuliahan</label>
                   <div class="filter-box" id="program_perkuliahan">
-                      <button type="button" class="button-clean input" id="sortEvent">
-                          <span id="selectedEventLabel" class="text-black">{{current(array_filter($programPerkuliahanList, function($program) use($data) { return $program->id == $data['program_perkuliahan']; }))->nama}}</span>
+                      <button type="button" class="button-clean input !border-[1px] !border-[#BFBFBF]" id="sortEvent" disabled>
+                          <span id="selectedEventLabel">{{current(array_filter($programPerkuliahanList, function($program) use($data) { return $program->id == $data['program_perkuliahan']; }))->nama}}</span>
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                       </button>
-                      <div id="Option-Program-Perkuliahan" class="sort-dropdown select" style="display: none;">
-                          @foreach ($programPerkuliahanList as $programPerkuliahan)
-                            <div class="dropdown-item" data-event="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
-                          @endforeach
-                      </div>
                       <input type="hidden" value="{{$data['program_perkuliahan']}}" name="program_perkuliahan">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Curriculum-Name">Nama Kurikulum</label>
-                  <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="Nama Kurikulum" name="curriculum_nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="{{$data['curriculum_nama']}}">
+                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
+                      <input placeholder="Nama Kurikulum" name="curriculum_nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['curriculum_nama']}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Deskripsi">Deskripsi</label>
-                  <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="Deskripsi" name="deskripsi" type="text" id="Deskripsi" class="!border-transparent focus:outline-none" value="{{$data['deskripsi']}}">
+                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
+                      <input placeholder="Deskripsi" name="deskripsi" type="text" id="Deskripsi" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['deskripsi']}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Wajib">SKS Mata Kuliah Wajib</label>
-                  <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="SKS Mata Kuliah Wajib" name="sks_wajib" type="text" id="Wajib" class="!border-transparent focus:outline-none" value="{{$data['sks_wajib']}}">
+                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
+                      <input placeholder="SKS Mata Kuliah Wajib" name="sks_wajib" type="text" id="Wajib" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['sks_wajib']}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Pilihan">SKS Mata Kuliah Pilihan</label>
-                  <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="SKS Mata Kuliah Pilihan" name="sks_pilihan" type="text" id="Pilihan" class="!border-transparent focus:outline-none" value="{{$data['sks_pilihan']}}">
+                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
+                      <input placeholder="SKS Mata Kuliah Pilihan" name="sks_pilihan" type="text" id="Pilihan" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['sks_pilihan']}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Total">Total SKS</label>
-                  <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="Total SKS" name="total_sks" type="text" id="Total" class="!border-transparent focus:outline-none" value="{{$data['total_sks']}}">
+                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
+                      <input placeholder="Total SKS" name="total_sks" type="text" id="Total" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['total_sks']}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
@@ -361,7 +356,7 @@
                       <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
                       <span class="toggle-info text-sm-bd" style="color: var(--Neutral-Gray-600, #8C8C8C)">Tidak Aktif</span>
                   </button>
-                <input type="hidden" name="status" id="statusValue" value="{{$data['status']}}">
+                <input type="hidden" name="status" id="statusValue" value="{{$data['status']}}" disabled>
               </div>
           </div>
       </div>
@@ -382,8 +377,8 @@
                           <td class="!text-[14px] !w-[50%] !py-[20px]">{{$jenis['nama']}}</td>
                           <td class="py-[12px] !w-[25%]"></td>
                           <td class="py-[12px] !w-[25%]">
-                            <div class="border-[1px] border-[#BFBFBF] rounded-lg py-[9px] ps-[39.5px] pe-[12px] flex">
-                              <input class="w-full bg-white !border-transparent focus:outline-none text-[14px]" placeholder="Minimum SKS" type="number" value="{{$data[str_replace(' ', '_', strtolower($jenis['nama']))]}}" name="{{str_replace(' ', '_', strtolower($jenis['nama']))}}" />
+                            <div class="border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg py-[9px] ps-[39.5px] pe-[12px] flex">
+                              <input class="w-full bg-transparent !border-transparent focus:outline-none text-[14px] text-[#8C8C8C]" placeholder="Minimum SKS" type="number" value="{{$data[str_replace(' ', '_', strtolower($jenis['nama']))]}}" name="{{str_replace(' ', '_', strtolower($jenis['nama']))}}" disabled />
                               <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                             </div>
                           </td>
@@ -392,51 +387,6 @@
                   </tbody>
               </table>
           </div>
-          <div class="form-title-text" style="padding: 20px;">Daftar Mata Kuliah yang telah di assign</div>
-          <div class="p-[16px]">
-              <x-table>
-              <x-table-head>
-                  <x-table-row>
-                      <x-table-header class="cursor-pointer">
-                          <input type="checkbox" id="select-all" class="" checked disabled>
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Kode Mata Kuliah
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Nama
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Jumlah SKS
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Program Studi
-                      </x-table-header>
-                      <x-table-header>Jenis Mata Kuliah</x-table-header>
-                  </x-table-row>
-              </x-table-head>
-              <x-table-body>
-                  @forelse ($assignCourseData as $d)
-                      <x-table-row class="!bg-[#EFF4CD]">
-                          <x-table-cell>
-                            <input type="checkbox" name="course-list[]" value="{{$d['id']}}" class="" checked disabled>
-                          </x-table-cell>
-                          <x-table-cell>{{ $d['kode_mata_kuliah'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['nama'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['sks'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['program_studi'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['jenis_mata_kuliah']}}</x-table-cell>
-                      </x-table-row>
-                  @empty
-                      <x-table-row>
-                          <x-table-cell colspan="6" class="text-center py-4">
-                              Tidak ada data ditemukan
-                          </x-table-cell>
-                      </x-table-row>
-                  @endforelse
-              </x-table-body>
-          </x-table>
-          </div>
       </div>
       <div class="content-card flex justify-between">
         <div class="button-group">
@@ -444,13 +394,9 @@
           <button type="submit" class="button button-outline" id="btnSimpan" disabled>Simpan</button>
         </div>
         <div class="button-group">
-            <a href="{{route('curriculum.list.edit.show-study', ['id' => $id])}}" class="button button-clean flex items-center justify-center" id="">
+            <a href="{{route('curriculum.list.view.show-study', ['id' => $id])}}" class="button button-clean flex items-center justify-center" id="">
               <span>Lihat Daftar Mata Kuliah</span>
               <img src="{{asset('assets/icon-eye-red.svg')}}" alt="button-icon">
-            </a>
-            <a href="{{route('curriculum.list.edit.assign-study', ['id' => $id])}}" class="button button-outline" id="">
-              <span>Tetapkan Mata Kuliah</span>
-              <img src="{{asset('assets/icon-mata-kuliah-white.svg')}}" alt="button-icon">
             </a>
         </div>
       </div>
