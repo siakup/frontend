@@ -92,20 +92,6 @@
             width: auto;
         }
 
-        .modal-custom-footer {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-            width: 100%;
-            padding: 0 20px 24px 20px;
-            box-sizing: border-box;
-        }
-
-        .modal-custom-footer .button {
-            min-width: 220px;
-            padding: 14px 0;
-        }
-
         .info-group {
             display: flex;
             flex-direction: column;
@@ -389,27 +375,20 @@
                 </div>
                 <div class="button-group">
                     <button type="button" class="button button-clean" id="btnBatal">Batal</button>
-                    <button type="button" class="button button-outline" id="btnSimpan"
+                    <button type="button" class="button button-outline btnSimpan" id="btnSimpan"
                         style="padding: 8px 54.5px; margin: 0px;" disabled>Simpan</button>
                 </div>
             </div>
-            <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-                <div class="modal-custom-backdrop"></div>
-                <div class="modal-custom-content">
-                    <div class="modal-custom-header">
-                        <span class="text-lg-bd">Tunggu Sebentar</span>
-                        <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="ikon peringatan">
-                    </div>
-                    <div class="modal-custom-body">
-                        <div>Apakah anda yakin informasi yang diubah sudah benar?</div>
-                    </div>
-                    <div class="modal-custom-footer">
-                        <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-                        <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Ubah
-                            Sekarang</button>
-                    </div>
-                </div>
-            </div>
+            
+            @include('partials.modal', [
+              'modalId' => 'modalKonfirmasiSimpan',
+              'modalTitle' => 'Tunggu Sebentar',
+              'modalIcon' => asset('assets/base/icon-caution.svg'),
+              'modalMessage' => 'Apakah Anda yakin informasi yang diubah sudah benar?',
+              'triggerButton' => 'btnSimpan',
+              'cancelButtonLabel' => 'Cek Kembali',
+              'actionButtonLabel' => 'Ya, Ubah Sekarang'
+            ]);
     </form>
 
     <script src="{{ asset('js/plugins/flatpckr.js') }}"></script>
@@ -466,16 +445,8 @@
                 }
             }
 
-            btnSave.addEventListener('click', function() {
-                document.getElementById('modalKonfirmasiSimpan').style.display = 'block';
-            });
-
             document.getElementById('btnBatal').addEventListener('click', function() {
                 window.location.href = "{{ route('academics-periode.index') }}";
-            });
-
-            document.getElementById('btnCekKembali').addEventListener('click', function() {
-                document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
             });
 
             btnToggle.addEventListener('click', () => {

@@ -46,31 +46,6 @@
             color: #E62129;
         }
 
-        .modal-custom-content {
-            max-width: 600px;
-            z-index: 2;
-            align-items: center;
-            gap: 16px;
-            align-self: auto;
-        }
-
-        .modal-custom {
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .modal-custom-content {
-                width: 90vw;
-                min-width: unset;
-                max-width: 98vw;
-                padding: 16px;
-            }
-
-            .modal-custom-title {
-                font-size: 18px;
-            }
-        }
-
         #btnUpload:hover img {
             filter: brightness(0) invert(1);
         }
@@ -82,39 +57,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('toggleSortDropdown').addEventListener('click', function(e) {
-                const dropdown = document.getElementById('sortDropdown');
-                const toggleBtn = document.getElementById('toggleSortDropdown');
-
-                const isOpen = dropdown.style.display === 'none' || dropdown.style.display === '';
-                dropdown.style.display = isOpen ? 'block' : 'none';
-
-                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                    toggleBtn.classList.remove('active');
-                }
-                toggleBtn.classList.toggle('active', isOpen);
-
-                event.stopPropagation();
-            });
-
-            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const sortValue = this.dataset.sort;
-                    const sortText = this.textContent.trim();
-
-                    const sortLabel = document.getElementById('sortLabel');
-                    if (sortLabel) {
-                        sortLabel.textContent = sortText;
-                    }
-
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('sort', sortValue);
-                    url.searchParams.set('page', 1);
-                    window.location.href = url.toString();
-                });
-            });
-
             const params = new URLSearchParams(window.location.search);
             const currentSort = params.get('sort');
             if (currentSort) {
@@ -127,29 +69,11 @@
                     }
                 }
             }
-            document.addEventListener('click', function(e) {
-                const toggleBtn = document.getElementById('toggleSortDropdown');
-                const dropdown = document.getElementById('sortDropdown');
-
-                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
 
             //search
             document.getElementById('searchInput').addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
                     this.form.submit();
-                }
-            });
-
-            // delete button
-            document.addEventListener('click', function(e) {
-                const btn = e.target.closest('.btn-delete-periode-academic');
-                if (btn) {
-                    const idPeriode = btn.getAttribute('data-id');
-                    document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idPeriode);
-                    document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
                 }
             });
 
@@ -177,8 +101,8 @@
                 }
             });
 
-            document.getElementById('btnSimpan').addEventListener('click', function() {
-                const id = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
+            document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
+                const id = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
                 const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
                 $.ajax({
@@ -189,9 +113,9 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     },
                     success: function(response) {
-                        document.getElementById('modalKonfirmasiSimpan').removeAttribute(
+                        document.getElementById('modalKonfirmasiHapus').removeAttribute(
                             'data-id');
-                        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+                        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
                         successToast('Berhasil dihapus');
                         setTimeout(() => {
                             window.location.href =
@@ -206,12 +130,6 @@
                 });
 
             });
-
-            document.getElementById('btnCekKembali').addEventListener('click', function() {
-                document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
-                document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-            });
-
         });
     </script>
 @endsection
@@ -246,20 +164,25 @@
                     </form>
 
                     {{-- start filter --}}
-                    <div class="filter-box">
-                        <button class="button-clean sort-toggle-btn" id="toggleSortDropdown">
-                            <span id="sortLabel">Terbaru</span>
-                            <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
-                        </button>
-                        <div id="sortDropdown" class="sort-dropdown" style="display: none;">
-                            <div class="dropdown-item" data-sort="active">Aktif</div>
-                            <div class="dropdown-item" data-sort="inactive">Tidak Aktif</div>
-                            <div class="dropdown-item" data-sort="semester,asc">A-Z</div>
-                            <div class="dropdown-item" data-sort="semester,desc">Z-A</div>
-                            <div class="dropdown-item" data-sort="created_at,desc">Terbaru</div>
-                            <div class="dropdown-item" data-sort="created_at,asc">Terlama</div>
-                        </div>
-                    </div>
+
+                    @include('partials.dropdown-filter', [
+                      'buttonId' => 'sortButton',
+                      'dropdownId' => 'sortDropdown',
+                      'dropdownItem' => [
+                        'Aktif' => 'active',
+                        'Tidak Aktif' => 'inactive',
+                        'A-Z' => 'nama, asc',
+                        'Z-A' => 'nama, desc',
+                        'Terbaru' => 'created_at,desc',
+                        'Terlama' => 'created_at,asc'
+                      ],
+                      'label' => empty($_GET) ? 'Terbaru' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))),
+                      'url' => route('academics-periode.index'),
+                      'imgSrc' => asset('assets/icon-filter.svg'),
+                      'dropdownClass' => '',
+                      'isIconCanRotate' => false,
+                      'imgInvertSrc' => ''
+                    ])
                 </div>
             </div>
 
@@ -336,21 +259,14 @@
         ])
     </div>
     <div id="periodeDetailModalContainer"></div>
-    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content" style="height: 300px;">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Tunggu Sebentar</span>
-                <img src="{{ asset('assets/icon-delete-gray-800.svg') }}" alt="ikon peringatan">
-            </div>
-            <div class="modal-custom-body">
-                <div>Apakah anda yakin ingin menghapus periode akademik ini?</div>
-            </div>
-            <div class="modal-custom-footer" style="align-self: center">
-                <button type="button" class="button button-clean" id="btnCekKembali">Batal</button>
-                <button type="submit" class="button button-outline" id="btnSimpan">Hapus</button>
-            </div>
-        </div>
-    </div>
+    @include('partials.modal', [
+      'modalId' => 'modalKonfirmasiHapus',
+      'modalTitle' => 'Tunggu Sebentar',
+      'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
+      'modalMessage' => 'Apakah Anda yakin ingin menghapus periode akademik ini?',
+      'triggerButton' => 'btn-delete-periode-academic',
+      'cancelButtonLabel' => 'Batal',
+      'actionButtonLabel' => 'Hapus'
+    ]);
     @include('partials.success-modal')
 @endsection

@@ -49,74 +49,6 @@
   </style>
 @endsection
 
-@section('javascript')
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
-      const sortDropdownCampusProgram = document.querySelector('#sortDropdown.campus');
-      const sortBtnStudyProgram = document.querySelector('#sortButton.study');
-      const sortDropdownStudyProgram = document.querySelector('#sortDropdown.study');
-      
-      document.addEventListener('click', (e) => {
-          const dropdownStudy = e.target.closest('#StudyProgramSection');
-          if (dropdownStudy == null) {
-              sortDropdownStudyProgram.style.display = 'none'
-              sortBtnStudyProgram.querySelector('img').src =
-                  "{{ asset('assets/active/icon-arrow-down.svg') }}";
-          }
-      });
-
-      sortBtnCampusProgram.addEventListener('click', function(e) {
-          e.stopPropagation();
-          sortDropdownCampusProgram.style.display = (sortDropdownCampusProgram.style.display ===
-              'block') ? 'none' : 'block';
-          sortBtnCampusProgram.querySelector('img').src = (sortBtnCampusProgram.querySelector('img')
-                  .src === "{{ asset('assets/active/icon-arrow-up.svg') }}") ?
-              "{{ asset('assets/active/icon-arrow-down.svg') }}" :
-              "{{ asset('assets/active/icon-arrow-up.svg') }}";
-      });
-      sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(item => {
-          item.addEventListener('click', function() {
-              sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(i => i
-                  .classList.remove('active'));
-              const url = new URL(window.location.href);
-              const sortKey = this.getAttribute('data-sort');
-              url.searchParams.set('program_perkuliahan', sortKey);
-              window.location.href = url.toString();
-          });
-      });
-      document.addEventListener('click', (e) => {
-          const dropdownCampus = e.target.closest('#CampusProgramSection');
-          if (dropdownCampus == null) {
-              sortDropdownCampusProgram.style.display = 'none'
-              sortBtnCampusProgram.querySelector('img').src =
-                  "{{ asset('assets/active/icon-arrow-down.svg') }}";
-          }
-      });
-
-      sortBtnStudyProgram.addEventListener('click', function(e) {
-          e.stopPropagation();
-          sortDropdownStudyProgram.style.display = (sortDropdownStudyProgram.style.display ===
-              'block') ? 'none' : 'block';
-          sortBtnStudyProgram.querySelector('img').src = (sortBtnStudyProgram.querySelector('img')
-                  .src === "{{ asset('assets/active/icon-arrow-up.svg') }}") ?
-              "{{ asset('assets/active/icon-arrow-down.svg') }}" :
-              "{{ asset('assets/active/icon-arrow-up.svg') }}";
-      });
-      sortDropdownStudyProgram.querySelectorAll('.dropdown-item').forEach(item => {
-          item.addEventListener('click', function() {
-              sortDropdownStudyProgram.querySelectorAll('.dropdown-item').forEach(i => i
-                  .classList.remove('active'));
-              const url = new URL(window.location.href);
-              const sortKey = this.getAttribute('data-sort');
-              url.searchParams.set('program_studi', sortKey);
-              window.location.href = url.toString();
-          });
-      });
-    });
-  </script>
-@endsection
-
 @section('content')
   <div class="page-header">
     <div class="page-title-text">Kurikulum</div>
@@ -130,27 +62,31 @@
       <div class="card-header option-list">
         <div class="card-header center" id="CampusProgramSection">
             <div class="page-title-text sub-title">Program Perkuliahan</div>
-            <button class="button-clean campus" id="sortButton">
-                <span>{{ $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua" }}</span>
-                <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
-            </button>
-            <div id="sortDropdown" class="sort-dropdown campus" style="display: none;">
-              @foreach($programPerkuliahanList as $programPerkuliahan)
-                <div class="dropdown-item" data-sort="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
-              @endforeach
-            </div>
+            @include('partials.dropdown-filter', [
+              'buttonId' => 'sortButtonProgramPerkuliahan',
+              'dropdownId' => 'sortProgramPerkuliahan',
+              'dropdownItem' => array_column($programPerkuliahanList, 'id', 'nama'),
+              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua",
+              'url' => route('curriculum.list'),
+              'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
+              'dropdownClass' => '!top-[12.2%] !left-[23.7%]',
+              'isIconCanRotate' => true,
+              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
+            ])
         </div>
         <div class="card-header" id="StudyProgramSection">
             <div class="page-title-text sub-title">Program Studi</div>
-            <button class="button-clean study" id="sortButton">
-                <span>{{ count(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; })) > 0 ? array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama : ""}}</span>
-                <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
-            </button>
-            <div id="sortDropdown" class="sort-dropdown study" style="display: none;">
-              @foreach($programStudiList as $programStudi)
-                <div class="dropdown-item" data-sort="{{$programStudi->id}}">{{$programStudi->nama}}</div>
-              @endforeach
-            </div>
+            @include('partials.dropdown-filter', [
+              'buttonId' => 'sortButtonProgramStudi',
+              'dropdownId' => 'sortProgramStudi',
+              'dropdownItem' => array_column($programStudiList, 'id', 'nama'),
+              'label' =>  count(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; })) > 0 ? array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama : "",
+              'url' => route('curriculum.list'),
+              'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
+              'dropdownClass' => '!top-[12.2%] !left-[49.1%]',
+              'isIconCanRotate' => true,
+              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
+            ])
         </div>
       </div>
       <x-container class="border-none">

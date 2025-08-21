@@ -112,14 +112,6 @@
       window.location.href = "{{ route('academics-event.index') }}"
     });
 
-    document.getElementById('btnSimpan').addEventListener('click', function() {
-        document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
-    });
-
-    document.getElementById('btnCekKembali').addEventListener('click', function() {
-        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-    });
-
     const formCheckDatas = ["nilai", "irs", "lulus", "registrasi", "yudisium", "survei", "dosen"];
     let flag = {
       nilai:  @json($data['nilai_on']),
@@ -215,11 +207,21 @@
       </div>
       <div style="display: flex; gap: 20px; justify-content: flex-end; margin: 20px;">
         <button type="button" class="button button-clean" id="btnBatalUbahEvent" style="padding: 8px 54.5px; margin: 0px;">Batal</button>
-        <button type="button" class="button button-outline" id="btnSimpan" style="padding: 8px 54.5px; margin: 0px;">Simpan</button>
+        <button type="button" class="button button-outline btnSimpan" id="btnSimpan" style="padding: 8px 54.5px; margin: 0px;">Simpan</button>
       </div>
     </div>
     
-    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
+    @include('partials.modal', [
+      'modalId' => 'modalKonfirmasiSimpan',
+      'modalTitle' => 'Tunggu Sebentar',
+      'modalIcon' => asset('assets/base/icon-caution.svg'),
+      'modalMessage' => 'Apakah Anda yakin informasi yang diubah sudah benar?',
+      'triggerButton' => 'btnSimpan',
+      'cancelButtonLabel' => 'Cek Kembali',
+      'actionButtonLabel' => 'Ya, Ubah Sekarang'
+    ]);
+
+    {{-- <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
       <div class="modal-custom-backdrop"></div>
       <div class="modal-custom-content">
         <div class="modal-custom-header">
@@ -234,6 +236,6 @@
           <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Ubah Sekarang</button>
         </div>
       </div>
-    </div>
+    </div> --}}
 </form>
 @endsection

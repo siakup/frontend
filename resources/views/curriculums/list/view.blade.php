@@ -269,7 +269,6 @@
             dropdownItem.addEventListener('click', () => {
                 const value = dropdownItem.getAttribute('data-event');
                 const span = sortBtnEventName.querySelector('span');
-
                 span.innerHTML = dropdownItem.innerHTML;
                 span.style.color = "black";
                 eventName.value = value;
@@ -388,11 +387,7 @@
               </table>
           </div>
       </div>
-      <div class="content-card flex justify-between">
-        <div class="button-group">
-          <button type="button" class="button button-clean disabled:!bg-white disabled:!border-[#D9D9D9] disabled:!border-1" id="btnBatal" disabled>Batal</button>
-          <button type="submit" class="button button-outline" id="btnSimpan" disabled>Simpan</button>
-        </div>
+      <div class="content-card flex justify-end">
         <div class="button-group">
             <a href="{{route('curriculum.list.view.show-study', ['id' => $id])}}" class="button button-clean flex items-center justify-center" id="">
               <span>Lihat Daftar Mata Kuliah</span>
