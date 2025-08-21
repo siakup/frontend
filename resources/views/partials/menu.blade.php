@@ -100,6 +100,20 @@
                     </div>
                 </a>
             </li>
+
+            <li class="menu-item">
+                <a href="{{ route('academics.persiapan-perkuliahan.jadwal-prodi.index') }}"
+                class="menu-link {{ Request::is('persiapan-perkuliahan*') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <img src="{{ asset('assets/base/icon-calendar.svg') }}"
+                            alt="Jadwal Kuliah Icon"
+                            class="menu-icon">
+                        <span>Jadwal Kuliah</span>
+                    </div>
+                </a>
+            </li>
+
+
             <li class="menu-item">
                 <a href="{{ route('study.index') }}" class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
                     <div class="menu-content">

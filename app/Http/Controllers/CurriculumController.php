@@ -21,7 +21,7 @@ class CurriculumController extends Controller
 {
     use ApiResponse;
 
-    public function curriculumList(Request $request) 
+    public function curriculumList(Request $request)
     {
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
@@ -98,7 +98,7 @@ class CurriculumController extends Controller
       return view('curriculums.list.create', get_defined_vars());
     }
 
-    public function storeCurriculumList(Request $request) 
+    public function storeCurriculumList(Request $request)
     {
       return redirect()->route('curriculum.list.edit', ['id' => 1])->with('success', 'Tambah Kurikulum Berhasil Disimpan');
     }
@@ -425,7 +425,7 @@ class CurriculumController extends Controller
       return redirect()->route('curriculum.list.edit', ['id' => $id])->with('success', 'Mata Kuliah Berhasil ditetapkan');
     }
 
-    public function assignCurriculumCourse(Request $request, $id) 
+    public function assignCurriculumCourse(Request $request, $id)
     {
       $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
       $nama_mata_kuliah = $request->input('nama');
@@ -495,16 +495,16 @@ class CurriculumController extends Controller
           'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
         ]
       ];
-      
+
       return view('curriculums.list.assign-course', get_defined_vars());
     }
 
-    public function editCurriculumStudyList(Request $request, $id, $course_id) 
+    public function editCurriculumStudyList(Request $request, $id, $course_id)
     {
       dd($id);
     }
 
-    public function curriculumEquivalence(Request $request) 
+    public function curriculumEquivalence(Request $request)
     {
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
@@ -611,7 +611,7 @@ class CurriculumController extends Controller
       return view('curriculums.equivalence.index', get_defined_vars());
     }
 
-    public function requiredCurriculumStructure(Request $request) 
+    public function requiredCurriculumStructure(Request $request)
     {
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
@@ -909,7 +909,7 @@ class CurriculumController extends Controller
       return view('curriculums.structure.required', get_defined_vars());
     }
 
-    public function optionalCurriculumStructure(Request $request) 
+    public function optionalCurriculumStructure(Request $request)
     {
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
@@ -1227,19 +1227,19 @@ class CurriculumController extends Controller
       return view('study.view', get_defined_vars());
     }
 
-    public function store(Request $request, $id) 
+    public function store(Request $request, $id)
     {
       return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
     }
 
-    public function send(Request $request, $id) 
+    public function send(Request $request, $id)
     {
       return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
     }
 
     public function update(Request $request, $id)
     {
-        
+
     }
 
     public function delete(Request $request, $id)
