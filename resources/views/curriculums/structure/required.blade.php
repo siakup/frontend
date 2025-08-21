@@ -11,10 +11,6 @@
     .card-header.option-list {
         justify-content: left;
     }
-    .sort-dropdown {
-      top: 16.2% !important;
-      left: 34.2% !important;
-    }
     .center {
         display: flex;
         align-items: center;
@@ -48,38 +44,8 @@
 @section('javascript')
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
-      const sortDropdownCampusProgram = document.querySelector('#sortDropdown.campus');
       const detailClickable = document.querySelectorAll('.detail-clickable');
       const showDetailClickable = document.querySelectorAll('.detail-show');
-
-      sortBtnCampusProgram.addEventListener('click', function(e) {
-          e.stopPropagation();
-          sortDropdownCampusProgram.style.display = (sortDropdownCampusProgram.style.display ===
-              'block') ? 'none' : 'block';
-          sortBtnCampusProgram.querySelector('img').src = (sortBtnCampusProgram.querySelector('img')
-                  .src === "{{ asset('assets/active/icon-arrow-up.svg') }}") ?
-              "{{ asset('assets/active/icon-arrow-down.svg') }}" :
-              "{{ asset('assets/active/icon-arrow-up.svg') }}";
-      });
-      sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(item => {
-          item.addEventListener('click', function() {
-              sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(i => i
-                  .classList.remove('active'));
-              const url = new URL(window.location.href);
-              const sortKey = this.getAttribute('data-sort');
-              url.searchParams.set('program_perkuliahan', sortKey);
-              window.location.href = url.toString();
-          });
-      });
-      document.addEventListener('click', (e) => {
-          const dropdownCampus = e.target.closest('#CampusProgramSection');
-          if (dropdownCampus == null) {
-              sortDropdownCampusProgram.style.display = 'none'
-              sortBtnCampusProgram.querySelector('img').src =
-                  "{{ asset('assets/active/icon-arrow-down.svg') }}";
-          }
-      });
 
       function resetDetail(showDetailClickable) {
         showDetailClickable.map(detail => {
@@ -126,15 +92,17 @@
       <div class="card-header option-list">
         <div class="card-header center" id="CampusProgramSection">
             <div class="page-title-text sub-title">Program Perkuliahan</div>
-            <button class="button-clean campus" id="sortButton">
-                <span>{{ $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua" }}</span>
-                <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
-            </button>
-            <div id="sortDropdown" class="sort-dropdown campus" style="display: none;">
-              @foreach($programPerkuliahanList as $programPerkuliahan)
-                <div class="dropdown-item" data-sort="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
-              @endforeach
-            </div>
+            @include('partials.dropdown-filter', [
+              'buttonId' => 'sortButtonProgramPerkuliahan',
+              'dropdownId' => 'sortProgramPerkuliahan',
+              'dropdownItem' => array_column($programPerkuliahanList, 'id', 'nama'),
+              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua",
+              'url' => route('curriculum.list'),
+              'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
+              'dropdownClass' => '!top-[16.2%] !left-[34.2%]',
+              'isIconCanRotate' => true,
+              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
+            ])
         </div>
       </div>
       @include('curriculums.structure.layout.navbar-curriculum-structure')

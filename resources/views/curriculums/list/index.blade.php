@@ -11,10 +11,6 @@
     .card-header.option-list {
         justify-content: left;
     }
-    .sort-dropdown {
-      top: 16.2% !important;
-      left: 34.2% !important;
-    }
     .center {
         display: flex;
         align-items: center;
@@ -42,27 +38,6 @@
     .sub-title {
       padding: 10px 20px !important;
     }
-    .modal-custom-content {
-        max-width: 600px;
-        z-index: 2;
-        align-items: center;
-        gap: 16px;
-        align-self: auto;
-    }
-    .modal-custom {
-        align-items: start;
-    }
-    @media (max-width: 900px) {
-        .modal-custom-content {
-            width: 90vw;
-            min-width: unset;
-            max-width: 98vw;
-            padding: 16px;
-        }
-        .modal-custom-title {
-            font-size: 18px;
-        }
-    }
   </style>
 @endsection
 
@@ -70,56 +45,11 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
-      const sortDropdownCampusProgram = document.querySelector('#sortDropdown.campus');
-      sortBtnCampusProgram.addEventListener('click', function(e) {
-          e.stopPropagation();
-          sortDropdownCampusProgram.style.display = (sortDropdownCampusProgram.style.display ===
-              'block') ? 'none' : 'block';
-          sortBtnCampusProgram.querySelector('img').src = (sortBtnCampusProgram.querySelector('img')
-                  .src === "{{ asset('assets/active/icon-arrow-up.svg') }}") ?
-              "{{ asset('assets/active/icon-arrow-down.svg') }}" :
-              "{{ asset('assets/active/icon-arrow-up.svg') }}";
-      });
-      sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(item => {
-          item.addEventListener('click', function() {
-              sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(i => i
-                  .classList.remove('active'));
-              const url = new URL(window.location.href);
-              const sortKey = this.getAttribute('data-sort');
-              url.searchParams.set('program_perkuliahan', sortKey);
-              window.location.href = url.toString();
-          });
-      });
-      document.addEventListener('click', (e) => {
-          const dropdownCampus = e.target.closest('#CampusProgramSection');
-          if (dropdownCampus == null) {
-              sortDropdownCampusProgram.style.display = 'none'
-              sortBtnCampusProgram.querySelector('img').src =
-                  "{{ asset('assets/active/icon-arrow-down.svg') }}";
-          }
-      });
-
-      document.addEventListener('click', function(e) {
-          const btn = e.target.closest('.btn-delete');
-          if (btn) {
-              const idEvent = btn.getAttribute('data-id');
-              document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idEvent);
-              document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
-          }
-      });
-
-      document.getElementById('btnCekKembali').addEventListener('click', function() {
-          document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
-          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-      });
-
-      document.getElementById('btnSimpan').addEventListener('click', function() {
-         const dataId = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
+      document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
+         const dataId = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
          const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-         document.getElementById('modalKonfirmasiSimpan').removeAttribute(
-              'data-id');
-          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+         document.getElementById('modalKonfirmasiHapus').removeAttribute('data-id');
+          document.getElementById('modalKonfirmasiHapus').style.display = 'none';
           successToast('Berhasil dihapus');
           setTimeout(() => {
             window.location.href = "{{route('curriculum.list')}}"
@@ -174,15 +104,17 @@
       <div class="card-header option-list">
         <div class="card-header center" id="CampusProgramSection">
             <div class="page-title-text sub-title">Program Perkuliahan</div>
-            <button class="button-clean campus" id="sortButton">
-                <span>{{ $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua" }}</span>
-                <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
-            </button>
-            <div id="sortDropdown" class="sort-dropdown campus" style="display: none;">
-              @foreach($programPerkuliahanList as $programPerkuliahan)
-                <div class="dropdown-item" data-sort="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
-              @endforeach
-            </div>
+            @include('partials.dropdown-filter', [
+              'buttonId' => 'sortButtonProgramPerkuliahan',
+              'dropdownId' => 'sortProgramPerkuliahan',
+              'dropdownItem' => array_column($programPerkuliahanList, 'id', 'nama'),
+              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua",
+              'url' => route('curriculum.list'),
+              'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
+              'dropdownClass' => '!top-[16.2%] !left-[34.2%]',
+              'isIconCanRotate' => true,
+              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
+            ])
         </div>
       </div>
       <x-container class="border-none">
@@ -222,7 +154,7 @@
                             @if ($d['status'] === 'active')
                                 <span class="badge badge-active" style="min-width:max-content">Aktif</span>
                             @else
-                                <span class="badge badge-inactive" style="min-width:max-content">Tidak Aktif</span>
+                                <span class="badge badge-inactive !border-none" style="min-width:max-content">Tidak Aktif</span>
                             @endif
                           </x-table-cell>
                           <x-table-cell>
@@ -240,7 +172,7 @@
                               </a>
                               <button type="button" class="btn-icon btn-delete" data-id="{{$d['id']}}" title="Hapus">
                                   <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                                  <span>Hapus</span>
+                                  <span class="text-[#8C8C8C]">Hapus</span>
                               </button>
                             </div>
                           </x-table-cell>
@@ -260,21 +192,14 @@
           <a href="{{route('curriculum.list.create')}}" class="button button-outline">Tambah Kurikulum</a>
       </div>
     </div>
-    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content bg-white">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Hapus Daftar Kurikulum</span>
-                <img src="{{ asset('assets/icon-delete-gray-800.svg') }}" alt="ikon peringatan">
-            </div>
-            <div class="modal-custom-body">
-                <div>Apakah anda yakin ingin menghapus kurikulum ini?</div>
-            </div>
-            <div class="modal-custom-footer w-full">
-                <button type="button" class="button button-clean !w-full" id="btnCekKembali">Batal</button>
-                <button type="submit" class="button button-outline !w-full" id="btnSimpan">Hapus</button>
-            </div>
-        </div>
-    </div>
+    @include('partials.modal', [
+      'modalId' => 'modalKonfirmasiHapus',
+      'modalTitle' => 'Hapus Daftar kurikulum',
+      'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
+      'modalMessage' => 'Apakah Anda yakin ingin menghapus kurikulum ini?',
+      'triggerButton' => 'btn-delete',
+      'cancelButtonLabel' => 'Batal',
+      'actionButtonLabel' => 'Hapus'
+    ]);
   </div>
 @endsection

@@ -104,24 +104,33 @@
         width: auto; 
     }
 
-    .modal-custom-footer {
-        display: flex;
-        justify-content: center;
-        gap: 24px;
-        width: 100%;
-        padding: 0 20px 24px 20px;
-        box-sizing: border-box;
+    .modal-custom-content {
+        max-width: 600px;
+        z-index: 2;
+        align-items: center;
+        gap: 16px;
+        align-self: auto;
     }
-
-    .modal-custom-footer .button {
-        min-width: 220px;
-        padding: 14px 0;
+    .modal-custom {
+        align-items: start;
+    }
+    @media (max-width: 900px) {
+        .modal-custom-content {
+            width: 90vw;
+            min-width: unset;
+            max-width: 98vw;
+            padding: 16px;
+        }
+        .modal-custom-title {
+            font-size: 18px;
+        }
     }
 
     .sort-dropdown {
       top: 29% !important;
       left: 15.8% !important;
     }
+
 </style>
 @endsection
 <script>
@@ -276,6 +285,20 @@
                 updateSaveButtonState();
             });
         });
+
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('#btnSimpan');
+            if (btn) {
+                const idEvent = btn.getAttribute('data-id');
+                document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idEvent);
+                document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
+            }
+        });
+
+        document.getElementById('btnCekKembali').addEventListener('click', function() {
+            document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
+            document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+        });
     });
 </script>
 @if (session('success'))
@@ -296,6 +319,22 @@
     </a>
     <form action="{{route('curriculum.list.update', ['id' => $id])}}" method="POST">
       @csrf
+      <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
+        <div class="modal-custom-backdrop"></div>
+        <div class="modal-custom-content bg-white">
+            <div class="modal-custom-header">
+                <span class="text-lg-bd">Tunggu Sebentar</span>
+                <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="ikon peringatan">
+            </div>
+            <div class="modal-custom-body">
+                <div>Apakah anda yakin informasi yang diubah sudah benar?</div>
+            </div>
+            <div class="modal-custom-footer w-full gap-[16px] pl-[20px] pb-[20px]">
+                <button type="button" class="button button-clean !w-full" id="btnCekKembali">Cek Kembali</button>
+                <button type="submit" class="button button-outline !w-full" id="btnYa">Ya, Simpan Sekarang</button>
+            </div>
+        </div>
+      </div>
       <div class="content-card">
           <div class="form-title-text" style="padding: 20px;">Detail Kurikulum</div>
           <div class="form-section">
@@ -440,8 +479,8 @@
       </div>
       <div class="content-card flex justify-between">
         <div class="button-group">
-          <button type="button" class="button button-clean disabled:!bg-white disabled:!border-[#D9D9D9] disabled:!border-1" id="btnBatal" disabled>Batal</button>
-          <button type="submit" class="button button-outline" id="btnSimpan" disabled>Simpan</button>
+          <button type="button" class="button button-clean disabled:!bg-white disabled:!border-[#D9D9D9] disabled:!border-1 !min-w-[151px]" id="btnBatal" disabled>Batal</button>
+          <button type="button" class="button button-outline !min-w-[151px]" id="btnSimpan" disabled>Simpan</button>
         </div>
         <div class="button-group">
             <a href="{{route('curriculum.list.edit.show-study', ['id' => $id])}}" class="button button-clean flex items-center justify-center" id="">
@@ -454,5 +493,6 @@
             </a>
         </div>
       </div>
+      
     </form>
 @endsection
