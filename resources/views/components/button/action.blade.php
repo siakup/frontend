@@ -29,7 +29,7 @@
     $iconAlt = $iconAlt ?: $config['alt'];
 @endphp
 
-<button {{ $attributes->merge(['class' => $config['color'] . ' flex items-center gap-1 text-sm']) }}>
+<button {{ $attributes->merge(['class' => $config['color'] . ' flex items-center gap-1 text-sm cursor-pointer']) }}>
     <x-icon :iconUrl="$iconUrl" :iconAlt="$iconAlt" class="w-4 h-4" />
     <span>{{ $label }}</span>
 </button>

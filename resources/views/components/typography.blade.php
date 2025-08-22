@@ -1,5 +1,5 @@
 @props([
-    'variant' => 'body-medium',
+    'variant' => 'body-small-regular',
     'class' => '',
 ])
 

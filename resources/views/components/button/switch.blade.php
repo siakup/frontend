@@ -4,10 +4,10 @@
     'externalOnLabel' => 'Aktif',
     'externalOffLabel' => 'Tidak Aktif',
     'disabled' => false,
+    'alpineModel' => null,
 ])
 
-<div x-data="{ on: @json((bool) $value) }" class="flex items-center gap-3">
-    <!-- Switch Container -->
+<div x-data="{ on: @json((bool) $value) }" x-init="@if ($alpineModel) $watch('on', val => { {{ $alpineModel }} = val }) @endif" class="flex items-center gap-3">
     <button type="button" x-on:click="on = !on" :aria-checked="on" role="switch"
         :class="{
             'bg-[#B6C92C]': on,
@@ -15,9 +15,10 @@
         }"
         class="relative inline-flex h-7 w-16 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-0"
         {{ $disabled ? 'disabled' : '' }}>
-        <input type="hidden" name="{{ $name }}" x-bind:value="on ? '1' : '0'">
+        <input type="hidden" name="{{ $name }}" x-bind:value="on ? '1' : '0'"
+            @if ($alpineModel) x-model="{{ $alpineModel }}" @endif>
 
-        <!-- Toggle Circle - Color changes based on state -->
+        <!-- Toggle Circle -->
         <span
             :class="{
                 'translate-x-9 bg-white': on,
