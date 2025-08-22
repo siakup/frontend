@@ -29,4 +29,9 @@ class CplService
     {
         return $this->url() . '/' . $id;
     }
+
+    public function bulkStore()
+    {
+        return $this->url() . '/bulk-store';
+    }
 }

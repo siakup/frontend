@@ -2,6 +2,8 @@
 
 namespace App\Endpoint;
 
+
+
 class CourseService
 {
     private static $instance = null;
@@ -23,7 +25,7 @@ class CourseService
 
     public function url()
     {
-        return config('endpoint.course.url') . '/api/course';
+        return config('endpoint.lecture.url') . '/api/courses';
     }
     public function courseUrl($id)
     {
