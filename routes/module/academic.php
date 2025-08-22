@@ -77,6 +77,11 @@ use App\Http\Controllers\CplMapping;
     Route::get('/struktur-kurikulum/wajib', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
     Route::get('/struktur-kurikulum/pilihan', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
     Route::get('/ekuivalensi-kurikulum', [CurriculumController::class, 'curriculumEquivalence'])->name('curriculum.equivalence');
+      Route::get(
+          '/ekuivalensi-kurikulum/tambah/{prodi}/{programPerkuliahan}',
+          [CurriculumController::class, 'createCurriculumEquivalence']
+      )->name('curriculum.equivalence.create');
+
   });
 
 Route::group(['prefix' => 'pemetaan-cpl'], function () {

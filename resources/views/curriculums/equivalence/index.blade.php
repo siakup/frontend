@@ -158,7 +158,7 @@
             <span>Unggah Ekuivalensi</span>
             <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
         </a>
-        <a href="" class="button button-outline">Tambah Ekuivalensi</a>
+        <a href="{{route('curriculum.equivalence.create', ['prodi'=>'Ilmu Komputer', 'programPerkuliahan'=>'Regular'])}}" class="button button-outline">Tambah Ekuivalensi</a>
       </div>
     </div>
     @if (isset($data))
