@@ -165,7 +165,7 @@ class Menu
               'children' => [
                 'create-curriculum-list' => [
                   'name' => 'Tambah Kurikulum',
-                  'url' => '/kurikulum/daftar-kurikulum/tambah',
+                  'url' => '/kurikulum/daftar-kurikulum/tambah/*',
                   'parent' => 'curriculum.list.create',
                   'isExpandable' => false
                 ],

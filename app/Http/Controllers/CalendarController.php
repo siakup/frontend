@@ -61,7 +61,7 @@ class CalendarController extends Controller
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-    $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->id);
+    $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->name);
 
     $id_periode = $id;
 

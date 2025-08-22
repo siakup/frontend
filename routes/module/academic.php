@@ -64,7 +64,7 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('/{id}', [CurriculumController::class, 'viewCurriculumList'])->name('curriculum.list.view');
       Route::get('/{id}/lihat-mata-kuliah', [CurriculumController::class, 'showCurriculumStudyList'])->name('curriculum.list.view.show-study');
     });
-    Route::get('/daftar-kurikulum/tambah', [CurriculumController::class, 'createCurriculumList'])->name('curriculum.list.create');
+    Route::get('/daftar-kurikulum/tambah/{program_studi}', [CurriculumController::class, 'createCurriculumList'])->name('curriculum.list.create');
     Route::post('/daftar-kurikulum/tambah', [CurriculumController::class, 'storeCurriculumList'])->name('curriculum.list.store');
     Route::group(['prefix' => '/daftar-kurikulum/ubah'], function () {
       Route::get('/{id}', [CurriculumController::class, 'editCurriculumList'])->name('curriculum.list.edit');
