@@ -81,14 +81,7 @@
       });
     });
   </script>
-  @if (session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
-            setTimeout(() => {}, 3000);
-        })
-    </script>
-  @endif
+  @include('partials.success-notification-modal')
 @endsection
 
 @section('content')
@@ -99,7 +92,7 @@
     @include('curriculums.layout.navbar-curriculum')
     <div class="academics-slicing-content content-card">
       <x-typography variant="heading-h6" class="mb-2 p-[20px]">
-        Daftar Kurikulum - Teknik Kimia
+        Daftar Kurikulum
       </x-typography>
       <div class="card-header option-list">
         <div class="card-header center" id="CampusProgramSection">
@@ -107,7 +100,7 @@
             @include('partials.dropdown-filter', [
               'buttonId' => 'sortButtonProgramPerkuliahan',
               'dropdownId' => 'sortProgramPerkuliahan',
-              'dropdownItem' => array_column($programPerkuliahanList, 'id', 'nama'),
+              'dropdownItem' => array_column($programPerkuliahanList, 'name', 'name'),
               'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua",
               'url' => route('curriculum.list'),
               'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
@@ -141,17 +134,17 @@
               <x-table-body>
                   @forelse ($data as $d)
                       <x-table-row>
-                          <x-table-cell>{{ $d['nama'] }}</x-table-cell>
+                          <x-table-cell>{{ $d->nama_kurikulum }}</x-table-cell>
                           <x-table-cell class="{{ 
-                              $d['program_perkuliahan'] == 'Double Degree' ? 'bg-[#E5EDAB]' : 
-                              ($d['program_perkuliahan'] == 'International' ? 'bg-[#99D8FF]' : 
-                              ($d['program_perkuliahan'] == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
+                              $d->perkuliahan == 'Double Degree' ? 'bg-[#E5EDAB]' : 
+                              ($d->perkuliahan == 'International Class' ? 'bg-[#99D8FF]' : 
+                              ($d->perkuliahan == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
                           }}"
-                          >{{ $d['program_perkuliahan'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['deskripsi'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['total_sks'] }}</x-table-cell>
+                          >{{ $d->perkuliahan }}</x-table-cell>
+                          <x-table-cell>{{ $d->deskripsi }}</x-table-cell>
+                          <x-table-cell>{{ $d->sks_total }}</x-table-cell>
                           <x-table-cell>
-                            @if ($d['status'] === 'active')
+                            @if ($d->status === 'active')
                                 <span class="badge badge-active" style="min-width:max-content">Aktif</span>
                             @else
                                 <span class="badge badge-inactive !border-none" style="min-width:max-content">Tidak Aktif</span>
@@ -159,18 +152,18 @@
                           </x-table-cell>
                           <x-table-cell>
                             <div class="center">
-                              <a href="{{route('curriculum.list.view', ['id' => $d['id']])}}" type="button" class="btn-icon btn-view-periode-academic"
+                              <a href="{{route('curriculum.list.view', ['id' => $d->id])}}" type="button" class="btn-icon btn-view-periode-academic"
                                   data-periode-akademik="" title="Lihat">
                                   <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
                                   <span>Lihat</span>
                             </a>
                               <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                                  href="{{route('curriculum.list.edit', ['id' => $d['id']])}}"
+                                  href="{{route('curriculum.list.edit', ['id' => $d->id])}}"
                                   style="text-decoration: none; color: inherit;">
                                   <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                                   <span style="color: #E62129">Ubah</span>
                               </a>
-                              <button type="button" class="btn-icon btn-delete" data-id="{{$d['id']}}" title="Hapus">
+                              <button type="button" class="btn-icon btn-delete" data-id="{{$d->id}}" title="Hapus">
                                   <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
                                   <span class="text-[#8C8C8C]">Hapus</span>
                               </button>

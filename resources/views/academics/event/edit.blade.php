@@ -28,28 +28,6 @@
     accent-color: #E62129;
     border-radius: 3px;
   }
-  
-  .modal-custom {
-    align-items: start;
-  }
-
-  .modal-custom-content {
-      max-width: 600px;
-      z-index: 2;
-      align-items: center;
-      gap: 16px;
-      align-self: auto;
-  }
-
-  @media (max-width: 900px) {
-      .modal-custom-content {
-          width: 90vw;
-          min-width: unset;
-          max-width: 98vw;
-          padding: 16px;
-      }
-      .modal-custom-title { font-size: 18px; }
-  }
 
   input.form-control[readonly] {
       background: var(--Neutral-Gray-200, #F5F5F5);
@@ -220,22 +198,5 @@
       'cancelButtonLabel' => 'Cek Kembali',
       'actionButtonLabel' => 'Ya, Ubah Sekarang'
     ]);
-
-    {{-- <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-      <div class="modal-custom-backdrop"></div>
-      <div class="modal-custom-content">
-        <div class="modal-custom-header">
-          <span class="text-lg-bd">Tunggu Sebentar</span>
-          <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="ikon peringatan">
-        </div>
-        <div class="modal-custom-body">
-          <div>Apakah Anda yakin informasi yang diubah sudah benar?</div>
-        </div>
-        <div class="modal-custom-footer">
-          <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-          <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Ubah Sekarang</button>
-        </div>
-      </div>
-    </div> --}}
 </form>
 @endsection

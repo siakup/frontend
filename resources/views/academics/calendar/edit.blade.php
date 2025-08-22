@@ -47,7 +47,7 @@
       
         span.innerHTML = data.nama_event;
         span.style.color = "black";
-        modalEditEvent.style.display = 'flex';
+        modalEditEvent.style.display = 'block';
 
         editTanggalMulaiInput = flatpickr("#modalEditEvent #tanggal-mulai", {
             locale: 'id',

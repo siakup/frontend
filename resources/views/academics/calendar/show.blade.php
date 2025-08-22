@@ -250,7 +250,7 @@
                 const addBtn = e.target.closest('.btn-add-event');
                 
                 if (addBtn) {
-                    document.getElementById('modalAddEvent').style.display = 'flex';
+                    document.getElementById('modalAddEvent').style.display = 'block';
                 }
             });
 
@@ -286,16 +286,7 @@
     </script>
 @endsection
 
-@if (session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
-            setTimeout(() => {
-                window.location.href = "{{ route('calendar.show', ['id' => $id]) }}";
-            }, 3000);
-        })
-    </script>
-@endif
+@include('partials.success-notification-modal')
 
 @section('content')
     <div class="page-header">
