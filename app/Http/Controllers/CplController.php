@@ -43,4 +43,26 @@ class CplController extends Controller
 
         return view('cpl.index', get_defined_vars());
     }
+
+    public function bulkStore(Request $request)
+    {
+        $data = $request->input('data', []);
+        $cpl = [];
+
+        foreach ($data as $cplData) {
+            $cpl[] = [
+                'kode_matakuliah' => $cplData['kode_matakuliah'],
+                'kode_cpl'        => $cplData['kode_cpl'] ?? [],
+                'bobot'           => $cplData['bobot'],
+                'created_by'      => session('username'),
+            ];
+        }
+
+        $cpl = ['cpl' => $cpl];
+
+        $url = CplService::getInstance()->bulkStore();
+        $response = postCurl($url, $cpl, getHeaders());
+
+        return $this->successResponse($response, 'Berhasil menyimpan data CPL');
+    }
 }

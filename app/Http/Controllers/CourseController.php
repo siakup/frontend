@@ -29,7 +29,7 @@ class CourseController extends Controller
             'idJenisMataKuliah'  => $idJenisMataKuliah,
         ];
 
-        $url = CourseService::getInstance()->baseCourseURL();
+        $url = CourseService::getInstance()->url();
         $response = getCurl($url, $params, getHeaders());
         $data = json_decode(json_encode($response), true);
 
@@ -51,7 +51,88 @@ class CourseController extends Controller
     public function store(Request $request)
     {
 
-        return redirect()->route('courses.index')->with('success', 'Course berhasil ditambahkan.');
+        // Simulasi data dummy
+        // $dummyData = [
+        //     "kode_matakuliah" => "IF101",
+        //     "nama_matakuliah_id" => "Algoritma dan Pemrograman",
+        //     "nama_matakuliah_en" => "Algorithm and Programming",
+        //     "nama_singkat" => "A0010",
+        //     "id_prodi" => 1,
+        //     "sks" => 3,
+        //     "semester" => 1,
+        //     "deskripsi" => "Mata kuliah dasar pemrograman komputer",
+        //     "daftar_pustaka" => "Intro to Algorithms, Programming in C",
+        //     "id_jenis" => 1,
+        //     "id_koordinator" => 5,
+        //     "matakuliah_spesial" => true,
+        //     "prodi_lain" => false,
+        //     "matakuliah_wajib" => true,
+        //     "kampus_merdeka" => false,
+        //     "matakuliah_capstone" => false,
+        //     "matakuliah_kerja_praktik" => false,
+        //     "matakuliah_tugas_akhir" => false,
+        //     "matakuliah_minor" => false,
+        //     "status" => "active",
+        //     "created_by" => 'admin',
+        //     "updated_by" => 'admin',
+        //     "prasyarat" => ["IF100", "MT101"],
+        //     "tipe" => "Co-Requisite",
+        // ];
+
+        // $request->replace($dummyData);
+
+        $validated = $request->validate([
+            'kode_matakuliah'       => 'required',
+            'nama_matakuliah_id'    => 'required',
+            'sks'                   => 'required|numeric',
+            'id_prodi'              => 'required|numeric',
+            'nama_singkat'          => 'required|string|max:5',
+        ], [
+            'kode_matakuliah.required'      => "Kode Mata Kuliah wajib diisi",
+            'nama_matakuliah_id.required'   => "Nama matakuliah wajib diisi",
+            'sks.required'                  => "Sks wajib diisi",
+            'id_prodi.required'             => "Program Studi wajib diisi",
+            'nama_singkat.required'         => "Nama singkat wajib diisi dan maksimal 5 karakter",
+        ]);
+
+        $data = [
+            'kode_matakuliah'       => $validated['kode_matakuliah'],
+            'nama_matakuliah_id'    => $validated['nama_matakuliah_id'],
+            'nama_matakuliah_en'    => $request->input('nama_matakuliah_en'),
+            'nama_singkat'          => $request->input('nama_singkat'),
+            'id_prodi'              => $validated['id_prodi'],
+            'sks'                   => $validated['sks'],
+            'semester'              => $request->input('semester'),
+            'deskripsi'             => $request->input('deskripsi'),
+            'daftar_pustaka'        => $request->input('daftar_pustaka'),
+            'id_jenis'              => $request->input('id_jenis'),
+            'id_koordinator'        => $request->input('id_koordinator'),
+            'matakuliah_spesial'    => $request->boolean('matakuliah_spesial'),
+            'prodi_lain'            => $request->boolean('prodi_lain'),
+            'matakuliah_wajib'      => $request->boolean('matakuliah_wajib'),
+            'kampus_merdeka'        => $request->boolean('kampus_merdeka'),
+            'matakuliah_capstone'   => $request->boolean('matakuliah_capstone'),
+            'matakuliah_kerja_praktik' => $request->boolean('matakuliah_kerja_praktik'),
+            'matakuliah_tugas_akhir' => $request->boolean('matakuliah_tugas_akhir'),
+            'matakuliah_minor'      => $request->boolean('matakuliah_minor'),
+            'status'                => $request->input('status', 'active'),
+            'prasyarat'            => $request->input('prasyarat', []),
+            "tipe"                 => $request->input('tipe'),
+        ];
+
+        $url = CourseService::getInstance()->url();
+        $response = postCurl($url, $data, getHeaders());
+
+        if ($request->ajax()) {
+            if (isset($response->success) && $response->success) {
+                return $this->successResponse($response->data, 'Mata kuliah berhasil ditambahkan.');
+            }
+            return response()->json([
+                'status' => 'error',
+                'message' => $response->message ?? 'Gagal menambahkan mata kuliah'
+            ], 400);
+        }
+        return redirect()->back()->with('success', 'Mata kuliah berhasil ditambahkan.');
     }
 
     public function show($id)
@@ -163,5 +244,52 @@ class CourseController extends Controller
             'data' => $response,
             'prodi' => $prodi,
         ]);
+    }
+
+    public function bulkStore(Request $request)
+    {
+        $data = $request->input('data', []);
+
+        $matakuliah = [];
+
+        foreach ($data as $row) {
+            if (count($row) < 20) {
+                continue;
+            }
+            $matakuliah[] = [
+                'kode'          => $row[0],
+                'nama'          => $row[1],
+                'namasingkat'   => $row[2],
+                'sks'           => intval($row[3]),
+                'semester'      => intval($row[4]),
+                'tujuan'        => $row[5],
+                'deskripsi'     => $row[6],
+                'daftar_pustaka' => $row[7],
+                'jenis'         => strtolower($row[8]), //id jenis matakuliah
+                'prodi'         => strtolower($row[9]), //id prodi
+                'koordinator'   => strtolower($row[10]), //id koordinator matakuliah
+
+                // Kolom pilihan 
+                'spesial'       => strtolower($row[11]),
+                'dibuka'        => strtolower($row[12]),
+                'wajib'         => strtolower($row[13]),
+                'mbkm'          => strtolower($row[14]),
+                'capstone'      => strtolower($row[15]),
+                'kp'            => strtolower($row[16]),
+                'ta'            => strtolower($row[17]),
+                'minor'         => strtolower($row[18]),
+
+                //mk prasyarat
+                'prasyarat' => array_filter(array_map('trim', explode(',', $row[19]))),
+
+                'status'        => 'active',
+                'created_by'    => session('username'),
+                'updated_by'    => session('username'),
+            ];
+        }
+
+        $url = CourseService::getInstance()->bulkStore();
+        $response = postCurl($url, ['data' => $matakuliah], getHeaders());
+        return $this->successResponse($response, 'Berhasil menyimpan data mata kuliah');
     }
 }
