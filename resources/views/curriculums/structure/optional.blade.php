@@ -127,12 +127,12 @@
         <div class="card-header center" id="CampusProgramSection">
             <div class="page-title-text sub-title">Program Perkuliahan</div>
             <button class="button-clean campus" id="sortButton">
-                <span>{{ $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua" }}</span>
+                <span>{{ $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->name == $id_program; }))[0]->name : "Semua" }}</span>
                 <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
             </button>
-            <div id="sortDropdown" class="sort-dropdown campus" style="display: none;">
+            <div id="sortDropdown" class="sort-dropdown campus z-10" style="display: none;">
               @foreach($programPerkuliahanList as $programPerkuliahan)
-                <div class="dropdown-item" data-sort="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
+                <div class="dropdown-item" data-sort="{{$programPerkuliahan->name}}">{{$programPerkuliahan->name}}</div>
               @endforeach
             </div>
         </div>

@@ -301,7 +301,7 @@
         });
     });
 </script>
-@include('partials.success-notification-modal')
+@include('partials.success-notification-modal', ['route' => route('curriculum.list.edit', ['id' => $id])])
 @section('content')
     <div class="page-header">
         <div class="page-title-text">Ubah Kurikulum</div>

@@ -286,7 +286,7 @@
     </script>
 @endsection
 
-@include('partials.success-notification-modal')
+@include('partials.success-notification-modal', ['route' => route('calendar.show', ['id' => $id])])
 
 @section('content')
     <div class="page-header">
@@ -297,19 +297,20 @@
     </a>
     <div class="content-card">
         <div class="card-header option-list">
-          <div class="card-header option-list">
+          <div class="card-header option-list z-10">
             <div class="card-header" id="CampusProgramSection">
                 <div class="page-title-text sub-title">Program Perkuliahan</div>
                 @include('partials.dropdown-filter', [
                   'buttonId' => 'sortButtonCampus',
                   'dropdownId' => 'sortCampus',
-                  'dropdownItem' => array_column($programPerkuliahanList, 'id', 'nama'),
-                  'label' => count(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; })) > 0 ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "",
+                  'dropdownItem' => array_column($programPerkuliahanList, 'name', 'name'),
+                  'label' => count(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->name == urldecode($id_program); })) > 0 ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->name == urldecode($id_program); }))[0]->name : "",
                   'url' => route('calendar.show', ['id' => $id]),
                   'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
-                  'dropdownClass' => '!top-[21%] !left-[19.8%]',
+                  'dropdownClass' => '!top-[24%] !left-[19.8%]',
                   'isIconCanRotate' => true,
-                  'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
+                  'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg'),
+                  'queryParameter' => 'program_perkuliahan'
                 ])
             </div>
             <div class="card-header" id="StudyProgramSection">
@@ -321,9 +322,10 @@
                   'label' =>  count(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; })) > 0 ? array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama : "",
                   'url' => route('calendar.show', ['id' => $id]),
                   'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
-                  'dropdownClass' => '!top-[11%] !left-[74%]',
+                  'dropdownClass' => '!top-[13%] !left-[55.6%]',
                   'isIconCanRotate' => true,
-                  'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
+                  'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg'),
+                  'queryParameter' => 'program_studi'
                 ])
             </div>
           </div>
@@ -399,8 +401,8 @@
             </div>
         </div>
 
-        @include('academics.calendar.create', ['id' => $id]);
-        @include('academics.calendar.edit', ['id' => $id, 'data' => $data]);
+        @include('academics.calendar.create', ['id' => $id])
+        @include('academics.calendar.edit', ['id' => $id, 'data' => $data])
         @include('partials.modal', [
           'modalId' => 'modalKonfirmasiHapus',
           'modalTitle' => 'Hapus Event Kalender Akademik',
@@ -409,6 +411,6 @@
           'triggerButton' => 'btn-delete-event-academic',
           'cancelButtonLabel' => 'Batal',
           'actionButtonLabel' => 'Hapus'
-        ]);
+        ])
     </div>
 @endsection

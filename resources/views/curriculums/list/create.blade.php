@@ -280,18 +280,19 @@
         <div class="page-title-text">Tambah Kurikulum</div>
     </div>
     
-    <a href="{{ route('curriculum.list') }}" class="button-no-outline-left">
+    <a href="{{ route('curriculum.list') }}?program_studi={{$program_studi}}" class="button-no-outline-left">
         <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Daftar Kurikulum
     </a>
     <form action="{{route('curriculum.list.store')}}" method="POST">
       @csrf
       <div class="content-card">
-          <div class="form-title-text" style="padding: 20px;">Detail Kurikulum 2025 - Teknik Kimia</div>
+          <div class="form-title-text" style="padding: 20px;">Detail Kurikulum 2025 - {{array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama}}</div>
           <div class="form-section">
               <div class="form-group">
                   <label for="program_studi">Program Studi</label>
                   <div>
-                      <input placeholder="Nama Kurikulum" name="program_studi" type="text" id="program_studi" class="form-control" value="Teknik Kimia" readonly>
+                      <input placeholder="Nama Kurikulum" name="" type="text" id="program_studi" class="form-control" value="{{array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama}}" readonly>
+                      <input name="program_studi" type="hidden" id="" value="{{$id_prodi}}" readonly>
                   </div>
               </div>
               <div class="form-group">
@@ -303,7 +304,7 @@
                       </button>
                       <div id="Option-Program-Perkuliahan" class="sort-dropdown select" style="display: none;">
                           @foreach ($programPerkuliahanList as $programPerkuliahan)
-                            <div class="dropdown-item" data-event="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
+                            <div class="dropdown-item" data-event="{{$programPerkuliahan->name}}">{{$programPerkuliahan->name}}</div>
                           @endforeach
                       </div>
                       <input type="hidden" value="" name="program_perkuliahan">

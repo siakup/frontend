@@ -81,7 +81,7 @@
       });
     });
   </script>
-  @include('partials.success-notification-modal')
+  @include('partials.success-notification-modal', ['route' => 'curriculum.list'])
 @endsection
 
 @section('content')
@@ -92,7 +92,7 @@
     @include('curriculums.layout.navbar-curriculum')
     <div class="academics-slicing-content content-card">
       <x-typography variant="heading-h6" class="mb-2 p-[20px]">
-        Daftar Kurikulum
+        Daftar Kurikulum - {{array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama}}
       </x-typography>
       <div class="card-header option-list">
         <div class="card-header center" id="CampusProgramSection">
@@ -101,12 +101,28 @@
               'buttonId' => 'sortButtonProgramPerkuliahan',
               'dropdownId' => 'sortProgramPerkuliahan',
               'dropdownItem' => array_column($programPerkuliahanList, 'name', 'name'),
-              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua",
+              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->name == urldecode($id_program); }))[0]->name : "Semua",
               'url' => route('curriculum.list'),
               'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
-              'dropdownClass' => '!top-[16.2%] !left-[34.2%]',
+              'dropdownClass' => '!top-[25.2%] !left-[32.4%]',
               'isIconCanRotate' => true,
-              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
+              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg'),
+              'queryParameter' => 'program_perkuliahan'
+            ])
+        </div>
+        <div class="card-header center" id="CampusProgramSection">
+            <div class="page-title-text sub-title">Program Studi</div>
+            @include('partials.dropdown-filter', [
+              'buttonId' => 'sortButtonProgramStudi',
+              'dropdownId' => 'sortProgramStudi',
+              'dropdownItem' => array_column($programStudiList, 'id', 'nama'),
+              'label' =>  array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama,
+              'url' => route('curriculum.list'),
+              'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
+              'dropdownClass' => '!top-[25.2%] !left-[62.4%]',
+              'isIconCanRotate' => true,
+              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg'),
+              'queryParameter' => 'program_studi'
             ])
         </div>
       </div>
@@ -182,7 +198,7 @@
         </div>
       </x-container>
       <div class="right">
-          <a href="{{route('curriculum.list.create')}}" class="button button-outline">Tambah Kurikulum</a>
+          <a href="{{route('curriculum.list.create', ['program_studi' => $id_prodi])}}" class="button button-outline">Tambah Kurikulum</a>
       </div>
     </div>
     @include('partials.modal', [

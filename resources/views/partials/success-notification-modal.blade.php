@@ -3,7 +3,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
             setTimeout(() => {
-                window.location.href = "{{ route('academics-event.index') }}";
+                window.location.href = "{{ $route }}";
             }, 3000);
         })
     </script>

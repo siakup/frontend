@@ -17,7 +17,9 @@
     const isIconCanRotate = @json(boolval($isIconCanRotate))
   
     function sortTable(value) {
-       window.location.href = '{{ $url }}' + '?sort=' + encodeURIComponent(value);
+      const params = new URLSearchParams(window.location.search);
+      params.set('{{ isset($queryParameter) ? $queryParameter : "sort"}}', encodeURIComponent(value));
+      window.location.href = "{{$url}}?" + params.toString();
     }
     
     sortBtn.addEventListener('click', function(e) {

@@ -90,16 +90,16 @@
         Struktur Kurikulum
       </x-typography>
       <div class="card-header option-list">
-        <div class="card-header center" id="CampusProgramSection">
+        <div class="card-header center z-10" id="CampusProgramSection">
             <div class="page-title-text sub-title">Program Perkuliahan</div>
             @include('partials.dropdown-filter', [
               'buttonId' => 'sortButtonProgramPerkuliahan',
               'dropdownId' => 'sortProgramPerkuliahan',
-              'dropdownItem' => array_column($programPerkuliahanList, 'id', 'nama'),
-              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua",
-              'url' => route('curriculum.list'),
+              'dropdownItem' => array_column($programPerkuliahanList, 'name', 'name'),
+              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->name == $id_program; }))[0]->name : "Semua",
+              'url' => route('curriculum.required-structure'),
               'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
-              'dropdownClass' => '!top-[16.2%] !left-[34.2%]',
+              'dropdownClass' => '!top-[16.2%] !left-[32.3%]',
               'isIconCanRotate' => true,
               'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
             ])

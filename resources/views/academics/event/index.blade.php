@@ -256,7 +256,7 @@
             });
         })
     </script>
-    @include('partials.success-notification-modal')
+    @include('partials.success-notification-modal', ['route' => route('academics-event.index')])
 @endsection
 
 @section('content')

@@ -65,7 +65,7 @@
             @include('partials.dropdown-filter', [
               'buttonId' => 'sortButtonProgramPerkuliahan',
               'dropdownId' => 'sortProgramPerkuliahan',
-              'dropdownItem' => array_column($programPerkuliahanList, 'id', 'nama'),
+              'dropdownItem' => array_column($programPerkuliahanList, 'name', 'name'),
               'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua",
               'url' => route('curriculum.list'),
               'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
