@@ -169,12 +169,48 @@ class Menu
                   'parent' => 'curriculum.list.create',
                   'isExpandable' => false
                 ],
+                'view-curriculum-list' => [
+                  'name' => 'Lihat Detail Kurikulum',
+                  'url' => '/kurikulum/daftar-kurikulum/view/*',
+                  'parent' => 'curriculum.list.view',
+                  'isExpandable' => true,
+                  'children' => [
+                    'see-curriculum-course-list' => [
+                      'name' => 'Lihat Daftar Mata Kuliah',
+                      'url' => '/kurikulum/daftar-kurikulum/view/*/lihat-mata-kuliah',
+                      'parent' => 'curriculum.list.edit.edit-study',
+                      'isExpandable' => false,
+                    ],
+                  ]
+                ],
                 'edit-curriculum-list' => [
                   'name' => 'Ubah Kurikulum',
                   'url' => '/kurikulum/daftar-kurikulum/ubah/*',
                   'parent' => 'curriculum.list.edit',
-                  'isExpandable' => false
-                ]
+                  'isExpandable' => true,
+                  'children' => [
+                    'see-curriculum-course-list' => [
+                      'name' => 'Ubah Mata Kuliah',
+                      'url' => '/kurikulum/daftar-kurikulum/ubah/*/lihat-mata-kuliah',
+                      'parent' => 'curriculum.list.edit.edit-study',
+                      'isExpandable' => false,
+                      'children' => [
+                        'update-curriculum-course-list' => [
+                          'name' => 'Ubah Mata Kuliah Kurikulum', 
+                          'url' => '/kurikulum/daftar-kurikulum/ubah/*/lihat-mata-kuliah/*',
+                          'parent' => 'curriculum.list.edit.edit-study',
+                          'isExpandable' => false
+                        ]
+                      ],
+                    ],
+                    'assign-curriculum-course-list' => [
+                      'name' => 'Ubah Mata Kuliah',
+                      'url' => '/kurikulum/daftar-kurikulum/ubah/*/assign-mata-kuliah',
+                      'parent' => 'curriculum.list.edit.assign-study',
+                      'isExpandable' => false,
+                    ],
+                  ]
+                ],
               ]
             ],
             'curriculum-structure-required' => [

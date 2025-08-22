@@ -37,13 +37,13 @@
             color: #E62129;
         }
 
-        .modal-custom-content {
-            max-width: 600px;
-            z-index: 2;
-            align-items: center;
-            gap: 16px;
-            align-self: auto;
-        }
+          .modal-custom-content {
+              max-width: 600px;
+              z-index: 2;
+              align-items: center;
+              gap: 16px;
+              align-self: auto;
+          }
 
         .active-lable {
             background-color: #D0DE68;
@@ -181,6 +181,35 @@
                 });
             });
 
+            document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
+                const id = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
+                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                $.ajax({
+                    url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id',
+                        id),
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    success: function(response) {
+                        document.getElementById('modalKonfirmasiHapus').removeAttribute(
+                            'data-id');
+                        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
+                        successToast('Berhasil dihapus');
+                        setTimeout(() => {
+                            window.location.href =
+                                "{{ route('academics-event.index') }}";
+                        }, 5000);
+                    },
+                    error: function() {
+                        $('tbody').html(
+                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
+                        );
+                    }
+                });
+            });
+
             function refreshTable(nama_event) {
                 $.ajax({
                     url: '{{ route('academics-event.index') }}',
@@ -202,40 +231,6 @@
                     }
                 });
             }
-
-            function sortTable(value) {
-                $.ajax({
-                    url: '{{ route('academics-event.index') }}',
-                    method: 'GET',
-                    data: {
-                        sort: value
-                    },
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(response) {
-                        window.location.href = '{{ route('academics-event.index') }}' + '?sort=' +
-                            encodeURIComponent(value);
-                    },
-                    error: function() {
-                        $('tbody').html(
-                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                        );
-                    }
-                });
-            }
-
-            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    sortDropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove(
-                        'active'));
-                    const sortKey = this.getAttribute('data-sort');
-
-                    this.classList.add('active');
-                    sortDropdown.style.display = 'none';
-                    sortTable(sortKey); // Panggil AJAX sortTable
-                });
-            });
 
             document.addEventListener('click', function(e) {
                 const btn = e.target.closest('.btn-view-event-academic');
@@ -259,72 +254,9 @@
                     }
                 }
             });
-
-            document.addEventListener('click', function(e) {
-                const btn = e.target.closest('.btn-delete-event-academic');
-                if (btn) {
-                    const idEvent = btn.getAttribute('data-id');
-                    document.getElementById('modalKonfirmasiSimpan').setAttribute('data-id', idEvent);
-                    document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
-                }
-            });
-
-            document.getElementById('btnSimpan').addEventListener('click', function() {
-                const id = document.getElementById('modalKonfirmasiSimpan').getAttribute('data-id');
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                $.ajax({
-                    url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id',
-                        id),
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(response) {
-                        document.getElementById('modalKonfirmasiSimpan').removeAttribute(
-                            'data-id');
-                        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-                        successToast('Berhasil dihapus');
-                        setTimeout(() => {
-                            window.location.href =
-                                "{{ route('academics-event.index') }}";
-                        }, 5000);
-                    },
-                    error: function() {
-                        $('tbody').html(
-                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                        );
-                    }
-                });
-            });
-
-            document.getElementById('btnCekKembali').addEventListener('click', function() {
-                document.getElementById('modalKonfirmasiSimpan').removeAttribute('data-id');
-                document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-            });
-
-            // sort dropdown
-            const sortBtn = document.getElementById('sortButton');
-            const sortDropdown = document.getElementById('sortDropdown');
-
-            // Toggle dropdown on button click
-            sortBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                sortDropdown.style.display = (sortDropdown.style.display === 'block') ? 'none' : 'block';
-            });
         })
     </script>
-
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
-                setTimeout(() => {
-                    window.location.href = "{{ route('academics-event.index') }}";
-                }, 3000);
-            })
-        </script>
-    @endif
+    @include('partials.success-notification-modal')
 @endsection
 
 @section('content')
@@ -349,20 +281,24 @@
                             <div class="search-dropdown" id="searchDropdown"></div>
                         </div>
                     </div>
-                    <div class="filter-box">
-                        <button class="button-clean" id="sortButton">
-                            {{ empty($_GET) ? 'Terbaru' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))) }}
-                            <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
-                        </button>
-                        <div id="sortDropdown" class="sort-dropdown" style="display: none;">
-                            <div class="dropdown-item" data-sort="active">Aktif</div>
-                            <div class="dropdown-item" data-sort="inactive">Tidak Aktif</div>
-                            <div class="dropdown-item" data-sort="nama,asc">A-Z</div>
-                            <div class="dropdown-item" data-sort="nama,desc">Z-A</div>
-                            <div class="dropdown-item" data-sort="created_at,desc">Terbaru</div>
-                            <div class="dropdown-item" data-sort="created_at,asc">Terlama</div>
-                        </div>
-                    </div>
+                    @include('partials.dropdown-filter', [
+                      'buttonId' => 'sortButton',
+                      'dropdownId' => 'sortDropdown',
+                      'dropdownItem' => [
+                        'Aktif' => 'active',
+                        'Tidak Aktif' => 'inactive',
+                        'A-Z' => 'nama, asc',
+                        'Z-A' => 'nama, desc',
+                        'Terbaru' => 'created_at,desc',
+                        'Terlama' => 'created_at,asc'
+                      ],
+                      'label' => empty($_GET) ? 'Terbaru' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))),
+                      'url' => route('academics-event.index'),
+                      'imgSrc' => asset('assets/icon-filter.svg'),
+                      'dropdownClass' => '',
+                      'isIconCanRotate' => false,
+                      'imgInvertSrc' => ''
+                    ])
                 </div>
             </div>
             <div class="table-responsive">
@@ -432,21 +368,14 @@
         @endif
 
         <div id="eventDetailModalContainer"></div>
-        <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-            <div class="modal-custom-backdrop"></div>
-            <div class="modal-custom-content" style="background-color: #98A725 ">
-                <div class="modal-custom-header">
-                    <span class="text-lg-bd">Tunggu Sebentar</span>
-                    <img src="{{ asset('assets/icon-delete-gray-800.svg') }}" alt="ikon peringatan">
-                </div>
-                <div class="modal-custom-body">
-                    <div>Apakah Anda yakin ingin menghapus event akademik ini?</div>
-                </div>
-                <div class="modal-custom-footer">
-                    <button type="button" class="button button-clean" id="btnCekKembali">Batal</button>
-                    <button type="submit" class="button button-outline" id="btnSimpan">Hapus</button>
-                </div>
-            </div>
-        </div>
+        @include('partials.modal', [
+          'modalId' => 'modalKonfirmasiHapus',
+          'modalTitle' => 'Tunggu Sebentar',
+          'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
+          'modalMessage' => 'Apakah Anda yakin ingin menghapus event akademik ini?',
+          'triggerButton' => 'btn-delete-event-academic',
+          'cancelButtonLabel' => 'Batal',
+          'actionButtonLabel' => 'Hapus'
+        ]);
     </div>
 @endsection

@@ -11,10 +11,6 @@
     .card-header.option-list {
         justify-content: left;
     }
-    .sort-dropdown {
-      top: 16.2% !important;
-      left: 34.2% !important;
-    }
     .center {
         display: flex;
         align-items: center;
@@ -46,39 +42,46 @@
 @endsection
 
 @section('javascript')
+<meta name="csrf-token" content="{{ csrf_token() }}">
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      const sortBtnCampusProgram = document.querySelector('#sortButton.campus');
-      const sortDropdownCampusProgram = document.querySelector('#sortDropdown.campus');
-      sortBtnCampusProgram.addEventListener('click', function(e) {
-          e.stopPropagation();
-          sortDropdownCampusProgram.style.display = (sortDropdownCampusProgram.style.display ===
-              'block') ? 'none' : 'block';
-          sortBtnCampusProgram.querySelector('img').src = (sortBtnCampusProgram.querySelector('img')
-                  .src === "{{ asset('assets/active/icon-arrow-up.svg') }}") ?
-              "{{ asset('assets/active/icon-arrow-down.svg') }}" :
-              "{{ asset('assets/active/icon-arrow-up.svg') }}";
-      });
-      sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(item => {
-          item.addEventListener('click', function() {
-              sortDropdownCampusProgram.querySelectorAll('.dropdown-item').forEach(i => i
-                  .classList.remove('active'));
-              const url = new URL(window.location.href);
-              const sortKey = this.getAttribute('data-sort');
-              url.searchParams.set('program_perkuliahan', sortKey);
-              window.location.href = url.toString();
-          });
-      });
-      document.addEventListener('click', (e) => {
-          const dropdownCampus = e.target.closest('#CampusProgramSection');
-          if (dropdownCampus == null) {
-              sortDropdownCampusProgram.style.display = 'none'
-              sortBtnCampusProgram.querySelector('img').src =
-                  "{{ asset('assets/active/icon-arrow-down.svg') }}";
-          }
+      document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
+         const dataId = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
+         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+         document.getElementById('modalKonfirmasiHapus').removeAttribute('data-id');
+          document.getElementById('modalKonfirmasiHapus').style.display = 'none';
+          successToast('Berhasil dihapus');
+          setTimeout(() => {
+            window.location.href = "{{route('curriculum.list')}}"
+          }, 5000);
+        //  $.ajax({
+        //      url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id',
+        //          id),
+        //      method: 'DELETE',
+        //      headers: {
+        //          'X-CSRF-TOKEN': csrfToken,
+        //          'X-Requested-With': 'XMLHttpRequest'
+        //      },
+        //      success: function(response) {
+        //          document.getElementById('modalKonfirmasiSimpan').removeAttribute(
+        //              'data-id');
+        //          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+        //          successToast('Berhasil dihapus');
+        //          setTimeout(() => {
+        //              window.location.href =
+        //                  "{{ route('academics-event.index') }}";
+        //          }, 5000);
+        //      },
+        //      error: function() {
+        //          $('tbody').html(
+        //              '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
+        //          );
+        //      }
+        //  });
       });
     });
   </script>
+  @include('partials.success-notification-modal')
 @endsection
 
 @section('content')
@@ -89,20 +92,22 @@
     @include('curriculums.layout.navbar-curriculum')
     <div class="academics-slicing-content content-card">
       <x-typography variant="heading-h6" class="mb-2 p-[20px]">
-        Daftar Kurikulum - Teknik Kimia
+        Daftar Kurikulum
       </x-typography>
       <div class="card-header option-list">
         <div class="card-header center" id="CampusProgramSection">
             <div class="page-title-text sub-title">Program Perkuliahan</div>
-            <button class="button-clean campus" id="sortButton">
-                <span>{{ $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua" }}</span>
-                <img src="{{ asset('assets/active/icon-arrow-down.svg') }}" alt="Filter">
-            </button>
-            <div id="sortDropdown" class="sort-dropdown campus" style="display: none;">
-              @foreach($programPerkuliahanList as $programPerkuliahan)
-                <div class="dropdown-item" data-sort="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
-              @endforeach
-            </div>
+            @include('partials.dropdown-filter', [
+              'buttonId' => 'sortButtonProgramPerkuliahan',
+              'dropdownId' => 'sortProgramPerkuliahan',
+              'dropdownItem' => array_column($programPerkuliahanList, 'name', 'name'),
+              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->id == $id_program; }))[0]->nama : "Semua",
+              'url' => route('curriculum.list'),
+              'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
+              'dropdownClass' => '!top-[16.2%] !left-[34.2%]',
+              'isIconCanRotate' => true,
+              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg')
+            ])
         </div>
       </div>
       <x-container class="border-none">
@@ -129,38 +134,38 @@
               <x-table-body>
                   @forelse ($data as $d)
                       <x-table-row>
-                          <x-table-cell>{{ $d['nama'] }}</x-table-cell>
+                          <x-table-cell>{{ $d->nama_kurikulum }}</x-table-cell>
                           <x-table-cell class="{{ 
-                              $d['program_perkuliahan'] == 'Double Degree' ? 'bg-[#E5EDAB]' : 
-                              ($d['program_perkuliahan'] == 'International' ? 'bg-[#99D8FF]' : 
-                              ($d['program_perkuliahan'] == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
+                              $d->perkuliahan == 'Double Degree' ? 'bg-[#E5EDAB]' : 
+                              ($d->perkuliahan == 'International Class' ? 'bg-[#99D8FF]' : 
+                              ($d->perkuliahan == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
                           }}"
-                          >{{ $d['program_perkuliahan'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['deskripsi'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['total_sks'] }}</x-table-cell>
+                          >{{ $d->perkuliahan }}</x-table-cell>
+                          <x-table-cell>{{ $d->deskripsi }}</x-table-cell>
+                          <x-table-cell>{{ $d->sks_total }}</x-table-cell>
                           <x-table-cell>
-                            @if ($d['status'] === 'active')
+                            @if ($d->status === 'active')
                                 <span class="badge badge-active" style="min-width:max-content">Aktif</span>
                             @else
-                                <span class="badge badge-inactive" style="min-width:max-content">Tidak Aktif</span>
+                                <span class="badge badge-inactive !border-none" style="min-width:max-content">Tidak Aktif</span>
                             @endif
                           </x-table-cell>
                           <x-table-cell>
                             <div class="center">
-                              <button type="button" class="btn-icon btn-view-periode-academic"
+                              <a href="{{route('curriculum.list.view', ['id' => $d->id])}}" type="button" class="btn-icon btn-view-periode-academic"
                                   data-periode-akademik="" title="Lihat">
                                   <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
                                   <span>Lihat</span>
-                              </button>
+                            </a>
                               <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                                  href="{{route('curriculum.list.edit', ['id' => $d['id']])}}"
+                                  href="{{route('curriculum.list.edit', ['id' => $d->id])}}"
                                   style="text-decoration: none; color: inherit;">
                                   <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                                   <span style="color: #E62129">Ubah</span>
                               </a>
-                              <button type="button" class="btn-icon btn-delete-periode-academic" data-id="" title="Hapus">
+                              <button type="button" class="btn-icon btn-delete" data-id="{{$d->id}}" title="Hapus">
                                   <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                                  <span>Hapus</span>
+                                  <span class="text-[#8C8C8C]">Hapus</span>
                               </button>
                             </div>
                           </x-table-cell>
@@ -180,5 +185,14 @@
           <a href="{{route('curriculum.list.create')}}" class="button button-outline">Tambah Kurikulum</a>
       </div>
     </div>
+    @include('partials.modal', [
+      'modalId' => 'modalKonfirmasiHapus',
+      'modalTitle' => 'Hapus Daftar kurikulum',
+      'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
+      'modalMessage' => 'Apakah Anda yakin ingin menghapus kurikulum ini?',
+      'triggerButton' => 'btn-delete',
+      'cancelButtonLabel' => 'Batal',
+      'actionButtonLabel' => 'Hapus'
+    ]);
   </div>
 @endsection
