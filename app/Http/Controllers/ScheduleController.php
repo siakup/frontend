@@ -5,11 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class PersiapanPerkuliahanController extends Controller
+class ScheduleController extends Controller
 {
+    // LIST (SCRUM-305)
     public function index(Request $req)
     {
-        // === 1) DATA DUMMY (sementara untuk slicing) ===
+        // --- dummy data untuk slicing; ganti ke hasil API kalau sudah siap ---
         $rows = [
             [
                 'id'=>101,'semester'=>1,'mata_kuliah'=>'Bahasa Indonesia',
@@ -23,23 +24,17 @@ class PersiapanPerkuliahanController extends Controller
                 'jadwal'=>[['hari'=>'Senin','waktu'=>'10:00–11:40','ruang'=>'B203']],
                 'pengajar'=>'Brahmadi',
             ],
-            // tambahkan beberapa baris lagi kalau mau lihat pagination
         ];
 
-        // === 2) PARAM & PAGINATOR ===
+        // pagination sederhana
         $page    = (int) $req->query('page', 1);
         $perPage = (int) $req->query('per_page', 7);
+        $slice   = collect($rows)->forPage($page, $perPage)->values();
 
-        $slice = collect($rows)->forPage($page, $perPage)->values();
-        $items = new LengthAwarePaginator(
-            $slice,                // item halaman ini
-            count($rows),          // total item
-            $perPage,              // item per halaman
-            $page,                 // halaman saat ini
-            ['path' => url()->current()] // biar links() benar
-        );
+        $items = new LengthAwarePaginator($slice, count($rows), $perPage, $page, [
+            'path' => url()->current()
+        ]);
 
-        // === 3) DROPDOWN OPSI (sementara) ===
         $programPerkuliahanList = [
             (object)['id'=>1,'nama'=>'Reguler'],
             (object)['id'=>2,'nama'=>'Paralel'],
@@ -51,8 +46,7 @@ class PersiapanPerkuliahanController extends Controller
             (object)['id'=>12,'nama'=>'Ilmu Komputer'],
         ];
 
-        // === 4) KIRIM KE VIEW (WAJIB: 'items') ===
-        return view('academics.persiapan_perkuliahan.jadwal_prodi.index', [
+        return view('academics.schedule.prodi_schedule.index', [
             'items' => $items,
             'programPerkuliahanList' => $programPerkuliahanList,
             'programStudiList'       => $programStudiList,
@@ -60,7 +54,14 @@ class PersiapanPerkuliahanController extends Controller
             'id_prodi'               => (int) $req->query('program_studi', 10),
             'q'                      => $req->query('q', ''),
         ]);
-
-        
     }
+
+    // ====== skeleton CRUD (nanti tinggal isi API) ======
+    public function create()               { return view('academics.schedule.prodi_schedule.create'); }
+    public function store(Request $r)      { /* TODO: call API create */ }
+    public function show($id)              { return view('academics.schedule.prodi_schedule.show', compact('id')); }
+    public function edit($id)              { return view('academics.schedule.prodi_schedule.edit', compact('id')); }
+    public function update(Request $r,$id) { /* TODO: call API update */ }
+    public function destroy($id)           { /* TODO: call API delete */ }
+    public function importFet1(Request $r) { /* TODO: call API import */ }
 }

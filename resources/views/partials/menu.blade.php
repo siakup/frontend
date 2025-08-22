@@ -102,7 +102,7 @@
             </li>
 
             <li class="menu-item">
-                <a href="{{ route('academics.persiapan-perkuliahan.jadwal-prodi.index') }}"
+                <a href="{{ route('academics.schedule.prodi-schedule.index') }}"
                 class="menu-link {{ Request::is('persiapan-perkuliahan*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-calendar.svg') }}"

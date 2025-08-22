@@ -65,7 +65,7 @@ class StudyController extends Controller
           'semester' => $value['semester']
         ];
       }, $file_data);
-      
+
       return view('study.upload-result', get_defined_vars());
     }
 
@@ -128,19 +128,19 @@ class StudyController extends Controller
       return redirect()->route('calendar.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
     }
 
-    public function store(Request $request, $id) 
+    public function store(Request $request, $id)
     {
       return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
     }
 
-    public function send(Request $request, $id) 
+    public function send(Request $request, $id)
     {
       return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
     }
 
     public function update(Request $request, $id)
     {
-        
+
     }
 
     public function delete(Request $request, $id)

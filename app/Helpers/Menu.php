@@ -12,7 +12,7 @@ class Menu
                 'parent' => null,
                 'isExpandable' => false,
                 'children' => [
-                  
+
                 ]
             ],
             'konfigurasi' => [
@@ -196,7 +196,7 @@ class Menu
                       'isExpandable' => false,
                       'children' => [
                         'update-curriculum-course-list' => [
-                          'name' => 'Ubah Mata Kuliah Kurikulum', 
+                          'name' => 'Ubah Mata Kuliah Kurikulum',
                           'url' => '/kurikulum/daftar-kurikulum/ubah/*/lihat-mata-kuliah/*',
                           'parent' => 'curriculum.list.edit.edit-study',
                           'isExpandable' => false
@@ -231,14 +231,52 @@ class Menu
               'parent' => 'curriculum.equivalence',
               'isExpandable' => false,
             ],
-              
+            
+            'college-schedule' => [
+                'name' => 'Jadwal Kuliah',
+                'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi',
+                'parent' => 'academics.schedule.index',
+                'isExpandable' => true,
+                'children' => [
+                    'create-prodi-schedule' => [
+                        'name' => 'Tambah Jadwal Kuliah Program Studi',
+                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/tambah',
+                        'parent' => 'academics.schedule.prodi-schedule.create',
+                        'isExpandable' => false,
+                    ],
+                    'view-prodi-schedule' => [
+                        'name' => 'Lihat Jadwal Kuliah Program Studi',
+                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/*',
+                        'parent' => 'academics.schedule.prodi-schedule.show',
+                        'isExpandable' => false,
+                    ],
+                    'edit-prodi-schedule' => [
+                        'name' => 'Ubah Jadwal Kuliah Program Studi',
+                        'url' => '/persiapan-perkuliahan/jadwal-kuliah  /program-studi/*/ubah',
+                        'parent' => 'academics.schedule.prodi-schedule.edit',
+                        'isExpandable' => false,
+                    ],
+                    'import-fet1' => [
+                        'name' => 'Impor File FET',
+                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/import/fet1',
+                        'parent' => 'academics.schedule.prodi-schedule.import-fet1',
+                        'isExpandable' => false,
+                    ],
+                    'delete-prodi-schedule' => [
+                        'name' => 'Hapus Jadwal Kuliah Program Studi',
+                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/*',
+                        'parent' => 'academics.schedule.prodi-schedule.delete',
+                        'isExpandable' => false,
+                    ],
+                ]
+            ],
         ];
     }
 
     public static function getMenuName($segment)
     {
         $menus = self::getMenuItems();
-        
+
         // Check direct menu items
         if (isset($menus[$segment])) {
             return $menus[$segment]['name'];
@@ -307,7 +345,7 @@ class Menu
         foreach ($segments as $segment) {
             $currentPath .= '/' . $segment;
             $menuChain = $findMenuByPath($menus, $currentPath);
-            
+
             if ($menuChain !== null) {
                 foreach ($menuChain as $index => $menuItem) {
                     // Skip if it's already in breadcrumbs
@@ -318,7 +356,7 @@ class Menu
                             break;
                         }
                     }
-                    
+
                     if (!$exists) {
                         $breadcrumbs[] = [
                             'name' => $menuItem['name'],

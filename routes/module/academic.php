@@ -5,7 +5,7 @@ use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\StudyController;
-use App\Http\Controllers\PersiapanPerkuliahanController;
+use App\Http\Controllers\ScheduleController;
 
 // Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['auth']], function () {
@@ -81,33 +81,34 @@ Route::group(['middleware' => ['auth']], function () {
       Route::get('/ekuivalensi-kurikulum', [CurriculumController::class, 'curriculumEquivalence'])->name('curriculum.equivalence');
     });
 
-    Route::group(['prefix' => 'persiapan-perkuliahan'], function () {
-      // LIST — SCRUM-305
-      Route::get('/jadwal-prodi', [PersiapanPerkuliahanController::class, 'index'])
-          ->name('academics.persiapan-perkuliahan.jadwal-prodi.index');
+       Route::prefix('persiapan-perkuliahan')->group(function () {
 
-      // CREATE — SCRUM-306
-      Route::get('/jadwal-prodi/create', [PersiapanPerkuliahanController::class, 'create'])
-          ->name('academics.persiapan-perkuliahan.jadwal-prodi.create');
-      Route::post('/jadwal-prodi', [PersiapanPerkuliahanController::class, 'store'])
-          ->name('academics.persiapan-perkuliahan.jadwal-prodi.store');
+            // Group "schedule" biar rapi
+            Route::prefix('jadwal-kuliah')->name('academics.schedule.')->group(function () {
 
-      // VIEW — SCRUM-310
-      Route::get('/jadwal-prodi/{id}', [PersiapanPerkuliahanController::class, 'show'])
-          ->name('academics.persiapan-perkuliahan.jadwal-prodi.show');
+                // PRODI SCHEDULE
+                Route::prefix('program-studi')->name('prodi-schedule.')->group(function () {
+                    // LIST
+                    Route::get('/', [ScheduleController::class, 'index'])->name('index');
 
-      // EDIT — SCRUM-311/312/313
-      Route::get('/jadwal-prodi/{id}/edit', [PersiapanPerkuliahanController::class, 'edit'])
-          ->name('academics.persiapan-perkuliahan.jadwal-prodi.edit');
-      Route::put('/jadwal-prodi/{id}', [PersiapanPerkuliahanController::class, 'update'])
-          ->name('academics.persiapan-perkuliahan.jadwal-prodi.update');
+                    // CREATE
+                    Route::get('/tambah', [ScheduleController::class, 'create'])->name('create');
+                    Route::post('/',       [ScheduleController::class, 'store'])->name('store');
 
-      // DELETE — SCRUM-314
-      Route::delete('/jadwal-prodi/{id}', [PersiapanPerkuliahanController::class, 'destroy'])
-          ->name('academics.persiapan-perkuliahan.jadwal-prodi.delete');
+                    // SHOW
+                    Route::get('/{id}', [ScheduleController::class, 'show'])->name('show');
 
-      // Impor FET_1
-      Route::post('/jadwal-prodi/import/fet1', [PersiapanPerkuliahanController::class, 'importFet1'])
-          ->name('academics.persiapan-perkuliahan.jadwal-prodi.import-fet1');
-      });
+                    // EDIT
+                    Route::get('/{id}/ubah', [ScheduleController::class, 'edit'])->name('edit');
+                    Route::put('/{id}',      [ScheduleController::class, 'update'])->name('update');
+
+                    // DELETE
+                    Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('delete');
+
+                    // IMPORT FET_1
+                    Route::post('/import/fet1', [ScheduleController::class, 'importFet1'])->name('import-fet1');
+                });
+            });
+
+        });
 });
