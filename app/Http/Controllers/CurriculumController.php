@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Endpoint\CurriculumService;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Mail;
@@ -26,51 +27,27 @@ class CurriculumController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-      $id_program = $request->input('program_perkuliahan');
-
-      $data = [
-        [
-          'id' => 1,
-          'nama' => 'Kurikulum 2025 - Teknik Kimia - DD',
-          'program_perkuliahan' => 'Double Degree',
-          'deskripsi' => 'Kurikulum 2025 - Double Degree',
-          'total_sks' => 155,
-          'status' => 'active',
-        ],
-        [
-          'id' => 2,
-          'nama' => 'Kurikulum 2025 - Teknik Kimia - Int',
-          'program_perkuliahan' => 'International',
-          'deskripsi' => 'Kurikulum 2025 - International',
-          'total_sks' => 141,
-          'status' => 'active',
-        ],
-        [
-          'id' => 3,
-          'nama' => 'Kurikulum 2025 - Teknik Kimia - R',
-          'program_perkuliahan' => 'Reguler',
-          'deskripsi' => 'Kurikulum 2020 - Reguler',
-          'total_sks' => 144,
-          'status' => 'inactive',
-        ],
-        [
-          'id' => 4,
-          'nama' => 'Kurikulum 2025 - Teknik Kimia - K',
-          'program_perkuliahan' => 'Karyawan',
-          'deskripsi' => 'Kurikulum 2020 - Karyawan',
-          'total_sks' => 95,
-          'status' => 'inactive',
-        ],
-      ];
+      $id_program = urldecode($request->input('program_perkuliahan'));
+      
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      $programStudiList = $responseProgramStudiList->data;
+      $id_prodi = urldecode($request->input('program_studi', $programStudiList[0]->id));
+      
+      $params = compact('id_program', 'id_prodi');
+      
+      $url = CurriculumService::getInstance()->listCurriculum();
+      $response = getCurl($url, $params, getHeaders());
+      $data = $response->data;
       return view('curriculums.list.index', get_defined_vars());
     }
 
-    public function createCurriculumList(Request $request)
+    public function createCurriculumList(Request $request, $program_studi)
     {
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
       $programStudiList = $responseProgramStudiList->data;
-      $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
+      $id_prodi = $program_studi;
 
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
@@ -140,7 +117,7 @@ class CurriculumController extends Controller
 
       $data = [
         "program_studi" => "Teknik Kimia",
-        "program_perkuliahan" => "1",
+        "program_perkuliahan" => "Reguler",
         "curriculum_nama" => "Kurikulum 2025 - Teknik Kimia",
         "deskripsi" => "Kurikulum Tahun 2025",
         "sks_wajib" => "100",
@@ -234,6 +211,7 @@ class CurriculumController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+  
       $id_program = $request->input('program_perkuliahan');
 
       $jenis_mata_kuliah = [
@@ -256,7 +234,7 @@ class CurriculumController extends Controller
 
       $data = [
         "program_studi" => "Teknik Kimia",
-        "program_perkuliahan" => "1",
+        "program_perkuliahan" => "Reguler",
         "curriculum_nama" => "Kurikulum 2025 - Teknik Kimia",
         "deskripsi" => "Kurikulum Tahun 2025",
         "sks_wajib" => "100",
@@ -270,79 +248,17 @@ class CurriculumController extends Controller
         "mata_kuliah_universitas_pertamina" => 24
       ];
 
-      // $assignCourseData = [
-      //   [
-      //     'id' => 1,
-      //     'kode_mata_kuliah' => 'UP0011',
-      //     'nama' => 'Agama dan Etika',
-      //     'sks' => 2,
-      //     'program_studi' => 'Komunikasi',
-      //     'jenis_mata_kuliah' => 'Mata Kuliah Dasar Umum'
-      //   ],
-      //   [
-      //     'id' => 2,
-      //     'kode_mata_kuliah' => '10004',
-      //     'nama' => 'Agama Katolik dan Etika',
-      //     'sks' => 2,
-      //     'program_studi' => 'Komunikasi',
-      //     'jenis_mata_kuliah' => 'Mata Kuliah Dasar Umum'
-      //   ],
-      //   [
-      //     'id' => 3,
-      //     'kode_mata_kuliah' => '52204',
-      //     'nama' => 'Aljabar Linear dan Aplikasinya',
-      //     'sks' => 3,
-      //     'program_studi' => 'Ilmu Komputer',
-      //     'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      //   ],
-      //   [
-      //     'id' => 4,
-      //     'kode_mata_kuliah' => '52294',
-      //     'nama' => 'Algoritma dan Struktur Data',
-      //     'sks' => 3,
-      //     'program_studi' => 'Ilmu Komputer',
-      //     'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      //   ],
-      //   [
-      //     'id' => 5,
-      //     'kode_mata_kuliah' => '10101',
-      //     'nama' => 'Bahasa Indonesia',
-      //     'sks' => 2,
-      //     'program_studi' => 'Komunikasi',
-      //     'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      //   ],
-      //   [
-      //     'id' => 6,
-      //     'kode_mata_kuliah' => '21033',
-      //     'nama' => 'Aplikasi dan Teknologi EBT',
-      //     'sks' => 3,
-      //     'program_studi' => 'Ilmu Komputer',
-      //     'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      //   ],
-      //   [
-      //     'id' => 7,
-      //     'kode_mata_kuliah' => 'UP1103',
-      //     'nama' => 'Bahasa Inggris I ',
-      //     'sks' => 2,
-      //     'program_studi' => 'Komunikasi',
-      //     'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      //   ],
-      //   [
-      //     'id' => 8,
-      //     'kode_mata_kuliah' => 'UP1203',
-      //     'nama' => 'Bahasa Inggris II',
-      //     'sks' => 2,
-      //     'program_studi' => 'Komunikasi',
-      //     'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      //   ]
-      // ];
-
       return view('curriculums.list.view', get_defined_vars());
     }
 
     public function showCurriculumStudyList(Request $request, $id) {
       $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
       $nama_mata_kuliah = $request->input('nama', '');
+
+      // $url = CurriculumService::getInstance()->listCurriculum();
+      // $response = getCurl($url, $params, getHeaders());
+      // $data = $response->data;
+
       $data = [
         [
           'id' => 1,
@@ -515,7 +431,7 @@ class CurriculumController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-      $id_program = $request->input('program_perkuliahan');
+      $id_program = urldecode($request->input('program_perkuliahan'));
 
       $data = [
         [

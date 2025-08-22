@@ -6,7 +6,7 @@ use App\Http\Controllers\HomeController;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/subject', function (){
-    return view('subjects.index');
+    return view('study.index');
 })->name('subject');
 
 Route::get('/subject/create', function () {

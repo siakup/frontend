@@ -90,20 +90,6 @@
         padding: 0;
         width: auto; 
     }
-
-    .modal-custom-footer {
-        display: flex;
-        justify-content: center;
-        gap: 24px;
-        width: 100%;
-        padding: 0 20px 24px 20px;
-        box-sizing: border-box;
-    }
-
-    .modal-custom-footer .button {
-        min-width: 220px;
-        padding: 14px 0;
-    }
 </style>
 @endsection
 <script>
@@ -114,7 +100,7 @@
         const hiddenInput = document.getElementById('statusValue');
         const namaEvent   = document.getElementById('name');
         const btnSave     = document.getElementById('btnSimpan');
-        const btnConfirm  = document.getElementById('btnYaSimpan');
+        const btnConfirm  = document.getElementById('modalKonfirmasiSimpan-btnSimpan');
         const flagChecks  = document.querySelectorAll('input[name="flag[]"]');
 
         function updateSaveButtonState() {
@@ -128,16 +114,8 @@
             }
         }
 
-        btnSave.addEventListener('click', function() {
-            document.getElementById('modalKonfirmasiSimpan').style.display = 'block';
-        });
-
         document.getElementById('btnBatal').addEventListener('click', function() {
             window.location.href = "{{ route('academics-event.index') }}";
-        });
-
-        document.getElementById('btnCekKembali').addEventListener('click', function() {
-            document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
         });
 
         btnToggle.addEventListener('click', () => {
@@ -245,24 +223,17 @@
         </div>
         <div class="button-group">
             <button type="button" class="button button-clean" id="btnBatal">Batal</button>
-            <button type="button" class="button button-outline" id="btnSimpan" disabled>Simpan</button>
+            <button type="button" class="button button-outline btnSimpan" id="btnSimpan" disabled>Simpan</button>
         </div>
         </div>
-        
-        <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content">
-            <div class="modal-custom-header">
-            <span class="text-lg-bd">Tunggu Sebentar</span>
-            <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="ikon peringatan">
-            </div>
-            <div class="modal-custom-body">
-            <div>Apakah Anda yakin informasi yang ditambah sudah benar?</div>
-            </div>
-            <div class="modal-custom-footer">
-            <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-            <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
-            </div>
-        </div>
-    </div>
+
+        @include('partials.modal', [
+          'modalId' => 'modalKonfirmasiSimpan',
+          'modalTitle' => 'Tunggu Sebentar',
+          'modalIcon' => asset('assets/base/icon-caution.svg'),
+          'modalMessage' => 'Apakah Anda yakin informasi yang ditambah sudah benar?',
+          'triggerButton' => 'btnSimpan',
+          'cancelButtonLabel' => 'Cek Kembali',
+          'actionButtonLabel' => 'Ya, Ubah Sekarang'
+        ]);
 @endsection

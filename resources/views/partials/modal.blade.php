@@ -23,8 +23,7 @@
   }
 </style>
 <div id="{{ $modalId }}" class="modal-custom" style="display:none;">
-    <div class="modal-custom-backdrop"></div>
-    <div class="modal-custom-content">
+    <div class="modal-custom-content  flex items-center justify-center">
         <div class="modal-custom-header">
             <span class="text-lg-bd">{{ $modalTitle }}</span>
             <img src="{{ $modalIcon }}" alt="ikon peringatan">
@@ -32,7 +31,7 @@
         <div class="modal-custom-body">
             <div>{{ $modalMessage }}</div>
         </div>
-        <div class="modal-custom-footer">
+        <div class="modal-custom-footer gap-[12px] w-full flex !justify-center p-[12px]">
             <button type="button" class="button button-clean" id="{{$modalId}}-btnCekKembali">{{ $cancelButtonLabel }}</button>
             <button type="submit" class="button button-outline" id="{{$modalId}}-btnSimpan">{{ $actionButtonLabel }}</button>
         </div>
@@ -46,10 +45,10 @@
         if (btn) {
             const idEvent = btn.getAttribute('data-id');
             document.getElementById('{{ $modalId }}').setAttribute('data-id', idEvent);
-            document.getElementById('{{ $modalId }}').style.display = 'flex';
+            document.getElementById('{{ $modalId }}').style.display = 'block';
         }
     });
-    
+
     document.getElementById('{{$modalId}}-btnCekKembali').addEventListener('click', function() {
         document.getElementById('{{ $modalId }}').removeAttribute('data-id');
         document.getElementById('{{ $modalId }}').style.display = 'none';

@@ -2,9 +2,7 @@
 
 namespace App\Endpoint;
 
-
-
-class CourseService
+class CurriculumService
 {
     private static $instance = null;
 
@@ -25,11 +23,11 @@ class CourseService
 
     public function url()
     {
-        return config('endpoint.lecture.url') . '/api/courses';
+        return config('endpoint.lecture.url') . '/api/curriculums';
     }
-    public function courseUrl($id)
+    public function listCurriculum()
     {
-        return $this->url() . '/' . $id;
+        return $this->url() . '/';
     }
 
     public function bulkStore()

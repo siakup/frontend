@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-5">
+<div class="flex flex-col gap-5" x-data="mataKuliahTable" x-init="fetchData()">
     <x-container variant="content" class="flex flex-col gap-5">
         <x-typography variant="heading-h6" class="mb-2">
             Daftar Mata Kuliah
@@ -54,83 +54,65 @@
             <x-table>
                 <x-table-head>
                     <x-table-row>
-                        <x-table-header wire:click="sort('kode')" class="cursor-pointer">
-                            Kode Mata Kuliah @if ($sortBy === 'kode')
-                                ({{ $sortDirection === 'asc' ? '↑' : '↓' }})
-                            @endif
-                        </x-table-header>
-                        <x-table-header wire:click="sort('nama')" class="cursor-pointer">
-                            Nama Mata Kuliah @if ($sortBy === 'nama')
-                                ({{ $sortDirection === 'asc' ? '↑' : '↓' }})
-                            @endif
-                        </x-table-header>
-                        <x-table-header wire:click="sort('sks')" class="cursor-pointer">
-                            Jumlah SKS @if ($sortBy === 'sks')
-                                ({{ $sortDirection === 'asc' ? '↑' : '↓' }})
-                            @endif
-                        </x-table-header>
-                        <x-table-header wire:click="sort('semester')" class="cursor-pointer">
-                            Semester @if ($sortBy === 'semester')
-                                ({{ $sortDirection === 'asc' ? '↑' : '↓' }})
-                            @endif
-                        </x-table-header>
+                        <x-table-header>Kode Mata Kuliah</x-table-header>
+                        <x-table-header>Nama Mata Kuliah</x-table-header>
+                        <x-table-header>Jumlah SKS</x-table-header>
+                        <x-table-header>Semester</x-table-header>
                         <x-table-header>Jenis Mata Kuliah</x-table-header>
                         <x-table-header>Aksi</x-table-header>
                     </x-table-row>
                 </x-table-head>
 
                 <x-table-body>
-                    @forelse ($mataKuliahList as $matkul)
-                        <x-table-row :odd="$loop->odd" :last="$loop->last">
-                            <x-table-cell>{{ $matkul['kode'] }}</x-table-cell>
-                            <x-table-cell>{{ $matkul['nama'] }}</x-table-cell>
-                            <x-table-cell>{{ $matkul['sks'] }}</x-table-cell>
-                            <x-table-cell>{{ $matkul['semester'] }}</x-table-cell>
-                            <x-table-cell>
-                                <span
-                                    class="px-2 py-1 rounded-full text-xs
-                            {{ $matkul['jenis'] === 'Wajib' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
-                                    {{ $matkul['jenis'] }}
-                                </span>
-                            </x-table-cell>
-                            <x-table-cell>
-                                <div class="flex gap-3 justify-center">
-                                    <a href="{{ route('study.view', ['id' => 1]) }}" class="">
-                                        <x-button.action type="view" label="Lihat" />
-                                    </a>
-                                    <a href="{{ route('study.edit', ['id' => 1]) }}" class="">
-                                        <x-button.action type="edit" label="Edit" />
-                                    </a>
-                                    <!-- Tombol Delete -->
-                                    <x-button.action type="delete" label="Hapus"
-                                        x-on:click="
-                                    $dispatch('open-modal', {
-                                        id: 'delete-confirmation',
-                                        detail: {
-                                            id: '{{ $matkul['kode'] }}',
-                                            name: '{{ $matkul['nama'] }}'
-                                        }
-                                    });
-                                " />
-                                </div>
+                    <template x-if="mataKuliahList.length > 0">
+                        <template x-for="(matkul, idx) in mataKuliahList" :key="matkul.kode">
+                            <x-table-row x-bind:odd="idx % 2 === 1" x-bind:last="idx === mataKuliahList.length - 1">
+                                <x-table-cell x-text="matkul.kode"></x-table-cell>
+                                <x-table-cell x-text="matkul.nama_id"></x-table-cell>
+                                <x-table-cell x-text="matkul.sks"></x-table-cell>
+                                <x-table-cell x-text="matkul.semester"></x-table-cell>
+                                <x-table-cell>
+                                    <span class="px-2 py-1 rounded-full text-xs"
+                                        :class="matkul.jenis === 'Wajib' ?
+                                            'bg-blue-100 text-blue-800' :
+                                            'bg-purple-100 text-purple-800'">
+                                        <span x-text="matkul.jenis"></span>
+                                    </span>
+                                </x-table-cell>
+                                <x-table-cell>
+                                    <div class="flex gap-3 justify-center">
+                                        <a :href="`{{ route('study.view', ':id') }}`.replace(':id', matkul.id)">
+                                            <x-button.action type="view" label="Lihat" />
+                                        </a>
+                                        <a :href="`{{ route('study.edit', ':id') }}`.replace(':id', matkul.id)">
+                                            <x-button.action type="edit" label="Edit" />
+                                        </a>
+                                        <x-button.action type="delete" label="Hapus"
+                                            @click="$dispatch('open-modal', {
+                        id: 'delete-confirmation',
+                        detail: { id: matkul.kode, name: matkul.nama }
+                    })" />
+                                    </div>
+                                </x-table-cell>
+                            </x-table-row>
+                        </template>
+                    </template>
 
-                            </x-table-cell>
-                        </x-table-row>
-                    @empty
+                    <template x-if="mataKuliahList.length === 0">
                         <x-table-row>
                             <x-table-cell colspan="6" class="text-center py-4">
                                 Tidak ada data ditemukan
                             </x-table-cell>
                         </x-table-row>
-                    @endforelse
+                    </template>
                 </x-table-body>
             </x-table>
 
             <!-- Action Buttons -->
             <div class="flex justify-end items-center gap-5">
                 <a href="{{ route('study.upload') }}">
-                  <x-button.secondary type="button" label="Unggah Mata Kuliah"
-                      icon="{{ asset('assets/icon-upload-red-500.svg') }}" iconPosition="right" />
+                    <x-button.secondary type="button" label="Unggah Mata Kuliah"
+                        icon="{{ asset('assets/icon-upload-red-500.svg') }}" iconPosition="right" />
                 </a>
                 <a href="{{ route('study.create') }}">
                     <x-button.primary type="button" label="Tambah Mata Kuliah"
@@ -141,8 +123,49 @@
         </div>
     </x-container>
 
+    {{-- !!! TODO: Benerin --}}
     <!-- Pagination and Per Page Selector -->
-    <livewire:custom-pagination :paginator="$mataKuliahList" />
+    @if (isset($data['data']))
+        @include('partials.pagination', [
+            'currentPage' => $data['pagination']['current_page'],
+            'lastPage' => $data['pagination']['last_page'],
+            'limit' => $limit,
+            'routes' => route('academics-event.index'),
+        ])
+    @endif
+
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('mataKuliahTable', () => ({
+                mataKuliahList: [],
+                async fetchData() {
+                    try {
+                        const url = `${window.LECTURER_API_URL}/courses`; // GET request
+                        const res = await fetch(url, {
+                            method: 'GET', // eksplisit pakai GET
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (!res.ok) throw new Error('Gagal memuat data');
+                        const data = await res.json();
+
+                        console.log('Data Mata Kuliah:', data); // Debugging log
+
+
+                        // Pastikan hasilnya array
+                        this.mataKuliahList = Array.isArray(data) ? data : data.data || [];
+                    } catch (err) {
+                        console.error(err);
+                        this.mataKuliahList = [];
+                    }
+                }
+            }))
+        });
+    </script>
+
 </div>
 
 @section('modals')
@@ -154,7 +177,7 @@
             item = $event.detail.detail;
             show = true;
         }">
-            <p class="text-gray-800">Apakah anda yakin ingin menghapus?</p>
+            <p class="text-gray-800">Apakah Anda yakin ingin menghapus mata kuliah ini?</p>
 
             <div
                 x-on:confirmed.window="

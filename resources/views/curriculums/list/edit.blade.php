@@ -301,14 +301,7 @@
         });
     });
 </script>
-@if (session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
-            setTimeout(() => {}, 3000);
-        })
-    </script>
-@endif
+@include('partials.success-notification-modal', ['route' => route('curriculum.list.edit', ['id' => $id])])
 @section('content')
     <div class="page-header">
         <div class="page-title-text">Ubah Kurikulum</div>
@@ -348,12 +341,12 @@
                   <label for="name">Program Perkuliahan</label>
                   <div class="filter-box" id="program_perkuliahan">
                       <button type="button" class="button-clean input" id="sortEvent">
-                          <span id="selectedEventLabel" class="text-black">{{current(array_filter($programPerkuliahanList, function($program) use($data) { return $program->id == $data['program_perkuliahan']; }))->nama}}</span>
+                          <span id="selectedEventLabel" class="text-black">{{current(array_filter($programPerkuliahanList, function($program) use($data) { return $program->name == $data['program_perkuliahan']; }))->name}}</span>
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                       </button>
                       <div id="Option-Program-Perkuliahan" class="sort-dropdown select" style="display: none;">
                           @foreach ($programPerkuliahanList as $programPerkuliahan)
-                            <div class="dropdown-item" data-event="{{$programPerkuliahan->id}}">{{$programPerkuliahan->nama}}</div>
+                            <div class="dropdown-item" data-event="{{$programPerkuliahan->name}}">{{$programPerkuliahan->name}}</div>
                           @endforeach
                       </div>
                       <input type="hidden" value="{{$data['program_perkuliahan']}}" name="program_perkuliahan">

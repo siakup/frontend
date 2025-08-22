@@ -9,8 +9,8 @@
         const sortDropdownEventName = document.querySelector('#eventList');
 
         const btnSave = document.getElementById('btnSimpan');
-        const btnSaveConfirmation = document.getElementById('btnYaSimpan');
-        const btnCancelConfirmation = document.getElementById('btnCekKembali');
+        const btnSaveConfirmation = document.getElementById('modalKonfirmasiSimpan-btnSimpan');
+        const btnCancelConfirmation = document.getElementById('modalKonfirmasiSimpan-btnCekKembali');
         const form = document.querySelector('#modalAddEvent form');
 
         function updateSaveButtonState() {
@@ -109,7 +109,7 @@
 
         btnCancelConfirmation.addEventListener('click', function() {
             document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-            document.getElementById('modalAddEvent').style.display = 'flex';
+            document.getElementById('modalAddEvent').style.display = 'block';
         });
     });
 </script>
@@ -159,24 +159,17 @@
             </div>
             <div class="modal-custom-footer create-form">
                 <button type="button" class="button button-clean" id="btnBatal">Batal</button>
-                <button type="submit" class="button button-outline" id="btnSimpan" disabled>Simpan</button>
+                <button type="submit" class="button button-outline btnSimpan" id="btnSimpan" disabled>Simpan</button>
             </div>
         </div>
     </form>
 </div>
-<div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-    <div class="modal-custom-backdrop"></div>
-    <div class="modal-custom-content">
-        <div class="modal-custom-header">
-            <span class="text-lg-bd">Tunggu Sebentar</span>
-            <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="ikon peringatan">
-        </div>
-        <div class="modal-custom-body">
-            <div>Apakah Anda yakin informasi yang ditambah sudah benar?</div>
-        </div>
-        <div class="modal-custom-footer">
-            <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-            <button type="button" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
-        </div>
-    </div>
-</div>
+@include('partials.modal', [
+  'modalId' => 'modalKonfirmasiSimpan',
+  'modalTitle' => 'Tunggu Sebentar',
+  'modalIcon' => asset('assets/base/icon-caution.svg'),
+  'modalMessage' => 'Apakah Anda yakin informasi yang ditambah sudah benar?',
+  'triggerButton' => 'btnSimpan',
+  'cancelButtonLabel' => 'Cek Kembali',
+  'actionButtonLabel' => 'Ya, Simpan Sekarang'
+]);

@@ -33,7 +33,7 @@ class EventCalendarService
 
     public function getListUniversityProgram()
     {
-      return config('endpoint.users.url') . '/api/programs/list-by-user';
+      return config('endpoint.lecture.url') . '/api/programs';
     }
 
     public function getListAllPeriode()

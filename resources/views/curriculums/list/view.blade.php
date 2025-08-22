@@ -277,14 +277,7 @@
         });
     });
 </script>
-@if (session('success'))
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            successToast("{{ session('success') ?? 'Berhasil disimpan' }}");
-            setTimeout(() => {}, 3000);
-        })
-    </script>
-@endif
+@include('partials.success-notification-modal')
 @section('content')
     <div class="page-header">
         <div class="page-title-text">Lihat Detail Kurikulum</div>
@@ -308,7 +301,7 @@
                   <label for="name">Program Perkuliahan</label>
                   <div class="filter-box" id="program_perkuliahan">
                       <button type="button" class="button-clean input !border-[1px] !border-[#BFBFBF]" id="sortEvent" disabled>
-                          <span id="selectedEventLabel">{{current(array_filter($programPerkuliahanList, function($program) use($data) { return $program->id == $data['program_perkuliahan']; }))->nama}}</span>
+                          <span id="selectedEventLabel">{{current(array_filter($programPerkuliahanList, function($program) use($data) { return $program->name == $data['program_perkuliahan']; }))->name}}</span>
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                       </button>
                       <input type="hidden" value="{{$data['program_perkuliahan']}}" name="program_perkuliahan">
