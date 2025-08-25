@@ -22,9 +22,6 @@
         </main>
     </div>
 
-    <!-- Modals section -->
-    @yield('modals')
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- JS Select2 -->
@@ -32,6 +29,10 @@
 
     @stack('scripts')
     @yield('javascript')
+
+
+    <!-- Modals section -->
+    @yield('modals')
 
     {{-- url --}}
     <script>
