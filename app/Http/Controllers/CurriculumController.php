@@ -26,68 +26,83 @@ class CurriculumController extends Controller
     {
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-//      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-        $programPerkuliahanList = [
-            (object)[ 'name' => 'Reguler', 'code' => 0 ],
-            (object)[ 'name' => 'Double Degree', 'code' => 1 ],
-            (object)[ 'name' => 'International Class', 'code' => 2 ],
-            (object)[ 'name' => 'Eksekutif', 'code' => 3 ],
-            (object)[ 'name' => 'Exchange', 'code' => 4 ],
-            (object)[ 'name' => 'Merdeka Belajar', 'code' => 5 ],
-        ];
+     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+        // $programPerkuliahanList = [
+        //     (object)[ 'name' => 'Reguler', 'code' => 0 ],
+        //     (object)[ 'name' => 'Double Degree', 'code' => 1 ],
+        //     (object)[ 'name' => 'International Class', 'code' => 2 ],
+        //     (object)[ 'name' => 'Eksekutif', 'code' => 3 ],
+        //     (object)[ 'name' => 'Exchange', 'code' => 4 ],
+        //     (object)[ 'name' => 'Merdeka Belajar', 'code' => 5 ],
+        // ];
       $id_program = $request->input('program_perkuliahan');
-
-      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-      $id_program = urldecode($request->input('program_perkuliahan'));
 
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
       $programStudiList = $responseProgramStudiList->data;
+//     $programStudiList = [
+//     (object)[
+//         'id' => 3,
+//         'ids_role' => '[2, 3, 4]',
+//         'kode_institusi' => '011',
+//         'nama' => 'Teknik Kimia',
+//         'nama_en' => 'Chemical Engineering',
+//         'created_at' => '2025-08-20T08:18:04.456359Z',
+//         'updated_ad' => null,
+//     ],
+//     (object)[
+//         'id' => 4,
+//         'ids_role' => '[2, 3, 4]',
+//         'kode_institusi' => '012',
+//         'nama' => 'Teknik Mesin',
+//         'nama_en' => 'Mechanical Engineering',
+//         'created_at' => '2025-08-20T09:18:04.456359Z',
+//         'updated_ad' => null,
+//     ],
+// ];
       $id_prodi = urldecode($request->input('program_studi', $programStudiList[0]->id));
 
       $params = compact('id_program', 'id_prodi');
 
       $url = CurriculumService::getInstance()->listCurriculum();
-      $response = getCurl($url, $params, getHeaders());
-      $data = $response->data;
       $response = getCurl($url, null, getHeaders());
-    //   $data = $response->data;
-      $data = [
-    (object)[
-        'id' => 2,
-        'nama_kurikulum' => 'Kurikulum 2025 - Teknik Kimia',
-        'perkuliahan' => 'Reguler',
-        'program_studi' => 'Teknik Kimia',
-        'deskripsi' => 'Kurikulum Tahun 2025',
-        'tahun_kurikulum' => null,
-        'sks_wajib' => 100,
-        'sks_pilihan' => 44,
-        'sks_total' => 144,
-        'status_aktif' => true,
-        'status' => 'active',
-        'created_at' => '2025-08-21T07:19:14.446540Z',
-        'created_by' => null,
-        'updated_at' => null,
-        'updated_by' => null,
-    ],
-    (object)[
-        'id' => 3,
-        'nama_kurikulum' => 'Kurikulum 2025 - Teknik Mesin',
-        'perkuliahan' => 'Double Degree',
-        'program_studi' => 'Teknik Mesin',
-        'deskripsi' => 'Kurikulum Tahun 2025',
-        'tahun_kurikulum' => null,
-        'sks_wajib' => 120,
-        'sks_pilihan' => 24,
-        'sks_total' => 144,
-        'status_aktif' => true,
-        'status' => 'active',
-        'created_at' => '2025-08-21T07:19:14.446540Z',
-        'created_by' => null,
-        'updated_at' => null,
-        'updated_by' => null,
-    ],
-];
+      $data = $response->data;
+//       $data = [
+//     (object)[
+//         'id' => 2,
+//         'nama_kurikulum' => 'Kurikulum 2025 - Teknik Kimia',
+//         'perkuliahan' => 'Reguler',
+//         'program_studi' => 'Teknik Kimia',
+//         'deskripsi' => 'Kurikulum Tahun 2025',
+//         'tahun_kurikulum' => null,
+//         'sks_wajib' => 100,
+//         'sks_pilihan' => 44,
+//         'sks_total' => 144,
+//         'status_aktif' => true,
+//         'status' => 'active',
+//         'created_at' => '2025-08-21T07:19:14.446540Z',
+//         'created_by' => null,
+//         'updated_at' => null,
+//         'updated_by' => null,
+//     ],
+//     (object)[
+//         'id' => 3,
+//         'nama_kurikulum' => 'Kurikulum 2025 - Teknik Mesin',
+//         'perkuliahan' => 'Double Degree',
+//         'program_studi' => 'Teknik Mesin',
+//         'deskripsi' => 'Kurikulum Tahun 2025',
+//         'tahun_kurikulum' => null,
+//         'sks_wajib' => 120,
+//         'sks_pilihan' => 24,
+//         'sks_total' => 144,
+//         'status_aktif' => true,
+//         'status' => 'active',
+//         'created_at' => '2025-08-21T07:19:14.446540Z',
+//         'created_by' => null,
+//         'updated_at' => null,
+//         'updated_by' => null,
+//     ],
+// ];
       // dd($data);
       return view('curriculums.list.index', get_defined_vars());
     }
@@ -602,6 +617,63 @@ class CurriculumController extends Controller
         return view('curriculums.equivalence.create', [
             'prodi' => $prodi,
             'programPerkuliahan' => $programPerkuliahan,
+        ]);
+    }
+
+    public function editCurriculumEquivalence(Request $request, $id)
+    {
+        $prodi = 'Teknik Kimia';
+        $programPerkuliahan = 'Reguler';
+
+        // Data dummy untuk mata kuliah yang sudah dipilih
+        $selectedOldCourses = [
+            [
+                'id' => 1,
+                'kode' => 'TK101',
+                'nama_id' => 'Dasar Teknik Kimia',
+                'nama_en' => 'Basic Chemical Engineering',
+                'sks' => 3,
+                'semester' => 1,
+                'jenis' => 'Wajib'
+            ],
+            [
+                'id' => 2,
+                'kode' => 'TK102',
+                'nama_id' => 'Termodinamika',
+                'nama_en' => 'Thermodynamics',
+                'sks' => 3,
+                'semester' => 2,
+                'jenis' => 'Wajib'
+            ]
+        ];
+
+        $selectedNewCourses = [
+            [
+                'id' => 3,
+                'kode' => 'TKK201',
+                'nama_id' => 'Kimia Dasar Terapan',
+                'nama_en' => 'Applied Basic Chemistry',
+                'sks' => 3,
+                'semester' => 1,
+                'jenis' => 'Wajib'
+            ],
+            [
+                'id' => 4,
+                'kode' => 'TKK202',
+                'nama_id' => 'Termodinamika Lanjut',
+                'nama_en' => 'Advanced Thermodynamics',
+                'sks' => 3,
+                'semester' => 2,
+                'jenis' => 'Wajib'
+            ]
+        ];
+
+        return view('curriculums.equivalence.edit', [
+            'prodi' => $prodi,
+            'programPerkuliahan' => $programPerkuliahan,
+            'id' => $id,
+            'selectedOldCourses' => $selectedOldCourses,
+            'selectedNewCourses' => $selectedNewCourses
         ]);
     }
 

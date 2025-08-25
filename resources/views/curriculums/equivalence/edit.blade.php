@@ -1,182 +1,69 @@
 @extends('layouts.main')
 
-@section('title', 'Tambah Ekuivalensi')
+@section('title', 'Edit Ekuivalensi')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item active">Tambah Ekuivalensi</div>
+    <div class="breadcrumb-item active"><a href="{{ route('curriculum.equivalence') }}">Ekuivalensi Kurikulum</a></div>
+    <div class="breadcrumb-item active">Edit Ekuivalensi</div>
 @endsection
 
 @section('javascript')
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('mataKuliahForm', () => ({
-                // state
-                courses: [], // visible page items
-                allCourses: [], // semua data (untuk client-side filter/paginasi)
+                courses: [], // Untuk menyimpan data mata kuliah
                 isLoading: false,
                 errorMessage: null,
 
-                selectedOldCourses: [],
-                selectedNewCourses: [],
-                modalTarget: null,
+                selectedOldCourses: @json($selectedOldCourses), // list MK lama dari controller
+                selectedNewCourses: @json($selectedNewCourses), // list MK baru dari controller
+                modalTarget: null, // "old" atau "new" untuk tau simpan ke mana
+                equivalenceId: @json($id), // ID ekuivalensi yang sedang diedit
 
-                searchQuery: '',
-                jenisFilter: '',
-                jenisOptions: [],
-                perPage: 10,
-                currentPage: 1,
-                totalPages: 1,
-
-                // Ambil data (pakai API jika window.LECTURER_API_URL terdefinisi; kalau tidak, pakai dummy 25)
+                // Fungsi untuk mengambil data mata kuliah
                 async fetchCourses() {
                     this.isLoading = true;
                     this.errorMessage = null;
 
                     try {
-                        let data;
-                        const useDummy = !window
-                            .LECTURER_API_URL; // jika undefined maka pakai dummy
-
-                        if (useDummy) {
-                            // ===== dummy 25 item =====
-                            const items = Array.from({
-                                length: 25
-                            }).map((_, i) => ({
-                                id: i + 1,
-                                kode: `IF${100 + i}`,
-                                nama_id: `Mata Kuliah ${i + 1}`,
-                                sks: (i % 4) + 2,
-                                semester: (i % 8) + 1,
-                                jenis: [
-                                    "Mata Kuliah Wajib",
-                                    "Mata Kuliah Program Studi",
-                                    "Mata Kuliah Pilihan",
-                                    null
-                                ][i % 4],
-                            }));
-
-                            data = {
-                                data: items,
-                                pagination: {
-                                    total: items.length,
-                                    per_page: this.perPage,
-                                    current_page: this.currentPage,
-                                    last_page: Math.ceil(items.length / this.perPage)
-                                }
-                            };
-                        } else {
-                            // ===== real API =====
-                            const url = new URL(`${window.LECTURER_API_URL}/courses`);
-                            // NOTE: bila API mendukung server-side pagination/filtering, kamu bisa pakai params sesuai API.
-                            // Untuk testing client-side, kita minta halaman 1 dengan perPage besar (atau biarkan API handle)
-                            url.searchParams.set('page', 1);
-                            url.searchParams.set('perPage',
-                                1000); // minta banyak supaya client dapat mem-paginate (opsional)
-                            const res = await fetch(url, {
-                                headers: {
-                                    Accept: 'application/json'
-                                }
-                            });
-                            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                            data = await res.json();
-                        }
-
-                        // simpan "semua" data untuk client-side processing
-                        this.allCourses = data.data || [];
-
-                        // ambil opsi jenis unik (buang null/empty)
-                        this.jenisOptions = [...new Set(this.allCourses.map(c => c.jenis).filter(
-                            Boolean))];
-
-                        // setup pagination dasar (jika API memberikan meta/pagination gunakan itu, kalau tidak hitung client-side)
-                        if (data.pagination) {
-                            this.totalPages = data.pagination.last_page ?? Math.max(1, Math.ceil((
-                                data.pagination.total ?? this.allCourses.length) / (data
-                                .pagination.per_page ?? this.perPage)));
-                            this.currentPage = Math.min(this.currentPage, this.totalPages);
-                        } else if (data.meta) {
-                            this.totalPages = data.meta.last_page ?? 1;
-                            this.currentPage = data.meta.current_page ?? this.currentPage;
-                        } else {
-                            this.totalPages = Math.max(1, Math.ceil(this.allCourses.length / this
-                                .perPage));
-                            this.currentPage = Math.min(this.currentPage, this.totalPages);
-                        }
-
-                        // apply filter & pagination client-side
-                        this.applyFiltersAndPagination();
-                        console.log('FetchCourses done (useDummy=', useDummy, ')', {
-                            totalAll: this.allCourses.length,
-                            totalPages: this.totalPages
+                        const url = `${window.LECTURER_API_URL}/courses`;
+                        const res = await fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
                         });
+
+                        if (!res.ok) throw new Error('Gagal memuat data');
+
+                        const data = await res.json();
+                        console.log('API Response:', data);
+
+                        // Handle both array and object responses
+                        if (Array.isArray(data)) {
+                            this.courses = data;
+                        } else if (data.data) {
+                            this.courses = Array.isArray(data.data) ? data.data : [data.data];
+                        } else {
+                            this.courses = [];
+                        }
+
                     } catch (err) {
                         console.error('Fetch error:', err);
                         this.errorMessage = 'Gagal memuat data: ' + err.message;
                         this.courses = [];
-                        this.allCourses = [];
-                        this.jenisOptions = [];
-                        this.totalPages = 1;
                     } finally {
                         this.isLoading = false;
                     }
                 },
 
-                // Terapkan filter pencarian + filter jenis + pagination (client-side)
-                applyFiltersAndPagination() {
-                    let list = (this.allCourses || []).slice();
-
-                    // filter jenis
-                    if (this.jenisFilter) {
-                        list = list.filter(c => (c.jenis || '') === this.jenisFilter);
-                    }
-
-                    // filter search (kode atau nama_id)
-                    if (this.searchQuery && this.searchQuery.trim() !== '') {
-                        const q = this.searchQuery.trim().toLowerCase();
-                        list = list.filter(c =>
-                            (c.kode || '').toString().toLowerCase().includes(q) ||
-                            (c.nama_id || '').toString().toLowerCase().includes(q)
-                        );
-                    }
-
-                    const total = list.length;
-                    this.totalPages = Math.max(1, Math.ceil(total / this.perPage));
-                    if (this.currentPage > this.totalPages) this.currentPage = this.totalPages;
-                    if (this.currentPage < 1) this.currentPage = 1;
-
-                    const start = (this.currentPage - 1) * this.perPage;
-                    this.courses = list.slice(start, start + this.perPage);
-
-                    // perbarui jenisOptions (opsional — tetap dari allCourses)
-                    this.jenisOptions = [...new Set((this.allCourses || []).map(c => c.jenis).filter(
-                        Boolean))];
-
-                    // update checkbox status di DOM jika perlu
-                    setTimeout(() => this.updateCheckboxStatus(), 100);
-                },
-
-                // helper untuk deretan page (menghasilkan array berisi number dan '...' string)
-                pageRange() {
-                    const pages = [];
-                    if (this.totalPages <= 7) {
-                        for (let i = 1; i <= this.totalPages; i++) pages.push(i);
-                        return pages;
-                    }
-                    pages.push(1);
-                    if (this.currentPage > 3) pages.push('...');
-                    const start = Math.max(2, this.currentPage - 1);
-                    const end = Math.min(this.totalPages - 1, this.currentPage + 1);
-                    for (let i = start; i <= end; i++) pages.push(i);
-                    if (this.currentPage < this.totalPages - 2) pages.push('...');
-                    pages.push(this.totalPages);
-                    return pages;
-                },
-
-                // ========== fungsi existing (checkbox, pilih, hapus, submit) ==========
+                // Fungsi untuk mengupdate status checkbox berdasarkan mata kuliah yang sudah dipilih
                 updateCheckboxStatus() {
+                    // Tunggu sampai DOM di-render ulang
                     setTimeout(() => {
                         const allCheckboxes = document.querySelectorAll(
                             'input[name="selected[]"]');
+
                         allCheckboxes.forEach(checkbox => {
                             try {
                                 const courseData = JSON.parse(checkbox.value);
@@ -189,7 +76,9 @@
                     }, 100);
                 },
 
+                // Cek apakah course sudah dipilih (TERISOLASI berdasarkan modalTarget)
                 isCourseSelected(courseId) {
+                    // Hanya cek berdasarkan target modal yang sedang aktif
                     if (this.modalTarget === 'old') {
                         return this.selectedOldCourses.some(c => c.id === courseId);
                     } else if (this.modalTarget === 'new') {
@@ -198,20 +87,24 @@
                     return false;
                 },
 
+                // Simpan dari modal
                 saveSelectedCourses() {
                     const checked = [...document.querySelectorAll('input[name="selected[]"]:checked')]
                         .map(el => {
                             try {
                                 return JSON.parse(el.value);
                             } catch (e) {
-                                console.error(e);
+                                console.error('Error parsing selected value:', e);
                                 return null;
                             }
                         })
-                        .filter(Boolean);
+                        .filter(item => item !== null);
 
-                    if (this.modalTarget === 'old') this.selectedOldCourses = checked;
-                    else this.selectedNewCourses = checked;
+                    if (this.modalTarget === 'old') {
+                        this.selectedOldCourses = checked;
+                    } else if (this.modalTarget === 'new') {
+                        this.selectedNewCourses = checked;
+                    }
 
                     this.$dispatch('close-modal', {
                         id: 'modal-tambah-matakuliah'
@@ -219,98 +112,120 @@
                 },
 
                 removeCourse(target, id) {
-                    if (target === 'old') this.selectedOldCourses = this.selectedOldCourses.filter(c =>
-                        c.id !== id);
-                    else this.selectedNewCourses = this.selectedNewCourses.filter(c => c.id !== id);
+                    if (target === 'old') {
+                        this.selectedOldCourses = this.selectedOldCourses.filter(c => c.id !== id);
+                    } else {
+                        this.selectedNewCourses = this.selectedNewCourses.filter(c => c.id !== id);
+                    }
+
+                    // Update checkbox status setelah menghapus
                     this.updateCheckboxStatus();
                 },
 
+                // Submit form untuk EDIT
                 async submitForm() {
+                    console.log('Submit form edit dipanggil untuk ID:', this.equivalenceId);
+
+                    // Extract nilai sebenarnya dari Proxy array
                     const oldCourses = JSON.parse(JSON.stringify(this.selectedOldCourses));
                     const newCourses = JSON.parse(JSON.stringify(this.selectedNewCourses));
+
                     const payload = {
+                        id: this.equivalenceId,
                         prodi: "{{ $prodi }}",
                         program_perkuliahan: "{{ $programPerkuliahan }}",
                         mata_kuliah_lama: oldCourses.map(c => c.id),
                         mata_kuliah_baru: newCourses.map(c => c.id),
                     };
+
                     console.log('Final Payload:', payload);
-                    // kirim ke server sesuai kebutuhan...
+                    console.log('Mata kuliah lama IDs:', oldCourses.map(c => c.id));
+                    console.log('Mata kuliah baru IDs:', newCourses.map(c => c.id));
+
+                    // Simulasi update API
+                    try {
+                        // const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                        // const res = await fetch(`http://localhost:8005/api/equivalence/${this.equivalenceId}`, {
+                        //     method: 'PUT',
+                        //     headers: {
+                        //         'Content-Type': 'application/json',
+                        //         'Accept': 'application/json',
+                        //         'X-CSRF-TOKEN': token
+                        //     },
+                        //     body: JSON.stringify(payload)
+                        // });
+                        //
+                        // if (!res.ok) throw new Error('Gagal mengupdate');
+                        //
+                        // const data = await res.json();
+                        // console.log('Berhasil:', data);
+                        // alert('Ekuivalensi berhasil diupdate!');
+                        // window.location.href = '/curriculum/equivalence';
+
+                        // Simulasi sukses
+                        setTimeout(() => {
+                            alert('Ekuivalensi berhasil diupdate!');
+                            window.location.href = '{{ route('curriculum.equivalence') }}';
+                        }, 1000);
+
+                    } catch (error) {
+                        console.error(error);
+                        alert('Terjadi kesalahan: ' + error.message);
+                    }
                 },
 
-                // Init
+                // Init function yang akan dijalankan ketika komponen dimuat
                 init() {
-                    // fetch initial dataset (dummy atau API)
-                    this.fetchCourses();
+                    this.fetchCourses(); // Otomatis fetch data saat komponen dimuat
 
-                    // watchers: bila perPage atau jenisFilter berubah langsung terapkan
-                    this.$watch('perPage', () => {
-                        this.currentPage = 1;
-                        this.applyFiltersAndPagination();
-                    });
-                    this.$watch('jenisFilter', () => {
-                        this.currentPage = 1;
-                        this.applyFiltersAndPagination();
-                    });
-
-                    // event pagination
-                    window.addEventListener('page-change', (e) => {
-                        const p = parseInt(e.detail?.page, 10);
-                        if (!Number.isNaN(p)) {
-                            this.currentPage = Math.max(1, p);
-                            this.applyFiltersAndPagination();
+                    // Event listener untuk submit form
+                    this.$watch('modalTarget', (value) => {
+                        if (value) {
+                            setTimeout(() => this.updateCheckboxStatus(), 300);
                         }
                     });
-                    window.addEventListener('page-prev', () => {
-                        if (this.currentPage > 1) {
-                            this.currentPage -= 1;
-                            this.applyFiltersAndPagination();
-                        }
-                    });
-                    window.addEventListener('page-next', () => {
-                        if (this.currentPage < this.totalPages) {
-                            this.currentPage += 1;
-                            this.applyFiltersAndPagination();
-                        }
-                    });
-                    window.addEventListener('per-page-change', (e) => {
-                        const v = parseInt(e.detail?.value, 10);
-                        if (!Number.isNaN(v) && v > 0) {
-                            this.perPage = v;
-                            this.currentPage = 1;
-                            this.applyFiltersAndPagination();
-                        }
-                    });
-
-                    // when modal opens -> sync checkboxes (already handled in fetch)
-                    this.$watch('modalTarget', (v) => {
-                        if (v) setTimeout(() => this.updateCheckboxStatus(), 300);
-                    });
-                },
+                }
             }));
         });
-    </script>
 
+        // Global event listener untuk submit form
+        document.addEventListener('submit-form-event', function(e) {
+            const component = Alpine.$data(document.querySelector('[x-data]'));
+            if (component && component.submitForm) {
+                component.submitForm();
+            }
+        });
+    </script>
 @endsection
 
 @section('content')
     <div class="px-5 flex flex-col gap-5 box-border" x-data="mataKuliahForm">
         <x-typography variant="heading-h6" bold class="">
-            Tambah Ekuivalensi
+            Edit Ekuivalensi
         </x-typography>
         <x-button.back href="{{ route('curriculum.equivalence') }}">
             Ekuivalensi Kurikulum
         </x-button.back>
-        <x-container class="flex flex-col gap-5" x-data="{ showModalTambahMatakuliah: false }">
+        <x-container class="flex flex-col gap-5">
             <x-typography variant="heading-h6" bold class="">
-                Tambah Ekuivalensi
+                Edit Ekuivalensi
             </x-typography>
+
+            <!-- Informasi Ekuivalensi -->
             <div class="border-[#D9D9D9] border rounded-xl">
                 <div class="flex">
                     <div class="rounded-tl-xl border-[#D9D9D9] border-r py-2 px-5 bg-[#E8E8E8] w-1/5">
-                        <x-typography class="text-nowrap">Program Studi</x-typography>
+                        <x-typography class="text-nowrap">ID Ekuivalensi</x-typography>
                     </div>
                     <div class="rounded-tr-xl py-2 px-5 bg-[#E8E8E8] w-4/5">
+                        <x-typography variant="body-small-bold">#{{ $id }}</x-typography>
+                    </div>
+                </div>
+                <div class="flex border-t border-t-[#D9D9D9]">
+                    <div class="border-[#D9D9D9] border-r py-2 px-5 bg-[#E8E8E8] w-1/5">
+                        <x-typography class="text-nowrap">Program Studi</x-typography>
+                    </div>
+                    <div class="py-2 px-5 bg-[#E8E8E8] w-4/5">
                         <x-typography variant="body-small-bold">{{ $prodi }}</x-typography>
                     </div>
                 </div>
@@ -337,9 +252,10 @@
 
                     <template x-for="course in selectedOldCourses" :key="course.id">
                         <div class="flex items-center justify-between bg-white border border-[#BFBFBF]  rounded px-3 py-2">
-                            <x-typography x-text="course.nama_id"></x-typography>
-                            <button type="button" class="cursor-pointer" x-on:click="removeCourse('old', course.id)"><img
-                                    src="{{ asset('assets/icon-cleardata.svg') }}" alt="icon remove"></button>
+                            <x-typography x-text="course.kode + ' - ' + course.nama_id"></x-typography>
+                            <button type="button" class="cursor-pointer" x-on:click="removeCourse('old', course.id)">
+                                <img src="{{ asset('assets/icon-cleardata.svg') }}" alt="icon remove">
+                            </button>
                         </div>
                     </template>
                 </div>
@@ -347,7 +263,6 @@
 
             <x-button.primary label="Tambah Mata Kuliah" class="self-end"
                 x-on:click="modalTarget = 'old'; $dispatch('open-modal', {id: 'modal-tambah-matakuliah'})" />
-
 
             <!-- Mata Kuliah Kurikulum Baru -->
             <div class="grid grid-cols-12 gap-5 items-center">
@@ -363,9 +278,10 @@
                     <template x-for="course in selectedNewCourses" :key="course.id">
                         <div
                             class="flex items-center justify-between bg-white border border-[#BFBFBF] rounded-lg px-3 py-2">
-                            <x-typography x-text="course.nama_id"></x-typography>
-                            <button type="button" class="cursor-pointer" x-on:click="removeCourse('new', course.id)"><img
-                                    src="{{ asset('assets/icon-cleardata.svg') }}" alt="icon remove"></button>
+                            <x-typography x-text="course.kode + ' - ' + course.nama_id"></x-typography>
+                            <button type="button" class="cursor-pointer" x-on:click="removeCourse('new', course.id)">
+                                <img src="{{ asset('assets/icon-cleardata.svg') }}" alt="icon remove">
+                            </button>
                         </div>
                     </template>
                 </div>
@@ -377,9 +293,11 @@
             <div class="flex gap-5 justify-end mt-5">
                 <x-button.secondary label="Batal"
                     x-on:click="window.location.href='{{ route('curriculum.equivalence') }}'" />
-                <x-button.primary label="Simpan"
+                <x-button.primary label="Update"
                     x-on:click="
                     $dispatch('open-modal', {id: 'save-confirmation'});
+                    console.log('Selected Old:', JSON.parse(JSON.stringify(selectedOldCourses)));
+                    console.log('Selected New:', JSON.parse(JSON.stringify(selectedNewCourses)));
                 " />
             </div>
         </x-container>
@@ -387,9 +305,9 @@
         {{-- MODAL TAMBAH Mata Kuliah --}}
         <x-modal.container id="modal-tambah-matakuliah" maxWidth="7xl"
             x-on:open-modal.window="if ($event.detail.id === 'modal-tambah-matakuliah') {
-        show = true;
-        setTimeout(() => $root.updateCheckboxStatus(), 200);
-    }"
+                show = true;
+                setTimeout(() => $root.updateCheckboxStatus(), 200);
+            }"
             x-on:close-modal.window="if ($event.detail.id === 'modal-tambah-matakuliah') { show = false; }">
             <x-slot name="header">
                 <div class="w-full relative">
@@ -413,12 +331,12 @@
                         </x-typography>
                     </div>
                     <div class="col-span-10">
-                        <select x-model="jenisFilter" class="w-full border rounded px-3 py-2">
-                            <option value="">Pilih Jenis Mata Kuliah</option>
-                            <template x-for="opt in jenisOptions" :key="opt">
-                                <option :value="opt" x-text="opt"></option>
-                            </template>
-                        </select>
+                        <x-form.input name="jenis_matakuliah" type="select" placeholder="Pilih Jenis Mata Kuliah"
+                            :options="[
+                                '' => 'Pilih Jenis Mata Kuliah',
+                                'du' => 'Mata Kuliah Dasar Umum',
+                                'ps' => 'Mata Kuliah Program Studi',
+                            ]" />
                     </div>
                 </div>
 
@@ -429,14 +347,13 @@
                         </x-typography>
                     </div>
                     <div class="col-span-10">
-                        <x-form.input name="matakuliah" type="text" placeholder="Ketik Mata Kuliah"
-                            x-model="searchQuery" />
+                        <x-form.input name="matakuliah" type="text" placeholder="Ketik Mata Kuliah" />
                     </div>
                 </div>
 
                 <div class="w-full flex justify-end gap-5">
                     <x-button.secondary label="Batal" x-on:click="" />
-                    <x-button.primary label="Cari" x-on:click="currentPage = 1; applyFiltersAndPagination()" />
+                    <x-button.primary label="Cari" x-on:click="" />
                 </div>
 
                 <div>
@@ -500,15 +417,12 @@
             <x-slot name="footer">
                 <div class="flex justify-between gap-4 w-full">
                     {{-- TODO: Pagination --}}
-                    <x-pagination :currentPage="1" :totalPages="1" :perPageInput="10" :onPageChange="'window.dispatchEvent(new CustomEvent(`page-change`, { detail: { page: {page} } }))'" :onPrevious="'window.dispatchEvent(new CustomEvent(`page-prev`))'"
-                        :onNext="'window.dispatchEvent(new CustomEvent(`page-next`))'" :onPerPageChange="'window.dispatchEvent(new CustomEvent(`per-page-change`, { detail: { value: this.value } }))'" />
-
                     <x-button.primary label="Simpan" x-on:click="saveSelectedCourses()" />
                 </div>
             </x-slot>
         </x-modal.container>
 
-        <!-- Modal Konfirmasi Simpan -->
+        <!-- Modal Konfirmasi Update -->
         <div class="" @on-submit.window="await submitForm()">
             <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
                 cancelText="Cek Kembali">
