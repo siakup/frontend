@@ -5,9 +5,9 @@ use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\StudyController;
+use App\Http\Controllers\CplMapping;
 
 // Route::group(['middleware' => ['auth']], function () {
-Route::group(['middleware' => ['auth']], function () {
   Route::group(['prefix' => 'academics'], function () {
     //periode akademik
     Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
@@ -77,5 +77,19 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/struktur-kurikulum/wajib', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
     Route::get('/struktur-kurikulum/pilihan', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
     Route::get('/ekuivalensi-kurikulum', [CurriculumController::class, 'curriculumEquivalence'])->name('curriculum.equivalence');
+      Route::get(
+          '/ekuivalensi-kurikulum/tambah/{prodi}/{programPerkuliahan}',
+          [CurriculumController::class, 'createCurriculumEquivalence']
+      )->name('curriculum.equivalence.create');
+
   });
+
+Route::group(['prefix' => 'pemetaan-cpl'], function () {
+    Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
+    Route::get('/tambah', [CplMapping::class, 'create'])->name('cpl-mapping.create');
+    Route::get('/edit/{id}', [CplMapping::class, 'edit'])->name('cpl-mapping.edit');
+    Route::get('/view/{id}', [CplMapping::class, 'view'])->name('cpl-mapping.view');
+    Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
+    Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
+    Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
 });

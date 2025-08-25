@@ -51,7 +51,7 @@
                 // Selalu tampilkan halaman pertama
                 echo '<button onclick="' .
                     str_replace('{page}', 1, $onPageChange) .
-                    '" class="py-1 px-4 rounded-lg text-sm ' .
+                    '" class="py-1 px-4 rounded-lg text-sm cursor-pointer' .
                     ($currentPage == 1 ? 'bg-[#FBDADB] text-[#E62129]' : 'text-[#8C8C8C]') .
                     '">1</button>';
 

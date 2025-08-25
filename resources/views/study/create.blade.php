@@ -12,9 +12,113 @@
 
 @section('javascript')
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('mataKuliahForm', () => ({
+                courses: [], // Untuk menyimpan data mata kuliah
+                isLoading: false,
+                errorMessage: null,
 
+                // Fungsi untuk mengambil data mata kuliah
+                async fetchCourses() {
+                    this.isLoading = true;
+                    this.errorMessage = null;
+
+                    try {
+                        const url = `${window.LECTURER_API_URL}/courses`;
+                        const res = await fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+
+                        if (!res.ok) throw new Error('Gagal memuat data');
+
+                        const data = await res.json();
+                        console.log('API Response:', data);
+
+                        // Handle both array and object responses
+                        if (Array.isArray(data)) {
+                            this.courses = data;
+                        } else if (data.data) {
+                            this.courses = Array.isArray(data.data) ? data.data : [data.data];
+                        } else {
+                            this.courses = [];
+                        }
+
+                    } catch (err) {
+                        console.error('Fetch error:', err);
+                        this.errorMessage = 'Gagal memuat data: ' + err.message;
+                        this.courses = [];
+                    } finally {
+                        this.isLoading = false;
+                    }
+                },
+
+                // Fungsi submit form yang sudah ada
+                async submitForm() {
+                    if (window.event) {
+                        window.event.stopImmediatePropagation();
+                        window.event.preventDefault();
+                    }
+
+                    console.log('SubmitForm dijalankan');
+                    const token = document.querySelector('meta[name="csrf-token"]').getAttribute(
+                        'content');
+
+                    const payload = {
+                        kode: document.querySelector('[name="code"]').value,
+                        nama_id: document.querySelector('[name="name"]').value,
+                        nama_en: document.querySelector('[name="english_name"]').value,
+                        sks: parseInt(document.querySelector('[name="credits"]').value || 0),
+                        semester: parseInt(document.querySelector('[name="semester"]').value ||
+                            0),
+                        id_prodi: document.querySelector('[name="study_program"]').value,
+                        tujuan: document.querySelector('[name="objective"]').value,
+                        deskripsi: document.querySelector('[name="description"]').value,
+                        daftar_pustaka: document.querySelector('[name="bibliography"]').value,
+                        status: document.querySelector('[name="user_active"]').checked ? 1 : 0,
+                        created_by: 1,
+                        updated_by: 1
+                    };
+
+                    console.log('Payload:', payload);
+
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                    console.log('Simulasi proses simpan selesai');
+
+                    // try {
+                    //     const res = await fetch('http://localhost:8005/api/courses', {
+                    //         method: 'POST',
+                    //         headers: {
+                    //             'Content-Type': 'application/json',
+                    //             'Accept': 'application/json',
+                    //             'X-CSRF-TOKEN': token
+                    //         },
+                    //         body: JSON.stringify(payload)
+                    //     });
+                    //
+                    //     if (!res.ok) throw new Error('Gagal menyimpan');
+                    //
+                    //     const data = await res.json();
+                    //     console.log('Berhasil:', data);
+                    //     alert('Mata kuliah berhasil ditambahkan!');
+                    //     window.location.href = '/subject';
+                    // } catch (error) {
+                    //     console.error(error);
+                    //     alert('Terjadi kesalahan: ' + error.message);
+                    // }
+                },
+
+                // Init function yang akan dijalankan ketika komponen dimuat
+                init() {
+                    this.fetchCourses(); // Otomatis fetch data saat komponen dimuat
+                }
+            }));
+        });
+    </script>
 @endsection
-
 {{-- END --}}
 
 
@@ -45,6 +149,7 @@
                                 'if' => 'Informatika',
                                 'ti' => 'Teknik Industri',
                             ]" />
+
                     </div>
                 </div>
 
@@ -335,6 +440,10 @@
                     </x-table-row>
                 </x-table-head>
 
+                @php
+                    $addedPrasyarat = $addedPrasyarat ?? [];
+                @endphp
+
                 <x-table-body x-data="{ showDeleteConfirmation: false, item: null }">
                     @if (count($addedPrasyarat) > 0)
                         @foreach ($addedPrasyarat as $matkul)
@@ -381,7 +490,8 @@
                         x-on:click="$dispatch('open-modal', {id: 'cancel-confirmation'})" />
 
                     <!-- Tombol Simpan -->
-                    <x-button.primary label="Simpan" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})" />
+                    <x-button.primary label="Simpan" x-data
+                        x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})" />
                 </div>
             </x-container>
         </div>
@@ -407,19 +517,12 @@
         </x-modal.confirmation>
 
         <!-- Modal Konfirmasi Simpan -->
-        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-            cancelText="Cek Kembali">
-            <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-
-            <div
-                x-on:confirmed.window="
-            // Aksi ketika konfirmasi simpan diklik
-            console.log('Data disimpan');
-            // Submit form atau AJAX request bisa dilakukan di sini
-            document.getElementById('form-id').submit(); // Contoh submit form
-        ">
-            </div>
-        </x-modal.confirmation>
+        <div class="" x-data="mataKuliahForm" @on-submit.window="await submitForm()">
+            <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+                cancelText="Cek Kembali">
+                <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+            </x-modal.confirmation>
+        </div>
 
         <!-- Modal Konfirmasi Hapus Prasyarat Mata Kuliah -->
         <x-modal.confirmation iconUrl="{{ asset('assets/icon-delete-gray-800.svg') }}" id="delete-confirmation"
@@ -434,15 +537,13 @@
                 x-on:confirmed.window="
             // Aksi ketika konfirmasi batal diklik
             console.log('Prasyarat mata kuliah dihapus');
-            // Redirect atau reset form bisa dilakukan di sini
-            window.location.href = '/subject/create'; 
         ">
             </div>
 
         </x-modal.confirmation>
 
         {{-- MODAL TAMBAH PRASYARAT --}}
-        <x-modal.container id="prasyarat-modal" maxWidth="7xl"
+        <x-modal.container x-data='mataKuliahForm' id="prasyarat-modal" maxWidth="7xl"
             x-on:open-modal.window="if ($event.detail.id === 'tambah-prasyarat-modal') { show = true }">
             <x-slot name="header">
                 <div class="w-full relative">
@@ -471,22 +572,53 @@
                                 <x-table-header>Tipe Prasyarat</x-table-header>
                             </x-table-row>
                         </x-table-head>
-                        <x-table-body>
-                            @foreach ($prasyaratMataKuliahList as $index => $item)
-                                <x-table-row :odd="$loop->odd" :last="$loop->last">
-                                    <x-table-cell>
-                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
-                                            name="selected[]" value="{{ $item['kode'] }}">
-                                    </x-table-cell>
-                                    <x-table-cell>{{ $item['kode'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['nama'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['sks'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['semester'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['jenis'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['tipe'] }}</x-table-cell>
-                                </x-table-row>
-                            @endforeach
 
+                        <x-table-body>
+                            <template x-if="isLoading">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4">
+                                        Memuat data...
+                                    </x-table-cell>
+                                </x-table-row>
+                            </template>
+
+                            <template x-if="errorMessage">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4 text-red-500"
+                                        x-text="errorMessage">
+                                    </x-table-cell>
+                                </x-table-row>
+                            </template>
+
+                            <template x-if="!isLoading && courses.length > 0">
+                                <template x-for="(item, index) in courses" :key="item.id">
+                                    <x-table-row>
+                                        <x-table-cell>
+                                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
+                                                x-bind:name="'selected[' + index + ']'" x-bind:value="item.kode">
+                                        </x-table-cell>
+                                        <x-table-cell x-text="item.kode"></x-table-cell>
+                                        <x-table-cell x-text="item.nama_id"></x-table-cell>
+                                        <x-table-cell x-text="item.sks"></x-table-cell>
+                                        <x-table-cell x-text="item.semester"></x-table-cell>
+                                        <x-table-cell x-text="item.jenis"></x-table-cell>
+                                        <x-table-cell>
+                                            <span x-text="item.status === 'active' ? 'Aktif' : 'Nonaktif'"
+                                                :class="{ 'text-green-500': item.status === 'active', 'text-red-500': item
+                                                        .status !== 'active' }">
+                                            </span>
+                                        </x-table-cell>
+                                    </x-table-row>
+                                </template>
+                            </template>
+
+                            <template x-if="!isLoading && courses.length === 0">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4">
+                                        Tidak ada data mata kuliah
+                                    </x-table-cell>
+                                </x-table-row>
+                            </template>
                         </x-table-body>
                     </x-table>
                 </div>
@@ -494,7 +626,7 @@
 
             <x-slot name="footer">
                 <div class="flex justify-center gap-4 w-full">
-                    <x-pagination :currentPage="$currentPage" :totalPages="$totalPages" :perPageInput="$perPage" />
+                    {{-- TODO: Pagination --}}
                     <x-button.secondary label="Batal" x-on:click.stop="close()" />
                     <x-button.primary label="Simpan" x-on:click.stop="close()" />
                 </div>
