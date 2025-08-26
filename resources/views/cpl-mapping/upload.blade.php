@@ -352,13 +352,13 @@
                 Urutan kolom sebagai berikut:
             </div>
             <ul style="text-sm-rg-red">
-                <li>kode: kode mata kuliah*)</li>
-                <li>nama: nama mata kuliah *)</li>
-                <li>sks: jumlah sks mata kuliah *)</li>
-                <li>semester: semester mata kuliah *)</li>
-                <li>tujuan: tujuan mata kuliah</li>
-                <li>deskripsi: deskripsi singkat mata kuliah</li>
-                <li>jenis: jenis mata kuliah, pilih salah satu dari Mata Kuliah Dasar Teknik, Mata Kuliah Dasar Umum, Mata
+                <li>kode: kode pemetaan CPL*)</li>
+                <li>nama: nama pemetaan CPL *)</li>
+                <li>sks: jumlah sks pemetaan CPL *)</li>
+                <li>semester: semester pemetaan CPL *)</li>
+                <li>tujuan: tujuan pemetaan CPL</li>
+                <li>deskripsi: deskripsi singkat pemetaan CPL</li>
+                <li>jenis: jenis pemetaan CPL, pilih salah satu dari Mata Kuliah Dasar Teknik, Mata Kuliah Dasar Umum, Mata
                     Kuliah Program Studi, Mata Kuliah Sains Dasar, Mata Kuliah Universitas Pertamina*)</li>
                 <li>koordinator: NIP Dosen koordinator</li>
                 <li>spesial: y/n, y jika mata kuliah spesial, n jika tidak *)</li>

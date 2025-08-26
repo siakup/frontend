@@ -14,19 +14,14 @@
     <div class="flex items-center gap-3">
         <span class="text-sm text-gray-600">Tampilkan</span>
         <div class="relative group">
-            <input type="number" value="{{ $perPageInput }}" min="1" max="100"
-                class="w-20 border bg-white border-[#bfbfbf] rounded-lg px-3 py-1 text-sm text-center"
+            <select class="w-24 border bg-white border-[#bfbfbf] rounded-lg px-3 py-1 text-sm text-center"
                 onchange="{{ $onPerPageChange }}">
-            <!-- Dropdown untuk pilihan cepat -->
-            <div
-                class="absolute right-0 mt-1 w-20 bg-white border border-[#bfbfbf] rounded-lg shadow-lg z-10 hidden group-hover:block">
                 @foreach ($defaultPerPageOptions as $option)
-                    <button onclick="{{ str_replace('{value}', $option, $onPerPageChange) }}"
-                        class="block w-full px-3 py-1 text-sm text-center hover:bg-[#FBDADB]">
+                    <option value="{{ $option }}" {{ $perPageInput == $option ? 'selected' : '' }}>
                         {{ $option }}
-                    </button>
+                    </option>
                 @endforeach
-            </div>
+            </select>
         </div>
         <span class="text-sm text-gray-600">Per Halaman</span>
     </div>
@@ -35,16 +30,17 @@
     <div class="flex flex-col sm:flex-row items-center gap-5">
         <!-- Text Hasil -->
         <div class="text-sm text-gray-600">
-            Hasil: {{ $currentPage }} dari {{ $totalPages }}
+            <span x-text="`Hasil: ${currentPage} dari ${totalPages}`">
+                Hasil: {{ $currentPage }} dari {{ $totalPages }}
+            </span>
         </div>
+
 
         <!-- Pagination Controls -->
         <div class="flex items-center gap-1">
             <!-- Previous Button -->
-            @if ($currentPage > 1)
-                <x-button.secondary onclick="{{ $onPrevious }}" label="Sebelumnya" iconPosition="left"
-                    icon="{{ asset('assets/icon-arrow-left-red.svg') }}" class="!py-1 !px-3" />
-            @endif
+            <x-button.secondary x-show="currentPage > 1" onclick="{{ $onPrevious }}" label="Sebelumnya"
+                iconPosition="left" icon="{{ asset('assets/icon-arrow-left-red.svg') }}" class="!py-1 !px-3" />
 
             <!-- Page Numbers -->
             @php
@@ -95,10 +91,8 @@
             @endphp
 
             <!-- Next Button -->
-            @if ($currentPage < $totalPages)
-                <x-button.secondary onclick="{{ $onNext }}" label="Selanjutnya" iconPosition="right"
-                    icon="{{ asset('assets/icon-arrow-right-red.svg') }}" class="!py-1 !px-3" />
-            @endif
+            <x-button.secondary x-show="currentPage < totalPages" onclick="{{ $onNext }}" label="Selanjutnya"
+                iconPosition="right" icon="{{ asset('assets/icon-arrow-right-red.svg') }}" class="!py-1 !px-3" />
         </div>
     </div>
 </div>

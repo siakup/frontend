@@ -81,6 +81,10 @@ use App\Http\Controllers\CplMapping;
           '/ekuivalensi-kurikulum/tambah/{prodi}/{programPerkuliahan}',
           [CurriculumController::class, 'createCurriculumEquivalence']
       )->name('curriculum.equivalence.create');
+      Route::get(
+          '/ekuivalensi-kurikulum/edit/{id}',
+          [CurriculumController::class, 'editCurriculumEquivalence']
+      )->name('curriculum.equivalence.edit');
 
   });
 
