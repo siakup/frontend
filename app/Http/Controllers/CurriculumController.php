@@ -28,14 +28,14 @@ class CurriculumController extends Controller
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
       $id_program = urldecode($request->input('program_perkuliahan'));
-      
+
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
       $programStudiList = $responseProgramStudiList->data;
       $id_prodi = urldecode($request->input('program_studi', $programStudiList[0]->id));
-      
+
       $params = compact('id_program', 'id_prodi');
-      
+
       $url = CurriculumService::getInstance()->listCurriculum();
       $response = getCurl($url, $params, getHeaders());
       $data = $response->data;
@@ -211,7 +211,7 @@ class CurriculumController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-  
+
       $id_program = $request->input('program_perkuliahan');
 
       $jenis_mata_kuliah = [

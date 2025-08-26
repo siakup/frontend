@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 <x-container class="">
     <div class="card-header">
- <form method="GET" action="{{ route('academics-periode.index') }}">
+ <form method="GET" action="{{ route('academics.schedule.prodi-schedule.index') }}">
      <div class="search-section">
          <div class="search-container" style="display: flex; align-items: center;">
              <input type="text" name="search" placeholder="Nama Pengajar / Nama Mata Kuliah / Hari"
@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
      'Terlama' => 'created_at,asc'
      ],
      'label' => empty($_GET) ? 'Urutkan' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))),
-     'url' => route('academics-periode.index'),
+     'url' => route('academics.schedule.prodi-schedule.index'),
      'imgSrc' => asset('assets/icon-filter.svg'),
      'dropdownClass' => '!top-[44%] !right-[3.7%]',
      'isIconCanRotate' => false,
@@ -240,57 +240,38 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <x-table-body>
   @php
-    // dukung dua bentuk: paginator Laravel atau array biasa
     $rows = $items instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator
       ? $items->items()
       : (isset($items['data']) ? $items['data'] : ($items ?? []));
   @endphp
 
-  @forelse($rows as $r)
-    <x-table-row>
-      <x-table-cell>{{ $r['semester'] ?? '-' }}</x-table-cell>
-      <x-table-cell>
-        <div class="font-medium">{{ $r['mata_kuliah'] ?? '-' }}</div>
-      </x-table-cell>
-      <x-table-cell>{{ $r['nama_kelas'] ?? '-' }}</x-table-cell>
-      <x-table-cell>{{ $r['kapasitas'] ?? '-' }}</x-table-cell>
-      <x-table-cell>
-        @foreach(($r['jadwal'] ?? []) as $j)
-          <div class="mb-1">
-            <span style="display:inline-block; min-width:56px">{{ $j['hari'] ?? '-' }}</span>
-            • {{ $j['waktu'] ?? '-' }}
-            <span class="text-gray-500">[{{ $j['ruang'] ?? '-' }}]</span>
-          </div>
-        @endforeach
-      </x-table-cell>
-      <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
-      <x-table-cell>
-        <div class="flex items-center justify-center gap-4">
-          <a class="btn-icon btn-view" title="Lihat"
-             href="{{ route('academics.schedule.prodi-schedule.show', $r['id']) }}">
-            <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat"><span>Lihat</span>
-          </a>
-          <a class="btn-icon btn-edit" title="Ubah"
-             href="{{ route('academics.schedule.prodi-schedule.edit', $r['id']) }}">
-            <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit"><span>Ubah</span>
-          </a>
-          <form method="POST"
-                action="{{ route('academics.schedule.prodi-schedule.delete', $r['id']) }}"
-                onsubmit="return confirm('Yakin hapus jadwal ini?')">
-            @csrf @method('DELETE')
-            <button type="submit" class="btn-icon btn-delete" title="Hapus">
-              <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus"><span>Hapus</span>
-            </button>
-          </form>
-        </div>
-      </x-table-cell>
-    </x-table-row>
-  @empty
-    <x-table-row>
-      <x-table-cell colspan="7" class="text-center py-6">Tidak ada data.</x-table-cell>
-    </x-table-row>
-  @endforelse
+    @forelse ($rows as $r)
+        <x-table-row>
+          <x-table-cell>{{ $r['semester'] ?? '-' }}</x-table-cell>
+          <x-table-cell>
+            <div class="font-medium">{{ $r['mata_kuliah'] ?? '-' }}</div>
+          </x-table-cell>
+          <x-table-cell>{{ $r['nama_kelas'] ?? '-' }}</x-table-cell>
+          <x-table-cell>{{ $r['kapasitas'] ?? '-' }}</x-table-cell>
+          <x-table-cell>
+            @foreach(($r['jadwal'] ?? []) as $j)
+              <div class="mb-1">
+                <span style="display:inline-block; min-width:56px">{{ $j['hari'] ?? '-' }}</span>
+                • {{ $j['waktu'] ?? '-' }}
+                <span class="text-gray-500">[{{ $j['ruang'] ?? '-' }}]</span>
+              </div>
+            @endforeach
+          </x-table-cell>
+          <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
+          <x-table-cell>
+            {{-- aksi --}}
+          </x-table-cell>
+        </x-table-row>
+        @empty
+            @include('academics.periode.error-filter')
+    @endforelse
 </x-table-body>
+
 </x-table>
             </div>
 

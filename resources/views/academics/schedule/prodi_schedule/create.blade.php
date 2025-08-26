@@ -41,12 +41,16 @@
 <div class="container">
   <h2 class="text-xl font-semibold mb-4">Tambah Jadwal Kuliah Program Studi</h2>
 
+    <a href="{{ route('academics-periode.index') }}" class="button-no-outline-left">
+        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Periode Akademik
+    </a>
+
   {{-- === Form Start === --}}
   <form method="POST" action="{{ route('academics.schedule.prodi-schedule.store') }}">
     @csrf
 
     {{-- Informasi Kelas --}}
-    <div class="section-card">
+    <div class="section-card mt-[72px]">
       <div class="section-title">Informasi Kelas</div>
       <div class="section-body">
         <div class="form-grid">

@@ -82,9 +82,9 @@ Route::group(['middleware' => ['auth']], function () {
         [CurriculumController::class, 'createCurriculumEquivalence']
     )->name('curriculum.equivalence.create');
 
-});
+    });
 
-Route::group(['prefix' => 'pemetaan-cpl'], function () {
+    Route::group(['prefix' => 'pemetaan-cpl'], function () {
     Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
     Route::get('/tambah', [CplMapping::class, 'create'])->name('cpl-mapping.create');
     Route::get('/edit/{id}', [CplMapping::class, 'edit'])->name('cpl-mapping.edit');
@@ -92,8 +92,8 @@ Route::group(['prefix' => 'pemetaan-cpl'], function () {
     Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
     Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
     Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
-});
-Route::prefix('persiapan-perkuliahan')->group(function () {
+    });
+    Route::prefix('persiapan-perkuliahan')->group(function () {
 
      // Group "schedule" biar rapi
      Route::prefix('jadwal-kuliah')->name('academics.schedule.')->group(function () {
@@ -122,5 +122,5 @@ Route::prefix('persiapan-perkuliahan')->group(function () {
          });
      });
 
- });
+    });
 });
