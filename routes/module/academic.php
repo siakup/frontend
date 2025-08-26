@@ -7,7 +7,7 @@ use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\CplMapping;
 
-// Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth']], function () {
   Route::group(['prefix' => 'academics'], function () {
     //periode akademik
     Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
@@ -88,12 +88,13 @@ use App\Http\Controllers\CplMapping;
 
   });
 
-Route::group(['prefix' => 'pemetaan-cpl'], function () {
-    Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
-    Route::get('/tambah', [CplMapping::class, 'create'])->name('cpl-mapping.create');
-    Route::get('/edit/{id}', [CplMapping::class, 'edit'])->name('cpl-mapping.edit');
-    Route::get('/view/{id}', [CplMapping::class, 'view'])->name('cpl-mapping.view');
-    Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
-    Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
-    Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
+  Route::group(['prefix' => 'pemetaan-cpl'], function () {
+      Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
+      Route::get('/tambah', [CplMapping::class, 'create'])->name('cpl-mapping.create');
+      Route::get('/edit/{id}', [CplMapping::class, 'edit'])->name('cpl-mapping.edit');
+      Route::get('/view/{id}', [CplMapping::class, 'view'])->name('cpl-mapping.view');
+      Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
+      Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
+      Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
+  });
 });
