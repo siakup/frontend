@@ -1,9 +1,9 @@
 @extends('layouts.main')
 
-@section('title', 'Upload Pemetaan CPL')
+@section('title', 'Upload Ekuivalensi Kurikulum')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item active">Upload Pemetaan CPL</div>
+    <div class="breadcrumb-item active">Upload Ekuivalensi Kurikulum</div>
 @endsection
 
 @section('css')
@@ -283,15 +283,16 @@
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Upload Pemetaan CPL</div>
+        <div class="page-title-text">Upload Ekuivalensi Kurikulum</div>
     </div>
 
-    <a href="{{ route('study.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Pemetaan CPL
-    </a>
+    <x-button.back class="pl-3" href="{{ route('curriculum.equivalence') }}">
+        Ekuivalensi Kurikulum
+    </x-button.back>
+
     <div class="content-card">
         <div class="text-lg-bd title">
-            <span>Impor Pemetaan CPL</span>
+            <span>Impor Ekuivalensi Kurikulum</span>
             <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="caution-icon"
                 style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
@@ -300,13 +301,13 @@
                 <div class="text-md-rg">
                     Allowed Type: [.xlsx, .xls, .csv]
                 </div>
-                <a href="{{ route('cpl-mapping.template', ['type' => 'xlsx']) }}">Unduh Sample Data (.xlsx)</a>
-                <a href="{{ route('cpl-mapping.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
+                <a href="{{ route('academics-event.template', ['type' => 'xlsx']) }}">Unduh Sample Data (.xlsx)</a>
+                <a href="{{ route('academics-event.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
             </div>
             <div class="upload-area">
-                <div class="upload-area-title">Impor CSV Pemetaan CPL File</div>
+                <div class="upload-area-title">Impor CSV Ekuivalensi Kurikulum File</div>
                 <div class="upload-card-and-buttons">
-                    <form action="{{ route('cpl-mapping.upload-result') }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('study.upload-result') }}" method="POST" enctype="multipart/form-data"
                         style="display: contents;" id="uploadForm">
                         @csrf
                         <input type="hidden" name="filename" id="filenameInput">
@@ -352,17 +353,30 @@
                 Urutan kolom sebagai berikut:
             </div>
             <ul style="text-sm-rg-red">
-                <li>kode_matakuliah: kode mata kuliah yang dipetakan ke CPL</li>
-                <li>kode_cpl: kode CPL yang menjadi target pemetaan</li>
-                <li>bobot: bobot kontribusi CPL (dalam persen atau skala angka)</li>
+                <li>kode: kode pemetaan CPL*)</li>
+                <li>nama: nama pemetaan CPL *)</li>
+                <li>sks: jumlah sks pemetaan CPL *)</li>
+                <li>semester: semester pemetaan CPL *)</li>
+                <li>tujuan: tujuan pemetaan CPL</li>
+                <li>deskripsi: deskripsi singkat pemetaan CPL</li>
+                <li>jenis: jenis pemetaan CPL, pilih salah satu dari Mata Kuliah Dasar Teknik, Mata Kuliah Dasar Umum, Mata
+                    Kuliah Program Studi, Mata Kuliah Sains Dasar, Mata Kuliah Universitas Pertamina*)</li>
+                <li>koordinator: NIP Dosen koordinator</li>
+                <li>spesial: y/n, y jika mata kuliah spesial, n jika tidak *)</li>
+                <li>dibuka: y/n, y jika mata kuliah dibuka untuk prodi lain, n jika tidak *)</li>
+                <li>wajib: y/n, y jika mata kuliah wajib, n jika tidak *)</li>
+                <li>mbkm: y/n, y jika mata kuliah MBKM, n jika tidak *)</li>
+                <li>aktif: y/n, y jika mata kuliah aktif, n jika tidak *)</li>
+                <li>prasyarat mata kuliah: kode mata kuliah prasyarat</li>
+                <li>namasingkat: nama singkat atau akronim mata kuliah *)</li>
+                <li>*) regured, ika ma kliai nsongi, ika ad ulang akan menganti data sebelumnya, prasyarat mata kuliah hanya
+                    1</li>
             </ul>
-
             <div class="text-md-rg" style="margin-top: 5%;">
-                kode_matakuliah; kode_cpl; bobot<br>
-                MK001; CPL-01; 30<br>
-                MK001; CPL-02; 60<br>
-                MK002; CPL-01; 40<br>
-                MK003; CPL-03; 50<br>
+                kode; nama; sks; semester; tujuan; deskripsi; jenis; koordinator; spesial; dibuka; wajib; mbkm; aktif;
+                prasyarat; namasingkat<br>
+                UP001; Kalkulus; 3; 1; '', ', Mata Kuliah Dasar Umum; 116020; n; y; y; n; у; "*; K; у<br>
+                UP002; Kimia Dasar 2; 2; 1; *', * Mata Kuliah Dasar Umum; 116024; n; y; y; n; y; UP003-UP321; KD2; y<br>
             </div>
             <div class="text-md-rg" style="margin-top: 5%;">
                 <span>Jumlah Data : 0</span><br>

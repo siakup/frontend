@@ -85,6 +85,10 @@ use App\Http\Controllers\CplMapping;
           '/ekuivalensi-kurikulum/edit/{id}',
           [CurriculumController::class, 'editCurriculumEquivalence']
       )->name('curriculum.equivalence.edit');
+      Route::get(
+          '/ekuivalensi-kurikulum/upload',
+          [CurriculumController::class, 'uploadCurriculumEquivalence']
+      )->name('curriculum.equivalence.upload');
 
   });
 
@@ -96,4 +100,5 @@ Route::group(['prefix' => 'pemetaan-cpl'], function () {
     Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
     Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
     Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
+    Route::get('/template', [CplMapping::class, 'cplDownloadTemplate'])->name('cpl-mapping.template');
 });

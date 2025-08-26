@@ -26,83 +26,83 @@ class CurriculumController extends Controller
     {
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-        // $programPerkuliahanList = [
-        //     (object)[ 'name' => 'Reguler', 'code' => 0 ],
-        //     (object)[ 'name' => 'Double Degree', 'code' => 1 ],
-        //     (object)[ 'name' => 'International Class', 'code' => 2 ],
-        //     (object)[ 'name' => 'Eksekutif', 'code' => 3 ],
-        //     (object)[ 'name' => 'Exchange', 'code' => 4 ],
-        //     (object)[ 'name' => 'Merdeka Belajar', 'code' => 5 ],
-        // ];
+    //  $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+        $programPerkuliahanList = [
+            (object)[ 'name' => 'Reguler', 'code' => 0 ],
+            (object)[ 'name' => 'Double Degree', 'code' => 1 ],
+            (object)[ 'name' => 'International Class', 'code' => 2 ],
+            (object)[ 'name' => 'Eksekutif', 'code' => 3 ],
+            (object)[ 'name' => 'Exchange', 'code' => 4 ],
+            (object)[ 'name' => 'Merdeka Belajar', 'code' => 5 ],
+        ];
       $id_program = $request->input('program_perkuliahan');
 
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-      $programStudiList = $responseProgramStudiList->data;
-//     $programStudiList = [
-//     (object)[
-//         'id' => 3,
-//         'ids_role' => '[2, 3, 4]',
-//         'kode_institusi' => '011',
-//         'nama' => 'Teknik Kimia',
-//         'nama_en' => 'Chemical Engineering',
-//         'created_at' => '2025-08-20T08:18:04.456359Z',
-//         'updated_ad' => null,
-//     ],
-//     (object)[
-//         'id' => 4,
-//         'ids_role' => '[2, 3, 4]',
-//         'kode_institusi' => '012',
-//         'nama' => 'Teknik Mesin',
-//         'nama_en' => 'Mechanical Engineering',
-//         'created_at' => '2025-08-20T09:18:04.456359Z',
-//         'updated_ad' => null,
-//     ],
-// ];
+    //   $programStudiList = $responseProgramStudiList->data;
+        $programStudiList = [
+        (object)[
+            'id' => 3,
+            'ids_role' => '[2, 3, 4]',
+            'kode_institusi' => '011',
+            'nama' => 'Teknik Kimia',
+            'nama_en' => 'Chemical Engineering',
+            'created_at' => '2025-08-20T08:18:04.456359Z',
+            'updated_ad' => null,
+        ],
+        (object)[
+            'id' => 4,
+            'ids_role' => '[2, 3, 4]',
+            'kode_institusi' => '012',
+            'nama' => 'Teknik Mesin',
+            'nama_en' => 'Mechanical Engineering',
+            'created_at' => '2025-08-20T09:18:04.456359Z',
+            'updated_ad' => null,
+        ],
+    ];
       $id_prodi = urldecode($request->input('program_studi', $programStudiList[0]->id));
 
       $params = compact('id_program', 'id_prodi');
 
       $url = CurriculumService::getInstance()->listCurriculum();
       $response = getCurl($url, null, getHeaders());
-      $data = $response->data;
-//       $data = [
-//     (object)[
-//         'id' => 2,
-//         'nama_kurikulum' => 'Kurikulum 2025 - Teknik Kimia',
-//         'perkuliahan' => 'Reguler',
-//         'program_studi' => 'Teknik Kimia',
-//         'deskripsi' => 'Kurikulum Tahun 2025',
-//         'tahun_kurikulum' => null,
-//         'sks_wajib' => 100,
-//         'sks_pilihan' => 44,
-//         'sks_total' => 144,
-//         'status_aktif' => true,
-//         'status' => 'active',
-//         'created_at' => '2025-08-21T07:19:14.446540Z',
-//         'created_by' => null,
-//         'updated_at' => null,
-//         'updated_by' => null,
-//     ],
-//     (object)[
-//         'id' => 3,
-//         'nama_kurikulum' => 'Kurikulum 2025 - Teknik Mesin',
-//         'perkuliahan' => 'Double Degree',
-//         'program_studi' => 'Teknik Mesin',
-//         'deskripsi' => 'Kurikulum Tahun 2025',
-//         'tahun_kurikulum' => null,
-//         'sks_wajib' => 120,
-//         'sks_pilihan' => 24,
-//         'sks_total' => 144,
-//         'status_aktif' => true,
-//         'status' => 'active',
-//         'created_at' => '2025-08-21T07:19:14.446540Z',
-//         'created_by' => null,
-//         'updated_at' => null,
-//         'updated_by' => null,
-//     ],
-// ];
+    //   $data = $response->data;
+        $data = [
+        (object)[
+            'id' => 2,
+            'nama_kurikulum' => 'Kurikulum 2025 - Teknik Kimia',
+            'perkuliahan' => 'Reguler',
+            'program_studi' => 'Teknik Kimia',
+            'deskripsi' => 'Kurikulum Tahun 2025',
+            'tahun_kurikulum' => null,
+            'sks_wajib' => 100,
+            'sks_pilihan' => 44,
+            'sks_total' => 144,
+            'status_aktif' => true,
+            'status' => 'active',
+            'created_at' => '2025-08-21T07:19:14.446540Z',
+            'created_by' => null,
+            'updated_at' => null,
+            'updated_by' => null,
+        ],
+        (object)[
+            'id' => 3,
+            'nama_kurikulum' => 'Kurikulum 2025 - Teknik Mesin',
+            'perkuliahan' => 'Double Degree',
+            'program_studi' => 'Teknik Mesin',
+            'deskripsi' => 'Kurikulum Tahun 2025',
+            'tahun_kurikulum' => null,
+            'sks_wajib' => 120,
+            'sks_pilihan' => 24,
+            'sks_total' => 144,
+            'status_aktif' => true,
+            'status' => 'active',
+            'created_at' => '2025-08-21T07:19:14.446540Z',
+            'created_by' => null,
+            'updated_at' => null,
+            'updated_by' => null,
+        ],
+    ];
       // dd($data);
       return view('curriculums.list.index', get_defined_vars());
     }
@@ -675,6 +675,11 @@ class CurriculumController extends Controller
             'selectedOldCourses' => $selectedOldCourses,
             'selectedNewCourses' => $selectedNewCourses
         ]);
+    }
+
+    public function uploadCurriculumEquivalence(Request $request)
+    {
+        return view('curriculums.equivalence.upload', get_defined_vars());
     }
 
 
