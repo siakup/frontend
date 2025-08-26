@@ -25,9 +25,40 @@ class CurriculumService
     {
         return config('endpoint.lecture.url') . '/api/curriculums';
     }
+
     public function listCurriculum()
     {
         return $this->url() . '/';
+    }
+
+    public function listCourseCurriculums($id)
+    {
+      return $this->url() . '/all-course' . '/' . $id;
+    } 
+
+    public function getCurriculum($id)
+    {
+      return $this->url() . '/' . $id;
+    }
+
+    public function courseUrl() 
+    {
+      return config('endpoint.lecture.url') . '/api/courses';
+    }
+
+    public function getJenisMataKuliah()
+    {
+      return $this->courseUrl() . '/jenis';
+    }
+
+    public function assignedCourse($id)
+    {
+      return $this->courseUrl() . '/assigned' . '/' . $id;
+    }
+
+    public function unassignedCourse($id)
+    {
+      return $this->courseUrl() . '/unassigned' . '/'. $id;
     }
 
     public function bulkStore()
