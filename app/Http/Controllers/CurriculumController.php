@@ -27,30 +27,22 @@ class CurriculumController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-<<<<<<< HEAD
       $id_program = urldecode($request->input('program_perkuliahan'));
-=======
-      $id_program = $request->input('program_perkuliahan');
->>>>>>> 8a34cc7cf276642df7851e3029b98b34e8bc050f
 
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
       $programStudiList = $responseProgramStudiList->data;
       $id_prodi = urldecode($request->input('program_studi', $programStudiList[0]->id));
 
-<<<<<<< HEAD
-      $params = compact('id_program', 'id_prodi');
-=======
       $params = [
         'perkuliahan' => $id_program,
         'id_prodi' => $id_prodi
       ];
->>>>>>> 8a34cc7cf276642df7851e3029b98b34e8bc050f
 
       $url = CurriculumService::getInstance()->listCurriculum();
       $response = getCurl($url, $params, getHeaders());
       $data = $response->data;
-      
+
       return view('curriculums.list.index', get_defined_vars());
     }
 
@@ -225,12 +217,12 @@ class CurriculumController extends Controller
       $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
       $nama_mata_kuliah = $request->input('nama', '');
 
-      
+
       $params = [
         'jenis_mata_kuliah' => $jenis_mata_kuliah,
         'search' => $nama_mata_kuliah
       ];
-      
+
       $url = CurriculumService::getInstance()->assignedCourse($id);
       $response = getCurl($url, $params, getHeaders());
       $data = $response->data;
@@ -247,75 +239,6 @@ class CurriculumController extends Controller
     {
       $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
       $nama_mata_kuliah = $request->input('nama');
-<<<<<<< HEAD
-      $data = [
-        [
-          'id' => 1,
-          'kode_mata_kuliah' => 'UP0011',
-          'nama' => 'Agama dan Etika',
-          'sks' => 2,
-          'program_studi' => 'Komunikasi',
-          'jenis_mata_kuliah' => 'Mata Kuliah Dasar Umum'
-        ],
-        [
-          'id' => 2,
-          'kode_mata_kuliah' => '10004',
-          'nama' => 'Agama Katolik dan Etika',
-          'sks' => 2,
-          'program_studi' => 'Komunikasi',
-          'jenis_mata_kuliah' => 'Mata Kuliah Dasar Umum'
-        ],
-        [
-          'id' => 3,
-          'kode_mata_kuliah' => '52204',
-          'nama' => 'Aljabar Linear dan Aplikasinya',
-          'sks' => 3,
-          'program_studi' => 'Ilmu Komputer',
-          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-        ],
-        [
-          'id' => 4,
-          'kode_mata_kuliah' => '52294',
-          'nama' => 'Algoritma dan Struktur Data',
-          'sks' => 3,
-          'program_studi' => 'Ilmu Komputer',
-          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-        ],
-        [
-          'id' => 5,
-          'kode_mata_kuliah' => '10101',
-          'nama' => 'Bahasa Indonesia',
-          'sks' => 2,
-          'program_studi' => 'Komunikasi',
-          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-        ],
-        [
-          'id' => 6,
-          'kode_mata_kuliah' => '21033',
-          'nama' => 'Aplikasi dan Teknologi EBT',
-          'sks' => 3,
-          'program_studi' => 'Ilmu Komputer',
-          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-        ],
-        [
-          'id' => 7,
-          'kode_mata_kuliah' => 'UP1103',
-          'nama' => 'Bahasa Inggris I ',
-          'sks' => 2,
-          'program_studi' => 'Komunikasi',
-          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-        ],
-        [
-          'id' => 8,
-          'kode_mata_kuliah' => 'UP1203',
-          'nama' => 'Bahasa Inggris II',
-          'sks' => 2,
-          'program_studi' => 'Komunikasi',
-          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-        ]
-      ];
-
-=======
 
       $url = CurriculumService::getInstance()->listCourseCurriculums($id);
       $response = getCurl($url, null, getHeaders());
@@ -328,8 +251,7 @@ class CurriculumController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-      
->>>>>>> 8a34cc7cf276642df7851e3029b98b34e8bc050f
+
       return view('curriculums.list.assign-course', get_defined_vars());
     }
 
@@ -464,8 +386,7 @@ class CurriculumController extends Controller
       return view('curriculums.equivalence.index', get_defined_vars());
     }
 
-<<<<<<< HEAD
-=======
+
     public function createCurriculumEquivalence(Request $request, $prodi, $programPerkuliahan)
     {
         return view('curriculums.equivalence.create', [
@@ -531,8 +452,6 @@ class CurriculumController extends Controller
         ]);
     }
 
-
->>>>>>> 8a34cc7cf276642df7851e3029b98b34e8bc050f
     public function requiredCurriculumStructure(Request $request)
     {
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();

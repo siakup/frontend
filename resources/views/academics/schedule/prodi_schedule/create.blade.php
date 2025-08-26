@@ -39,11 +39,11 @@
 
 @section('content')
 <div class="container">
-  <h2 class="text-xl font-semibold mb-4">Tambah Jadwal Kuliah Program Studi</h2>
+  <h2 class="text-xl font-semibold ml-6 mb-4">Tambah Jadwal Kuliah Program Studi</h2>
 
-    <a href="{{ route('academics-periode.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Periode Akademik
-    </a>
+  <a href="{{ route('academics.schedule.prodi-schedule.index') }}" class="button-no-outline-left">
+      <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Jadwal Kuliah
+  </a>
 
   {{-- === Form Start === --}}
   <form method="POST" action="{{ route('academics.schedule.prodi-schedule.store') }}">
@@ -51,137 +51,128 @@
 
     {{-- Informasi Kelas --}}
     <div class="section-card mt-[72px]">
-      <div class="section-title">Informasi Kelas</div>
-      <div class="section-body">
+    <div class="section-title">Informasi Kelas</div>
+    <div class="section-body w-full">
         <div class="form-grid">
 
-          {{-- Periode --}}
-
-        <div class="form-group">
-        <label for="name">Program Perkuliahan</label>
-        <div class="filter-box" id="program_perkuliahan">
-            <button type="button" class="button-clean input" id="sortEvent">
-                <span id="selectedEventLabel">Program Perkuliahan</span>
-                <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
-            </button>
-
-            <div id="Option-Program-Perkuliahan" class="sort-dropdown select" style="display: none;">
-                @foreach ($programPerkuliahanList as $programPerkuliahan)
-                    <div class="dropdown-item" data-event="{{$programPerkuliahan->id}}">
-                    {{$programPerkuliahan->nama}}
-                    </div>
-                @endforeach
-            </div>
-
-            <input type="hidden" value="" name="program_perkuliahan">
-        </div>
-        </div>
-
-
-          {{-- Program Studi --}}
-          <div class="form-group">
-            <label>Program Studi</label>
+        {{-- 1) Periode (FULL) --}}
+        <div class="form-group full">
+            <label>Periode</label>
             <div class="filter-box">
-              <button type="button" class="button-clean input" data-dd-btn="prodi">
-                <span data-dd-label="prodi">Pilih Program Studi</span>
+            <button type="button" class="button-clean input" data-dd-btn="periode">
+                <span data-dd-label="periode">Pilih Periode</span>
                 <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" />
-              </button>
-              <div class="sort-dropdown select" data-dd-menu="prodi">
-                @foreach(($programStudiList ?? []) as $it)
-                  <div class="dropdown-item" data-dd-value="prodi" data-id="{{ $it->id }}">{{ $it->nama }}</div>
+            </button>
+            <div class="sort-dropdown select w-full" data-dd-menu="periode">
+                @foreach(($periodeList ?? []) as $it)
+                <div class="dropdown-item" data-dd-value="periode" data-id="{{ $it->id }}">{{ $it->nama }}</div>
                 @endforeach
-              </div>
-              <input type="hidden" name="program_studi_id">
             </div>
-          </div>
+            <input type="hidden" name="periode_id">
+            </div>
+        </div>
 
-          {{-- Program Perkuliahan --}}
-          <div class="form-group">
+        {{-- 2) Program Perkuliahan (kolom kiri) --}}
+        <div class="form-group">
             <label>Program Perkuliahan</label>
             <div class="filter-box">
-              <button type="button" class="button-clean input" data-dd-btn="pp">
+            <button type="button" class="button-clean input" data-dd-btn="pp">
                 <span data-dd-label="pp">Pilih Program Perkuliahan</span>
                 <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" />
-              </button>
-              <div class="sort-dropdown select" data-dd-menu="pp">
+            </button>
+            <div class="sort-dropdown select" data-dd-menu="pp">
                 @foreach(($programPerkuliahanList ?? []) as $it)
-                  <div class="dropdown-item" data-dd-value="pp" data-id="{{ $it->id }}">{{ $it->nama }}</div>
+                <div class="dropdown-item" data-dd-value="pp" data-id="{{ $it->id }}">{{ $it->nama }}</div>
                 @endforeach
-              </div>
-              <input type="hidden" name="program_perkuliahan_id">
             </div>
-          </div>
+            <input type="hidden" name="program_perkuliahan_id">
+            </div>
+        </div>
 
-          {{-- Mata Kuliah + Tombol --}}
-          <div class="form-group">
-            <label>&nbsp;</label>
+        {{-- 2) Program Studi (kolom kanan) --}}
+        <div class="form-group">
+            <label>Program Studi</label>
+            <div class="filter-box">
+            <button type="button" class="button-clean input" data-dd-btn="prodi">
+                <span data-dd-label="prodi">Pilih Program Studi</span>
+                <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" />
+            </button>
+            <div class="sort-dropdown select" data-dd-menu="prodi">
+                @foreach(($programStudiList ?? []) as $it)
+                <div class="dropdown-item" data-dd-value="prodi" data-id="{{ $it->id }}">{{ $it->nama }}</div>
+                @endforeach
+            </div>
+            <input type="hidden" name="program_studi_id">
+            </div>
+        </div>
+
+        {{-- 3) Nama Mata Kuliah + tombol (FULL, 1fr | auto) --}}
+        <div class="form-group full">
+            <label>Nama Mata Kuliah</label>
             <div class="input-group">
-              <div class="filter-box">
+            <div class="filter-box">
                 <button type="button" class="button-clean input" data-dd-btn="mk">
-                  <span data-dd-label="mk">Pilih Mata Kuliah</span>
-                  <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" />
+                <span data-dd-label="mk">Pilih Mata Kuliah</span>
+                <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" />
                 </button>
                 <div class="sort-dropdown select" data-dd-menu="mk">
-                  @foreach(($mataKuliahList ?? []) as $it)
+                @foreach(($mataKuliahList ?? []) as $it)
                     <div class="dropdown-item" data-dd-value="mk" data-id="{{ $it->id }}">{{ $it->nama }}</div>
-                  @endforeach
+                @endforeach
                 </div>
                 <input type="hidden" name="mata_kuliah_id">
-              </div>
-              <button type="button" class="btn-right-outline">Pilih Mata Kuliah</button>
             </div>
-          </div>
+            <button type="button" class="btn-right-outline">Pilih Mata Kuliah</button>
+            </div>
+        </div>
 
-          {{-- Nama Kelas --}}
-          <div class="form-group">
+        {{-- 4) Nama Kelas (FULL) --}}
+        <div class="form-group full">
             <label>Nama Kelas</label>
             <input type="text" name="nama_kelas" class="input" placeholder="Masukkan Nama Kelas, Contoh: MatkomEcon-EC2">
-          </div>
+        </div>
 
-          {{-- Nama Singkat --}}
-          <div class="form-group">
+        {{-- 5) Nama Singkat (FULL) --}}
+        <div class="form-group full">
             <label>Nama Singkat</label>
             <input type="text" name="nama_singkat" class="input" placeholder="Masukkan Nama Singkat, Contoh: EC2">
-          </div>
+        </div>
 
-          {{-- Kapasitas --}}
-          <div class="form-group">
+        {{-- 6) Kapasitas & Kelas MBKM (2 kolom) --}}
+        <div class="form-group">
             <label>Kapasitas Peserta</label>
             <input type="number" name="kapasitas" class="input" placeholder="Masukkan Kapasitas, contoh: 50">
-          </div>
-
-          {{-- Kelas MK/M --}}
-          <div class="form-group">
+        </div>
+        <div class="form-group">
             <label>Kelas MK/M</label>
             <div class="filter-box">
-              <button type="button" class="button-clean input" data-dd-btn="kelas">
+            <button type="button" class="button-clean input" data-dd-btn="kelas">
                 <span data-dd-label="kelas">Pilih Kelas MK/M</span>
                 <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" />
-              </button>
-              <div class="sort-dropdown select" data-dd-menu="kelas">
+            </button>
+            <div class="sort-dropdown select" data-dd-menu="kelas">
                 @foreach(($kelasOptions ?? ['MK A','MK B','MK C']) as $opt)
-                  <div class="dropdown-item" data-dd-value="kelas" data-id="{{ $opt }}">{{ $opt }}</div>
+                <div class="dropdown-item" data-dd-value="kelas" data-id="{{ $opt }}">{{ $opt }}</div>
                 @endforeach
-              </div>
-              <input type="hidden" name="kelas_mkm">
             </div>
-          </div>
+            <input type="hidden" name="kelas_mkm">
+            </div>
+        </div>
 
-          {{-- Tanggal Mulai --}}
-          <div class="form-group">
+        {{-- 7) Tanggal Mulai & Tanggal Berakhir (2 kolom) --}}
+        <div class="form-group">
             <label>Tanggal Mulai</label>
             <input type="date" name="tanggal_mulai" class="input">
-          </div>
-
-          {{-- Tanggal Berakhir --}}
-          <div class="form-group">
+        </div>
+        <div class="form-group">
             <label>Tanggal Berakhir</label>
             <input type="date" name="tanggal_selesai" class="input">
-          </div>
+        </div>
 
         </div>
-      </div>
     </div>
+    </div>
+
 
     {{-- Daftar Pengajar --}}
     <div class="section-card">
@@ -222,35 +213,6 @@
 
 @section('javascript')
 <script>
-
-// Ambil input hidden
-const programPerkuliahan = document.querySelector('input[name="program_perkuliahan"]');
-const eventName = document.querySelector('input[name="program_perkuliahan"]');
-
-// Dropdown container
-const sortDropdownEventName = document.querySelector('#Option-Program-Perkuliahan');
-
-document.addEventListener('click', (e) => {
-    const dropdownStudy = e.target.closest('#program_perkuliahan');
-    if (dropdownStudy == null) {
-        sortDropdownEventName.style.display = 'none'
-        sortBtnEventName.querySelector('img').src =
-            "{{ asset('assets/icon-arrow-down-grey-20.svg') }}";
-    }
-});
-
-document.querySelectorAll('#Option-Program-Perkuliahan .dropdown-item').forEach((dropdownItem) => {
-    dropdownItem.addEventListener('click', () => {
-        const value = dropdownItem.getAttribute('data-event');
-        const span = sortBtnEventName.querySelector('span');
-
-        span.innerHTML = dropdownItem.innerHTML; // Ubah label button
-        span.style.color = "black";              // Biar beda warna setelah pilih
-        eventName.value = value;                 // Simpan ke hidden input
-        updateSaveButtonState();                 // Enable tombol save (kalau ada validasi)
-    });
-});
-
 document.addEventListener('click',(e)=>{
   const btn=e.target.closest('[data-dd-btn]');
   if(btn){
