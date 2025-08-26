@@ -62,15 +62,21 @@
     const courseType = document.querySelector('input[name="jenis_mata_kuliah"]');
     const sortBtnCourseType = document.querySelector('#sortEvent');
     const sortDropdownCourseType = document.querySelector('#Option-Program-Perkuliahan');
+    const inputNama = document.querySelector('input#Curriculum-name[name="nama"]');
 
     function updateSaveButtonState() {
       const courseTypeFilled = courseType.value.trim() !== '';
-      if(courseTypeFilled) {
+      const inputNamaFilled = inputNama.value.trim() !== '';
+
+      console.log(inputNama.value);
+      if(courseTypeFilled || inputNamaFilled) {
         document.querySelector('#btnCari').disabled = false;
       } else {
         document.querySelector('#btnCari').disabled = true;
       }
     }
+
+    inputNama.addEventListener('input', () => updateSaveButtonState());
   
     sortBtnCourseType.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -165,12 +171,12 @@
             <label for="name">Program Perkuliahan</label>
             <div class="filter-box w-full" id="jenis_mata_kuliah">
                 <button type="button" class="button-clean input border-[1px] !border-[#BFBFBF] w-full flex items-center justify-between" id="sortEvent">
-                    <span id="selectedEventLabel" class="{{Request::routeIs('curriculum.list.view.show-study') && $jenis_mata_kuliah == '' ? 'text-[#8C8C8C]' : 'text-black'}}">{{$jenis_mata_kuliah != '' ? ($jenis_mata_kuliah == 1 ? 'Mata Kuliah Dasar Umum' : 'Mata Kuliah Program Studi'): "Pilih Mata Kuliah"}}</span>
+                    <span id="selectedEventLabel" class="{{Request::routeIs('curriculum.list.view.show-study') && $jenis_mata_kuliah == '' ? 'text-[#8C8C8C]' : 'text-black'}}">{{$jenis_mata_kuliah != '' ? $jenis_mata_kuliah : "Pilih Mata Kuliah"}}</span>
                     <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                 </button>
                 <div id="Option-Program-Perkuliahan" class="sort-dropdown select !top-[9.8%] !left-[15.2%]" style="display: none;">
-                  <div class="dropdown-item" data-event="1">Mata Kuliah Dasar Umum</div>
-                  <div class="dropdown-item" data-event="2">Mata Kuliah Program Studi</div>
+                  <div class="dropdown-item" data-event="Mata Kuliah Dasar Umum">Mata Kuliah Dasar Umum</div>
+                  <div class="dropdown-item" data-event="Mata Kuliah Program Studi">Mata Kuliah Program Studi</div>
                 </div>
                 <input type="hidden" value="{{$jenis_mata_kuliah}}" name="jenis_mata_kuliah">
             </div>
@@ -178,7 +184,7 @@
         <div class="form-group">
             <label for="Curriculum-Name">Nama Mata Kuliah</label>
             <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg w-full">
-                <input placeholder="Ketik Mata Kuliah" name="nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="">
+                <input placeholder="Ketik Mata Kuliah" name="nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="{{$nama_mata_kuliah}}">
                 <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
             </div>
         </div>
@@ -215,22 +221,25 @@
               <x-table-body>
                   @forelse ($data as $d)
                       <x-table-row>
-                          <x-table-cell>{{ $d['kode_mata_kuliah'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['nama'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['sks'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['semester'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['jumlah_cpl']}}</x-table-cell>
-                          <x-table-cell>{{ $d['jenis_mata_kuliah']}}</x-table-cell>
+                          <x-table-cell>{{ $d->kode_matakuliah }}</x-table-cell>
+                          <x-table-cell>{{ $d->nama_matakuliah_id }}</x-table-cell>
+                          <x-table-cell>
+                            {{ $d->sks }}
+                          </x-table-cell>
+                          <x-table-cell>{{ $d->semester }}</x-table-cell>
+                          <x-table-cell>{{ $d->jumlah_cpl }}</x-table-cell>
+                          <x-table-cell>
+                            {{ $d->jenis_matakuliah }}
+                          </x-table-cell>
                           @if(!Request::routeIs('curriculum.list.view.show-study'))
                             <x-table-cell>
                               <div class="center">
-                                <a href="{{route('curriculum.list.edit.edit-study', ['id' => $id, 'course_id' => $d['id']])}}" class="btn-icon btn-edit-periode-academic" title="Ubah"
-                                    href="{{route('curriculum.list.edit', ['id' => $d['id']])}}"
+                                <a href="{{route('curriculum.list.edit.edit-study', ['id' => $id, 'course_id' => $d->id])}}" class="btn-icon btn-edit-periode-academic" title="Ubah"
                                     style="text-decoration: none; color: inherit;">
                                     <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                                     <span style="color: #E62129">Ubah</span>
                                 </a>
-                                <button type="button" class="btn-icon btn-delete" data-id="{{$d['id']}}" title="Hapus">
+                                <button type="button" class="btn-icon btn-delete" data-id="{{$d->id}}" title="Hapus">
                                     <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
                                     <span class="text-[#8C8C8C]">Hapus</span>
                                 </button>
@@ -260,9 +269,9 @@
     ]);
   </div>
   @include('partials.pagination', [
-      'currentPage' => 1,
-      'lastPage' => 10,
-      'limit' => 10,
-      'routes' => '',
+      'currentPage' => $response->pagination->current_page,
+      'lastPage' => $response->pagination->last_page,
+      'limit' => $response->pagination->per_page,
+      'routes' => route('curriculum.list.view.show-study', ['id' => $id]),
   ])
 @endsection

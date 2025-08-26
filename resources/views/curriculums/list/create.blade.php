@@ -225,8 +225,6 @@
             document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
         });
 
-
-
         btnToggle.addEventListener('click', () => {
             const isActive = hiddenInput.value === 'active';
             hiddenInput.value = isActive ? 'inactive' : 'active';
@@ -369,11 +367,11 @@
                   <tbody>
                     @foreach($jenis_mata_kuliah as $jenis)
                       <tr class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
-                          <td class="!text-[14px] !w-[50%] !py-[20px]">{{$jenis['nama']}}</td>
+                          <td class="!text-[14px] !w-[50%] !py-[20px]">{{$jenis}}</td>
                           <td class="py-[12px] !w-[25%]"></td>
                           <td class="py-[12px] !w-[25%]">
                             <div class="border-[1px] border-[#BFBFBF] rounded-lg py-[9px] ps-[39.5px] pe-[12px] flex">
-                              <input class="w-full bg-white !border-transparent focus:outline-none text-[14px]" placeholder="Minimum SKS" type="number" value="" name="{{str_replace(' ', '_', strtolower($jenis['nama']))}}" />
+                              <input class="w-full bg-white !border-transparent focus:outline-none text-[14px]" placeholder="Minimum SKS" type="number" value="" name="{{str_replace(' ', '_', strtolower($jenis))}}" />
                               <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                             </div>
                           </td>

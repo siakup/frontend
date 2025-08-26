@@ -8,13 +8,12 @@ use App\Http\Controllers\StudyController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\CplMapping;
 
-// Route::group(['middleware' => ['auth']], function () {
 Route::group(['middleware' => ['auth']], function () {
-    Route::group(['prefix' => 'academics'], function () {
-      //periode akademik
-      Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
-      Route::get('/periode/create', [AcademicController::class, 'createPeriode'])->name('academics-periode.create');
-      Route::post('/periode', [AcademicController::class, 'periodeStore'])->name('academics-periode.store');
+  Route::group(['prefix' => 'academics'], function () {
+    //periode akademik
+    Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
+    Route::get('/periode/create', [AcademicController::class, 'createPeriode'])->name('academics-periode.create');
+    Route::post('/periode', [AcademicController::class, 'periodeStore'])->name('academics-periode.store');
 
       Route::get('/periode/edit/{id}', [AcademicController::class, 'periodeEdit'])->name('academics-periode.edit');
       Route::put('/periode/update/{id}', [AcademicController::class, 'periodeUpdate'])->name('academics-periode.update');
@@ -77,10 +76,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/struktur-kurikulum/wajib', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
     Route::get('/struktur-kurikulum/pilihan', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
     Route::get('/ekuivalensi-kurikulum', [CurriculumController::class, 'curriculumEquivalence'])->name('curriculum.equivalence');
-    Route::get(
-        '/ekuivalensi-kurikulum/tambah/{prodi}/{programPerkuliahan}',
-        [CurriculumController::class, 'createCurriculumEquivalence']
-    )->name('curriculum.equivalence.create');
+      Route::get(
+          '/ekuivalensi-kurikulum/tambah/{prodi}/{programPerkuliahan}',
+          [CurriculumController::class, 'createCurriculumEquivalence']
+      )->name('curriculum.equivalence.create');
+      Route::get(
+          '/ekuivalensi-kurikulum/edit/{id}',
+          [CurriculumController::class, 'editCurriculumEquivalence']
+      )->name('curriculum.equivalence.edit');
 
     });
 
