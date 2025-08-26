@@ -83,12 +83,13 @@
             <label for="name">Jenis Mata Kuliah</label>
             <div class="filter-box w-full" id="jenis_mata_kuliah">
                 <button type="button" class="button-clean input border-[1px] !border-[#BFBFBF] w-full flex items-center justify-between" id="sortEvent">
-                    <span id="selectedEventLabel" class="text-black">{{$jenis_mata_kuliah === 1 ? 'Mata Kuliah Dasar Umum' : 'Mata Kuliah Program Studi'}}</span>
+                    <span id="selectedEventLabel" class="text-black">{{$jenis_mata_kuliah ? $jenis_mata_kuliah : 'Semua Mata Kuliah'}}</span>
                     <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                 </button>
                 <div id="option-jenis-mata-kuliah" class="sort-dropdown select !top-[9.2%] !left-[15.2%]" style="display: none;">
-                  <div class="dropdown-item" data-event="1">Mata Kuliah Dasar Umum</div>
-                  <div class="dropdown-item" data-event="2">Mata Kuliah Program Studi</div>
+                  @foreach($programPerkuliahanList as $programPerkuliahan)
+                    <div class="dropdown-item" data-event="{{$programPerkuliahan->name}}">{{$programPerkuliahan->name}}</div>
+                  @endforeach
                 </div>
                 <input type="hidden" value="{{$jenis_mata_kuliah}}" name="jenis_mata_kuliah">
             </div>
@@ -135,13 +136,13 @@
                   @forelse ($data as $d)
                       <x-table-row>
                           <x-table-cell>
-                            <input type="checkbox" name="course-list[]" value="{{$d['id']}}" class="not-checked:appearance-none not-checked:bg-white not-checked:border-[1px] not-checked:border-black not-checked:w-[12px] not-checked:h-[12px] not-checked:rounded-xs accent-[#E62129]">
+                            <input type="checkbox" name="course-list[]" value="{{$d->id}}" class="not-checked:appearance-none not-checked:bg-white not-checked:border-[1px] not-checked:border-black not-checked:w-[12px] not-checked:h-[12px] not-checked:rounded-xs accent-[#E62129]" @if($d->is_assigned) checked @endif>
                           </x-table-cell>
-                          <x-table-cell>{{ $d['kode_mata_kuliah'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['nama'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['sks'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['program_studi'] }}</x-table-cell>
-                          <x-table-cell>{{ $d['jenis_mata_kuliah']}}</x-table-cell>
+                          <x-table-cell>{{ $d->kode }}</x-table-cell>
+                          <x-table-cell>{{ $d->nama_id }}</x-table-cell>
+                          <x-table-cell>{{ $d->sks }}</x-table-cell>
+                          <x-table-cell>{{ current(array_filter($programStudiList, function ($item) use ($d) { return $item->id == $d->id_prodi; }))->nama }}</x-table-cell>
+                          <x-table-cell>{{ $d->id_jenis }}</x-table-cell>
                       </x-table-row>
                   @empty
                       <x-table-row>
@@ -158,9 +159,9 @@
     </x-container>
   </div>
   @include('partials.pagination', [
-      'currentPage' => 1,
-      'lastPage' => 10,
+      'currentPage' => $response->pagination->current_page,
+      'lastPage' => $response->pagination->last_page,
       'limit' => 10,
-      'routes' => '',
+      'routes' => route('curriculum.list.edit.assign-study', ['id' => $id]),
   ])
 @endsection
