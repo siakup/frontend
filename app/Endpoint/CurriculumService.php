@@ -33,8 +33,13 @@ class CurriculumService
 
     public function listCourseCurriculums($id)
     {
-      return $this->url() . '/all-course' . '/' . $id;
+      return $this->url() . '/' . $id . '/courses' ;
     } 
+
+    public function detailCourseCurriculums($id) 
+    {
+      return $this->courseUrl() . '/' . $id;
+    }
 
     public function getCurriculum($id)
     {
@@ -48,17 +53,17 @@ class CurriculumService
 
     public function getJenisMataKuliah()
     {
-      return $this->courseUrl() . '/jenis';
+      return $this->courseUrl() . '/category';
     }
 
     public function assignedCourse($id)
     {
-      return $this->courseUrl() . '/assigned' . '/' . $id;
+      return $this->url() . '/' . $id . '/assigned';
     }
 
     public function unassignedCourse($id)
     {
-      return $this->courseUrl() . '/unassigned' . '/'. $id;
+      return $this->url() . '/' . $id . '/unassigned';
     }
 
     public function bulkStore()

@@ -93,7 +93,7 @@
 
             <li class="menu-item">
                 <a href="{{ route('curriculum.list') }}"
-                    class="menu-link {{ Request::is('kurikulum*') ? 'active' : '' }}">
+                    class="menu-link {{ Request::is('curriculums*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-kurikulum.svg') }}" alt="Mata Kuliah Icon"
                             class="menu-icon">

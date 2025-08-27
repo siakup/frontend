@@ -138,6 +138,35 @@ class CurriculumController extends Controller
 
     public function updateCurriculumList(Request $request, $id)
     {
+      $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+      $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      $perkuliahanValidation = '';
+      array_map(function ($list) use (&$perkuliahanValidation) {
+        $perkuliahanValidation = ($perkuliahanValidation == '') ? $list->name : $perkuliahanValidation . ',' . $list->name;
+      }, $programPerkuliahanList);
+
+      $validated = $request->validate([
+        'program_studi' => 'required',
+        'perkuliahan'   => 'required|string|in:'.$perkuliahanValidation,
+        'status_aktif' => 'required|string|in:true,false',
+        'nama_kurikulum' => 'required',
+        'deskripsi' => 'required',
+        'sks_wajib' => 'required',
+        'sks_pilihan' => 'required',
+        'sks_total' => 'required',
+      ]);
+
+      $urlAuth = config('endpoint.users.url') . '/api/me';
+      $getUserResponse = getCurl($urlAuth, null, getHeaders());
+      $user = $getUserResponse->data;
+      $created_by = $user->username;
+      
+      $validated = array_merge(['created_by' => $created_by], $validated, ['minimum_sks' => $request->all()['minimum_sks']]);
+
+      $url = CurriculumService::getInstance()->getCurriculum($id);
+      $response = putCurl($url, $validated, getHeaders());
+
       return redirect()->route('curriculum.list.edit', ['id' => $id])->with('success', 'Berhasil Disimpan');
     }
 
@@ -154,11 +183,11 @@ class CurriculumController extends Controller
       $urlJenisPerkuliahan = CurriculumService::getInstance()->getJenisMataKuliah();
       $responseJenisPerkuliahan = getCurl($urlJenisPerkuliahan, null, getHeaders());
       $jenis_mata_kuliah = $responseJenisPerkuliahan->data;
-
+      
       $url = CurriculumService::getInstance()->getCurriculum($id);
       $response = getCurl($url, null, getHeaders());
       $data = $response->data;
-
+      
       $assignCourseData = [
         [
           'id' => 1,
@@ -242,39 +271,13 @@ class CurriculumController extends Controller
 
       $id_program = $request->input('program_perkuliahan');
 
-      $jenis_mata_kuliah = [
-        [
-          'nama' => 'Mata Kuliah Dasar Teknik',
-        ],
-        [
-          'nama' => 'Mata Kuliah Dasar Umum',
-        ],
-        [
-          'nama' => 'Mata Kuliah Program Studi',
-        ],
-        [
-          'nama' => 'Mata Kuliah Sains Dasar',
-        ],
-        [
-          'nama' => 'Mata Kuliah Universitas Pertamina',
-        ],
-      ];
-
-      $data = [
-        "program_studi" => "Teknik Kimia",
-        "program_perkuliahan" => "Reguler",
-        "curriculum_nama" => "Kurikulum 2025 - Teknik Kimia",
-        "deskripsi" => "Kurikulum Tahun 2025",
-        "sks_wajib" => "100",
-        "sks_pilihan" => "44",
-        "total_sks" => "144",
-        "status" => "active",
-        "mata_kuliah_dasar_teknik" => 40,
-        "mata_kuliah_dasar_umum" => 40,
-        "mata_kuliah_program_studi" => 20,
-        "mata_kuliah_sains_dasar" => 20,
-        "mata_kuliah_universitas_pertamina" => 24
-      ];
+      $urlJenisPerkuliahan = CurriculumService::getInstance()->getJenisMataKuliah();
+      $responseJenisPerkuliahan = getCurl($urlJenisPerkuliahan, null, getHeaders());
+      $jenis_mata_kuliah = $responseJenisPerkuliahan->data;
+      
+      $url = CurriculumService::getInstance()->getCurriculum($id);
+      $response = getCurl($url, null, getHeaders());
+      $data = $response->data;
 
       return view('curriculums.list.view', get_defined_vars());
     }
@@ -323,7 +326,98 @@ class CurriculumController extends Controller
 
     public function editCurriculumStudyList(Request $request, $id, $course_id)
     {
-      dd($id);
+      $url = CurriculumService::getInstance()->detailCourseCurriculums($course_id);
+      $response = getCurl($url, null, getHeaders());
+      $data = $response->data;
+
+      $dataDetail = [
+        'nama_kurikulum' => 'Ilmu Komputer',
+        'kode_matakuliah' => '10004',
+        'matakuliah' => 'Agama Katolik dan Etika',
+        'sks' => 2,
+        'semester' => 1
+      ];
+
+      $data = [
+        [
+          'id' => 1,
+          'kode' => 'CPL-A',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 2,
+          'kode' => 'CPL-B',
+          'capaian' => 'Memiliki kemampuan untuk memahami pertimbangan etis, budaya akademik, dan bertanggung jawab secara profesional',
+          'is_select' => false
+        ],
+        [
+          'id' => 3,
+          'kode' => 'CPL-C',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 4,
+          'kode' => 'CPL-D',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 5,
+          'kode' => 'CPL-E',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 6,
+          'kode' => 'CPL-F',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 7,
+          'kode' => 'CPL-G',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 8,
+          'kode' => 'CPL-H',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 9,
+          'kode' => 'CPL-I',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 10,
+          'kode' => 'CPL-J',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 11,
+          'kode' => 'CPL-K',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        [
+          'id' => 12,
+          'kode' => 'CPL-L',
+          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+      ];
+      return view('curriculums.list.edit-course', get_defined_vars());
+    }
+
+    public function updateCurriculumStudyList(Request $request, $id, $course_id)
+    {
+      return redirect()->route('curriculum.list.edit.show-study', ['id' => $id])->with('success', 'Berhasil diubah');
     }
 
     public function curriculumEquivalence(Request $request)

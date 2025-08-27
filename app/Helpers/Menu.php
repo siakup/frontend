@@ -159,25 +159,25 @@ class Menu
             ],
             'curriculum-list' => [
               'name' => 'Daftar Kurikulum',
-              'url' => '/kurikulum/daftar-kurikulum',
+              'url' => '/curriculums/list',
               'parent' => 'curriculum.list',
               'isExpandable' => true,
               'children' => [
                 'create-curriculum-list' => [
                   'name' => 'Tambah Kurikulum',
-                  'url' => '/kurikulum/daftar-kurikulum/tambah/*',
+                  'url' => '/curriculums/list/create/*',
                   'parent' => 'curriculum.list.create',
                   'isExpandable' => false
                 ],
                 'view-curriculum-list' => [
                   'name' => 'Lihat Detail Kurikulum',
-                  'url' => '/kurikulum/daftar-kurikulum/view/*',
+                  'url' => '/curriculums/list/view/*',
                   'parent' => 'curriculum.list.view',
                   'isExpandable' => true,
                   'children' => [
                     'see-curriculum-course-list' => [
                       'name' => 'Lihat Daftar Mata Kuliah',
-                      'url' => '/kurikulum/daftar-kurikulum/view/*/lihat-mata-kuliah',
+                      'url' => '/curriculums/list/view/*/view-courses',
                       'parent' => 'curriculum.list.edit.edit-study',
                       'isExpandable' => false,
                     ],
@@ -185,19 +185,19 @@ class Menu
                 ],
                 'edit-curriculum-list' => [
                   'name' => 'Ubah Kurikulum',
-                  'url' => '/kurikulum/daftar-kurikulum/ubah/*',
+                  'url' => '/curriculums/list/edit/*',
                   'parent' => 'curriculum.list.edit',
                   'isExpandable' => true,
                   'children' => [
                     'see-curriculum-course-list' => [
                       'name' => 'Ubah Mata Kuliah',
-                      'url' => '/kurikulum/daftar-kurikulum/ubah/*/lihat-mata-kuliah',
+                      'url' => '/curriculums/list/edit/*/show-courses',
                       'parent' => 'curriculum.list.edit.edit-study',
                       'isExpandable' => false,
                       'children' => [
                         'update-curriculum-course-list' => [
                           'name' => 'Ubah Mata Kuliah Kurikulum',
-                          'url' => '/kurikulum/daftar-kurikulum/ubah/*/lihat-mata-kuliah/*',
+                          'url' => '/curriculums/list/edit/*/view-courses/*',
                           'parent' => 'curriculum.list.edit.edit-study',
                           'isExpandable' => false
                         ]
@@ -205,7 +205,7 @@ class Menu
                     ],
                     'assign-curriculum-course-list' => [
                       'name' => 'Ubah Mata Kuliah',
-                      'url' => '/kurikulum/daftar-kurikulum/ubah/*/assign-mata-kuliah',
+                      'url' => '/curriculums/list/edit/*/assign-course',
                       'parent' => 'curriculum.list.edit.assign-study',
                       'isExpandable' => false,
                     ],
@@ -215,19 +215,19 @@ class Menu
             ],
             'curriculum-structure-required' => [
               'name' => 'Struktur Kurikulum',
-              'url' => '/kurikulum/struktur-kurikulum/wajib',
+              'url' => '/curriculums/structure/required',
               'parent' => 'curriculum.required-structure',
               'isExpandable' => false,
             ],
             'curriculum-structure-optional' => [
               'name' => 'Struktur Kurikulum',
-              'url' => '/kurikulum/struktur-kurikulum/pilihan',
+              'url' => '/curriculums/structure/optional',
               'parent' => 'curriculum.optional-structure',
               'isExpandable' => false,
             ],
             'curriculum-equivalence' => [
               'name' => 'Ekuivalensi Kurikulum',
-              'url' => '/kurikulum/ekuivalensi-kurikulum',
+              'url' => '/curriculums/equivalence',
               'parent' => 'curriculum.equivalence',
               'isExpandable' => false,
             ],
