@@ -387,9 +387,9 @@
         {{-- MODAL TAMBAH Mata Kuliah --}}
         <x-modal.container id="modal-tambah-matakuliah" maxWidth="7xl"
             x-on:open-modal.window="if ($event.detail.id === 'modal-tambah-matakuliah') {
-        show = true;
-        setTimeout(() => $root.updateCheckboxStatus(), 200);
-    }"
+                show = true;
+                setTimeout(() => $root.updateCheckboxStatus(), 200);
+            }"
             x-on:close-modal.window="if ($event.detail.id === 'modal-tambah-matakuliah') { show = false; }">
             <x-slot name="header">
                 <div class="w-full relative">
@@ -512,7 +512,7 @@
         <div class="" @on-submit.window="await submitForm()">
             <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
                 cancelText="Cek Kembali">
-                <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+                <x-typography>Apakah Anda yakin informasi yang ditambahkan sudah benar?</x-typography>
             </x-modal.confirmation>
         </div>
     </div>

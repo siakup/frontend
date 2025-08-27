@@ -1,9 +1,9 @@
 @extends('layouts.main')
 
-@section('title', 'Upload Pemetaan CPL')
+@section('title', 'Upload Ekuivalensi Kurikulum')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item active">Upload Pemetaan CPL</div>
+    <div class="breadcrumb-item active">Upload Ekuivalensi Kurikulum</div>
 @endsection
 
 @section('css')
@@ -283,15 +283,16 @@
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Upload Pemetaan CPL</div>
+        <div class="page-title-text">Upload Ekuivalensi Kurikulum</div>
     </div>
 
-    <a href="{{ route('study.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Pemetaan CPL
-    </a>
+    <x-button.back class="pl-3" href="{{ route('curriculum.equivalence') }}">
+        Ekuivalensi Kurikulum
+    </x-button.back>
+
     <div class="content-card">
         <div class="text-lg-bd title">
-            <span>Impor Pemetaan CPL</span>
+            <span>Impor Ekuivalensi Kurikulum</span>
             <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="caution-icon"
                 style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
@@ -300,13 +301,13 @@
                 <div class="text-md-rg">
                     Allowed Type: [.xlsx, .xls, .csv]
                 </div>
-                <a href="{{ route('cpl-mapping.template', ['type' => 'xlsx']) }}">Unduh Sample Data (.xlsx)</a>
-                <a href="{{ route('cpl-mapping.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
+                <a href="{{ route('curriculum.equivalence.template', ['type' => 'xlsx']) }}">Unduh Sample Data (.xlsx)</a>
+                <a href="{{ route('curriculum.equivalence.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
             </div>
             <div class="upload-area">
-                <div class="upload-area-title">Impor CSV Pemetaan CPL File</div>
+                <div class="upload-area-title">Impor CSV Ekuivalensi Kurikulum File</div>
                 <div class="upload-card-and-buttons">
-                    <form action="{{ route('cpl-mapping.upload-result') }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('curriculum.equivalence.upload-result') }}" method="POST" enctype="multipart/form-data"
                         style="display: contents;" id="uploadForm">
                         @csrf
                         <input type="hidden" name="filename" id="filenameInput">
@@ -351,19 +352,19 @@
                 File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma ","<br>
                 Urutan kolom sebagai berikut:
             </div>
+
             <ul style="text-sm-rg-red">
-                <li>kode_matakuliah: kode mata kuliah yang dipetakan ke CPL</li>
-                <li>kode_cpl: kode CPL yang menjadi target pemetaan</li>
-                <li>bobot: bobot kontribusi CPL (dalam persen atau skala angka)</li>
+                <li>Kode MK Lama</li>
+                <li>Kode MK Baru</li>
             </ul>
 
             <div class="text-md-rg" style="margin-top: 5%;">
-                kode_matakuliah; kode_cpl; bobot<br>
-                MK001; CPL-01; 30<br>
-                MK001; CPL-02; 60<br>
-                MK002; CPL-01; 40<br>
-                MK003; CPL-03; 50<br>
+                Kode MK Lama; Kode MK Baru<br>
+                MK001; MK002<br>
+                MK003; MK004<br>
+                MK005; MK006<br>
             </div>
+
             <div class="text-md-rg" style="margin-top: 5%;">
                 <span>Jumlah Data : 0</span><br>
                 <span>Jumlah Data Sukses: 0</span><br>

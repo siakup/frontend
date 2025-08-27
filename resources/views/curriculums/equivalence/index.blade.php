@@ -57,11 +57,41 @@
     </style>
 @endsection
 
+@section('javascript')
+
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('ekuivalensiKurikulum', () => ({
+                async deleteEkuivalensi(id) {
+                    try {
+                        // const response = await fetch(`/api/ekuivalensi/${id}`, {
+                        //     method: 'DELETE'
+                        // });
+                        // if (!response.ok) throw new Error("Gagal hapus");
+
+                        console.log('Berhasil menghapus data dengan id:', id);
+
+                        // akses komponen blade & trigger
+                        this.$store.flashMessage.trigger();
+
+                    } catch (err) {
+                        console.error(err);
+                        this.$store.flashMessage.type = 'error';
+                        this.$store.flashMessage.message = 'Gagal menghapus data';
+                        this.$store.flashMessage.trigger();
+                    }
+                }
+            }))
+        })
+    </script>
+
+@endsection
+
 @section('content')
     <div class="page-header">
         <div class="page-title-text">Kurikulum</div>
     </div>
-    <div class="academics-layout">
+    <div class="academics-layout" x-data="ekuivalensiKurikulum">
         @include('curriculums.layout.navbar-curriculum')
         <div class="academics-slicing-content content-card">
             <x-typography variant="heading-h6" class="mb-2 p-[20px]">
@@ -141,7 +171,7 @@
                                     <x-table-cell>{{ $d['matkul_kurikulum_baru'] !== null ? $d['matkul_kurikulum_baru'] : '-' }}</x-table-cell>
                                     <x-table-cell>{{ $d['sks_baru'] !== null ? $d['sks_baru'] : '-' }}</x-table-cell>
                                     <x-table-cell>{{ $d['program_studi'] }}</x-table-cell>
-                                    <x-table-cell>
+                                    <x-table-cell x-data="{ showModalDeleteConfirmation: false }">
                                         <div class="center">
                                             {{-- TODO: INI PERLU id  --}}
                                             <a class="btn-icon btn-edit-periode-academic" title="Ubah"
@@ -150,11 +180,8 @@
                                                 <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                                                 <span style="color: #E62129">Ubah</span>
                                             </a>
-                                            <button type="button" class="btn-icon btn-delete-periode-academic"
-                                                data-id="" title="Hapus">
-                                                <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                                                <span>Hapus</span>
-                                            </button>
+                                            <x-button.action type="delete" label="Hapus"
+                                                x-on:click="$dispatch('open-modal', {id: 'delete-confirmation'})" />
                                         </div>
                                     </x-table-cell>
                                 </x-table-row>
@@ -171,9 +198,9 @@
                 </div>
             </x-container>
             <div class="right">
-                <a href="" class="button-clean" id="">
-                    <span>Unggah Ekuivalensi</span>
-                    <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
+                <a href="{{ route('curriculum.equivalence.upload') }}">
+                    <x-button.secondary type="button" label="Upload Ekuivalensi"
+                        icon="{{ asset('assets/icon-upload-red-500.svg') }}" iconPosition="right" />
                 </a>
                 <a href="{{ route('curriculum.equivalence.create', ['prodi' => 'Ilmu Komputer', 'programPerkuliahan' => 'Regular']) }}"
                     class="button button-outline">Tambah Ekuivalensi</a>
@@ -187,5 +214,20 @@
                 'routes' => route('curriculum.equivalence'),
             ])
         @endif
+
+        {{-- TODO: Id nya jan lupa nnti yak --}}
+        <div @on-submit.window="await deleteEkuivalensi(1)">
+            <!-- Modal Konfirmasi Hapus -->
+            <x-modal.confirmation iconUrl="{{ asset('assets/icon-delete-gray-800.svg') }}" id="delete-confirmation"
+                title="Hapus Ekuivalensi Kurikulum" confirmText="Ya, Hapus" cancelText="Batal">
+
+                <x-typography>Apakah Anda yakin ingin menghapus ekuivalensi kurikulum ini?</x-typography>
+
+            </x-modal.confirmation>
+        </div>
+
+        <x-flash-message type="success" message="Ekuivalensi kurikulum berhasil dihapus"
+            redirect="{{ route('curriculum.equivalence') }}" />
+
     </div>
 @endsection
