@@ -36,6 +36,11 @@ class CurriculumService
       return $this->url() . '/' . $id . '/courses' ;
     } 
 
+    public function detailCourseCurriculums($id) 
+    {
+      return $this->courseUrl() . '/' . $id;
+    }
+
     public function getCurriculum($id)
     {
       return $this->url() . '/' . $id;
@@ -58,7 +63,7 @@ class CurriculumService
 
     public function unassignedCourse($id)
     {
-      return $this->courseUrl() . '/' . $id . '/unassigned';
+      return $this->url() . '/' . $id . '/unassigned';
     }
 
     public function bulkStore()

@@ -176,39 +176,13 @@ class CurriculumController extends Controller
 
       $id_program = $request->input('program_perkuliahan');
 
-      $jenis_mata_kuliah = [
-        [
-          'nama' => 'Mata Kuliah Dasar Teknik',
-        ],
-        [
-          'nama' => 'Mata Kuliah Dasar Umum',
-        ],
-        [
-          'nama' => 'Mata Kuliah Program Studi',
-        ],
-        [
-          'nama' => 'Mata Kuliah Sains Dasar',
-        ],
-        [
-          'nama' => 'Mata Kuliah Universitas Pertamina',
-        ],
-      ];
-
-      $data = [
-        "program_studi" => "Teknik Kimia",
-        "program_perkuliahan" => "Reguler",
-        "curriculum_nama" => "Kurikulum 2025 - Teknik Kimia",
-        "deskripsi" => "Kurikulum Tahun 2025",
-        "sks_wajib" => "100",
-        "sks_pilihan" => "44",
-        "total_sks" => "144",
-        "status" => "active",
-        "mata_kuliah_dasar_teknik" => 40,
-        "mata_kuliah_dasar_umum" => 40,
-        "mata_kuliah_program_studi" => 20,
-        "mata_kuliah_sains_dasar" => 20,
-        "mata_kuliah_universitas_pertamina" => 24
-      ];
+      $urlJenisPerkuliahan = CurriculumService::getInstance()->getJenisMataKuliah();
+      $responseJenisPerkuliahan = getCurl($urlJenisPerkuliahan, null, getHeaders());
+      $jenis_mata_kuliah = $responseJenisPerkuliahan->data;
+      
+      $url = CurriculumService::getInstance()->getCurriculum($id);
+      $response = getCurl($url, null, getHeaders());
+      $data = $response->data;
 
       return view('curriculums.list.view', get_defined_vars());
     }
@@ -257,6 +231,10 @@ class CurriculumController extends Controller
 
     public function editCurriculumStudyList(Request $request, $id, $course_id)
     {
+      $url = CurriculumService::getInstance()->detailCourseCurriculums($course_id);
+      $response = getCurl($url, null, getHeaders());
+      $data = $response->data;
+
       $dataDetail = [
         'nama_kurikulum' => 'Ilmu Komputer',
         'kode_matakuliah' => '10004',

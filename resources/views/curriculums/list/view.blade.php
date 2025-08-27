@@ -140,7 +140,7 @@
         const totalSKS = document.querySelector('input[name="total_sks"]');
         const programPerkuliahan = document.querySelector('input[name="program_perkuliahan"]');
 
-        const status = @json($data['status']);
+        const status = @json($data->status);
         if (status === 'active') {
             icon.src = "{{ asset('components/toggle-on-disabled-true-grey.svg') }}";
             text.textContent = "Aktif";
@@ -294,51 +294,51 @@
               <div class="form-group">
                   <label for="program_studi">Program Studi</label>
                   <div>
-                      <input placeholder="Nama Kurikulum" name="program_studi" type="text" id="program_studi" class="form-control" value="{{$data['program_studi']}}" readonly>
+                      <input placeholder="Nama Kurikulum" name="program_studi" type="text" id="program_studi" class="form-control" value="{{current(array_filter($programStudiList, function ($item) use ($data) { return $item->id == $data->program_studi; }))->nama}}" readonly>
                   </div>
               </div>
               <div class="form-group">
                   <label for="name">Program Perkuliahan</label>
                   <div class="filter-box" id="program_perkuliahan">
                       <button type="button" class="button-clean input !border-[1px] !border-[#BFBFBF]" id="sortEvent" disabled>
-                          <span id="selectedEventLabel">{{current(array_filter($programPerkuliahanList, function($program) use($data) { return $program->name == $data['program_perkuliahan']; }))->name}}</span>
+                          <span id="selectedEventLabel">{{$data->perkuliahan}}</span>
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                       </button>
-                      <input type="hidden" value="{{$data['program_perkuliahan']}}" name="program_perkuliahan">
+                      <input type="hidden" value="{{$data->perkuliahan}}" name="program_perkuliahan">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Curriculum-Name">Nama Kurikulum</label>
                   <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="Nama Kurikulum" name="curriculum_nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['curriculum_nama']}}" disabled>
+                      <input placeholder="Nama Kurikulum" name="curriculum_nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->nama_kurikulum}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Deskripsi">Deskripsi</label>
                   <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="Deskripsi" name="deskripsi" type="text" id="Deskripsi" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['deskripsi']}}" disabled>
+                      <input placeholder="Deskripsi" name="deskripsi" type="text" id="Deskripsi" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->deskripsi}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Wajib">SKS Mata Kuliah Wajib</label>
                   <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="SKS Mata Kuliah Wajib" name="sks_wajib" type="text" id="Wajib" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['sks_wajib']}}" disabled>
+                      <input placeholder="SKS Mata Kuliah Wajib" name="sks_wajib" type="text" id="Wajib" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->sks_wajib}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Pilihan">SKS Mata Kuliah Pilihan</label>
                   <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="SKS Mata Kuliah Pilihan" name="sks_pilihan" type="text" id="Pilihan" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['sks_pilihan']}}" disabled>
+                      <input placeholder="SKS Mata Kuliah Pilihan" name="sks_pilihan" type="text" id="Pilihan" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->sks_pilihan}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Total">Total SKS</label>
                   <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="Total SKS" name="total_sks" type="text" id="Total" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data['total_sks']}}" disabled>
+                      <input placeholder="Total SKS" name="total_sks" type="text" id="Total" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->sks_total}}" disabled>
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
@@ -348,7 +348,7 @@
                       <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
                       <span class="toggle-info text-sm-bd" style="color: var(--Neutral-Gray-600, #8C8C8C)">Tidak Aktif</span>
                   </button>
-                <input type="hidden" name="status" id="statusValue" value="{{$data['status']}}" disabled>
+                <input type="hidden" name="status" id="statusValue" value="{{$data->status}}" disabled>
               </div>
           </div>
       </div>
@@ -364,13 +364,13 @@
                       </tr>
                   </thead>
                   <tbody>
-                    @foreach($jenis_mata_kuliah as $jenis)
+                    @foreach($data->details as $details)
                       <tr class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
-                          <td class="!text-[14px] !w-[50%] !py-[20px]">{{$jenis['nama']}}</td>
+                          <td class="!text-[14px] !w-[50%] !py-[20px]">{{$details->jenis_mata_kuliah}}</td>
                           <td class="py-[12px] !w-[25%]"></td>
                           <td class="py-[12px] !w-[25%]">
                             <div class="border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg py-[9px] ps-[39.5px] pe-[12px] flex">
-                              <input class="w-full bg-transparent !border-transparent focus:outline-none text-[14px] text-[#8C8C8C]" placeholder="Minimum SKS" type="number" value="{{$data[str_replace(' ', '_', strtolower($jenis['nama']))]}}" name="{{str_replace(' ', '_', strtolower($jenis['nama']))}}" disabled />
+                              <input class="w-full bg-transparent !border-transparent focus:outline-none text-[14px] text-[#8C8C8C]" placeholder="Minimum SKS" type="number" value="{{$details->sks_minimal}}" disabled />
                               <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                             </div>
                           </td>
