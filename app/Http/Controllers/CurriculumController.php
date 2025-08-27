@@ -16,6 +16,8 @@ use App\Traits\ApiResponse;
 use App\Endpoint\EventCalendarService;
 
 use Exception;
+use Maatwebsite\Excel\Excel as ExcelFormat;
+use Maatwebsite\Excel\Facades\Excel;
 use Svg\Tag\Rect;
 
 class CurriculumController extends Controller
@@ -520,6 +522,123 @@ class CurriculumController extends Controller
     public function uploadCurriculumEquivalence(Request $request)
     {
         return view('curriculums.equivalence.upload', get_defined_vars());
+    }
+
+    public function uploadResultCurriculumEquivalence(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|file|mimes:csv,xlsx|max:5120'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator);
+        }
+
+        $file = $request->file('file');
+        $file_data = [];
+        $errors = [];
+
+        // Convert file ke array of object/array
+        $file_data = convertFileDataExcelToObject($file);
+
+        // Sesuaikan dengan struktur data CSV yang baru
+        $file_data = array_map(function ($value) {
+            return [
+                'Kode MK Lama' => $value['kode_mk_lama'] ?? null,
+                'Kode MK Baru' => $value['kode_mk_baru'] ?? null,
+            ];
+        }, $file_data);
+
+        return view('curriculums.equivalence.upload-result', get_defined_vars());
+    }
+
+
+    public function cplDownloadTemplateCurriculumEquivalence(Request $request)
+    {
+        $type = $request->query('type', 'xlsx');
+        $allowed = ['xlsx', 'csv'];
+
+        if (!in_array($type, $allowed)) {
+            return redirect()->back()->with('error', 'Format file tidak valid');
+        }
+
+        $data = [
+            ['Kode MK Lama', 'Kode MK Baru'],
+            ['MK001', 'MK002'],
+            ['MK003', 'MK004'],
+            ['MK005', 'MK006'],
+        ];
+
+        $filename = 'template-ekuivalensi.' . $type;
+
+        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+            private $rows;
+            public function __construct($rows)
+            {
+                $this->rows = $rows;
+            }
+            public function array(): array
+            {
+                return array_slice($this->rows, 1);
+            }
+            public function headings(): array
+            {
+                return $this->rows[0];
+            }
+        }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
+    }
+
+    public function uploadStoreCurriculumEquivalence(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        // Tentukan delimiter (koma atau titik koma)
+        $rows = array_map(function ($line) {
+            $delimiter = substr_count($line, ';') > substr_count($line, ',') ? ';' : ',';
+            return str_getcsv($line, $delimiter);
+        }, $lines);
+
+        // Ambil header
+        $header = array_map('trim', $rows[0]);
+        unset($rows[0]);
+
+        $data = [];
+        foreach ($rows as $index => $row) {
+            $row = array_map('trim', $row);
+
+            // Skip kalau jumlah kolom tidak sesuai (harus 3)
+            if (count($row) < 3) {
+                continue;
+            }
+
+            $data[] = [
+                'Kode MK Lama' => $row[0],
+                'Kode MK Baru' => $row[1],
+            ];
+        }
+
+        // $url = EventCalendarService::getInstance()->bulkStore();
+        // $response = postCurl($url, [
+        //   'events' => $eventAkademik,
+        //   'idperiode' => $id,
+        // ], getHeaders());
+
+        return redirect()->route('curriculums.equivalence', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+        // if (isset($response->success) && $response->success) {
+        //   return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+        // }
+
+        return redirect()->route('curriculums.equivalence')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
     }
 
 

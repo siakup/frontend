@@ -90,7 +90,10 @@ Route::group(['middleware' => ['auth']], function () {
             [CurriculumController::class, 'uploadCurriculumEquivalence']
         )->name('curriculum.equivalence.upload');
 
-    });
+      Route::post('/upload', [CurriculumController::class, 'uploadResultCurriculumEquivalence'])->name('curriculum.equivalence.upload-result');
+      Route::post('/save-upload', [CurriculumController::class, 'uploadStoreCurriculumEquivalence'])->name('curriculum.equivalence.save-upload');
+      Route::get('/template', [CurriculumController::class, 'cplDownloadTemplateCurriculumEquivalence'])->name('curriculum.equivalence.template');
+  });
 
     Route::group(['prefix' => 'pemetaan-cpl'], function () {
         Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
