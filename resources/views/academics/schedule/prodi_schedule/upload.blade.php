@@ -1,9 +1,9 @@
 @extends('layouts.main')
 
-@section('title', 'Upload Pemetaan CPL')
+@section('title', 'Unggah Jadwal Kuliah Program Studi')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item active">Upload Pemetaan CPL</div>
+    <div class="breadcrumb-item active">Unggah Jadwal Kuliah Program Studi</div>
 @endsection
 
 @section('css')
@@ -283,15 +283,15 @@
 
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Upload Pemetaan CPL</div>
+        <div class="page-title-text">Unggah Jadwal Kuliah Program Studi</div>
     </div>
 
-    <a href="{{ route('study.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Pemetaan CPL
+    <a href="{{ route('academics.schedule.prodi-schedule.index') }}" class="button-no-outline-left">
+        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Jadwal Kuliah Program Studi
     </a>
     <div class="content-card">
         <div class="text-lg-bd title">
-            <span>Impor Pemetaan CPL</span>
+            <span>Impor Pemetaan Jadwal Kuliah</span>
             <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="caution-icon"
                 style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
         </div>
@@ -300,13 +300,13 @@
                 <div class="text-md-rg">
                     Allowed Type: [.xlsx, .xls, .csv]
                 </div>
-                <a href="{{ route('cpl-mapping.template', ['type' => 'xlsx']) }}">Unduh Sample Data (.xlsx)</a>
-                <a href="{{ route('cpl-mapping.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
+                <a href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'xlsx']) }}">Unduh Sample Data (.xlsx)</a>
+                <a href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
             </div>
             <div class="upload-area">
                 <div class="upload-area-title">Impor CSV Pemetaan CPL File</div>
                 <div class="upload-card-and-buttons">
-                    <form action="{{ route('cpl-mapping.upload-result') }}" method="POST" enctype="multipart/form-data"
+                    <form action="{{ route('academics.schedule.prodi-schedule.upload-result') }}" method="POST" enctype="multipart/form-data"
                         style="display: contents;" id="uploadForm">
                         @csrf
                         <input type="hidden" name="filename" id="filenameInput">

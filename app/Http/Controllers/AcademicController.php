@@ -275,6 +275,7 @@ class AcademicController extends Controller
         return view('academics.event.upload', get_defined_vars());
     }
 
+    
     public function eventDownloadTemplate(Request $request)
     {
         $type = $request->query('type', 'xlsx');
