@@ -72,6 +72,35 @@ class CurriculumController extends Controller
 
     public function updateCurriculumList(Request $request, $id)
     {
+      $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+      $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      $perkuliahanValidation = '';
+      array_map(function ($list) use (&$perkuliahanValidation) {
+        $perkuliahanValidation = ($perkuliahanValidation == '') ? $list->name : $perkuliahanValidation . ',' . $list->name;
+      }, $programPerkuliahanList);
+
+      $validated = $request->validate([
+        'program_studi' => 'required',
+        'perkuliahan'   => 'required|string|in:'.$perkuliahanValidation,
+        'status_aktif' => 'required|string|in:true,false',
+        'nama_kurikulum' => 'required',
+        'deskripsi' => 'required',
+        'sks_wajib' => 'required',
+        'sks_pilihan' => 'required',
+        'sks_total' => 'required',
+      ]);
+
+      $urlAuth = config('endpoint.users.url') . '/api/me';
+      $getUserResponse = getCurl($urlAuth, null, getHeaders());
+      $user = $getUserResponse->data;
+      $created_by = $user->username;
+      
+      $validated = array_merge(['created_by' => $created_by], $validated, ['minimum_sks' => $request->all()['minimum_sks']]);
+
+      $url = CurriculumService::getInstance()->getCurriculum($id);
+      $response = putCurl($url, $validated, getHeaders());
+
       return redirect()->route('curriculum.list.edit', ['id' => $id])->with('success', 'Berhasil Disimpan');
     }
 
@@ -88,11 +117,11 @@ class CurriculumController extends Controller
       $urlJenisPerkuliahan = CurriculumService::getInstance()->getJenisMataKuliah();
       $responseJenisPerkuliahan = getCurl($urlJenisPerkuliahan, null, getHeaders());
       $jenis_mata_kuliah = $responseJenisPerkuliahan->data;
-
+      
       $url = CurriculumService::getInstance()->getCurriculum($id);
       $response = getCurl($url, null, getHeaders());
       $data = $response->data;
-
+      
       $assignCourseData = [
         [
           'id' => 1,
