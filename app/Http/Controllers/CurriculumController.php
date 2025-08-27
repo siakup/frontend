@@ -27,7 +27,7 @@ class CurriculumController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-      $id_program = $request->input('program_perkuliahan');
+      $id_program = urldecode($request->input('program_perkuliahan'));
 
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
@@ -42,7 +42,7 @@ class CurriculumController extends Controller
       $url = CurriculumService::getInstance()->listCurriculum();
       $response = getCurl($url, $params, getHeaders());
       $data = $response->data;
-      
+
       return view('curriculums.list.index', get_defined_vars());
     }
 
@@ -217,12 +217,12 @@ class CurriculumController extends Controller
       $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
       $nama_mata_kuliah = $request->input('nama', '');
 
-      
+
       $params = [
         'jenis_mata_kuliah' => $jenis_mata_kuliah,
         'search' => $nama_mata_kuliah
       ];
-      
+
       $url = CurriculumService::getInstance()->assignedCourse($id);
       $response = getCurl($url, $params, getHeaders());
       $data = $response->data;
@@ -251,7 +251,7 @@ class CurriculumController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-      
+
       return view('curriculums.list.assign-course', get_defined_vars());
     }
 
@@ -386,6 +386,7 @@ class CurriculumController extends Controller
       return view('curriculums.equivalence.index', get_defined_vars());
     }
 
+
     public function createCurriculumEquivalence(Request $request, $prodi, $programPerkuliahan)
     {
         return view('curriculums.equivalence.create', [
@@ -450,7 +451,6 @@ class CurriculumController extends Controller
             'selectedNewCourses' => $selectedNewCourses
         ]);
     }
-
 
     public function requiredCurriculumStructure(Request $request)
     {

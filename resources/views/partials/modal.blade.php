@@ -48,7 +48,7 @@
             document.getElementById('{{ $modalId }}').style.display = 'block';
         }
     });
-    
+
     document.getElementById('{{$modalId}}-btnCekKembali').addEventListener('click', function() {
         document.getElementById('{{ $modalId }}').removeAttribute('data-id');
         document.getElementById('{{ $modalId }}').style.display = 'none';

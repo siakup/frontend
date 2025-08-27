@@ -367,7 +367,7 @@
                 <div class="button-group">
                     <button type="button" class="button button-clean" id="btnBatal">Batal</button>
                     <button type="button" class="button button-outline" id="btnSimpan"
-                        style="padding: 8px 54.5px; margin: 0px;" disabled>Simpan</button>
+                    style="padding: 8px 54.5px; margin: 0px;" disabled>Simpan</button>
                 </div>
             </div>
             <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">

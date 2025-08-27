@@ -27,6 +27,7 @@ class Authenticate
             && $response->data ?? false
             && $response->data->cookie ?? false
         ) {
+            // dd($response->data);
             setcookie(
                 $response->data->cookie->name,
                 $response->data->cookie->value,
