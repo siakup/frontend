@@ -107,15 +107,6 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/template', [CplMapping::class, 'cplDownloadTemplate'])->name('cpl-mapping.template');
     });
 
-    Route::group(['prefix' => 'pemetaan-cpl'], function () {
-        Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
-        Route::get('/tambah', [CplMapping::class, 'create'])->name('cpl-mapping.create');
-        Route::get('/edit/{id}', [CplMapping::class, 'edit'])->name('cpl-mapping.edit');
-        Route::get('/view/{id}', [CplMapping::class, 'view'])->name('cpl-mapping.view');
-        Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
-        Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
-        Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
-    });
     Route::prefix('persiapan-perkuliahan')->group(function () {
 
         // Group "schedule" biar rapi
@@ -141,7 +132,11 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('delete');
 
                 // IMPORT FET_1
-                Route::post('/import/fet1', [ScheduleController::class, 'importFet1'])->name('import-fet1');
+                Route::get('/import/fet1', [ScheduleController::class, 'importFet1'])->name('import-fet1');
+                Route::post('/upload', [ScheduleController::class, 'uploadResult'])->name('upload-result');
+                Route::post('/save-upload', [ScheduleController::class, 'uploadStore'])->name('save-upload');
+                Route::get('/template', [ScheduleController::class, 'downloadTemplate'])->name('template');
+
             });
         });
 
