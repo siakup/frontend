@@ -330,29 +330,27 @@ class CurriculumController extends Controller
     {
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-     $programStudiList = $responseProgramStudiList->data;
-        // $programStudiList = [
-        //     (object)[
-        //         'id' => 3,
-        //         'ids_role' => '[2, 3, 4]',
-        //         'kode_institusi' => '011',
-        //         'nama' => 'Teknik Kimia',
-        //         'nama_en' => 'Chemical Engineering',
-        //         'created_at' => '2025-08-20T08:18:04.456359Z',
-        //         'updated_ad' => null,
-        //     ],
-        //     (object)[
-        //         'id' => 4,
-        //         'ids_role' => '[2, 3, 4]',
-        //         'kode_institusi' => '012',
-        //         'nama' => 'Teknik Mesin',
-        //         'nama_en' => 'Mechanical Engineering',
-        //         'created_at' => '2025-08-20T09:18:04.456359Z',
-        //         'updated_ad' => null,
-        //     ],
-        // ];
-
-        $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
+//      $programStudiList = $responseProgramStudiList->data;
+        $programStudiList = [
+            (object)[
+                'id' => 3,
+                'ids_role' => '[2, 3, 4]',
+                'kode_institusi' => '011',
+                'nama' => 'Teknik Kimia',
+                'nama_en' => 'Chemical Engineering',
+                'created_at' => '2025-08-20T08:18:04.456359Z',
+                'updated_ad' => null,
+            ],
+            (object)[
+                'id' => 4,
+                'ids_role' => '[2, 3, 4]',
+                'kode_institusi' => '012',
+                'nama' => 'Teknik Mesin',
+                'nama_en' => 'Mechanical Engineering',
+                'created_at' => '2025-08-20T09:18:04.456359Z',
+                'updated_ad' => null,
+            ],
+        ];      $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
 
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());

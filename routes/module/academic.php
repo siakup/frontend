@@ -5,6 +5,7 @@ use App\Http\Controllers\AcademicController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\StudyController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\CplMapping;
 
 Route::group(['middleware' => ['auth']], function () {
@@ -105,4 +106,46 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
         Route::get('/template', [CplMapping::class, 'cplDownloadTemplate'])->name('cpl-mapping.template');
     });
+
+    Route::group(['prefix' => 'pemetaan-cpl'], function () {
+        Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
+        Route::get('/tambah', [CplMapping::class, 'create'])->name('cpl-mapping.create');
+        Route::get('/edit/{id}', [CplMapping::class, 'edit'])->name('cpl-mapping.edit');
+        Route::get('/view/{id}', [CplMapping::class, 'view'])->name('cpl-mapping.view');
+        Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
+        Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
+        Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
+    });
+    Route::prefix('persiapan-perkuliahan')->group(function () {
+
+        // Group "schedule" biar rapi
+        Route::prefix('jadwal-kuliah')->name('academics.schedule.')->group(function () {
+
+            // PRODI SCHEDULE
+            Route::prefix('program-studi')->name('prodi-schedule.')->group(function () {
+                // LIST
+                Route::get('/', [ScheduleController::class, 'index'])->name('index');
+
+                // CREATE
+                Route::get('/tambah', [ScheduleController::class, 'create'])->name('create');
+                Route::post('/',       [ScheduleController::class, 'store'])->name('store');
+
+                // SHOW
+                Route::get('/{id}', [ScheduleController::class, 'show'])->name('show');
+
+                // EDIT
+                Route::get('/{id}/ubah', [ScheduleController::class, 'edit'])->name('edit');
+                Route::put('/{id}',      [ScheduleController::class, 'update'])->name('update');
+
+                // DELETE
+                Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('delete');
+
+                // IMPORT FET_1
+                Route::post('/import/fet1', [ScheduleController::class, 'importFet1'])->name('import-fet1');
+            });
+        });
+
+    });
 });
+
+
