@@ -73,6 +73,7 @@ use App\Http\Controllers\CplMapping;
       Route::get('/{id}/assign-mata-kuliah', [CurriculumController::class, 'assignCurriculumCourse'])->name('curriculum.list.edit.assign-study');
       Route::post('/{id}/assign-mata-kuliah', [CurriculumController::class, 'updateAssignCurriculumCourse'])->name('curriculum.list.edit.update-assign-study');
       Route::get('/{id}/lihat-mata-kuliah/{course_id}', [CurriculumController::class, 'editCurriculumStudyList'])->name('curriculum.list.edit.edit-study');
+      Route::post('/{id}/lihat-mata-kuliah/{course_id}', [CurriculumController::class, 'updateCurriculumStudyList'])->name('curriculum.list.edit.update-study');
     });
     Route::get('/struktur-kurikulum/wajib', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
     Route::get('/struktur-kurikulum/pilihan', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
