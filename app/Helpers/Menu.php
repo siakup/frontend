@@ -231,7 +231,6 @@ class Menu
               'parent' => 'curriculum.equivalence',
               'isExpandable' => false,
             ],
-            
             'college-schedule' => [
                 'name' => 'Jadwal Kuliah',
                 'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi',
@@ -270,6 +269,12 @@ class Menu
                     ],
                 ]
             ],
+            'parent-institution-schedule' => [
+              'name' => 'Jadwal Kuliah',
+              'url' => 'persiapan-perkuliahan/jadwal-kuliah/parent-institution',
+              'parent' => 'academics.schedule.parent-institution-schedule.index',
+              'isExpandable' => false
+            ]
         ];
     }
 
