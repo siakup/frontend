@@ -130,35 +130,27 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('persiapan-perkuliahan')->group(function () {
-
-        // Group "schedule" biar rapi
         Route::prefix('jadwal-kuliah')->name('academics.schedule.')->group(function () {
 
-            // PRODI SCHEDULE
             Route::prefix('program-studi')->name('prodi-schedule.')->group(function () {
-                // LIST
+              
                 Route::get('/', [ScheduleController::class, 'index'])->name('index');
-
-                // CREATE
                 Route::get('/tambah', [ScheduleController::class, 'create'])->name('create');
                 Route::post('/',       [ScheduleController::class, 'store'])->name('store');
-
-                // SHOW
                 Route::get('/{id}', [ScheduleController::class, 'show'])->name('show');
-
-                // EDIT
                 Route::get('/{id}/ubah', [ScheduleController::class, 'edit'])->name('edit');
                 Route::put('/{id}',      [ScheduleController::class, 'update'])->name('update');
-
-                // DELETE
                 Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('delete');
-
-                // IMPORT FET_1
+                
                 Route::get('/import/fet1', [ScheduleController::class, 'importFet1'])->name('import-fet1');
                 Route::post('/upload', [ScheduleController::class, 'uploadResult'])->name('upload-result');
                 Route::post('/save-upload', [ScheduleController::class, 'uploadStore'])->name('save-upload');
                 Route::get('/template', [ScheduleController::class, 'downloadTemplate'])->name('template');
 
+            });
+
+            Route::prefix('parent-institution')->name('parent-institution-schedule.')->group(function () {
+              Route::get('/', [ScheduleController::class, 'parentInstitutionIndex'])->name('index');
             });
         });
 
