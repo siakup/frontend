@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,8 +10,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
-
-
+use App\Endpoint\CourseService;
+use App\Endpoint\EventCalendarService;
+use App\Endpoint\UserService;
 use App\Traits\ApiResponse;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -19,132 +21,157 @@ use Svg\Tag\Rect;
 
 class StudyController extends Controller
 {
-    use ApiResponse;
+  use ApiResponse;
 
-    public function index(Request $request)
-    {
-      return view('study.index', get_defined_vars());
+  public function index(Request $request)
+  {
+    $search = $request->input('search');
+    $page = $request->input('page', 1);
+    $limit = $request->input('limit', 10);
+    $idJenisMataKuliah = $request->input('idJenisMataKuliah');
+
+    $params = [
+      'search' => $search,
+      'page' => $page,
+      'limit' => $limit,
+      'idJenisMataKuliah' => $idJenisMataKuliah,
+    ];
+
+    $urlProgramStudi = UserService::getInstance()->getListAllInstitution();
+    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+    $programStudiList = $responseProgramStudiList->data ?? [];
+
+    $url = CourseService::getInstance()->url();
+    $response = getCurl($url, $params, getHeaders());
+    $mataKuliahList = $response->data ?? [];
+
+    $courses = [
+      'getmataKuliah' => $response->data ?? [],
+      'getprogramStudiList' => $programStudiList ?? [],
+    ];
+
+    return view('study.index', [
+      'mataKuliahList' => $courses['getmataKuliah'],
+      'programStudiList' => $courses['getprogramStudiList'],
+    ]);
+  }
+
+  public function create(Request $request)
+  {
+    return view('study.create', get_defined_vars());
+  }
+
+  public function edit(Request $request, $id)
+  {
+    return view('study.edit', get_defined_vars());
+  }
+
+  public function view(Request $request, $id)
+  {
+    return view('study.view', get_defined_vars());
+  }
+
+  public function upload(Request $request)
+  {
+    return view('study.upload', get_defined_vars());
+  }
+
+  public function uploadResult(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'file' => 'required|file|mimes:csv,xlsx|max:5120'
+    ]);
+    $file = $request->file('file');
+    $file_data = [];
+    $errors = [];
+
+    $file_data = convertFileDataExcelToObject($file);
+    $file_data = array_map(function ($value) {
+      return [
+        'kode' => $value['kode_mk'],
+        'nama' => $value['nama_mk'],
+        'sks' => $value['sks'],
+        'jenis' => $value['jenis_mk'],
+        'semester' => $value['semester']
+      ];
+    }, $file_data);
+
+    return view('study.upload-result', get_defined_vars());
+  }
+
+  public function uploadStore(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+      'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
+    ]);
+
+    if ($validator->fails()) {
+      return back()->withErrors($validator)->withInput();
     }
 
-    public function create(Request $request)
-    {
-      return view('study.create', get_defined_vars());
-    }
+    $file = $request->file('file');
+    $path = $file->getRealPath();
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
-    public function edit(Request $request, $id)
-    {
-      return view('study.edit', get_defined_vars());
-    }
+    //validasi apakah menggunakan koma atau titik koma
+    $rows = array_map(function ($line) {
+      $delimiter = substr_count($line, ';') > substr_count($line, ',') ? ';' : ',';
+      return str_getcsv($line, $delimiter);
+    }, $lines);
 
-    public function view(Request $request, $id)
-    {
-      return view('study.view', get_defined_vars());
-    }
+    $header = array_map('trim', $rows[0]);
+    unset($rows[0]);
 
-    public function upload(Request $request)
-    {
-      return view('study.upload', get_defined_vars());
-    }
+    $eventAkademik = [];
+    foreach ($rows as $index => $row) {
+      $row = array_map('trim', $row);
 
-    public function uploadResult(Request $request)
-    {
-      $validator = Validator::make($request->all(), [
-        'file' => 'required|file|mimes:csv,xlsx|max:5120'
-      ]);
-      $file = $request->file('file');
-      $file_data = [];
-      $errors = [];
-
-      $file_data = convertFileDataExcelToObject($file);
-      $file_data = array_map(function ($value) {
-        return [
-          'kode' => $value['kode_mk'],
-          'nama' => $value['nama_mk'],
-          'sks' => $value['sks'],
-          'jenis' => $value['jenis_mk'],
-          'semester' => $value['semester']
-        ];
-      }, $file_data);
-
-      return view('study.upload-result', get_defined_vars());
-    }
-
-    public function uploadStore(Request $request)
-    {
-      $validator = Validator::make($request->all(), [
-        'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
-      ]);
-
-      if ($validator->fails()) {
-        return back()->withErrors($validator)->withInput();
+      if (count($row) < 9) {
+        continue;
       }
 
-      $file = $request->file('file');
-      $path = $file->getRealPath();
-      $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-      //validasi apakah menggunakan koma atau titik koma
-      $rows = array_map(function ($line) {
-        $delimiter = substr_count($line, ';') > substr_count($line, ',') ? ';' : ',';
-        return str_getcsv($line, $delimiter);
-      }, $lines);
-
-      $header = array_map('trim', $rows[0]);
-      unset($rows[0]);
-
-      $eventAkademik = [];
-      foreach ($rows as $index => $row) {
-        $row = array_map('trim', $row);
-
-        if (count($row) < 9) {
-          continue;
-        }
-
-        $eventAkademik[] = [
-          'nama'         => $row[0],
-          'event_nilai'  => strtolower($row[1]) === 'y',
-          'event_krs'    => strtolower($row[2]) === 'y',
-          'event_lulus'  => strtolower($row[3]) === 'y',
-          'registrasi'   => strtolower($row[4]) === 'y',
-          'yudisium'     => strtolower($row[5]) === 'y',
-          'survei'       => strtolower($row[6]) === 'y',
-          'event_dosen'  => strtolower($row[7]) === 'y',
-          'status'       => strtolower($row[8]) === 'active' ? 'active' : 'inactive',
-          'calendar_id'  => $id,
-        ];
-      }
-
-      // $url = EventCalendarService::getInstance()->bulkStore();
-      // $response = postCurl($url, [
-      //   'events' => $eventAkademik,
-      //   'idperiode' => $id,
-      // ], getHeaders());
-
-      return redirect()->route('study.index', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
-      // if (isset($response->success) && $response->success) {
-      //   return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
-      // }
-        
-      return redirect()->route('calendar.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
+      $eventAkademik[] = [
+        'nama'         => $row[0],
+        'event_nilai'  => strtolower($row[1]) === 'y',
+        'event_krs'    => strtolower($row[2]) === 'y',
+        'event_lulus'  => strtolower($row[3]) === 'y',
+        'registrasi'   => strtolower($row[4]) === 'y',
+        'yudisium'     => strtolower($row[5]) === 'y',
+        'survei'       => strtolower($row[6]) === 'y',
+        'event_dosen'  => strtolower($row[7]) === 'y',
+        'status'       => strtolower($row[8]) === 'active' ? 'active' : 'inactive',
+        'calendar_id'  => $id,
+      ];
     }
 
-    public function store(Request $request, $id)
-    {
-      return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
-    }
+    // $url = EventCalendarService::getInstance()->bulkStore();
+    // $response = postCurl($url, [
+    //   'events' => $eventAkademik,
+    //   'idperiode' => $id,
+    // ], getHeaders());
 
-    public function send(Request $request, $id)
-    {
-      return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
-    }
+    return redirect()->route('study.index', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+    // if (isset($response->success) && $response->success) {
+    //   return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+    // }
 
-    public function update(Request $request, $id)
-    {
+    return redirect()->route('calendar.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
+  }
 
-    }
+  public function store(Request $request, $id)
+  {
+    return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
+  }
 
-    public function delete(Request $request, $id)
-    {
-        return redirect()->back();
-    }
+  public function send(Request $request, $id)
+  {
+    return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+  }
+
+  public function update(Request $request, $id) {}
+
+  public function delete(Request $request, $id)
+  {
+    return redirect()->back();
+  }
 }

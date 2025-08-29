@@ -71,9 +71,9 @@ class CurriculumService
     return $this->url() . '/bulk-store';
   }
 
-  public function getMandatoryCourses($id)
+  public function getMandatoryCourses()
   {
-    return $this->url() . '/' . $id . '/mandatory';
+    return $this->url() . '/mandatory';
   }
 
   public function getOptionalCourses($id)

@@ -7,7 +7,7 @@ use Livewire\WithPagination;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 use App\Traits\ApiResponse;
-use App\Endpoint\LectureService;
+use App\Endpoint\CourseService;
 
 
 
@@ -23,7 +23,9 @@ class MataKuliahTable extends Component
     public $sortDirection = 'asc';
     public $programStudi = '';
     public int $page = 1;
-    public array $mataKuliahData = [];
+
+    public $mataKuliahList = [];
+    public $programStudiList = [];
 
 
     protected $listeners = [
@@ -39,96 +41,16 @@ class MataKuliahTable extends Component
         'programStudi' => ['except' => '']
     ];
 
-    // // Extended dummy data
-    // protected $mataKuliahData = [
-    //     ['kode' => 'MK001', 'nama' => 'Algoritma dan Pemrograman', 'sks' => 3, 'semester' => 1, 'jenis' => 'Wajib', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK002', 'nama' => 'Struktur Data', 'sks' => 3, 'semester' => 2, 'jenis' => 'Wajib', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK003', 'nama' => 'Basis Data', 'sks' => 3, 'semester' => 3, 'jenis' => 'Wajib', 'prodi' => 'Sistem Informasi'],
-    //     ['kode' => 'MK004', 'nama' => 'Pemrograman Web', 'sks' => 3, 'semester' => 4, 'jenis' => 'Wajib', 'prodi' => 'Sistem Informasi'],
-    //     ['kode' => 'MK005', 'nama' => 'Jaringan Komputer', 'sks' => 3, 'semester' => 5, 'jenis' => 'Wajib', 'prodi' => 'Teknik Komputer'],
-    //     ['kode' => 'MK006', 'nama' => 'Kecerdasan Buatan', 'sks' => 3, 'semester' => 6, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK007', 'nama' => 'Sistem Operasi', 'sks' => 3, 'semester' => 3, 'jenis' => 'Wajib', 'prodi' => 'Teknik Komputer'],
-    //     ['kode' => 'MK008', 'nama' => 'Pemrograman Mobile', 'sks' => 3, 'semester' => 5, 'jenis' => 'Pilihan', 'prodi' => 'Sistem Informasi'],
-    //     ['kode' => 'MK009', 'nama' => 'Data Mining', 'sks' => 3, 'semester' => 6, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK010', 'nama' => 'Keamanan Jaringan', 'sks' => 3, 'semester' => 5, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Komputer'],
-    //     ['kode' => 'MK011', 'nama' => 'Pengembangan Aplikasi Mobile', 'sks' => 3, 'semester' => 7, 'jenis' => 'Pilihan', 'prodi' => 'Sistem Informasi'],
-    //     ['kode' => 'MK012', 'nama' => 'Cloud Computing', 'sks' => 3, 'semester' => 8, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK013', 'nama' => 'Machine Learning', 'sks' => 3, 'semester' => 8, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK014', 'nama' => 'Analisis Sistem Informasi', 'sks' => 3, 'semester' => 4, 'jenis' => 'Wajib', 'prodi' => 'Sistem Informasi'],
-    //     ['kode' => 'MK015', 'nama' => 'Rekayasa Perangkat Lunak', 'sks' => 3, 'semester' => 6, 'jenis' => 'Wajib', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK016', 'nama' => 'Pengembangan Game', 'sks' => 3, 'semester' => 7, 'jenis' => 'Pilihan', 'prodi' => 'Sistem Informasi'],
-    //     ['kode' => 'MK017', 'nama' => 'Big Data', 'sks' => 3, 'semester' => 8, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK018', 'nama' => 'Internet of Things (IoT)', 'sks' => 3, 'semester' => 7, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Komputer'],
-    //     ['kode' => 'MK019', 'nama' => 'Etika Profesi TI', 'sks' => 2, 'semester' => 1, 'jenis' => 'Wajib', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK020', 'nama' => 'Manajemen Proyek TI', 'sks' => 3, 'semester' => 6, 'jenis' => 'Wajib', 'prodi' => 'Sistem Informasi'],
-    //     ['kode' => 'MK021', 'nama' => 'Sistem Informasi Geografis', 'sks' => 3, 'semester' => 5, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK022', 'nama' => 'Analisis Data Besar', 'sks' => 3, 'semester' => 7, 'jenis' => 'Pilihan', 'prodi' => 'Sistem Informasi'],
-    //     ['kode' => 'MK023', 'nama' => 'Pengembangan Aplikasi Berbasis Cloud', 'sks' => 3, 'semester' => 8, 'jenis' => 'Pilihan', 'prodi' => 'Teknik Informatika'],
-    //     ['kode' => 'MK024', 'nama' => 'Sistem Keamanan Informasi', 'sks' => 3, 'semester' => 6, 'jenis' => 'Wajib', 'prodi' => 'Teknik Komputer']
-    // ];
-
-    public function fetchData()
+    public function mount($mataKuliahList = [], $programStudiList = [])
     {
-        $params = [
-            'search' => $this->search,
-            'prodi' => $this->programStudi,
-            'sort' => $this->sortBy . ',' . $this->sortDirection,
-            'page' => $this->page,
-            'limit' => $this->perPage,
-        ];
-
-        $url = LectureService::getInstance()->getMataKuliah();
-        $response = getCurl($url, $params, getHeaders());
-
-        if ($response->status ?? false) {
-            $this->mataKuliahData = $response->data ?? [];
-        } else {
-            $this->mataKuliahData = [];
-        }
+        $this->mataKuliahList = $mataKuliahList;
+        $this->programStudiList = $programStudiList;
     }
 
     public function render()
     {
-        $collection = collect($this->mataKuliahData);
-
-        // Apply search filter
-        if ($this->search) {
-            $collection = $collection->filter(function ($item) {
-                return str_contains(strtolower($item['nama']), strtolower($this->search)) ||
-                    str_contains(strtolower($item['kode']), strtolower($this->search));
-            });
-        }
-
-        // Apply program studi filter
-        if ($this->programStudi) {
-            $collection = $collection->where('prodi', $this->programStudi);
-        }
-
-        // Apply sorting
-        if ($this->sortBy) {
-            $collection = $this->sortDirection === 'asc'
-                ? $collection->sortBy($this->sortBy)
-                : $collection->sortByDesc($this->sortBy);
-        }
-
-        // Paginate the results
-        $page = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = $this->perPage;
-        $results = $collection->slice(($page - 1) * $perPage, $perPage)->values();
-        $paginated = new LengthAwarePaginator(
-            $results,
-            $collection->count(),
-            $perPage,
-            $page,
-            ['path' => LengthAwarePaginator::resolveCurrentPath()]
-        );
-
-        return view('livewire.mata-kuliah.mata-kuliah-table', [
-            'mataKuliahList' => $paginated,
-            'prodiOptions' => array_unique(array_column($this->mataKuliahData, 'prodi'))
-        ]);
+        return view('livewire.mata-kuliah.mata-kuliah-table');
     }
-
     public function sort($field)
     {
         if ($this->sortBy === $field) {
