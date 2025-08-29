@@ -326,92 +326,20 @@ class CurriculumController extends Controller
 
     public function editCurriculumStudyList(Request $request, $id, $course_id)
     {
-      $url = CurriculumService::getInstance()->detailCourseCurriculums($course_id);
+      $url = CurriculumService::getInstance()->courseCurriculumUrl($course_id);
       $response = getCurl($url, null, getHeaders());
       $data = $response->data;
 
-      $dataDetail = [
-        'nama_kurikulum' => 'Ilmu Komputer',
-        'kode_matakuliah' => '10004',
-        'matakuliah' => 'Agama Katolik dan Etika',
-        'sks' => 2,
-        'semester' => 1
+      
+      $params = [
+        'program' => $data->curriculum->program,
+        'id_program_studi' => $data->curriculum->program_studi
       ];
-
-      $data = [
-        [
-          'id' => 1,
-          'kode' => 'CPL-A',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 2,
-          'kode' => 'CPL-B',
-          'capaian' => 'Memiliki kemampuan untuk memahami pertimbangan etis, budaya akademik, dan bertanggung jawab secara profesional',
-          'is_select' => false
-        ],
-        [
-          'id' => 3,
-          'kode' => 'CPL-C',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 4,
-          'kode' => 'CPL-D',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 5,
-          'kode' => 'CPL-E',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 6,
-          'kode' => 'CPL-F',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 7,
-          'kode' => 'CPL-G',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 8,
-          'kode' => 'CPL-H',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 9,
-          'kode' => 'CPL-I',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 10,
-          'kode' => 'CPL-J',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 11,
-          'kode' => 'CPL-K',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-        [
-          'id' => 12,
-          'kode' => 'CPL-L',
-          'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-          'is_select' => false
-        ],
-      ];
+      $urlCpl = CurriculumService::getInstance()->cplUrl();
+      $responseCpl = getCurl($urlCpl, $params, getHeaders());
+      // dd($responseCpl);
+      $cpls = $responseCpl->data;
+      
       return view('curriculums.list.edit-course', get_defined_vars());
     }
 

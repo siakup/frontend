@@ -25,6 +25,21 @@ class CurriculumService
     {
         return config('endpoint.lecture.url') . '/api/curriculums';
     }
+    
+    public function courseUrl() 
+    {
+      return config('endpoint.lecture.url') . '/api/courses';
+    }
+
+    public function courseCurriculumUrl($id)
+    {
+      return config('endpoint.lecture.url') . '/api/curriculum-course/' . $id;
+    }
+
+    public function cplUrl() 
+    {
+      return config('endpoint.lecture.url') . '/api/cpl/list';
+    }
 
     public function listCurriculum()
     {
@@ -46,10 +61,6 @@ class CurriculumService
       return $this->url() . '/' . $id;
     }
 
-    public function courseUrl() 
-    {
-      return config('endpoint.lecture.url') . '/api/courses';
-    }
 
     public function getJenisMataKuliah()
     {
