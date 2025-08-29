@@ -85,7 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::prefix('jadwal-kuliah')->name('academics.schedule.')->group(function () {
 
             Route::prefix('program-studi')->name('prodi-schedule.')->group(function () {
-              
+
                 Route::get('/', [ScheduleController::class, 'index'])->name('index');
                 Route::get('/tambah', [ScheduleController::class, 'create'])->name('create');
                 Route::post('/',       [ScheduleController::class, 'store'])->name('store');
@@ -93,7 +93,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/{id}/ubah', [ScheduleController::class, 'edit'])->name('edit');
                 Route::put('/{id}',      [ScheduleController::class, 'update'])->name('update');
                 Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('delete');
-                
+
                 Route::get('/import/fet1', [ScheduleController::class, 'importFet1'])->name('import-fet1');
                 Route::post('/upload', [ScheduleController::class, 'uploadResult'])->name('upload-result');
                 Route::post('/save-upload', [ScheduleController::class, 'uploadStore'])->name('save-upload');
@@ -108,5 +108,3 @@ Route::group(['middleware' => ['auth']], function () {
 
     });
 });
-
-
