@@ -149,23 +149,23 @@
       <tbody>
         <tr class="text-[#262626]">
           <td class="bg-[#E8E8E8] px-[20px] py-[8px] w-[30%]">Nama Kurikulum</th>
-          <td class="px-[20px] py-[8px] bg-[#F5F5F5] font-bold w-[70%]">Ilmu Komputer</td>
+          <td class="px-[20px] py-[8px] bg-[#F5F5F5] font-bold w-[70%]">{{$data->curriculum->nama_kurikulum}}</td>
         </tr>
         <tr class="text-[#262626]">
           <td class="bg-[#F5F5F5] px-[20px] py-[8px] w-[30%]">Kode Mata Kuliah</th>
-          <td class="px-[20px] py-[8px] bg-[#FFFFFF] font-bold w-[70%]">10004</td>
+          <td class="px-[20px] py-[8px] bg-[#FFFFFF] font-bold w-[70%]">{{$data->course->kode_matakuliah}}</td>
         </tr>
         <tr class="text-[#262626]">
           <td class="bg-[#E8E8E8] px-[20px] py-[8px] w-[30%]">Mata Kuliah</th>
-          <td class="px-[20px] py-[8px] bg-[#F5F5F5] font-bold w-[70%]">Agama Katolik dan Etika</td>
+          <td class="px-[20px] py-[8px] bg-[#F5F5F5] font-bold w-[70%]">{{$data->course->nama_matakuliah}}</td>
         </tr>
         <tr class="text-[#262626]">
           <td class="bg-[#F5F5F5] px-[20px] py-[8px] w-[30%]">SKS</th>
-          <td class="px-[20px] py-[8px] bg-[#FFFFFF] font-bold w-[70%]">2</td>
+          <td class="px-[20px] py-[8px] bg-[#FFFFFF] font-bold w-[70%]">{{$data->course->sks}}</td>
         </tr>
         <tr class="text-[#262626]">
           <td class="bg-[#E8E8E8] px-[20px] py-[8px] w-[30%]">Semester Kurikulum</th>
-          <td class="px-[20px] py-[8px] bg-[#F5F5F5] font-bold w-[70%]">1</td>
+          <td class="px-[20px] py-[8px] bg-[#F5F5F5] font-bold w-[70%]">{{$data->course->semester}}</td>
         </tr>
       </tbody>
     </table>
@@ -179,7 +179,7 @@
     <div class="form-group">
       <label for="semester">Semester</label>
       <div class="input-by-search input flex flex-col !items-start">
-        <input type="text" id="semester" class="form-control" value="1" name="semester" placeholder="semester">
+        <input type="text" id="semester" class="form-control" value="{{$data->course->semester}}" name="semester" placeholder="semester">
         <p class="text-[#8C8C8C] text-[12px]">Semester hanya dapat diisi dengan angka 1 sampai 8</p>
       </div>
     </div>
@@ -203,12 +203,14 @@
                   </x-table-row>
               </x-table-head>
               <x-table-body>
-                  @forelse ($data as $d)
+                  @forelse ($cpls as $cpl)
                       <x-table-row>
-                          <x-table-cell>{{ $d['kode'] }}</x-table-cell>
-                          <x-table-cell class="text-start">{{ $d['capaian'] }}</x-table-cell>
+                          <x-table-cell>{{ $cpl->kode_cpl }}</x-table-cell>
+                          <x-table-cell class="text-start">{{ $cpl->deskripsi_cpl }}</x-table-cell>
                           <x-table-cell>
-                            <input type="checkbox" name="cpl[]" id="select-all" value="{{$d['id']}}" @if($d['is_select']) checked @endif>
+                            <input type="checkbox" name="cpl[]" id="select-all" value="{{$cpl->id_cpl}}" @if(current(array_filter($data->cpls, function ($c) use($cpl) {
+                              return $c->id_cpl == $cpl->id_cpl;
+                            })) ? true : false) checked @endif>
                           </x-table-cell>
                       </x-table-row>
                   @empty
@@ -224,7 +226,7 @@
       </x-container>
       <div class="flex justify-end">
         <div class="button-group flex">
-          <button type="button" class="button button-clean disabled:!bg-white disabled:!border-[#D9D9D9] disabled:!border-1 !min-w-[151px]" id="btnBatal">Batal</button>
+          <a href="{{route('curriculum.list.edit.show-study', ['id' => $id])}}" class="button button-clean disabled:!bg-white disabled:!border-[#D9D9D9] disabled:!border-1 !min-w-[151px]" id="btnBatal">Batal</a>
           <button type="button" class="button button-outline !min-w-[151px] btnSimpan" id="btnSimpan" disabled>Simpan</button>
         </div>
       </div>
