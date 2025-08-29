@@ -232,7 +232,7 @@
             <div class="pager" id="mk-pager"></div>
         </div>
         <div class="actions">
-            <button type="button" class="btn ml-160" id="mk-btn-batal">Batal</button>
+            <button type="button" class="btn ml-105" id="mk-btn-batal">Batal</button>
         </div>
         </div>
   </div>
