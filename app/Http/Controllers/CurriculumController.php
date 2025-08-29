@@ -332,7 +332,7 @@ class CurriculumController extends Controller
 
       
       $params = [
-        'id_program' => $data->curriculum->program,
+        'program' => $data->curriculum->program,
         'id_program_studi' => $data->curriculum->program_studi
       ];
       $urlCpl = CurriculumService::getInstance()->cplUrl();
