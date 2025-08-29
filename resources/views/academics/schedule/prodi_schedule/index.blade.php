@@ -1,5 +1,3 @@
-resources/views/layouts/main.blade.php
-
 @extends('layouts.main')
 
 @section('title', 'Jadwal Kuliah Program Studi')
@@ -17,7 +15,7 @@ resources/views/layouts/main.blade.php
   .button-clean{ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border:1px solid #E5E7EB; border-radius:8px; background:#fff; }
   .sort-dropdown{ position:absolute; z-index:30; display:none; min-width:220px; background:#fff; border:1px solid #E5E7EB; border-radius:10px; box-shadow:0 10px 30px rgba(0,0,0,.06); }
   .sort-dropdown .dropdown-item{ padding:10px 14px; cursor:pointer; }
-  .sort-dropdown .dropdown-item:hover{ background:#F8FAFC; }
+  .sort-dropdown .dropdown-item:hover{ background:#EB474D; }
   .CampusWrap, .StudyWrap{ position:relative; }
   .sort-dropdown.campus{ top:48px; left:0; }
   .sort-dropdown.study{  top:48px; left:0; }
@@ -41,7 +39,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const studyBtn    = document.querySelector('#sortButtonStudy');
   const studyDrop   = document.querySelector('#sortDropdownStudy');
 
-  // toggle dropdowns
   campusBtn?.addEventListener('click', function(e){
     e.stopPropagation();
     campusDrop.style.display = campusDrop.style.display==='block' ? 'none' : 'block';
@@ -55,14 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
     toggleArrow(this);
   });
 
-    //search
     document.getElementById('searchInput').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             this.form.submit();
         }
     });
 
-  // choose items
   campusDrop?.querySelectorAll('.dropdown-item').forEach(el=>{
     el.addEventListener('click', function(){
       const url = new URL(window.location.href);
@@ -80,13 +75,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // close on outside click
   document.addEventListener('click', (e)=>{
     if(!e.target.closest('.CampusWrap')) { campusDrop.style.display='none'; resetArrow(campusBtn); }
     if(!e.target.closest('.StudyWrap'))  { studyDrop.style.display='none';  resetArrow(studyBtn);  }
   });
 
-  // search
   document.querySelector('#btnSearch')?.addEventListener('click', function(){
     const q = document.querySelector('#q').value || '';
     const url = new URL(window.location.href);
@@ -95,10 +88,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.location.href = url.toString();
   });
 
-  // sort popover (dummy — tinggal kirim query sort)
   document.querySelector('#btnSort')?.addEventListener('click', function(){
     const url = new URL(window.location.href);
-    // contoh: sort=matkul_asc
     url.searchParams.set('sort', 'matkul_asc');
     window.location.href = url.toString();
   });
@@ -124,18 +115,15 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 
 <div class="academics-layout">
-  {{-- jika ada navbar khusus, bisa include di sini --}}
   @include('academics.schedule.prodi_schedule.navbar-jadwal-prodi')
   <div class="academics-slicing-content content-card p-[20px]">
 
 
-    {{-- JUDUL --}}
 
     <x-typography variant="heading-h6" class="mb-2 p-[20px]">
       Jadwal Kuliah Program Studi
     </x-typography>
 
-    {{-- FILTER BAR --}}
     <div class="card-header option-list">
       <div class="card-header">
         <div class="page-title-text sub-title">Program Perkuliahan</div>
@@ -175,8 +163,6 @@ document.addEventListener('DOMContentLoaded', function () {
         ])
       </div>
 
-      {{-- Search + Urutkan  --}}
-   {{-- start search --}}
 </div>
 <x-container class="">
     <div class="card-header">
@@ -196,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function () {
      </div>
  </form>
 
- {{-- start filter --}}
+
 
  @include('partials.dropdown-filter', [
      'buttonId' => 'sortButton',
@@ -225,57 +211,75 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
 </x-container>
 <div class="flex flex-col gap-5">
-<x-table>
-<x-table-head>
-  <x-table-row>
-    <x-table-header>Semester</x-table-header>
-    <x-table-header>Mata Kuliah</x-table-header>
-    <x-table-header>Nama Kelas</x-table-header>
-    <x-table-header>Kapasitas</x-table-header>
-    <x-table-header>Jadwal</x-table-header>
-    <x-table-header>Pengajar</x-table-header>
-    <x-table-header>Aksi</x-table-header>
-  </x-table-row>
-</x-table-header>
+    <x-table>
+    <x-table-head>
+    <x-table-row>
+        <x-table-header>Semester</x-table-header>
+        <x-table-header>Mata Kuliah</x-table-header>
+        <x-table-header>Nama Kelas</x-table-header>
+        <x-table-header>Kapasitas</x-table-header>
+        <x-table-header>Jadwal</x-table-header>
+        <x-table-header>Pengajar</x-table-header>
+        <x-table-header>Aksi</x-table-header>
+    </x-table-row>
+    </x-table-header>
 
-<x-table-body>
-  @php
-    $rows = $items instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator
-      ? $items->items()
-      : (isset($items['data']) ? $items['data'] : ($items ?? []));
-  @endphp
+    <x-table-body>
+    @php
+        $rows = $items instanceof \Illuminate\Contracts\Pagination\LengthAwarePaginator
+        ? $items->items()
+        : (isset($items['data']) ? $items['data'] : ($items ?? []));
+    @endphp
 
-    @forelse ($rows as $r)
-        <x-table-row>
-          <x-table-cell>{{ $r['semester'] ?? '-' }}</x-table-cell>
-          <x-table-cell>
-            <div class="font-medium">{{ $r['mata_kuliah'] ?? '-' }}</div>
-          </x-table-cell>
-          <x-table-cell>{{ $r['nama_kelas'] ?? '-' }}</x-table-cell>
-          <x-table-cell>{{ $r['kapasitas'] ?? '-' }}</x-table-cell>
-          <x-table-cell>
-            @foreach(($r['jadwal'] ?? []) as $j)
-              <div class="mb-1">
-                <span style="display:inline-block; min-width:56px">{{ $j['hari'] ?? '-' }}</span>
-                • {{ $j['waktu'] ?? '-' }}
-                <span class="text-gray-500">[{{ $j['ruang'] ?? '-' }}]</span>
-              </div>
-            @endforeach
-          </x-table-cell>
-          <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
-          <x-table-cell>
-            {{-- aksi --}}
-          </x-table-cell>
-        </x-table-row>
-        @empty
-            @include('academics.periode.error-filter')
-    @endforelse
-</x-table-body>
+        @forelse ($rows as $r)
+            <x-table-row>
+            <x-table-cell>{{ $r['semester'] ?? '-' }}</x-table-cell>
+            <x-table-cell>
+                <div class="font-medium">{{ $r['mata_kuliah'] ?? '-' }}</div>
+            </x-table-cell>
+            <x-table-cell>{{ $r['nama_kelas'] ?? '-' }}</x-table-cell>
+            <x-table-cell>{{ $r['kapasitas'] ?? '-' }}</x-table-cell>
+            <x-table-cell>
+                @foreach(($r['jadwal'] ?? []) as $j)
+                <div class="mb-1">
+                    <span style="display:inline-block; min-width:56px">{{ $j['hari'] ?? '-' }}</span>
+                    • {{ $j['waktu'] ?? '-' }}
+                    <span class="text-gray-500">[{{ $j['ruang'] ?? '-' }}]</span>
+                </div>
+                @endforeach
+            </x-table-cell>
+            <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
+            <x-table-cell>
+                    <div class="center">
+                        <a href="" type="button" class="btn-icon btn-view-periode-academic"
+                            data-periode-akademik="" title="Lihat">
+                            <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
+                            <span>Lihat</span>
+                        </a>
 
-</x-table>
-            </div>
+                        <a class="btn-icon btn-edit-periode-academic" title="Ubah"
+                            href=""
+                            style="text-decoration: none; color: inherit;">
+                            <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
+                            <span style="color: #E62129">Ubah</span>
+                        </a>
 
-    {{-- TABEL LIST --}}
+                        <button type="button" class="btn-icon btn-delete" data-id="" title="Hapus">
+                            <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+                            <span class="text-[#8C8C8C]">Hapus</span>
+                        </button>
+                    </div>
+            </x-table-cell>
+            </x-table-row>
+            @empty
+                @include('academics.periode.error-filter')
+        @endforelse
+    </x-table-body>
+
+    </x-table>
+</div>
+
+
 
   <div class="card-header">
       <div class="right gap-5">
@@ -289,8 +293,6 @@ document.addEventListener('DOMContentLoaded', function () {
   </div>
 </div>
 </div>
-
-
 
     @include('partials.pagination', [
         'currentPage' => 1,
