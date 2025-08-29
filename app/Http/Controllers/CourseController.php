@@ -39,7 +39,6 @@ class CourseController extends Controller
             }
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
-
         return view('courses.index',  get_defined_vars());
     }
 
@@ -50,37 +49,6 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-
-        // Simulasi data dummy
-        // $dummyData = [
-        //     "kode_matakuliah" => "IF101",
-        //     "nama_matakuliah_id" => "Algoritma dan Pemrograman",
-        //     "nama_matakuliah_en" => "Algorithm and Programming",
-        //     "nama_singkat" => "A0010",
-        //     "id_prodi" => 1,
-        //     "sks" => 3,
-        //     "semester" => 1,
-        //     "deskripsi" => "Mata kuliah dasar pemrograman komputer",
-        //     "daftar_pustaka" => "Intro to Algorithms, Programming in C",
-        //     "id_jenis" => 1,
-        //     "id_koordinator" => 5,
-        //     "matakuliah_spesial" => true,
-        //     "prodi_lain" => false,
-        //     "matakuliah_wajib" => true,
-        //     "kampus_merdeka" => false,
-        //     "matakuliah_capstone" => false,
-        //     "matakuliah_kerja_praktik" => false,
-        //     "matakuliah_tugas_akhir" => false,
-        //     "matakuliah_minor" => false,
-        //     "status" => "active",
-        //     "created_by" => 'admin',
-        //     "updated_by" => 'admin',
-        //     "prasyarat" => ["IF100", "MT101"],
-        //     "tipe" => "Co-Requisite",
-        // ];
-
-        // $request->replace($dummyData);
-
         $validated = $request->validate([
             'kode_matakuliah'       => 'required',
             'nama_matakuliah_id'    => 'required',
@@ -233,7 +201,7 @@ class CourseController extends Controller
 
         $params = compact('prodi');
 
-        $url = CourseService::getInstance()->getMataKuliahPrasyarat();
+        $url = CourseService::getInstance()->prerequisiteCoursesBaseUrl();
         $response = getCurl($url, $params, getHeaders());
 
         if ($request->ajax()) {

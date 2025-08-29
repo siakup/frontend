@@ -146,6 +146,8 @@
   })
 </script>
 
+@include('partials.success-notification-modal', ['route' => route('curriculum.list.edit.show-study', ['id' => $id])])
+
 @section('content')
   <div class="page-header">
     @if(Request::routeIs('curriculum.list.view.show-study'))

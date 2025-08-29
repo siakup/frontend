@@ -83,7 +83,7 @@
                         }">
                             <template x-if="mataKuliahList.length > 0">
                                 <template x-for="(matkul, idx) in mataKuliahList" :key="matkul.kode">
-                                    <tr :class="getRowClass(idx, mataKuliahList . length)">
+                                    <tr :class="getRowClass(idx, mataKuliahList.length)">
                                         <x-table-cell x-text="matkul.kode"></x-table-cell>
                                         <x-table-cell x-text="matkul.nama_id"></x-table-cell>
 
@@ -128,14 +128,12 @@
 
             {{-- !!! TODO: Benerin --}}
             <!-- Pagination and Per Page Selector -->
-            @if (isset($data['data']))
-                @include('partials.pagination', [
-                    'currentPage' => $data['pagination']['current_page'],
-                    'lastPage' => $data['pagination']['last_page'],
-                    'limit' => $limit,
-                    'routes' => route('academics-event.index'),
-                ])
-            @endif
+            @include('partials.pagination', [
+                'currentPage' => 1,
+                'lastPage' => 5,
+                'limit' => 10,
+                'routes' => route('academics-event.index'),
+            ])
 
 
             <script>
