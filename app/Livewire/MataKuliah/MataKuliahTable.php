@@ -18,7 +18,7 @@ class MataKuliahTable extends Component
 
 
     public $search = '';
-    public $perPage = 5; // Reduced for testing
+    public $perPage = 5;
     public $sortBy = 'nama';
     public $sortDirection = 'asc';
     public $programStudi = '';
@@ -60,12 +60,6 @@ class MataKuliahTable extends Component
             $this->sortDirection = 'asc';
         }
     }
-
-    public function updatingSearch()
-    {
-        $this->resetPage();
-    }
-
     public function updatingProgramStudi()
     {
         $this->resetPage();

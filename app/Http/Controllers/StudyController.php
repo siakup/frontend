@@ -28,13 +28,15 @@ class StudyController extends Controller
     $search = $request->input('search');
     $page = $request->input('page', 1);
     $limit = $request->input('limit', 10);
-    $idJenisMataKuliah = $request->input('idJenisMataKuliah');
+    $programStudi = $request->input('programStudi');
+    $sortBy = $request->input('sortBy');
 
     $params = [
       'search' => $search,
       'page' => $page,
       'limit' => $limit,
-      'idJenisMataKuliah' => $idJenisMataKuliah,
+      'programStudi' => $programStudi,
+      'sortBy' => $sortBy
     ];
 
     $urlProgramStudi = UserService::getInstance()->getListAllInstitution();
@@ -45,6 +47,7 @@ class StudyController extends Controller
     $response = getCurl($url, $params, getHeaders());
     $mataKuliahList = $response->data ?? [];
 
+
     $courses = [
       'getmataKuliah' => $response->data ?? [],
       'getprogramStudiList' => $programStudiList ?? [],
@@ -53,6 +56,9 @@ class StudyController extends Controller
     return view('study.index', [
       'mataKuliahList' => $courses['getmataKuliah'],
       'programStudiList' => $courses['getprogramStudiList'],
+      'search' => $search,
+      'programStudi' => $programStudi,
+      'sortBy' => $sortBy
     ]);
   }
 
@@ -170,8 +176,21 @@ class StudyController extends Controller
 
   public function update(Request $request, $id) {}
 
-  public function delete(Request $request, $id)
+  public function delete($id)
   {
-    return redirect()->back();
+    $url = CourseService::getInstance()->courseUrl($id);
+    $response = deleteCurl($url, getHeaders());
+
+    if (isset($response['status']) && $response['status'] == 'success') {
+      return response()->json([
+        'status' => 'success',
+        'message' => 'Mata kuliah berhasil dihapus'
+      ], 200);
+    }
+
+    return response()->json([
+      'status' => 'error',
+      'message' => $response['message'] ?? 'Gagal menghapus mata kuliah'
+    ], 400);
   }
 }
