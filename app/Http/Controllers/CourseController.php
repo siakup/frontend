@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Endpoint\CourseService;
+use App\Endpoint\UserService;
 
 use App\Traits\ApiResponse;
 
@@ -17,30 +18,37 @@ class CourseController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request()->input('search');
+        $search = $request->input('search');
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
-        $idJenisMataKuliah   = $request->input('idJenisMataKuliah');
+        $idJenisMataKuliah = $request->input('idJenisMataKuliah');
 
         $params = [
             'search' => $search,
             'page' => $page,
             'limit' => $limit,
-            'idJenisMataKuliah'  => $idJenisMataKuliah,
+            'idJenisMataKuliah' => $idJenisMataKuliah,
         ];
+
+        $urlProgramStudi = UserService::getInstance()->getListAllInstitution();
+        $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+        $programStudiList = $responseProgramStudiList->data ?? [];
 
         $url = CourseService::getInstance()->url();
         $response = getCurl($url, $params, getHeaders());
-        $data = json_decode(json_encode($response), true);
+        $mataKuliahList = $response->data ?? [];
 
-        if ($request->ajax()) {
-            if (!isset($response->data)) {
-                return $this->errorResponse($response->message);
-            }
-            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
-        }
-        return view('courses.index',  get_defined_vars());
+        $courses = [
+            'getmataKuliah' => $response->data ?? [],
+            'getprogramStudiList' => $programStudiList ?? [],
+        ];
+
+        return view('study.index', [
+            'mataKuliahList' => $courses['getmataKuliah'],
+            'programStudiList' => $courses['getprogramStudiList'],
+        ]);
     }
+
 
     public function create()
     {

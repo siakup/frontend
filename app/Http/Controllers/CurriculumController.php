@@ -30,39 +30,39 @@ class CurriculumController extends Controller
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-    //         $programPerkuliahanList = [
-    //             (object)[ 'name' => 'Reguler', 'code' => 0 ],
-    //             (object)[ 'name' => 'Double Degree', 'code' => 1 ],
-    //             (object)[ 'name' => 'International Class', 'code' => 2 ],
-    //             (object)[ 'name' => 'Eksekutif', 'code' => 3 ],
-    //             (object)[ 'name' => 'Exchange', 'code' => 4 ],
-    //             (object)[ 'name' => 'Merdeka Belajar', 'code' => 5 ],
-    //         ];
+    $programPerkuliahanList = [
+      (object)['name' => 'Reguler', 'code' => 0],
+      (object)['name' => 'Double Degree', 'code' => 1],
+      (object)['name' => 'International Class', 'code' => 2],
+      (object)['name' => 'Eksekutif', 'code' => 3],
+      (object)['name' => 'Exchange', 'code' => 4],
+      (object)['name' => 'Merdeka Belajar', 'code' => 5],
+    ];
     $id_program = $request->input('program_perkuliahan');
 
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
     $programStudiList = $responseProgramStudiList->data;
-    //     $programStudiList = [
-    //     (object)[
-    //         'id' => 3,
-    //         'ids_role' => '[2, 3, 4]',
-    //         'kode_institusi' => '011',
-    //         'nama' => 'Teknik Kimia',
-    //         'nama_en' => 'Chemical Engineering',
-    //         'created_at' => '2025-08-20T08:18:04.456359Z',
-    //         'updated_ad' => null,
-    //     ],
-    //     (object)[
-    //         'id' => 4,
-    //         'ids_role' => '[2, 3, 4]',
-    //         'kode_institusi' => '012',
-    //         'nama' => 'Teknik Mesin',
-    //         'nama_en' => 'Mechanical Engineering',
-    //         'created_at' => '2025-08-20T09:18:04.456359Z',
-    //         'updated_ad' => null,
-    //     ],
-    // ];
+    $programStudiList = [
+      (object)[
+        'id' => 3,
+        'ids_role' => '[2, 3, 4]',
+        'kode_institusi' => '011',
+        'nama' => 'Teknik Kimia',
+        'nama_en' => 'Chemical Engineering',
+        'created_at' => '2025-08-20T08:18:04.456359Z',
+        'updated_ad' => null,
+      ],
+      (object)[
+        'id' => 4,
+        'ids_role' => '[2, 3, 4]',
+        'kode_institusi' => '012',
+        'nama' => 'Teknik Mesin',
+        'nama_en' => 'Mechanical Engineering',
+        'created_at' => '2025-08-20T09:18:04.456359Z',
+        'updated_ad' => null,
+      ],
+    ];
     $id_prodi = urldecode($request->input('program_studi', $programStudiList[0]->id));
 
     $params = [
@@ -427,26 +427,26 @@ class CurriculumController extends Controller
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
     $programStudiList = $responseProgramStudiList->data;
-    //        $programStudiList = [
-    //            (object)[
-    //                'id' => 3,
-    //                'ids_role' => '[2, 3, 4]',
-    //                'kode_institusi' => '011',
-    //                'nama' => 'Teknik Kimia',
-    //                'nama_en' => 'Chemical Engineering',
-    //                'created_at' => '2025-08-20T08:18:04.456359Z',
-    //                'updated_ad' => null,
-    //            ],
-    //            (object)[
-    //                'id' => 4,
-    //                'ids_role' => '[2, 3, 4]',
-    //                'kode_institusi' => '012',
-    //                'nama' => 'Teknik Mesin',
-    //                'nama_en' => 'Mechanical Engineering',
-    //                'created_at' => '2025-08-20T09:18:04.456359Z',
-    //                'updated_ad' => null,
-    //            ],
-    //        ];
+    $programStudiList = [
+      (object)[
+        'id' => 3,
+        'ids_role' => '[2, 3, 4]',
+        'kode_institusi' => '011',
+        'nama' => 'Teknik Kimia',
+        'nama_en' => 'Chemical Engineering',
+        'created_at' => '2025-08-20T08:18:04.456359Z',
+        'updated_ad' => null,
+      ],
+      (object)[
+        'id' => 4,
+        'ids_role' => '[2, 3, 4]',
+        'kode_institusi' => '012',
+        'nama' => 'Teknik Mesin',
+        'nama_en' => 'Mechanical Engineering',
+        'created_at' => '2025-08-20T09:18:04.456359Z',
+        'updated_ad' => null,
+      ],
+    ];
     $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
 
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
@@ -737,22 +737,15 @@ class CurriculumController extends Controller
   }
 
 
-  public function requiredCurriculumStructure(Request $request, $id)
+  public function requiredCurriculumStructure(Request $request)
   {
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
     $id_program = $request->input('program_perkuliahan');
 
-    $urlProgramStudi = UserService::getInstance()->getListStudyProgram();
-    $responseProgramStudi = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudi = $responseProgramStudi->data;
-    $id_prodi = $programStudi['id'];
-
-    $id_kurikulum = $id;
-
-    $params = compact('id_prodi');
-    $url = CurriculumService::getInstance()->getMandatoryCourses($id_kurikulum);
+    $params = compact('id_program');
+    $url = CurriculumService::getInstance()->getMandatoryCourses();
     $response = getCurl($url, $params, getHeaders());
 
     if (!isset($response->data)) {
@@ -778,294 +771,7 @@ class CurriculumController extends Controller
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
     $id_program = $request->input('program_perkuliahan');
 
-    $data = [
-      [
-        'semester' => 1,
-        'total_sks' => 24,
-        'matkul_list' => [
-          [
-            'nama_matkul' => 'Ilmu Sosial Dasar',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Politik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sejarah Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sistem Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Hubungan Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Diplomasi',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Organisasi Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Penulisan Akademik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'PPSMB',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ]
-        ]
-      ],
-      [
-        'semester' => 2,
-        'total_sks' => 24,
-        'matkul_list' => [
-          [
-            'nama_matkul' => 'Ilmu Sosial Dasar',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Politik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sejarah Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sistem Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Hubungan Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Diplomasi',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Organisasi Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Penulisan Akademik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'PPSMB',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ]
-        ]
-      ],
-      [
-        'semester' => 3,
-        'total_sks' => 24,
-        'matkul_list' => [
-          [
-            'nama_matkul' => 'Ilmu Sosial Dasar',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Politik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sejarah Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sistem Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Hubungan Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Diplomasi',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Organisasi Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Penulisan Akademik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'PPSMB',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ]
-        ]
-      ],
-      [
-        'semester' => 4,
-        'total_sks' => 24,
-        'matkul_list' => [
-          [
-            'nama_matkul' => 'Ilmu Sosial Dasar',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Politik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sejarah Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sistem Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Hubungan Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Diplomasi',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Organisasi Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Penulisan Akademik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'PPSMB',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ]
-        ]
-      ],
-      [
-        'semester' => 5,
-        'total_sks' => 24,
-        'matkul_list' => [
-          [
-            'nama_matkul' => 'Ilmu Sosial Dasar',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Politik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sejarah Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sistem Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Hubungan Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Diplomasi',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Organisasi Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Penulisan Akademik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'PPSMB',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ]
-        ]
-      ],
-      [
-        'semester' => 6,
-        'total_sks' => 15,
-        'matkul_list' => [
-          [
-            'nama_matkul' => 'Ilmu Sosial Dasar',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Politik',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sejarah Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Sistem Sosial Politik Indonesia',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-          [
-            'nama_matkul' => 'Pengantar Ilmu Hubungan Internasional',
-            'sks' => 3,
-            'kode' => 'SPFA212100'
-          ],
-        ]
-      ],
-    ];
+
     return view('curriculums.structure.optional', get_defined_vars());
   }
 
