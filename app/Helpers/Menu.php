@@ -273,7 +273,15 @@ class Menu
               'name' => 'Jadwal Kuliah',
               'url' => 'persiapan-perkuliahan/jadwal-kuliah/parent-institution',
               'parent' => 'academics.schedule.parent-institution-schedule.index',
-              'isExpandable' => false
+              'isExpandable' => false,
+              'children' => [
+                'create-parent-institution' => [
+                  'name' => 'Tambah Jadwal Kuliah Institusi Parent',
+                  'url' => '/persiapan-perkuliahan/jadwal-kuliah/parent-institution/create',
+                  'parent' => 'academics.schedule.parent-institution-schedule.create',
+                  'isExpandable' => false
+                ]
+              ]
             ]
         ];
     }

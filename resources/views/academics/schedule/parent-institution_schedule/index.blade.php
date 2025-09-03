@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <span>Impor File FET</span>
                 <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
             </a>
-            <button onclick="window.location.href='{{ route('academics.schedule.prodi-schedule.create') }}'" class="button-outline btn-add-event">Tambah Jadwal Baru +</button>
+            <button onclick="window.location.href='{{ route('academics.schedule.parent-institution-schedule.create') }}'" class="button-outline btn-add-event">Tambah Jadwal Baru +</button>
         </div>
     </div>
   </div>
