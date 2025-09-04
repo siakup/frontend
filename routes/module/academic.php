@@ -92,8 +92,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/{id}', [ScheduleController::class, 'show'])->name('show');
                 Route::get('/{id}/ubah', [ScheduleController::class, 'edit'])->name('edit');
                 Route::put('/{id}',      [ScheduleController::class, 'update'])->name('update');
-                Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('delete');
-
+                Route::delete('/{id}', [ScheduleController::class,'destroy'])->name('destroy');
                 Route::get('/import/fet1', [ScheduleController::class, 'importFet1'])->name('import-fet1');
                 Route::post('/upload', [ScheduleController::class, 'uploadResult'])->name('upload-result');
                 Route::post('/save-upload', [ScheduleController::class, 'uploadStore'])->name('save-upload');

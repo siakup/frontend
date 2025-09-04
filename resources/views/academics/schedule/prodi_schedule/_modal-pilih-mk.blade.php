@@ -5,18 +5,10 @@
   #modalAddEvent .mk-search .btn{height:38px;border-radius:8px;padding:0 14px;border:1px solid #E5E7EB;background:#E8E8E8;cursor:pointer}
   #modalAddEvent .mk-search .btn:hover{background:#F9FAFB}
 
-
-  #modalAddEvent table{width:100%;border-collapse:separate;border-spacing:0}
-  #modalAddEvent thead th{
-    position:sticky;top:0;background:#F8FAFC;text-align:left;font-weight:600;font-size:13px;color:#374151;
-    padding:10px 12px;border-bottom:1px solid #E5E7EB;z-index:1
-  }
-  #modalAddEvent tbody td{font-size:14px;padding:10px 12px;border-bottom:1px solid #F1F5F9;vertical-align:middle}
   #modalAddEvent .btn-red{
     background:#EB474D;color:#fff;border:1px solid #EB474D;border-radius:8px;padding:6px 10px;cursor:pointer;font-size:12px;
   }
   #modalAddEvent .btn-red:hover{background:#d93e44;border-color:#d93e44}
-  #modalAddEvent .mk-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 16px 16px}
   #modalAddEvent .mk-meta{font-size:12px;color:#6B7280}
   #modalAddEvent .pager{display:flex;gap:6px;align-items:center}
   #modalAddEvent .page-btn{min-width:34px;height:34px;border-radius:8px;border:1px solid #E5E7EB;background:#fff;cursor:pointer}
@@ -50,8 +42,7 @@
   background: #fff;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0,0,0,.2);
-  margin-top: 65px;  /* naik 40px, bisa atur sesuai selera */
-
+  margin-top: 80px;
 }
 
 #modalAddEvent .mk-header {
@@ -87,13 +78,9 @@
 }
 
 #modalAddEvent .mk-body::-webkit-scrollbar,
-#modalAddEvent .mk-table-wrap::-webkit-scrollbar {
-  width: 0px;
-  height: 0px;
-}
 
-#modalAddEvent .mk-body,
-#modalAddEvent .mk-table-wrap {
+
+#modalAddEvent .mk-body {
     max-height:52vh;
     overflow:auto;
     border:1px solid #EEF2F7;
@@ -102,19 +89,8 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-#modalAddEvent .mk-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 20px;
-  border-top: 1px solid #EEF2F7;
-}
 
 #modalAddEvent #mk-pager{display:flex;gap:10px;align-items:center}
-#modalAddEvent .page-num{
-  min-width:34px;height:34px;border-radius:8px;border:1px solid #E5E7EB;background:#fff;cursor:pointer
-}
-#modalAddEvent .page-num.is-active{background:#EB474D;color:#fff;border-color:#EB474D}
 #modalAddEvent tbody tr:nth-child(even){background:#F5F5F5}
 #modalAddEvent tbody tr:hover{background:#F9FAFB}
 #modalAddEvent thead th:first-child,
@@ -146,12 +122,6 @@
   padding: 0 4px;
 }
 
-#modalAddEvent .page-prev[disabled],
-#modalAddEvent .page-next[disabled] {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
 #modalAddEvent .mk-footer {
   display: flex;
   justify-content: space-between;
@@ -180,14 +150,45 @@
 
 #modalAddEvent .page-prev,
 #modalAddEvent .page-next {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   border: 1px solid #EB474D;
   color: #EB474D;
   background: #fff;
   border-radius: 8px;
   padding: 8px 20px;
-  min-width: 110px;
-  text-align: center;
+  min-width: 120px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
+}
+
+#modalAddEvent .page-prev[disabled],
+#modalAddEvent .page-next[disabled] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+#modalAddEvent .btn-red {
+    background:#EB474D; color:#fff; border:1px solid #EB474D;
+    border-radius:8px; padding:6px 10px; cursor:pointer; font-size:12px;
+  }
+#modalAddEvent .btn-red:hover { background:#d93e44; }
+
+  #modalAddEvent thead th {
+  height: 68px;
+  vertical-align: middle;
+}
+
+  #modalAddEvent tbody td {
+  padding: 0 12px;
+  line-height: 1.2;
+  vertical-align: middle;
+}
+  #modalAddEvent tbody tr {
+  height: 100px;
 }
 
 </style>
@@ -197,7 +198,7 @@
 
   <div class="modal-custom-content">
     <div class="mk-header">
-      <div class="mk-title ml-70">Daftar Mata Kuliah – Semester Ganjil</div>
+      <div class="mk-title ml-85">Daftar Mata Kuliah – Semester Ganjil</div>
       <button type="button" class="mk-close" id="mk-btn-x" aria-label="Tutup">×</button>
     </div>
 
@@ -205,25 +206,26 @@
       <div class="mk-search">
         <div class="label">Cari Mata Kuliah</div>
         <input id="mk-search" class="input" placeholder="Ketik Mata Kuliah / Kode Mata Kuliah">
-        <button type="button" class="btn" id="mk-btn-search">Cari</button>
+        <button type="button" class="btn-red" id="mk-btn-search">Cari</button>
       </div>
 
       <div class="mk-table-wrap">
-        <table>
-          <thead style="text-align: center">
-            <tr>
-              <th style="width:200px;text-align: center">Kode Mata Kuliah</th>
-              <th style="width:250px;text-align: center">Nama Mata Kuliah</th>
-              <th style="width:200px;text-align: center">Jenis Mata Kuliah</th>
-              <th style="width:60px;text-align: center">SKS</th>
-              <th style="width:240px;text-align: center">Kurikulum</th>
-              <th style="width:220px;text-align: center">Aksi</th>
-            </tr>
-          </thead>
-          <tbody id="mk-tbody">
-            <!-- diisi dummy data JS -->
-          </tbody>
-        </table>
+        <x-table>
+            <x-table-head>
+                <x-table-row>
+                <x-table-header style="width:150px; text-align:center;">Kode Mata Kuliah</x-table-header>
+                <x-table-header style="width:300px; text-align:center;">Nama Mata Kuliah</x-table-header>
+                <x-table-header style="width:220px; text-align:center;">Jenis Mata Kuliah</x-table-header>
+                <x-table-header style="width:51px; text-align:center;">SKS</x-table-header>
+                <x-table-header style="width:238px; text-align:center;">Kurikulum</x-table-header>
+                <x-table-header style="width:220px; text-align:center;">Aksi</x-table-header>
+                </x-table-row>
+            </x-table-head>
+
+            <x-table-body id="mk-tbody">
+                {{-- diisi dummy data JS via innerHTML --}}
+            </x-table-body>
+        </x-table>
       </div>
     </div>
         <div class="mk-footer">
@@ -278,7 +280,14 @@
     lastTotalPages = tp;
     const pager = document.getElementById('mk-pager');
     let html = '';
-    html += `<button class="page-prev" data-goto="prev" ${page<=1?'disabled':''}>‹ Sebelumnya</button>`;
+
+    html += `
+    <button class="page-prev" data-goto="prev" ${page<=1?'disabled':''}>
+        <span class="icon">‹</span>
+        <span class="label">Sebelumnya</span>
+    </button>`;
+
+
     const addNum = (i) => {
       html += `<button class="page-num ${i===page?'is-active':''}" data-page="${i}">${i}</button>`;
     };
@@ -295,7 +304,12 @@
       addNum(tp);
     }
 
-    html += `<button class="page-next" data-goto="next" ${page>=tp?'disabled':''}>Selanjutnya ›</button>`;
+    html += `
+    <button class="page-next" data-goto="next" ${page>=tp?'disabled':''}>
+        <span class="label">Selanjutnya</span>
+        <span class="icon">›</span>
+    </button>`;
+
     pager.innerHTML = html;
   }
 
@@ -311,7 +325,8 @@
     if(btnPrev && page > 1){ page--; render(); }
   });
 
-function render(){
+
+  function render(){
   const rows = filtered();
   total = rows.length;
   const totalPages = Math.max(1, Math.ceil(total / perPage));
@@ -323,33 +338,32 @@ function render(){
 
   if (!slice.length) {
     tbody.innerHTML = `
-      <tr>
-        <td colspan="6" style="text-align:center;padding:14px;color:#6B7280">
+      <x-table-row>
+        <x-table-cell colspan="6" class="text-center text-gray-400">
           Tidak ada data
-        </td>
-      </tr>`;
+        </x-table-cell>
+      </x-table-row>`;
   } else {
     tbody.innerHTML = slice.map(it => `
-      <tr>
-        <td>${it.kode}</td>
-        <td>${it.nama}</td>
-        <td>${it.jenis}</td>
-        <td>${it.sks}</td>
-        <td>${it.kurikulum}</td>
-        <td>
+      <x-table-row>
+        <x-table-cell>${it.kode}</x-table-cell>
+        <x-table-cell>${it.nama}</x-table-cell>
+        <x-table-cell>${it.jenis}</x-table-cell>
+        <x-table-cell>${it.sks}</x-table-cell>
+        <x-table-cell>${it.kurikulum}</x-table-cell>
+        <x-table-cell>
           <button class="btn-red"
-            data-pilih='${JSON.stringify({ id: it.id, nama: it.nama }).replace(/'/g, "&apos;")}'>
+            data-pilih='${JSON.stringify({ id: it.id, nama: it.nama }).replace(/'/g,"&apos;")}'
+          >
             Pilih Mata Kuliah Ini
           </button>
-        </td>
-      </tr>
+        </x-table-cell>
+      </x-table-row>
     `).join('');
   }
-  info.textContent = `Hasil: ${page} dari ${totalPages}`;
 
-  if (typeof buildPager === 'function') {
-    buildPager(totalPages);
-  }
+  info.textContent = `Hasil: ${page} dari ${totalPages}`;
+  if (typeof buildPager === 'function') buildPager(totalPages);
 }
 
 

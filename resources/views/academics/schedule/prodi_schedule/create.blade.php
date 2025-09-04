@@ -36,10 +36,6 @@
     .prodi-create .btn-outline{background:#fff;border:1px solid #E62129;color:#E62129}
     .prodi-create .form-footer{display:flex;justify-content:flex-end;gap:12px;margin-top:20px}
 
-    .prodi-create .table-mini{width:100%;border-collapse:separate;border-spacing:0;border-radius: 20px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.06);margin-top:20px}
-    .prodi-create .table-mini thead th{background:#D9D9D9;color:#262626;font-weight:600;border-bottom:1px solid #E5E7EB;padding:10px 12px;text-align:left;font-size:14px;}
-    .prodi-create .table-mini td{border-bottom:1px solid #F1F5F9;padding:10px 12px;text-align:left;font-size:14px}
-
     .prodi-create .inline-field .filter-box{ flex:1; }
     .prodi-create .inline-field{display:grid;grid-template-columns: auto 1fr;align-items:center;gap:16px;}
     .prodi-create .inline-title{font-weight:600;color:#262626;white-space:nowrap;}
@@ -219,18 +215,42 @@
       </div>
     </div>
 
+
+
     <div class="section-card">
-      <div class="section-title">Daftar Pengajar</div>
-      <div class="section-body">
+    <div class="section-title">Daftar Pengajar</div>
+    <div class="section-body">
         <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
-          <button type="button" class="btn btn-primary">Tambah Pengajar</button>
+        <button type="button" class="btn btn-primary" id="btn-tambah-pengajar">Tambah Pengajar</button>
         </div>
-        <table class="table-mini">
-          <thead><tr><th>Nama Pengajar</th><th>Status Pengajar</th><th>Aksi</th></tr></thead>
-          <tbody><tr><td colspan="3" class="text-center text-gray-400">Belum ada data</td></tr></tbody>
-        </table>
-      </div>
+        <x-table>
+        <x-table-head>
+            <x-table-row>
+            <x-table-header>Nama Pengajar</x-table-header>
+            <x-table-header>Status Pengajar</x-table-header>
+            <x-table-header>Aksi</x-table-header>
+            </x-table-row>
+        </x-table-head>
+
+        <x-table-body id="pengajar-tbody">
+            <x-table-row>
+            <x-table-cell colspan="3" class="text-center text-gray-400">
+                Belum ada data
+            </x-table-cell>
+            </x-table-row>
+        </x-table-body>
+        </x-table>
     </div>
+    </div>
+
+    <div id="toast-success"
+        style="display:none;position:fixed;top:20px;right:20px;
+                background:#16A34A;color:#fff;padding:10px 16px;
+                border-radius:6px;box-shadow:0 4px 10px rgba(0,0,0,0.2);
+                z-index:9999;">
+    ✅ Berhasil menambahkan pengajar
+    </div>
+
 
     <div class="section-card">
       <div class="section-title">Daftar Jadwal Kelas</div>
@@ -238,10 +258,25 @@
         <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
           <button type="button" class="btn btn-primary">Tambah Jadwal Kelas</button>
         </div>
-        <table class="table-mini">
-          <thead><tr><th>Hari</th><th>Waktu Mulai Kelas</th><th>Waktu Selesai Kelas</th><th>Ruangan</th><th>Aksi</th></tr></thead>
-          <tbody><tr><td colspan="5" class="text-center text-gray-400">Belum ada data</td></tr></tbody>
-        </table>
+            <x-table>
+            <x-table-head>
+                <x-table-row>
+                <x-table-header>Hari</x-table-header>
+                <x-table-header>Waktu Mulai Kelas</x-table-header>
+                <x-table-header>Waktu Selesai Kelas</x-table-header>
+                <x-table-header>Ruangan</x-table-header>
+                <x-table-header>Aksi</x-table-header>
+                </x-table-row>
+            </x-table-head>
+
+            <x-table-body>
+                <x-table-row>
+                <x-table-cell colspan="5" class="text-center text-gray-400">
+                    Belum ada data
+                </x-table-cell>
+                </x-table-row>
+            </x-table-body>
+            </x-table>
       </div>
     </div>
 
@@ -252,7 +287,10 @@
   </form>
 </div>
 
+
+
 @include('academics.schedule.prodi_schedule._modal-pilih-mk');
+@include('academics.schedule.prodi_schedule._modal-pengajar');
 
 <script src="{{ asset('js/plugins/flatpckr.js') }}"></script>
 <script src="{{ asset('js/plugins/flatpckr-id.js') }}"></script>
@@ -326,6 +364,73 @@
     btnMk.addEventListener('click',()=>{
         document.getElementById('modalAddEvent').style.display='block';
     });
+
+  const btnTambahPengajar = document.getElementById('btn-tambah-pengajar');
+  const modalPengajar = document.getElementById('modalAddPengajar');
+  const tbodyPengajar = document.getElementById('pengajar-tbody');
+  let pengajarDipilih = [];
+
+  btnTambahPengajar.addEventListener('click',()=>{
+    modalPengajar.style.display='flex';
+  });
+
+  document.addEventListener('pengajarDipilih',(e)=>{
+    const payload = e.detail;
+    if(pengajarDipilih.find(p=>p.id===payload.id)){
+      alert('Pengajar sudah ada!');
+      return;
+    }
+    pengajarDipilih.push({...payload, status:'utama'});
+    renderPengajar();
+  });
+
+  function renderPengajar(){
+  if(pengajarDipilih.length === 0){
+    tbodyPengajar.innerHTML = `
+      <x-table-row>
+        <x-table-cell colspan="3" class="text-center text-gray-400">
+          Belum ada data
+        </x-table-cell>
+      </x-table-row>`;
+    return;
+  }
+
+  tbodyPengajar.innerHTML = pengajarDipilih.map(p => `
+    <x-table-row data-id="${p.id}">
+      <x-table-cell>${p.nama}</x-table-cell>
+      <x-table-cell>
+        <select class="status">
+          <option value="utama" ${p.status==='utama'?'selected':''}>Pengajar Utama</option>
+          <option value="bukan" ${p.status==='bukan'?'selected':''}>Bukan Pengajar Utama</option>
+        </select>
+      </x-table-cell>
+      <x-table-cell>
+        <button type="button" class="btn-hapus" title="Hapus">
+          <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+          <span class="text-[#8C8C8C]">Hapus</span>
+        </button>
+      </x-table-cell>
+    </x-table-row>
+  `).join('');
+}
+
+
+  tbodyPengajar.addEventListener('click',(e)=>{
+    if(e.target.classList.contains('btn-hapus')){
+      const id=e.target.closest('tr').dataset.id;
+      pengajarDipilih = pengajarDipilih.filter(p=>p.id!=id);
+      renderPengajar();
+    }
+  });
+
+  tbodyPengajar.addEventListener('change',(e)=>{
+    if(e.target.classList.contains('status')){
+      const id=e.target.closest('tr').dataset.id;
+      const pengajar = pengajarDipilih.find(p=>p.id==id);
+      if(pengajar) pengajar.status = e.target.value;
+    }
+  });
+
 
 })();
 </script>
