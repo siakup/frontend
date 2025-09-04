@@ -184,21 +184,30 @@
     successToast("Berhasil Menambahkan Jadwal Kuliah");
   }
 
-  const hariOption = document.querySelector('input[name="hari"]');
-  const sortBtnHariOption = document.querySelector('#sortHari');
-  const sortDropdownHariOption = document.querySelector('#Option-Hari');
+  function onClickDropdownButton(ev, e) {
+    ev.stopPropagation();
+    e.nextElementSibling.style.display = (e.nextElementSibling.style.display === 'block') ?
+        'none' : 'block';
+    e.querySelector('img').src = (e.querySelector('img').src ===
+            "{{ asset('assets/icon-arrow-up-black-20.svg') }}") ?
+        "{{ asset('assets/icon-arrow-down-grey-20.svg') }}" :
+        "{{ asset('assets/icon-arrow-up-black-20.svg') }}";
+  }
 
-  sortBtnHariOption.addEventListener('click', function(e) {
-      e.stopPropagation();
-      sortDropdownHariOption.style.display = (sortDropdownHariOption.style.display === 'block') ?
-          'none' : 'block';
-      sortBtnHariOption.querySelector('img').src = (sortBtnHariOption.querySelector('img').src ===
-              "{{ asset('assets/icon-arrow-up-black-20.svg') }}") ?
-          "{{ asset('assets/icon-arrow-down-grey-20.svg') }}" :
-          "{{ asset('assets/icon-arrow-up-black-20.svg') }}";
-  });
+  function onClickDropdownOption(e) {
+    const value = e.getAttribute('data-event');
+    const span = e.parentElement.previousElementSibling.querySelector('span');
+    const input = e.parentElement.nextElementSibling;
 
+    span.innerHTML = e.innerHTML;
+    span.style.color = "black";
+    input.value = value;
+    updateSaveScheduleButtonState();
+  }
+    
   document.addEventListener('click', (e) => {
+      const sortBtnHariOption = document.querySelector('#sortHari');
+      const sortDropdownHariOption = document.querySelector('#Option-Hari');
       const dropdownHari = e.target.closest('#Option-Hari');
       if (dropdownHari == null) {
           sortDropdownHariOption.style.display = 'none'
@@ -206,53 +215,18 @@
               "{{ asset('assets/icon-arrow-down-grey-20.svg') }}";
       }
   });
-
-  document.querySelectorAll('#Option-Hari .dropdown-item').forEach((dropdownItem) => {
-      dropdownItem.addEventListener('click', () => {
-          const value = dropdownItem.getAttribute('data-event');
-          const span = sortBtnHariOption.querySelector('span');
-
-          span.innerHTML = dropdownItem.innerHTML;
-          span.style.color = "black";
-          hariOption.value = value;
-          updateSaveScheduleButtonState();
-      });
-  });  
-
-  const ruanganOption = document.querySelector('input[name="ruangan"]');
-  const sortBtnRuanganOption = document.querySelector('#sortRuangan');
-  const sortDropdownRuanganOption = document.querySelector('#Option-Ruangan');
-
-  sortBtnRuanganOption.addEventListener('click', function(e) {
-      e.stopPropagation();
-      sortDropdownRuanganOption.style.display = (sortDropdownRuanganOption.style.display === 'block') ?
-          'none' : 'block';
-      sortBtnRuanganOption.querySelector('img').src = (sortBtnRuanganOption.querySelector('img').src ===
-              "{{ asset('assets/icon-arrow-up-black-20.svg') }}") ?
-          "{{ asset('assets/icon-arrow-down-grey-20.svg') }}" :
-          "{{ asset('assets/icon-arrow-up-black-20.svg') }}";
-  });
-
+  
   document.addEventListener('click', (e) => {
-      const dropdownHari = e.target.closest('#Option-Ruangan');
-      if (dropdownHari == null) {
-          sortDropdownRuanganOption.style.display = 'none'
-          sortBtnRuanganOption.querySelector('img').src =
-              "{{ asset('assets/icon-arrow-down-grey-20.svg') }}";
-      }
-  });
+    const dropdownHari = e.target.closest('#Option-Ruangan');
+    const sortBtnRuanganOption = document.querySelector('#sortRuangan');
+    const sortDropdownRuanganOption = document.querySelector('#Option-Ruangan');
+    if (dropdownHari == null) {
+        sortDropdownRuanganOption.style.display = 'none'
+        sortBtnRuanganOption.querySelector('img').src =
+            "{{ asset('assets/icon-arrow-down-grey-20.svg') }}";
+    }
+});
 
-  document.querySelectorAll('#Option-Ruangan .dropdown-item').forEach((dropdownItem) => {
-      dropdownItem.addEventListener('click', () => {
-          const value = dropdownItem.getAttribute('data-event');
-          const span = sortBtnRuanganOption.querySelector('span');
-
-          span.innerHTML = dropdownItem.innerHTML;
-          span.style.color = "black";
-          ruanganOption.value = value;
-          updateSaveScheduleButtonState();
-      });
-  });
   function onClickInputDateTimeInput(e) {
     e.querySelector('input').focus();
   }
@@ -264,9 +238,10 @@
     const img = e.nextElementSibling;
     img.src = "{{ asset('assets/base/icon-calendar.svg') }}";
   }
-  const jamMulai = document.getElementById('jam-mulai');
-  const jamAkhir = document.getElementById('jam-akhir');
-  let jamMulaiInput, jamAkhirInput;
+
+  var jamMulai = document.getElementById('jam-mulai');
+  var jamAkhir = document.getElementById('jam-akhir');
+  var jamMulaiInput, jamAkhirInput;
 
   jamMulaiInput = flatpickr("#jam-mulai", {
       enableTime: true,
@@ -319,18 +294,18 @@
             <div class="form-group w-full">
               <label for="Select-Hari">Hari</label>
               <div class="filter-box relative" id="Periode">
-                  <button type="button" class="button-clean input" id="sortHari">
+                  <button type="button" class="button-clean input" id="sortHari" onclick="onClickDropdownButton(event, this)">
                       <span id="selectedEventLabel">-Pilih Hari-</span>
                       <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                   </button>
                   <div id="Option-Hari" class="sort-dropdown select !left-0 !top-[42px] z-999" style="display: none;">
-                    <div class="dropdown-item text-black" data-event="Senin">Senin</div>
-                    <div class="dropdown-item text-black" data-event="Selasa">Selasa</div>
-                    <div class="dropdown-item text-black" data-event="Rabu">Rabu</div>
-                    <div class="dropdown-item text-black" data-event="Kamis">Kamis</div>
-                    <div class="dropdown-item text-black" data-event="Jumat">Jumat</div>
-                    <div class="dropdown-item text-black" data-event="Sabtu">Sabtu</div>
-                    <div class="dropdown-item text-black" data-event="Minggu">Minggu</div>
+                    <div class="dropdown-item text-black" data-event="Senin" onclick="onClickDropdownOption(this)">Senin</div>
+                    <div class="dropdown-item text-black" data-event="Selasa" onclick="onClickDropdownOption(this)">Selasa</div>
+                    <div class="dropdown-item text-black" data-event="Rabu" onclick="onClickDropdownOption(this)">Rabu</div>
+                    <div class="dropdown-item text-black" data-event="Kamis" onclick="onClickDropdownOption(this)">Kamis</div>
+                    <div class="dropdown-item text-black" data-event="Jumat" onclick="onClickDropdownOption(this)">Jumat</div>
+                    <div class="dropdown-item text-black" data-event="Sabtu" onclick="onClickDropdownOption(this)">Sabtu</div>
+                    <div class="dropdown-item text-black" data-event="Minggu" onclick="onClickDropdownOption(this)">Minggu</div>
                   </div>
                   <input type="hidden" value="" name="hari">
               </div>
@@ -338,13 +313,13 @@
             <div class="form-group w-full">
               <label for="Select-Ruangan">Ruangan</label>
               <div class="filter-box relative" id="Ruangan">
-                  <button type="button" class="button-clean input" id="sortRuangan">
-                      <span id="selectedEventLabel">-Pilih Hari-</span>
+                  <button type="button" class="button-clean input" id="sortRuangan" onclick="onClickDropdownButton(event, this)">
+                      <span id="selectedEventLabel">-Pilih Ruangan-</span>
                       <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                   </button>
                   <div id="Option-Ruangan" class="sort-dropdown select !left-0 !top-[42px] z-999" style="display: none;">
                     @foreach($ruangans as $ruangan)
-                      <div class="dropdown-item text-black" data-event="{{$ruangan['id_ruangan']}}">{{$ruangan['nama_ruangan']}}</div>
+                      <div class="dropdown-item text-black" data-event="{{$ruangan['id_ruangan']}}" onclick="onClickDropdownOption(this)">{{$ruangan['nama_ruangan']}}</div>
                     @endforeach
                   </div>
                   <input type="hidden" value="" name="ruangan">

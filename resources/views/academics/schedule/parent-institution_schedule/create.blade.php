@@ -555,7 +555,7 @@
                 <div class="form-group items-center w-full">
                   <label for="Course-Name">Nama Mata Kuliah</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px] !bg-[#F5F5F5]">
-                      <input placeholder="Pilih Mata Kuliah" name="nama_matakuliah" type="text" id="Class-Name" class="!border-transparent focus:outline-none !bg-[#F5F5F5]" value="" readonly disabled>
+                      <input placeholder="Pilih Mata Kuliah" name="nama_matakuliah" type="text" id="Class-Name" class="!border-transparent focus:outline-none !bg-[#F5F5F5]" value="" readonly>
                       <input placeholder="Pilih Mata Kuliah" name="matakuliah[jenis_matakuliah]" type="hidden">
                       <input placeholder="Pilih Mata Kuliah" name="matakuliah[sks]" type="hidden">
                       <input placeholder="Pilih Mata Kuliah" name="matakuliah[kurikulum]" type="hidden">
@@ -687,7 +687,7 @@
         'cancelButtonLabel' => 'Cek Kembali',
         'actionButtonLabel' => 'Ya, Simpan Sekarang'
       ]);
-      <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
+      {{-- <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
         <div class="modal-custom-backdrop"></div>
         <div class="modal-custom-content">
             <div class="modal-custom-header">
@@ -702,7 +702,7 @@
               <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
             </div>
         </div>
-      </div>
+      </div> --}}
     </form>
     <div id="list-course"></div>
     <div id="list-lecture"></div>

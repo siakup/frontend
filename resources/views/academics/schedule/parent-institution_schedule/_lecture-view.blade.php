@@ -162,70 +162,60 @@
     e.parentElement.parentElement.parentElement.remove();
   }
 
-  function initScript() {
-    const input = document.querySelector('input[name="search"]');
-    input.addEventListener('input', () => {
-      $.ajax({
-        url: "{{ route('academics.schedule.parent-institution-schedule.add-lecture') }}?search=" + input.value,
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        success: function(html) {
-            const div = document.createElement('div');
-            div.innerHTML = html;
-            const table = div.querySelector('table');
-            $('#Lecture-List').html(table);
-            const paginationContainer = div.querySelector('.pagination-container');
-            $('#Pagination').html(paginationContainer);
-            initScript();
-            initPagination();
-        },
-      });
-    });
-
-    const addLecture = document.querySelectorAll('.add-lecture');
-    Array.from(addLecture).map(add => {
-      add.addEventListener('click', (e) => {
-        const selectedLecture = document.getElementById('selected-lecture').querySelector('tbody');
-        const lectureData = JSON.parse(e.target.getAttribute('data-lecture'));
-        const lectureBefore = selectedLecture.querySelectorAll('tr');
-        if (Array.from(lectureBefore).map(value => value.querySelector('input').value).filter(value => value == lectureData.id).length == 0) {
-          const newLectureList = `<tr class="${Array.from(lectureBefore).length % 2 == 0 ? 'bg-white' : 'bg-[#F5F5F5]'} border-b-0">
-            <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['id']" value="${lectureData.id}" />
-            <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['nama_pengajar']" value="${lectureData.nama_pengajar}" />
-            <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['pengajar_program_studi']" value="${lectureData.pengajar_program_studi}" />
-            <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${lectureData.nama_pengajar}</td>
-            <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">
-              <div class="filter-box" class="status-pengajar">
-                  <button type="button" class="button-clean input" id="sortProgramPerkuliahan" onclick="onClickShowDropdown(this)">
-                      <span id="selectedEventLabel">-Pilih Status Pengajar-</span>
-                      <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
-                  </button>
-                  <div id="Option-Status-Pengajar" class="sort-dropdown select !static" style="display: none;">
-                    <div class="dropdown-item" data-event="Pengajar Utama" onclick="onClickDropdownOption(this)">Pengajar Utama</div>
-                    <div class="dropdown-item" data-event="Bukan Pengajar Utama" onclick="onClickDropdownOption(this)">Bukan Pengajar Utama</div>
-                  </div>
-                  <input type="hidden" value="" name="selected_lecture[${Array.from(lectureBefore).length}]['status_pengajar']">
-              </div>
-            </td>
-            <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">
-              <div class="center flex items-center w-full justify-center">
-                <button type="button" onclick="onClickDelete(this)" class="btn-icon btn-delete !flex !items-center !justify-center gap-1" title="Hapus" >
-                  <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                  <span class="text-[#8C8C8C]">Hapus</span>
-                </button>
-              </div>
-            </td>
-          </tr>`;
-          selectedLecture.innerHTML = selectedLecture.innerHTML + newLectureList;
-          successToast("Berhasil Menambahkan Pengajar");
-        }
-      })
+  function onSearchInput(e) {
+    $.ajax({
+      url: "{{ route('academics.schedule.parent-institution-schedule.add-lecture') }}?search=" + e.value,
+      method: 'GET',
+      headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+      },
+      success: function(html) {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const table = div.querySelector('table');
+          $('#Lecture-List').html(table);
+          const paginationContainer = div.querySelector('.pagination-container');
+          $('#Pagination').html(paginationContainer);
+      },
     });
   }
 
-  initScript();
+  function onClickLectureOption(e) {
+    const selectedLecture = document.getElementById('selected-lecture').querySelector('tbody');
+    const lectureData = JSON.parse(e.getAttribute('data-lecture'));
+    const lectureBefore = selectedLecture.querySelectorAll('tr');
+    if (Array.from(lectureBefore).map(value => value.querySelector('input').value).filter(value => value == lectureData.id).length == 0) {
+      const newLectureList = `<tr class="${Array.from(lectureBefore).length % 2 == 0 ? 'bg-white' : 'bg-[#F5F5F5]'} border-b-0">
+        <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['id']" value="${lectureData.id}" />
+        <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['nama_pengajar']" value="${lectureData.nama_pengajar}" />
+        <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['pengajar_program_studi']" value="${lectureData.pengajar_program_studi}" />
+        <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${lectureData.nama_pengajar}</td>
+        <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">
+          <div class="filter-box" class="status-pengajar">
+              <button type="button" class="button-clean input" id="sortProgramPerkuliahan" onclick="onClickShowDropdown(this)">
+                  <span id="selectedEventLabel">-Pilih Status Pengajar-</span>
+                  <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
+              </button>
+              <div id="Option-Status-Pengajar" class="sort-dropdown select !static" style="display: none;">
+                <div class="dropdown-item" data-event="Pengajar Utama" onclick="onClickDropdownOption(this)">Pengajar Utama</div>
+                <div class="dropdown-item" data-event="Bukan Pengajar Utama" onclick="onClickDropdownOption(this)">Bukan Pengajar Utama</div>
+              </div>
+              <input type="hidden" value="" name="selected_lecture[${Array.from(lectureBefore).length}]['status_pengajar']">
+          </div>
+        </td>
+        <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">
+          <div class="center flex items-center w-full justify-center">
+            <button type="button" onclick="onClickDelete(this)" class="btn-icon btn-delete !flex !items-center !justify-center gap-1" title="Hapus" >
+              <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+              <span class="text-[#8C8C8C]">Hapus</span>
+            </button>
+          </div>
+        </td>
+      </tr>`;
+      selectedLecture.innerHTML = selectedLecture.innerHTML + newLectureList;
+      successToast("Berhasil Menambahkan Pengajar");
+    }
+  }
 </script>
 
 <script>
@@ -262,7 +252,6 @@
                 const paginationContainer = div.querySelector('.pagination-container');
                 $('#Pagination').html(paginationContainer);
                 input.value = '';
-                initScript();
                 initPagination();
             },
           });
@@ -374,9 +363,9 @@
                 <div class="search-container" style="display: flex; align-items: center;">
                     <input type="text" name="search" placeholder="Ketik NIP/Nama Pengajar/Pengajar Program Studi"
                         class="search-filter" id="searchInput" autocomplete="off"
-                         style="width: 400px;" value="{{$request->input('search', '')}}">
+                         style="width: 400px;" value="{{$request->input('search', '')}}" oninput="onSearchInput(this)">
                 </div>
-                <button type="button" href="" class="button button-outline !w-full !min-w-[151px]" id="" disabled>
+                <button type="button" href="" class="button button-outline !w-full !min-w-[151px]" id="" onclick="onSearchInput(this.previousElementSibling.querySelector('input'))" disabled>
                     Cari
                 </button>
             </div>
@@ -398,7 +387,7 @@
                       <x-table-cell>{{ $lecture['nama_pengajar'] }}</x-table-cell>
                       <x-table-cell>{{ $lecture['pengajar_program_studi'] }}</x-table-cell>
                       <x-table-cell>
-                        <button type="button" href="" class="button button-outline !w-full add-lecture" data-lecture='@json($lecture)' id="">
+                        <button type="button" href="" class="button button-outline !w-full add-lecture" onclick="onClickLectureOption(this)" data-lecture='@json($lecture)' id="">
                           Pilih Pengajar Ini
                         </button>
                       </x-table-cell>

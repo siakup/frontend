@@ -134,27 +134,22 @@
 </style>
 
 <script>
-
-  function initScript() {
-    const input = document.querySelector('input[name="search"]');
-    input.addEventListener('input', () => {
-      $.ajax({
-        url: "{{ route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode]) }}?search=" + input.value,
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-        success: function(html) {
-            const div = document.createElement('div');
-            div.innerHTML = html;
-            const table = div.querySelector('table');
-            $('#Lecture-List').html(table);
-            const paginationContainer = div.querySelector('.pagination-container');
-            $('#Pagination').html(paginationContainer);
-            initScript();
-            initPagination();
-        },
-      });
+  function onSearchData(e) {
+    $.ajax({
+      url: "{{ route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode]) }}?search=" + e.value,
+      method: 'GET',
+      headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+      },
+      success: function(html) {
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          const table = div.querySelector('table');
+          $('#Lecture-List').html(table);
+          const paginationContainer = div.querySelector('.pagination-container');
+          $('#Pagination').html(paginationContainer);
+          initPagination();
+      },
     });
   }
 
@@ -168,8 +163,6 @@
     document.querySelector('input[name="matakuliah[id]"]').value = dataCourse.id;
     successToast("Berhasil Menambahkan Mata Kuliah");
   }
-
-  initScript();
 </script>
 
 <script>
@@ -206,7 +199,6 @@
                 const paginationContainer = div.querySelector('.pagination-container');
                 $('#Pagination').html(paginationContainer);
                 input.value = '';
-                initScript();
                 initPagination();
             },
           });
@@ -236,7 +228,6 @@
               const paginationContainer = div.querySelector('.pagination-container');
               $('#Pagination').html(paginationContainer);
               input.value = '';
-              initScript();
               initPagination();
           },
         });
@@ -266,7 +257,6 @@
               const paginationContainer = div.querySelector('.pagination-container');
               $('#Pagination').html(paginationContainer);
               input.value = '';
-              initScript();
               initPagination();
           },
         });
@@ -292,7 +282,6 @@
                 const paginationContainer = div.querySelector('.pagination-container');
                 $('#Pagination').html(paginationContainer);
                 input.value = '';
-                initScript();
                 initPagination();
             },
           });
@@ -318,9 +307,9 @@
                 <div class="search-container" style="display: flex; align-items: center;">
                     <input type="text" name="search" placeholder="Ketik Mata Kuliah/Kode Mata Kuliah"
                         class="search-filter" id="searchInput" autocomplete="off"
-                         style="width: 400px;" value="{{$request->input('search', '')}}">
+                         style="width: 400px;" value="{{$request->input('search', '')}}" oninput="onSearchData(this)">
                 </div>
-                <button type="button" href="" class="button button-outline !w-full !min-w-[151px]" id="" disabled>
+                <button type="button" href="" class="button button-outline !w-full !min-w-[151px]" id="" onclick="onSearchData(this.previousElementSibling.querySelector('input'))" disabled>
                     Cari
                 </button>
             </div>
