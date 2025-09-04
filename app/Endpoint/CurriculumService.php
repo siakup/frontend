@@ -4,22 +4,16 @@ namespace App\Endpoint;
 
 class CurriculumService
 {
-    private static $instance = null;
+  private static $instance = null;
 
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
+  public static function getInstance()
+  {
+    if (self::$instance === null) {
+      self::$instance = new self();
     }
 
-    /**
-     * Constructs the base URL for accessing the calendar API.
-     *
-     * @return string The base URL for the calendar API.
-     */
+    return self::$instance;
+  }
 
     public function url()
     {
@@ -41,49 +35,68 @@ class CurriculumService
       return config('endpoint.lecture.url') . '/api/cpl/list';
     }
 
-    public function listCurriculum()
-    {
-        return $this->url() . '/';
-    }
+  public function url()
+  {
+    return config('endpoint.lecture.url') . '/api/curriculums';
+  }
 
-    public function listCourseCurriculums($id)
-    {
-      return $this->url() . '/' . $id . '/courses' ;
-    } 
+  public function listCurriculum()
+  {
+    return $this->url() . '/';
+  }
 
-    public function detailCourseCurriculums($id) 
-    {
-      return $this->courseUrl() . '/' . $id;
-    }
+  public function listCourseCurriculums($id)
+  {
+    return $this->url() . '/' . $id . '/courses';
+  }
 
-    public function getCurriculum($id)
-    {
-      return $this->url() . '/' . $id;
-    }
+  public function detailCourseCurriculums($id)
+  {
+    return $this->courseUrl() . '/' . $id;
+  }
 
+  public function getCurriculum($id)
+  {
+    return $this->url() . '/' . $id;
+  }
 
-    public function getJenisMataKuliah()
-    {
-      return $this->courseUrl() . '/category';
-    }
+  public function courseUrl()
+  {
+    return config('endpoint.lecture.url') . '/api/courses';
+  }
 
-    public function assignedCourse($id)
-    {
-      return $this->url() . '/' . $id . '/assigned';
-    }
+  public function getJenisMataKuliah()
+  {
+    return $this->courseUrl() . '/category';
+  }
 
-    public function unassignedCourse($id)
-    {
-      return $this->url() . '/' . $id . '/unassigned';
-    }
+  public function assignedCourse($id)
+  {
+    return $this->url() . '/' . $id . '/assigned';
+  }
 
-    public function bulkStore()
-    {
-        return $this->url() . '/bulk-store';
-    }
+  public function unassignedCourse($id)
+  {
+    return $this->url() . '/' . $id . '/unassigned';
+  }
 
-    public function getMataKuliahPrasyarat()
-    {
-        return $this->url() . '/mata-kuliah-prasyarat';
-    }
+  public function bulkStore()
+  {
+    return $this->url() . '/bulk-store';
+  }
+
+  public function getMandatoryCourses()
+  {
+    return $this->url() . '/mandatory';
+  }
+
+  public function getOptionalCourses($id)
+  {
+    return $this->url() . '/' . $id . '/optional';
+  }
+
+  public function updateAssignCourse($id)
+  {
+    return $this->url() . '/' . $id . '/assign';
+  }
 }
