@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Endpoint;
 
@@ -84,5 +84,9 @@ class UserService
     {
         return $this->url() . 'users/' . $id . '/reset-password';
     }
-}
 
+    public function getListStudyProgram()
+    {
+        return $this->url() . 'institutions/list-by-user';
+    }
+}
