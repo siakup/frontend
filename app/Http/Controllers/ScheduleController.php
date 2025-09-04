@@ -307,10 +307,6 @@ class ScheduleController extends Controller
       $responsePeriode = getCurl($urlPeriode, null, getHeaders());
       $periodeList = $responsePeriode->data;
 
-      // dd(array_map(function ($periode) {
-      //   return [$periode->id => $periode->tahun . '-' . $periode->semester];
-      // }, $periodeList));
-
       return view('academics.schedule.parent-institution_schedule.create', get_defined_vars());
     }
 
@@ -403,7 +399,7 @@ class ScheduleController extends Controller
       return redirect()->route('academics.schedule.parent-institution-schedule.create');
     }
 
-    public function parentInstitutionCourseList(Request $request)
+    public function parentInstitutionCourseList(Request $request, $periode)
     {
       $mata_kuliah_list = [
         [
@@ -490,6 +486,10 @@ class ScheduleController extends Controller
 
       $limit = $request->input('limit', 5);
       $page = $request->input('page', 1);
+
+      $urlPeriode = PeriodAcademicService::getInstance()->periodeUrl($periode);
+      $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+      $periodeData = $responsePeriode->data->periode;
 
       $mata_kuliah_list = array_values(array_filter($mata_kuliah_list, function($p) use ($request) { 
         return str_starts_with(strtolower($p['kode_matakuliah']), strtolower($request->input('search', ''))) || 

@@ -105,7 +105,7 @@ Route::group(['middleware' => ['auth']], function () {
               Route::get('/', [ScheduleController::class, 'parentInstitutionIndex'])->name('index');
               Route::get('/create', [ScheduleController::class, 'parentInstitutionCreate'])->name('create');
               Route::get('/create/add-lecture', [ScheduleController::class, 'parentInstitutionLectureList'])->name('add-lecture');
-              Route::get('/create/add-course/', [ScheduleController::class, 'parentInstitutionCourseList'])->name('add-course');
+              Route::get('/create/add-course/{periode}', [ScheduleController::class, 'parentInstitutionCourseList'])->name('add-course');
               Route::get('/create/add-class-schedule/', [ScheduleController::class, 'parentInstitutionClassScheduleCreate'])->name('add-class-schedule');
               Route::post('/create', [ScheduleController::class, 'parentInstitutionStore'])->name('store');
             });

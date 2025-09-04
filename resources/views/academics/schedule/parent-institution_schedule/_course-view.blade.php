@@ -139,7 +139,7 @@
     const input = document.querySelector('input[name="search"]');
     input.addEventListener('input', () => {
       $.ajax({
-        url: "{{ route('academics.schedule.parent-institution-schedule.add-course') }}?search=" + input.value,
+        url: "{{ route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode]) }}?search=" + input.value,
         method: 'GET',
         headers: {
             'X-Requested-With': 'XMLHttpRequest'
@@ -188,7 +188,7 @@
           const limit = e.target.getAttribute('data-limit');
           const page = e.target.getAttribute('data-page');
           
-          const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course')}}");
+          const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode])}}");
           url.searchParams.set('limit', limit);
           url.searchParams.set('page', page);
   
@@ -218,7 +218,7 @@
         const limit = previousButton.getAttribute('data-limit');
         const page = previousButton.getAttribute('data-page');
   
-        const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course')}}");
+        const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode])}}");
         url.searchParams.set('limit', limit);
         url.searchParams.set('page', page);
   
@@ -248,7 +248,7 @@
         const limit = nextButton.getAttribute('data-limit');
         const page = nextButton.getAttribute('data-page');
   
-        const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course')}}");
+        const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode])}}");
         url.searchParams.set('limit', limit);
         url.searchParams.set('page', page);
   
@@ -275,7 +275,7 @@
   
     if (select) {
       select.addEventListener('change', (event) => {
-          const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course')}}");
+          const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode])}}");
           url.searchParams.set('limit', event.target.value);
           url.searchParams.delete('page');
           $.ajax({
@@ -306,7 +306,7 @@
     <div class="modal-custom-backdrop"></div>
     <div class="modal-custom-content !max-w-[80vw] max-wi !h-[80vh] overflow-scroll self-center">
         <div class="modal-custom-header">
-            <span class="text-lg-bd">Daftar Mata Kuliah - Semester Ganjil</span>
+            <span class="text-lg-bd">Daftar Mata Kuliah - Semester {{$periodeData->semester == 1 ? 'Ganjil' : ($periodeData->semester == 2 ? 'Genap' : 'Pendek')}}</span>
             <button type="button" class="modal-close-btn" onclick="document.getElementById('modalListCourse').remove();document.getElementById('list-course').innerHTML=''">
                 &times;
             </button>
@@ -364,7 +364,7 @@
                 'currentPage' => (int) $page,
                 'lastPage' => $lastPage,
                 'limit' => $limit,
-                'routes' => route('academics.schedule.parent-institution-schedule.add-course'),
+                'routes' => route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode]),
                 'isCSR' => true,
                 'showSearch' => false
             ])

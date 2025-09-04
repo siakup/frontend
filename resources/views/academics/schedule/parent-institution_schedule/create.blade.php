@@ -199,7 +199,24 @@
         const sksWajib = document.querySelector('input[name="kapasitas_peserta"]');
 
         function updateSaveButtonState() {
+          const programPerkuliahan = document.querySelector('input[name="program_perkuliahan"]').value.trim() !== '';
+          const programStudi = document.querySelector('input[name="program_studi"]').value.trim() !== '';
+          const periode = document.querySelector('input[name="periode"]').value.trim() !== '';
+          const namaMatakuliah = document.querySelector('input[name="nama_matakuliah"]').value.trim() !== '';
+          const namaKelas = document.querySelector('input[name="nama_kelas"]').value.trim() !== '';
+          const namaSingkat = document.querySelector('input[name="nama_singkat"]').value.trim() !== '';
+          const kapasitasPeserta = document.querySelector('input[name="kapasitas_peserta"]').value.trim() !== '';
+          const kelasMBKM = document.querySelector('input[name="kelas_mbkm"]').value.trim() !== '';
+          const tanggalMulai = document.querySelector('input[name="tanggal_mulai"]').value.trim() !== '';
+          const tanggalAkhir = document.querySelector('input[name="tanggal_akhir"]').value.trim() !== '';
 
+          if(programPerkuliahan && programStudi && periode && namaMatakuliah && namaKelas && namaSingkat && kapasitasPeserta && kelasMBKM && tanggalMulai && tanggalAkhir) {
+            document.getElementById('btnBatal').disabled = false;
+            document.getElementById('btnSimpan').disabled = false;
+          } else {
+            document.getElementById('btnBatal').disabled = true;
+            document.getElementById('btnSimpan').disabled = true;
+          }
         }
 
         sksWajib.addEventListener('input', () => {
@@ -334,6 +351,7 @@
                 span.innerHTML = dropdownItem.innerHTML;
                 span.style.color = "black";
                 periodeList.value = value;
+                document.getElementById('chooseCourse').disabled = false;
                 updateSaveButtonState();
             });
         });
@@ -405,11 +423,11 @@
             }
         });
 
-        tanggalMulai.addEventListener('change', () => {
+        tanggalMulai.addEventListener('input', () => {
             updateSaveButtonState();
         });
 
-        tanggalAkhir.addEventListener('change', () => {
+        tanggalAkhir.addEventListener('input', () => {
             updateSaveButtonState();
         });
 
@@ -443,8 +461,9 @@
         });
 
         document.getElementById('chooseCourse').addEventListener('click', () => {
+          const periodeId = document.querySelector('input[name="periode"]').value
           $.ajax({
-            url: "{{ route('academics.schedule.parent-institution-schedule.add-course') }}",
+            url: "{{ route('academics.schedule.parent-institution-schedule.add-course', ['periode' => '__periode__']) }}".replace('__periode__', periodeId),
             method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
@@ -546,7 +565,7 @@
                   </div>
                 </div>
                 <div class="form-group">
-                  <button type="button" href="" class="button button-outline min-w-max" id="chooseCourse">
+                  <button type="button" href="" class="button button-outline min-w-max" id="chooseCourse" disabled>
                     <img src="{{asset('assets/icon-mata-kuliah-white.svg')}}" alt="button-icon">
                     <span>Pilih Mata Kuliah</span>
                   </button>
@@ -582,8 +601,8 @@
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                       </button>
                       <div id="Option-MBKM-Class" class="sort-dropdown select !top-[82.6%] !left-[64.6%]" style="display: none;">
-                        <div class="dropdown-item" data-event="{{true}}">Ya</div>
-                        <div class="dropdown-item" data-event="{{false}}">Tidak</div>
+                        <div class="dropdown-item" data-event="true">Ya</div>
+                        <div class="dropdown-item" data-event="false">Tidak</div>
                       </div>
                       <input type="hidden" value="" name="kelas_mbkm">
                   </div>
@@ -668,7 +687,7 @@
         'cancelButtonLabel' => 'Cek Kembali',
         'actionButtonLabel' => 'Ya, Simpan Sekarang'
       ]);
-      {{-- <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
+      <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
         <div class="modal-custom-backdrop"></div>
         <div class="modal-custom-content">
             <div class="modal-custom-header">
@@ -682,7 +701,7 @@
               <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
               <button type="submit" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
             </div>
-        </div> --}}
+        </div>
       </div>
     </form>
     <div id="list-course"></div>
