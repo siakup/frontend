@@ -349,7 +349,7 @@
 
 <div id="modalListLecture" class="modal-custom" style="display:block;">
     <div class="modal-custom-backdrop"></div>
-    <div class="modal-custom-content !h-[80vh] overflow-scroll self-center">
+    <div class="modal-custom-content !h-[80vh] !max-w-[80vw] overflow-scroll self-center">
         <div class="modal-custom-header">
             <span class="text-lg-bd">Tambah Pengajar</span>
             <button type="button" class="modal-close-btn" onclick="document.getElementById('modalListLecture').remove();document.getElementById('list-lecture').innerHTML=''">
