@@ -151,9 +151,9 @@
                   @forelse ($data as $d)
                       <x-table-row>
                           <x-table-cell>{{ $d->nama_kurikulum }}</x-table-cell>
-                          <x-table-cell class="{{ 
-                              $d->perkuliahan == 'Double Degree' ? 'bg-[#E5EDAB]' : 
-                              ($d->perkuliahan == 'International Class' ? 'bg-[#99D8FF]' : 
+                          <x-table-cell class="{{
+                              $d->perkuliahan == 'Double Degree' ? 'bg-[#E5EDAB]' :
+                              ($d->perkuliahan == 'International Class' ? 'bg-[#99D8FF]' :
                               ($d->perkuliahan == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
                           }}"
                           >{{ $d->perkuliahan }}</x-table-cell>
