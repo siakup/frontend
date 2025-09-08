@@ -31,14 +31,23 @@ class CourseService
     {
         return $this->url() . '/' . $id;
     }
-
     public function bulkStore()
     {
         return $this->url() . '/bulk-store';
     }
 
-    public function getMataKuliahPrasyarat()
+    public function prerequisiteCoursesBaseUrl()
     {
-        return $this->url() . '/mata-kuliah-prasyarat';
+        return config('endpoint.lecture.url') . '/api/prerequisite-courses';
+    }
+
+    public function prerequisiteCourseDetailUrl($id)
+    {
+        return $this->prerequisiteCoursesBaseUrl() . '/' . $id;
+    }
+
+    public function prerequisiteCourseBulkStore()
+    {
+        return $this->prerequisiteCoursesBaseUrl() . '/bulk-store';
     }
 }

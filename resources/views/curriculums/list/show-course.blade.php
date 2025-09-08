@@ -146,6 +146,8 @@
   })
 </script>
 
+@include('partials.success-notification-modal', ['route' => route('curriculum.list.edit.show-study', ['id' => $id])])
+
 @section('content')
   <div class="page-header">
     @if(Request::routeIs('curriculum.list.view.show-study'))
@@ -227,9 +229,9 @@
                             {{ $d->sks }}
                           </x-table-cell>
                           <x-table-cell>{{ $d->semester }}</x-table-cell>
-                          <x-table-cell>{{ $d->jumlah_cpl }}</x-table-cell>
+                          <x-table-cell>{{ count($d->cpls) }}</x-table-cell>
                           <x-table-cell>
-                            {{ $d->jenis_matakuliah }}
+                            {{ $d->course->jenis }}
                           </x-table-cell>
                           @if(!Request::routeIs('curriculum.list.view.show-study'))
                             <x-table-cell>

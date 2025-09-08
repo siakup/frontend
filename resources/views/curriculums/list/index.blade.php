@@ -160,7 +160,7 @@
                           <x-table-cell>{{ $d->deskripsi }}</x-table-cell>
                           <x-table-cell>{{ $d->sks_total }}</x-table-cell>
                           <x-table-cell>
-                            @if ($d->status === 'active')
+                            @if ($d->status_aktif)
                                 <span class="badge badge-active" style="min-width:max-content">Aktif</span>
                             @else
                                 <span class="badge badge-inactive !border-none" style="min-width:max-content">Tidak Aktif</span>

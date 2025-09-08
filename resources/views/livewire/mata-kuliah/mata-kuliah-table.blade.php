@@ -1,53 +1,50 @@
-<div class="flex flex-col gap-5" x-data="mataKuliahTable" x-init="fetchData()">
+<div class="flex flex-col gap-5" x-data="mataKuliahTable">
     <x-container variant="content" class="flex flex-col gap-5">
         <x-typography variant="heading-h6" class="mb-2">
             Daftar Mata Kuliah
         </x-typography>
 
         <div class="flex flex-col gap-5" x-data="{ itemToDelete: null }" x-cloak>
-            <!-- Search and Filters -->
-            <div
-                class="p-5 flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-300 rounded-3xl">
-                <!-- Search Input -->
-                <div class="w-full md:w-1/3">
-                    <x-form.input placeholder="Kode Mata Kuliah / Nama Mata Kuliah / Jenis Mata Kuliah"
-                        iconUrl="{{ asset('assets/icon-search.svg') }}" />
-                </div>
+            <div class="flex flex-col gap-5" x-data="{ itemToDelete: null }" x-cloak>
+                <form action="{{ route('study.index') }}" method="GET"
+                    class="flex flex-col md:flex-row justify-between items-center gap-4 border border-gray-300 rounded-3xl p-5 w-full">
 
-                <!-- Filter and Sort Buttons -->
-                <div class="flex flex-col md:flex-row gap-3 w-full md:w-auto">
-                    <!-- Program Studi Dropdown -->
-                    <div class="w-full md:w-auto">
-                        <select wire:model.live="programStudi"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2">
+                    <div class="flex-1 relative">
+                        <input type="text" name="search" value="{{ request('search') }}"
+                            placeholder="Kode Mata Kuliah / Nama Mata Kuliah / Jenis Mata Kuliah"
+                            class="w-full border border-gray-300 rounded-lg px-4 py-2 pl-10"
+                            onkeypress="if(event.key === 'Enter') this.form.submit();" />
+                        <button type="submit" class="absolute right-2 top-2">
+                            <img src="{{ asset('assets/icon-search.svg') }}" class="h-4 w-4" />
+                        </button>
+                    </div>
+
+                    <div class="flex gap-3 justify-end flex-wrap md:flex-nowrap mt-2 md:mt-0">
+                        <!-- Program Studi Dropdown -->
+                        <select name="programStudi" class="border border-gray-300 rounded-lg px-4 py-2"
+                            onchange="this.form.submit();">
                             <option value="">Semua Program Studi</option>
-                            @foreach ($prodiOptions as $prodi)
-                                <option value="{{ $prodi }}">{{ $prodi }}</option>
+                            @foreach ($programStudiList as $prodi)
+                                <option value="{{ $prodi->id_institusi }}"
+                                    {{ request('programStudi') == $prodi->id_institusi ? 'selected' : '' }}>
+                                    {{ $prodi->nama_institusi }}
+                                </option>
                             @endforeach
                         </select>
-                    </div>
 
-                    <!-- Sort By Dropdown -->
-                    <div class="w-full md:w-auto">
-                        <select wire:model.live="sortBy" class="w-full border border-gray-300 rounded-lg px-4 py-2">
-                            <option value="nama">Sort by: Nama</option>
-                            <option value="kode">Sort by: Kode</option>
-                            <option value="semester">Sort by: Semester</option>
-                            <option value="sks">Sort by: SKS</option>
+                        <select name="sortBy" class="border border-gray-300 rounded-lg px-4 py-2"
+                            onchange="this.form.submit();">
+                            <option value="nama_asc" {{ request('sortBy') == 'nama_asc' ? 'selected' : '' }}>A-Z
+                            </option>
+                            <option value="nama_desc" {{ request('sortBy') == 'nama_desc' ? 'selected' : '' }}>Z-A
+                            </option>
+                            <option value="created_desc" {{ request('sortBy') == 'created_desc' ? 'selected' : '' }}>
+                                Terbaru</option>
+                            <option value="created_asc" {{ request('sortBy') == 'created_asc' ? 'selected' : '' }}>
+                                Terlama</option>
                         </select>
                     </div>
-
-                    <!-- Sort Direction Toggle -->
-                    <button wire:click="$toggle('sortDirection')"
-                        class="px-4 py-2 border border-gray-300 rounded-lg flex items-center gap-2">
-                        @if ($sortDirection === 'asc')
-                            <x-icon name="arrow-up" class="h-4 w-4" />
-                        @else
-                            <x-icon name="arrow-down" class="h-4 w-4" />
-                        @endif
-                        {{ $sortDirection === 'asc' ? 'A-Z' : 'Z-A' }}
-                    </button>
-                </div>
+                </form>
             </div>
 
             <!-- Table -->
@@ -76,7 +73,7 @@
                                         :class="matkul.jenis === 'Wajib' ?
                                             'bg-blue-100 text-blue-800' :
                                             'bg-purple-100 text-purple-800'">
-                                        <span x-text="matkul.jenis"></span>
+                                        <span x-text="matkul.id_jenis"></span>
                                     </span>
                                 </x-table-cell>
                                 <x-table-cell>
@@ -133,38 +130,20 @@
             'routes' => route('academics-event.index'),
         ])
     @endif
-
-
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('mataKuliahTable', () => ({
-                mataKuliahList: [],
-                async fetchData() {
-                    try {
-                        const url = `${window.LECTURER_API_URL}/courses`; // GET request
-                        const res = await fetch(url, {
-                            method: 'GET', // eksplisit pakai GET
-                            headers: {
-                                'Accept': 'application/json'
-                            }
-                        });
-
-                        if (!res.ok) throw new Error('Gagal memuat data');
-                        const data = await res.json();
-
-                        console.log('Data Mata Kuliah:', data); // Debugging log
-
-
-                        // Pastikan hasilnya array
-                        this.mataKuliahList = Array.isArray(data) ? data : data.data || [];
-                    } catch (err) {
-                        console.error(err);
-                        this.mataKuliahList = [];
-                    }
-                }
-            }))
+                mataKuliahList: @json($mataKuliahList),
+                programStudi: '',
+                sortBy: 'nama',
+                sortDirection: 'asc',
+                page: 1,
+                perPage: 10
+            }));
         });
     </script>
+
+
 
 </div>
 

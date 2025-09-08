@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use App\Endpoint\CourseService;
+use App\Endpoint\UserService;
 
 use App\Traits\ApiResponse;
 
@@ -17,31 +18,37 @@ class CourseController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request()->input('search');
+        $search = $request->input('search');
         $page = $request->input('page', 1);
         $limit = $request->input('limit', 10);
-        $idJenisMataKuliah   = $request->input('idJenisMataKuliah');
+        $idJenisMataKuliah = $request->input('idJenisMataKuliah');
 
         $params = [
             'search' => $search,
             'page' => $page,
             'limit' => $limit,
-            'idJenisMataKuliah'  => $idJenisMataKuliah,
+            'idJenisMataKuliah' => $idJenisMataKuliah,
         ];
+
+        $urlProgramStudi = UserService::getInstance()->getListAllInstitution();
+        $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+        $programStudiList = $responseProgramStudiList->data ?? [];
 
         $url = CourseService::getInstance()->url();
         $response = getCurl($url, $params, getHeaders());
-        $data = json_decode(json_encode($response), true);
+        $mataKuliahList = $response->data ?? [];
 
-        if ($request->ajax()) {
-            if (!isset($response->data)) {
-                return $this->errorResponse($response->message);
-            }
-            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
-        }
+        $courses = [
+            'getmataKuliah' => $response->data ?? [],
+            'getprogramStudiList' => $programStudiList ?? [],
+        ];
 
-        return view('courses.index',  get_defined_vars());
+        return view('study.index', [
+            'mataKuliahList' => $courses['getmataKuliah'],
+            'programStudiList' => $courses['getprogramStudiList'],
+        ]);
     }
+
 
     public function create()
     {
@@ -50,37 +57,6 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
-
-        // Simulasi data dummy
-        // $dummyData = [
-        //     "kode_matakuliah" => "IF101",
-        //     "nama_matakuliah_id" => "Algoritma dan Pemrograman",
-        //     "nama_matakuliah_en" => "Algorithm and Programming",
-        //     "nama_singkat" => "A0010",
-        //     "id_prodi" => 1,
-        //     "sks" => 3,
-        //     "semester" => 1,
-        //     "deskripsi" => "Mata kuliah dasar pemrograman komputer",
-        //     "daftar_pustaka" => "Intro to Algorithms, Programming in C",
-        //     "id_jenis" => 1,
-        //     "id_koordinator" => 5,
-        //     "matakuliah_spesial" => true,
-        //     "prodi_lain" => false,
-        //     "matakuliah_wajib" => true,
-        //     "kampus_merdeka" => false,
-        //     "matakuliah_capstone" => false,
-        //     "matakuliah_kerja_praktik" => false,
-        //     "matakuliah_tugas_akhir" => false,
-        //     "matakuliah_minor" => false,
-        //     "status" => "active",
-        //     "created_by" => 'admin',
-        //     "updated_by" => 'admin',
-        //     "prasyarat" => ["IF100", "MT101"],
-        //     "tipe" => "Co-Requisite",
-        // ];
-
-        // $request->replace($dummyData);
-
         $validated = $request->validate([
             'kode_matakuliah'       => 'required',
             'nama_matakuliah_id'    => 'required',
@@ -233,7 +209,7 @@ class CourseController extends Controller
 
         $params = compact('prodi');
 
-        $url = CourseService::getInstance()->getMataKuliahPrasyarat();
+        $url = CourseService::getInstance()->prerequisiteCoursesBaseUrl();
         $response = getCurl($url, $params, getHeaders());
 
         if ($request->ajax()) {

@@ -142,24 +142,24 @@
         const btnSave     = document.getElementById('btnSimpan');
         const clearButton = document.querySelectorAll('.clear');
 
-        const nama = document.querySelector('input[name="curriculum_nama"]');
+        const nama = document.querySelector('input[name="nama_kurikulum"]');
         const deskripsi = document.querySelector('input[name="deskripsi"]');
         const sksWajib = document.querySelector('input[name="sks_wajib"]');
         const sksPilihan = document.querySelector('input[name="sks_pilihan"]');
-        const totalSKS = document.querySelector('input[name="total_sks"]');
-        const programPerkuliahan = document.querySelector('input[name="program_perkuliahan"]');
+        const totalSKS = document.querySelector('input[name="sks_total"]');
+        const programPerkuliahan = document.querySelector('input[name="perkuliahan"]');
 
-        const status = @json($data->status);
-        if (status === 'active') {
+        const status = @json($data->status_aktif);
+        if (status) {
             icon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
             text.textContent = "Aktif";
             text.style.color = "#262626";
-            hiddenInput.value = "active";
+            hiddenInput.value = true;
         } else {
             icon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
             text.textContent = "Tidak Aktif";
             text.style.color = "#8C8C8C";
-            hiddenInput.value = "inactive";
+            hiddenInput.value = false;
         }
 
         function updateSaveButtonState() {
@@ -169,7 +169,7 @@
           const sksWajibFilled = sksWajib.value.trim() !== '';
           const sksPilihanFilled = sksPilihan.value.trim() !== '';
           const totalSKSFilled = totalSKS.value.trim() !== '';
-          const statusFilled = hiddenInput.value === 'active' || hiddenInput.value === 'inactive' ? true : false;
+          const statusFilled = hiddenInput.value === 'true' || hiddenInput.value === 'false' ? true : false;
 
           if (programPerkuliahanFilled && namaFilled && deskripsiFilled && sksWajibFilled && sksPilihanFilled && totalSKSFilled && statusFilled) {
               btnSave.disabled = false;
@@ -240,8 +240,9 @@
         });
 
         btnToggle.addEventListener('click', () => {
-            const isActive = hiddenInput.value === 'active';
-            hiddenInput.value = isActive ? 'inactive' : 'active';
+            const isActive = hiddenInput.value === 'true';
+            console.log(hiddenInput.value);
+            hiddenInput.value = isActive ? false : true;
             icon.src  = isActive
                 ? "{{ asset('components/toggle-off-disabled-true.svg') }}"
                 : "{{ asset('components/toggle-on-disabled-false.svg') }}";
@@ -251,7 +252,7 @@
         });
         updateSaveButtonState();
 
-        const eventName = document.querySelector('input[name="program_perkuliahan"]');
+        const eventName = document.querySelector('input[name="perkuliahan"]');
         const sortBtnEventName = document.querySelector('#sortEvent');
         const sortDropdownEventName = document.querySelector('#Option-Program-Perkuliahan');
 
@@ -266,7 +267,7 @@
         });
 
         document.addEventListener('click', (e) => {
-            const dropdownStudy = e.target.closest('#program_perkuliahan');
+            const dropdownStudy = e.target.closest('#perkuliahan');
             if (dropdownStudy == null) {
                 sortDropdownEventName.style.display = 'none'
                 sortBtnEventName.querySelector('img').src =
@@ -339,7 +340,7 @@
               </div>
               <div class="form-group">
                   <label for="name">Program Perkuliahan</label>
-                  <div class="filter-box" id="program_perkuliahan">
+                  <div class="filter-box" id="perkuliahan">
                       <button type="button" class="button-clean input" id="sortEvent">
                           <span id="selectedEventLabel" class="text-black">{{ $data->perkuliahan }}</span>
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
@@ -349,13 +350,13 @@
                             <div class="dropdown-item" data-event="{{$programPerkuliahan->name}}">{{$programPerkuliahan->name}}</div>
                           @endforeach
                       </div>
-                      <input type="hidden" value="{{$data->perkuliahan}}" name="program_perkuliahan">
+                      <input type="hidden" value="{{$data->perkuliahan}}" name="perkuliahan">
                   </div>
               </div>
               <div class="form-group">
                   <label for="Curriculum-Name">Nama Kurikulum</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="Nama Kurikulum" name="curriculum_nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="{{$data->nama_kurikulum}}">
+                      <input placeholder="Nama Kurikulum" name="nama_kurikulum" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none" value="{{$data->nama_kurikulum}}">
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
@@ -383,7 +384,7 @@
               <div class="form-group">
                   <label for="Total">Total SKS</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px]">
-                      <input placeholder="Total SKS" name="total_sks" type="text" id="Total" class="!border-transparent focus:outline-none" value="{{$data->sks_total}}">
+                      <input placeholder="Total SKS" name="sks_total" type="text" id="Total" class="!border-transparent focus:outline-none" value="{{$data->sks_total}}">
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
               </div>
@@ -393,7 +394,7 @@
                       <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
                       <span class="toggle-info text-sm-bd" style="color: var(--Neutral-Gray-600, #8C8C8C)">Tidak Aktif</span>
                   </button>
-                <input type="hidden" name="status" id="statusValue" value="{{$data->status}}">
+                <input type="hidden" name="status_aktif" id="statusValue" value="{{$data->status}}">
               </div>
           </div>
       </div>
@@ -409,13 +410,16 @@
                       </tr>
                   </thead>
                   <tbody>
-                    @foreach($data->details as $details)
+                    @foreach($jenis_mata_kuliah as $jenis)
                       <tr class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
-                          <td class="!text-[14px] !w-[50%] !py-[20px]">{{$details->jenis_mata_kuliah}}</td>
+                          <td class="!text-[14px] !w-[50%] !py-[20px]">{{$jenis}}</td>
                           <td class="py-[12px] !w-[25%]"></td>
                           <td class="py-[12px] !w-[25%]">
                             <div class="border-[1px] border-[#BFBFBF] rounded-lg py-[9px] ps-[39.5px] pe-[12px] flex">
-                              <input class="w-full bg-white !border-transparent focus:outline-none text-[14px]" placeholder="Minimum SKS" type="number" value="{{$details->sks_minimal}}" />
+                              @php
+                                $filter = current(array_filter($data->details, function ($detail) use($jenis) { return $detail->jenis_mata_kuliah == $jenis; }));
+                              @endphp
+                              <input name="minimum_sks[{{$jenis}}]" class="w-full bg-white !border-transparent focus:outline-none text-[14px]" placeholder="Minimum SKS" type="number" value="{{$filter ? $filter->sks_minimal : 0}}" />
                               <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                             </div>
                           </td>

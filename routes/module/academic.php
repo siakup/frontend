@@ -8,7 +8,7 @@ use App\Http\Controllers\StudyController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\CplMapping;
 
-// Route::group(['middleware' => ['auth']], function () {
+Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'academics'], function () {
         //periode akademik
         Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
@@ -37,6 +37,28 @@ use App\Http\Controllers\CplMapping;
         Route::post('/event/preview', [AcademicController::class, 'eventPreview'])->name('academics-event.preview');
         Route::delete('/event/delete/{id}', [AcademicController::class, 'eventDelete'])->name('academics-event.delete');
     });
+    Route::get('/daftar-kurikulum/tambah/{program_studi}', [CurriculumController::class, 'createCurriculumList'])->name('curriculum.list.create');
+    Route::post('/daftar-kurikulum/tambah', [CurriculumController::class, 'storeCurriculumList'])->name('curriculum.list.store');
+    Route::group(['prefix' => '/daftar-kurikulum/ubah'], function () {
+        Route::get('/{id}', [CurriculumController::class, 'editCurriculumList'])->name('curriculum.list.edit');
+        Route::post('/{id}', [CurriculumController::class, 'updateCurriculumList'])->name('curriculum.list.update');
+        Route::get('/{id}/lihat-mata-kuliah', [CurriculumController::class, 'showCurriculumStudyList'])->name('curriculum.list.edit.show-study');
+        Route::get('/{id}/assign-mata-kuliah', [CurriculumController::class, 'assignCurriculumCourse'])->name('curriculum.list.edit.assign-study');
+        Route::post('/{id}/assign-mata-kuliah', [CurriculumController::class, 'updateAssignCurriculumCourse'])->name('curriculum.list.edit.update-assign-study');
+        Route::get('/{id}/lihat-mata-kuliah/{course_id}', [CurriculumController::class, 'editCurriculumStudyList'])->name('curriculum.list.edit.edit-study');
+        Route::post('/{id}/lihat-mata-kuliah/{course_id}', [CurriculumController::class, 'updateCurriculumStudyList'])->name('curriculum.list.edit.update-study');
+    });
+    Route::get('/struktur-kurikulum/wajib', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
+    Route::get('/struktur-kurikulum/pilihan', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
+    Route::get('/ekuivalensi-kurikulum', [CurriculumController::class, 'curriculumEquivalence'])->name('curriculum.equivalence');
+    Route::get(
+        '/ekuivalensi-kurikulum/tambah/{prodi}/{programPerkuliahan}',
+        [CurriculumController::class, 'createCurriculumEquivalence']
+    )->name('curriculum.equivalence.create');
+    Route::get(
+        '/ekuivalensi-kurikulum/edit/{id}',
+        [CurriculumController::class, 'editCurriculumEquivalence']
+    )->name('curriculum.equivalence.edit');
 
     Route::group(['prefix' => 'calendar'], function () {
         Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
@@ -52,6 +74,7 @@ use App\Http\Controllers\CplMapping;
     Route::group(['prefix' => 'mata-kuliah'], function () {
         Route::get('/', [StudyController::class, 'index'])->name('study.index');
         Route::get('/tambah', [StudyController::class, 'create'])->name('study.create');
+        Route::delete('/study/{id}', [StudyController::class, 'delete'])->name('study.delete');
         Route::get('/edit/{id}', [StudyController::class, 'edit'])->name('study.edit');
         Route::get('/view/{id}', [StudyController::class, 'view'])->name('study.view');
         Route::get('/upload', [StudyController::class, 'upload'])->name('study.upload');
@@ -91,10 +114,10 @@ use App\Http\Controllers\CplMapping;
             [CurriculumController::class, 'uploadCurriculumEquivalence']
         )->name('curriculum.equivalence.upload');
 
-      Route::post('/upload', [CurriculumController::class, 'uploadResultCurriculumEquivalence'])->name('curriculum.equivalence.upload-result');
-      Route::post('/save-upload', [CurriculumController::class, 'uploadStoreCurriculumEquivalence'])->name('curriculum.equivalence.save-upload');
-      Route::get('/template', [CurriculumController::class, 'cplDownloadTemplateCurriculumEquivalence'])->name('curriculum.equivalence.template');
-  });
+        Route::post('/upload', [CurriculumController::class, 'uploadResultCurriculumEquivalence'])->name('curriculum.equivalence.upload-result');
+        Route::post('/save-upload', [CurriculumController::class, 'uploadStoreCurriculumEquivalence'])->name('curriculum.equivalence.save-upload');
+        Route::get('/template', [CurriculumController::class, 'cplDownloadTemplateCurriculumEquivalence'])->name('curriculum.equivalence.template');
+    });
 
 
     Route::group(['prefix' => 'persiapan-perkuliahan/jadwal-kuliah/program-studi'], function () {
@@ -137,8 +160,12 @@ use App\Http\Controllers\CplMapping;
     // UploadResult **dikeluarkan dari prefix**, supaya tombol form di view tetap jalan
     Route::post('/persiapan-perkuliahan/jadwal-kuliah/program-studi/upload', [ScheduleController::class, 'uploadResult'])
         ->name('academics.schedule.prodi-schedule.upload-result');
-
-
-    // });
-
-
+    Route::prefix('parent-institution')->name('parent-institution-schedule.')->group(function () {
+      Route::get('/', [ScheduleController::class, 'parentInstitutionIndex'])->name('index');
+      Route::get('/create', [ScheduleController::class, 'parentInstitutionCreate'])->name('create');
+      Route::get('/create/add-lecture', [ScheduleController::class, 'parentInstitutionLectureList'])->name('add-lecture');
+      Route::get('/create/add-course/{periode}', [ScheduleController::class, 'parentInstitutionCourseList'])->name('add-course');
+      Route::get('/create/add-class-schedule/', [ScheduleController::class, 'parentInstitutionClassScheduleCreate'])->name('add-class-schedule');
+      Route::post('/create', [ScheduleController::class, 'parentInstitutionStore'])->name('store');
+    });
+});
