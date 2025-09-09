@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         </a>
 
                         <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                            href=""
+                            href="{{route('academics.schedule.prodi-schedule.edit', ['id' => $r['id']])}}"
                             style="text-decoration: none; color: inherit;">
                             <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                             <span style="color: #E62129">Ubah</span>

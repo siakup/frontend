@@ -137,9 +137,12 @@ Route::group(['middleware' => ['auth']], function () {
 
                 Route::get('/', [ScheduleController::class, 'index'])->name('index');
                 Route::get('/tambah', [ScheduleController::class, 'create'])->name('create');
-                Route::post('/',       [ScheduleController::class, 'store'])->name('store');
+                Route::get('/tambah/dosen', [ScheduleController::class, 'dosen'])->name('add-lecture');
+                Route::get('/create/mata-kuliah/{periode}', [ScheduleController::class, 'mataKuliah'])->name('add-course');
+                Route::get('/create/kelas/', [ScheduleController::class, 'jadwalKelas'])->name('add-class-schedule');
+                Route::post('/tambah', [ScheduleController::class, 'store'])->name('store');
                 Route::get('/{id}', [ScheduleController::class, 'show'])->name('show');
-                Route::get('/{id}/ubah', [ScheduleController::class, 'edit'])->name('edit');
+                Route::get('/ubah/{id}', [ScheduleController::class, 'edit'])->name('edit');
                 Route::put('/{id}',      [ScheduleController::class, 'update'])->name('update');
                 Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('delete');
 
@@ -152,10 +155,13 @@ Route::group(['middleware' => ['auth']], function () {
             Route::prefix('parent-institution')->name('parent-institution-schedule.')->group(function () {
               Route::get('/', [ScheduleController::class, 'parentInstitutionIndex'])->name('index');
               Route::get('/create', [ScheduleController::class, 'parentInstitutionCreate'])->name('create');
+              Route::get('/edit/{id}', [ScheduleController::class, 'parentInstitutionEdit'])->name('edit');
+              Route::put('/edit/{id}', [ScheduleController::class, 'parentInstitutionUpdate'])->name('update');
               Route::get('/create/add-lecture', [ScheduleController::class, 'parentInstitutionLectureList'])->name('add-lecture');
               Route::get('/create/add-course/{periode}', [ScheduleController::class, 'parentInstitutionCourseList'])->name('add-course');
               Route::get('/create/add-class-schedule/', [ScheduleController::class, 'parentInstitutionClassScheduleCreate'])->name('add-class-schedule');
               Route::post('/create', [ScheduleController::class, 'parentInstitutionStore'])->name('store');
+              Route::get('/view/{id}', [ScheduleController::class, 'parentInstitutionView'])->name('view');
             });
         });
     });

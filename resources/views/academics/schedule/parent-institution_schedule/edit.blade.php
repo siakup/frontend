@@ -214,6 +214,7 @@
     function onClickDelete(e) {
       e.parentElement.parentElement.parentElement.remove();
     }
+
     document.addEventListener('DOMContentLoaded', () => {
         const btnToggle   = document.getElementById('toggleButton');
         const icon        = document.getElementById('toggleIcon');
@@ -246,6 +247,8 @@
           }
         }
 
+        updateSaveButtonState();
+
         sksWajib.addEventListener('input', () => {
           updateSaveButtonState();
           sksWajib.value = sksWajib.value.replace(/[^0-9]/g, '');
@@ -268,14 +271,12 @@
         });
 
         document.getElementById('btnBatal').addEventListener('click', function() {
-            window.location.href = "{{ route('academics.schedule.prodi-schedule.index') }}";
+            window.location.href = "{{ route('academics.schedule.parent-institution-schedule.index') }}";
         });
 
         // document.getElementById('btnCekKembali').addEventListener('click', function() {
         //     document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
         // });
-
-        updateSaveButtonState();
 
         const programPerkuliahan = document.querySelector('input[name="program_perkuliahan"]');
         const sortBtnprogramPerkuliahan = document.querySelector('#sortProgramPerkuliahan');
@@ -487,21 +488,6 @@
           });
         });
 
-        document.getElementById('chooseCourse').addEventListener('click', () => {
-          const periodeId = document.querySelector('input[name="periode"]').value
-          $.ajax({
-            url: "{{ route('academics.schedule.prodi-schedule.add-course', ['periode' => '__periode__']) }}".replace('__periode__', periodeId),
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-            success: function(html) {
-              $('#list-course').html(html);
-              $('#modalListCourse').show();
-            },
-          });
-        });
-
         document.getElementById('createScheduleClass').addEventListener('click', () => {
           $.ajax({
             url: "{{ route('academics.schedule.prodi-schedule.add-class-schedule') }}",
@@ -515,19 +501,19 @@
             },
           });
         });
-
     });
 </script>
 @section('content')
     <div class="page-header">
-        <div class="page-title-text">Ubah Jadwal Program Studi</div>
+        <div class="page-title-text">Ubah Jadwal Kuliah Institusi Parent</div>
     </div>
     
-    <a href="{{ route('academics.schedule.prodi-schedule.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Jadwal Kuliah Program Studi
+    <a href="{{ route('academics.schedule.parent-institution-schedule.index') }}" class="button-no-outline-left">
+        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Jadwal Kuliah Institusi Parent
     </a>
-    <form action="{{route('academics.schedule.prodi-schedule.store')}}" method="POST">
+    <form action="{{route('academics.schedule.parent-institution-schedule.update', ['id' => $id])}}" method="POST">
       @csrf
+      @method('PUT')
       <div class="content-card pb-5">
           <div class="form-title-text" style="padding: 20px;">Informasi Kelas</div>
           <div class="form-section">
@@ -590,12 +576,6 @@
                       <input placeholder="Pilih Mata Kuliah" name="matakuliah[id]" type="hidden" value="{{$data['matakuliah']['id']}}">
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
-                </div>
-                <div class="form-group">
-                  <button type="button" href="" class="button button-outline min-w-max" id="chooseCourse">
-                    <img src="{{asset('assets/icon-mata-kuliah-white.svg')}}" alt="button-icon">
-                    <span>Pilih Mata Kuliah</span>
-                  </button>
                 </div>
               </div>
               <div class="form-group">
@@ -766,9 +746,8 @@
         'triggerButton' => 'btnSimpan',
         'cancelButtonLabel' => 'Cek Kembali',
         'actionButtonLabel' => 'Ya, Simpan Sekarang'
-      ]);
+      ])
     </form>
-    <div id="list-course"></div>
     <div id="list-lecture"></div>
     <div id="add-schedule"></div>
 @endsection

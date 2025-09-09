@@ -243,15 +243,9 @@ class Menu
                         'parent' => 'academics.schedule.prodi-schedule.create',
                         'isExpandable' => false,
                     ],
-                    'view-prodi-schedule' => [
-                        'name' => 'Lihat Jadwal Kuliah Program Studi',
-                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/*',
-                        'parent' => 'academics.schedule.prodi-schedule.show',
-                        'isExpandable' => false,
-                    ],
                     'edit-prodi-schedule' => [
                         'name' => 'Ubah Jadwal Kuliah Program Studi',
-                        'url' => '/persiapan-perkuliahan/jadwal-kuliah  /program-studi/*/ubah',
+                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/ubah/*',
                         'parent' => 'academics.schedule.prodi-schedule.edit',
                         'isExpandable' => false,
                     ],
@@ -279,6 +273,12 @@ class Menu
                   'name' => 'Tambah Jadwal Kuliah Institusi Parent',
                   'url' => '/persiapan-perkuliahan/jadwal-kuliah/parent-institution/create',
                   'parent' => 'academics.schedule.parent-institution-schedule.create',
+                  'isExpandable' => false
+                ],
+                'edit-parent-institution' => [
+                  'name' => 'Ubah Jadwal Kuliah Institusi Parent',
+                  'url' => '/persiapan-perkuliahan/jadwal-kuliah/parent-institution/edit/*',
+                  'parent' => 'academics.schedule.parent-institution-schedule.edit',
                   'isExpandable' => false
                 ]
               ]

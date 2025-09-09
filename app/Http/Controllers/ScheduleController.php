@@ -66,33 +66,262 @@ class ScheduleController extends Controller
     }
 
     // ====== skeleton CRUD (nanti tinggal isi API) ======
+    public function create(Request $request)
+    {
+      $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+      $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      $programStudiList = $responseProgramStudiList->data;
 
-    public function create()
-{
-    $programPerkuliahanList = [
-        (object)['id'=>1,'nama'=>'Reguler'],
-        (object)['id'=>2,'nama'=>'Paralel'],
-        (object)['id'=>3,'nama'=>'Karyawan'],
-    ];
+      $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+      $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+      $periodeList = $responsePeriode->data;
 
-    $programStudiList = [
-        (object)['id'=>10,'nama'=>'Ilmu Kimia'],
-        (object)['id'=>11,'nama'=>'Informatika'],
-        (object)['id'=>12,'nama'=>'Ilmu Komputer'],
-    ];
+      return view('academics.schedule.prodi_schedule.create', get_defined_vars());
+    }
 
-    $periodeList = [
-        (object)['id'=>101,'nama'=>'2023-Ganjil'],
-        (object)['id'=>102,'nama'=>'2023-Genap'],
-        (object)['id'=>103,'nama'=>'2024-Pendek'],
-    ];
+    public function dosen(Request $request)
+    {
+      $pengajar = [
+        [
+          'id' => 1,
+          'nip' => '12001',
+          'nama_pengajar' => 'Ade Irawan, Ph.D',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 2,
+          'nip' => '12001',
+          'nama_pengajar' => 'Dr. Tasmi, S.Si, M.Si',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 3,
+          'nip' => '12001',
+          'nama_pengajar' => 'Rangga Ganzar Nugraha, Ph.D',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 4,
+          'nip' => '12001',
+          'nama_pengajar' => 'Meredita Susanty, M.Sc',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 5,
+          'nip' => '12001',
+          'nama_pengajar' => 'Randi Farmana Putra, M.Si',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 6,
+          'nip' => '12001',
+          'nama_pengajar' => 'Dr. Tasmi, S.Si, M.Si',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 7,
+          'nip' => '12001',
+          'nama_pengajar' => 'Ade Irawan, Ph.D',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 8,
+          'nip' => '12001',
+          'nama_pengajar' => 'Rangga Ganzar Nugraha, Ph.D',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 9,
+          'nip' => '12001',
+          'nama_pengajar' => 'Meredita Susanty, M.Sc',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+        [
+          'id' => 10,
+          'nip' => '12001',
+          'nama_pengajar' => 'Randi Farmana Putra, M.Si',
+          'pengajar_program_studi' => 'Ilmu Komputer'
+        ],
+      ];
 
-    return view('academics.schedule.prodi_schedule.create', [
-        'programPerkuliahanList' => $programPerkuliahanList,
-        'programStudiList'       => $programStudiList,
-        'periodeList'            => $periodeList,
-    ]);
-}
+      $limit = $request->input('limit', 5);
+      $page = $request->input('page', 1);
+
+      $pengajar = array_values(array_filter($pengajar, function($p) use ($request) { 
+        return str_starts_with(strtolower($p['nip']), strtolower($request->input('search', ''))) || 
+          str_starts_with(strtolower($p['nama_pengajar']), strtolower($request->input('search', ''))) || 
+          str_starts_with(strtolower($p['pengajar_program_studi']), strtolower($request->input('search', ''))); 
+      }));
+      
+      $pengajar = array_chunk($pengajar, $limit);
+      $lastPage = count($pengajar);
+      $pengajar = count($pengajar) > 0 ? $pengajar[$page - 1] : [];
+
+      if ($request->ajax()) {
+          return view('academics.schedule.prodi_schedule._lecture-view', get_defined_vars())->render();
+      }
+      return redirect()->route('academics.schedule.prodi_schedule.create');
+    }
+
+    public function mataKuliah(Request $request, $periode)
+    {
+      $mata_kuliah_list = [
+        [
+          'id' => 1,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Akuisisi dan Pengolahan Data Seismik Refleksi',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 2,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Analisis Sinyal Geofisika',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 3,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Elektronika dan Instrumentasi Geofisika',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 4,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Evaluasi Farmasi',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 5,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Fisika Batuan',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 6,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Akuisisi dan Pengolahan Data Seismik Refleksi',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 7,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Analisis Sinyal Geofisika',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 8,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Elektronika dan Instrumentasi Geofisika',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 9,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Fisika Batuan',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+        [
+          'id' => 10,
+          'kode_matakuliah' => '12001',
+          'nama_matakuliah' => 'Evaluasi Farmasi',
+          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
+          'sks' => 2,
+          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
+        ],
+      ];
+
+      $limit = $request->input('limit', 5);
+      $page = $request->input('page', 1);
+
+      $urlPeriode = PeriodAcademicService::getInstance()->periodeUrl($periode);
+      $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+      $periodeData = $responsePeriode->data->periode;
+
+      $mata_kuliah_list = array_values(array_filter($mata_kuliah_list, function($p) use ($request) { 
+        return str_starts_with(strtolower($p['kode_matakuliah']), strtolower($request->input('search', ''))) || 
+          str_starts_with(strtolower($p['nama_matakuliah']), strtolower($request->input('search', ''))); 
+      }));
+      
+      $mata_kuliah_list = array_chunk($mata_kuliah_list, $limit);
+      $lastPage = count($mata_kuliah_list);
+      $mata_kuliah_list = count($mata_kuliah_list) > 0 ? $mata_kuliah_list[$page - 1] : [];
+
+      if ($request->ajax()) {
+          return view('academics.schedule.parent-institution_schedule._course-view', get_defined_vars())->render();
+      }
+      return redirect()->route('academics.schedule.prodi_schedule.create');
+    }
+
+    public function jadwalKelas(Request $request)
+    {
+      $ruangans = [
+        [
+          'id_ruangan' => 1,
+          'nama_ruangan' => 'Online'
+        ],
+        [
+          'id_ruangan' => 2,
+          'nama_ruangan' => 'Ruang Kelas ABC'
+        ],
+        [
+          'id_ruangan' => 3,
+          'nama_ruangan' => '2201'
+        ],
+        [
+          'id_ruangan' => 4,
+          'nama_ruangan' => '2202'
+        ],
+        [
+          'id_ruangan' => 5,
+          'nama_ruangan' => '2203'
+        ],
+        [
+          'id_ruangan' => 6,
+          'nama_ruangan' => '2401'
+        ],
+        [
+          'id_ruangan' => 7,
+          'nama_ruangan' => '2402'
+        ],
+        [
+          'id_ruangan' => 8,
+          'nama_ruangan' => '2403'
+        ],
+        [
+          'id_ruangan' => 9,
+          'nama_ruangan' => '2501'
+        ],
+        [
+          'id_ruangan' => 10,
+          'nama_ruangan' => '2502'
+        ],
+      ];
+
+      return view('academics.schedule.prodi_schedule._create-schedule', get_defined_vars())->render();
+    }
+    
     public function uploadResult(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -214,9 +443,83 @@ class ScheduleController extends Controller
     }
 
 
-    public function store(Request $r)      { /* TODO: call API create */ }
+    public function store(Request $request)      { 
+      dd($request->all());
+    }
+
     public function show($id)              { return view('academics.schedule.prodi_schedule.show', compact('id')); }
-    public function edit($id)              { return view('academics.schedule.prodi_schedule.edit', compact('id')); }
+    public function edit($id)              
+    { 
+      $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+      $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      $programStudiList = $responseProgramStudiList->data;
+
+      $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+      $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+      $periodeList = $responsePeriode->data;
+
+      $data = [
+        "program_perkuliahan" => "Reguler",
+        "program_studi" => "3",
+        "periode" => "17",
+        "nama_matakuliah" => "Elektronika dan Instrumentasi Geofisika",
+        "matakuliah" => [
+          "jenis_matakuliah" => "Mata Kuliah Program Studi",
+          "sks" => "2",
+          "kurikulum" => "Kurikulum 2021 - Teknik Geofisika",
+          "kode_matakuliah" => "12001",
+          "id" => "3",
+        ],
+        "nama_kelas" => "Elektronika dan Instrumentasi Geofisika - EIG4",
+        "nama_singkat" => "EIG4",
+        "kapasitas_peserta" => "50",
+        "kelas_mbkm" => false,
+        "tanggal_mulai" => "09-09-2025, 12:00",
+        "tanggal_akhir" => "30-09-2025, 12:00",
+        "selected_lecture" => [
+          [
+            "id" => "1",
+            "nama_pengajar" => "Ade Irawan, Ph.D",
+            "pengajar_program_studi" => "Ilmu Komputer",
+            "status_pengajar" => "Pengajar Utama",
+            "hari" => "Senin",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ],
+          1 => [
+            "id" => "2",
+            "nama_pengajar" => "Dr. Tasmi, S.Si, M.Si",
+            "pengajar_program_studi" => "Ilmu Komputer",
+            "status_pengajar" => "Bukan Pengajar Utama",
+            "hari" => "Selasa",
+            "ruangan" => "3",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ]
+        ],
+        "class_schedule" => [
+          [
+            "hari" => "Senin",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ],
+          [
+            "hari" => "Selasa",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ]
+        ]
+      ];
+      return view('academics.schedule.prodi_schedule.edit', get_defined_vars()); 
+    }
+    
     public function update(Request $r,$id) { /* TODO: call API update */ }
     public function destroy($id)           { /* TODO: call API delete */ }
     public function importFet1(Request $r) {
@@ -311,6 +614,83 @@ class ScheduleController extends Controller
     }
 
     public function parentInstitutionStore(Request $request)
+    {
+      dd($request->all());
+    }
+
+    public function parentInstitutionEdit(Request $request, $id)              
+    { 
+      $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+      $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      $programStudiList = $responseProgramStudiList->data;
+
+      $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+      $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+      $periodeList = $responsePeriode->data;
+
+      $data = [
+        "program_perkuliahan" => "Reguler",
+        "program_studi" => "3",
+        "periode" => "17",
+        "nama_matakuliah" => "Elektronika dan Instrumentasi Geofisika",
+        "matakuliah" => [
+          "jenis_matakuliah" => "Mata Kuliah Program Studi",
+          "sks" => "2",
+          "kurikulum" => "Kurikulum 2021 - Teknik Geofisika",
+          "kode_matakuliah" => "12001",
+          "id" => "3",
+        ],
+        "nama_kelas" => "Elektronika dan Instrumentasi Geofisika - EIG4",
+        "nama_singkat" => "EIG4",
+        "kapasitas_peserta" => "50",
+        "kelas_mbkm" => false,
+        "tanggal_mulai" => "09-09-2025, 12:00",
+        "tanggal_akhir" => "30-09-2025, 12:00",
+        "selected_lecture" => [
+          [
+            "id" => "1",
+            "nama_pengajar" => "Ade Irawan, Ph.D",
+            "pengajar_program_studi" => "Ilmu Komputer",
+            "status_pengajar" => "Pengajar Utama",
+            "hari" => "Senin",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ],
+          1 => [
+            "id" => "2",
+            "nama_pengajar" => "Dr. Tasmi, S.Si, M.Si",
+            "pengajar_program_studi" => "Ilmu Komputer",
+            "status_pengajar" => "Bukan Pengajar Utama",
+            "hari" => "Selasa",
+            "ruangan" => "3",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ]
+        ],
+        "class_schedule" => [
+          [
+            "hari" => "Senin",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ],
+          [
+            "hari" => "Selasa",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ]
+        ]
+      ];
+      return view('academics.schedule.parent-institution_schedule.edit', get_defined_vars()); 
+    }
+
+    public function parentInstitutionUpdate(Request $request, $id)
     {
       dd($request->all());
     }
@@ -504,6 +884,79 @@ class ScheduleController extends Controller
           return view('academics.schedule.parent-institution_schedule._course-view', get_defined_vars())->render();
       }
       return redirect()->route('academics.schedule.parent-institution-schedule.create');
+    }
+
+    public function parentInstitutionView(Request $request, $id)
+    {
+      $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+      $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+      $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      $programStudiList = $responseProgramStudiList->data;
+
+      $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+      $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+      $periodeList = $responsePeriode->data;
+
+      $data = [
+        "program_perkuliahan" => "Reguler",
+        "program_studi" => "3",
+        "periode" => "17",
+        "nama_matakuliah" => "Elektronika dan Instrumentasi Geofisika",
+        "matakuliah" => [
+          "jenis_matakuliah" => "Mata Kuliah Program Studi",
+          "sks" => "2",
+          "kurikulum" => "Kurikulum 2021 - Teknik Geofisika",
+          "kode_matakuliah" => "12001",
+          "id" => "3",
+        ],
+        "nama_kelas" => "Elektronika dan Instrumentasi Geofisika - EIG4",
+        "nama_singkat" => "EIG4",
+        "kapasitas_peserta" => "50",
+        "kelas_mbkm" => false,
+        "tanggal_mulai" => "09-09-2025, 12:00",
+        "tanggal_akhir" => "30-09-2025, 12:00",
+        "selected_lecture" => [
+          [
+            "id" => "1",
+            "nama_pengajar" => "Ade Irawan, Ph.D",
+            "pengajar_program_studi" => "Ilmu Komputer",
+            "status_pengajar" => "Pengajar Utama",
+            "hari" => "Senin",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ],
+          1 => [
+            "id" => "2",
+            "nama_pengajar" => "Dr. Tasmi, S.Si, M.Si",
+            "pengajar_program_studi" => "Ilmu Komputer",
+            "status_pengajar" => "Bukan Pengajar Utama",
+            "hari" => "Selasa",
+            "ruangan" => "3",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ]
+        ],
+        "class_schedule" => [
+          [
+            "hari" => "Senin",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ],
+          [
+            "hari" => "Selasa",
+            "ruangan" => "2",
+            "jam_mulai_kelas" => "12:00",
+            "jam_akhir_kelas" => "14:00",
+          ]
+        ]
+      ];
+
+      return view('academics.schedule.parent-institution_schedule._view', get_defined_vars())->render();
     }
 
     public function parentInstitutionClassScheduleCreate(Request $request)
