@@ -255,14 +255,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
                 <x-table-cell>
                 <div class="center">
-                    <a href="" type="button" class="btn-icon btn-view-periode-academic" title="Lihat">
-                    <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat"><span>Lihat</span>
+                    <a href="javascript:void(0)"
+                    class="btn-icon btn-view-periode-academic"
+                    title="Lihat"
+                    onclick="openViewModal({{ $r['id'] }})">
+                    <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
+                    <span>Lihat</span>
                     </a>
 
                     <a class="btn-icon btn-edit-periode-academic" title="Ubah" href=""
                     style="text-decoration: none; color: inherit;">
                     <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit"><span style="color: #E62129">Ubah</span>
                     </a>
+
+
 
                     <button type="button" class="btn-icon btn-delete"
                             data-delete-url="{{ route('academics.schedule.prodi-schedule.destroy', $r['id']) }}"
@@ -306,6 +312,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 </div>
 
-@include('academics.schedule.prodi_schedule.modal-delete')
+@include('academics.schedule.prodi_schedule.delete')
+@include('academics.schedule.prodi_schedule.view')
+
 
 @endsection

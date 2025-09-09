@@ -29,7 +29,7 @@ class CurriculumController extends Controller
   {
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+    // $programPerkuliahanList = $responseProgramPerkuliahanList->data;
     $programPerkuliahanList = [
       (object)['name' => 'Reguler', 'code' => 0],
       (object)['name' => 'Double Degree', 'code' => 1],
@@ -42,7 +42,7 @@ class CurriculumController extends Controller
 
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
+    // $programStudiList = $responseProgramStudiList->data;
     $programStudiList = [
       (object)[
         'id' => 3,
@@ -72,43 +72,43 @@ class CurriculumController extends Controller
 
     $url = CurriculumService::getInstance()->listCurriculum();
     $response = getCurl($url, $params, getHeaders());
-    $data = $response->data;
-    //       $data = [
-    //     (object)[
-    //         'id' => 2,
-    //         'nama_kurikulum' => 'Kurikulum 2025 - Teknik Kimia',
-    //         'perkuliahan' => 'Reguler',
-    //         'program_studi' => 'Teknik Kimia',
-    //         'deskripsi' => 'Kurikulum Tahun 2025',
-    //         'tahun_kurikulum' => null,
-    //         'sks_wajib' => 100,
-    //         'sks_pilihan' => 44,
-    //         'sks_total' => 144,
-    //         'status_aktif' => true,
-    //         'status' => 'active',
-    //         'created_at' => '2025-08-21T07:19:14.446540Z',
-    //         'created_by' => null,
-    //         'updated_at' => null,
-    //         'updated_by' => null,
-    //     ],
-    //     (object)[
-    //         'id' => 3,
-    //         'nama_kurikulum' => 'Kurikulum 2025 - Teknik Mesin',
-    //         'perkuliahan' => 'Double Degree',
-    //         'program_studi' => 'Teknik Mesin',
-    //         'deskripsi' => 'Kurikulum Tahun 2025',
-    //         'tahun_kurikulum' => null,
-    //         'sks_wajib' => 120,
-    //         'sks_pilihan' => 24,
-    //         'sks_total' => 144,
-    //         'status_aktif' => true,
-    //         'status' => 'active',
-    //         'created_at' => '2025-08-21T07:19:14.446540Z',
-    //         'created_by' => null,
-    //         'updated_at' => null,
-    //         'updated_by' => null,
-    //     ],
-    // ];
+    // $data = $response->data;
+          $data = [
+        (object)[
+            'id' => 2,
+            'nama_kurikulum' => 'Kurikulum 2025 - Teknik Kimia',
+            'perkuliahan' => 'Reguler',
+            'program_studi' => 'Teknik Kimia',
+            'deskripsi' => 'Kurikulum Tahun 2025',
+            'tahun_kurikulum' => null,
+            'sks_wajib' => 100,
+            'sks_pilihan' => 44,
+            'sks_total' => 144,
+            'status_aktif' => true,
+            'status' => 'active',
+            'created_at' => '2025-08-21T07:19:14.446540Z',
+            'created_by' => null,
+            'updated_at' => null,
+            'updated_by' => null,
+        ],
+        (object)[
+            'id' => 3,
+            'nama_kurikulum' => 'Kurikulum 2025 - Teknik Mesin',
+            'perkuliahan' => 'Double Degree',
+            'program_studi' => 'Teknik Mesin',
+            'deskripsi' => 'Kurikulum Tahun 2025',
+            'tahun_kurikulum' => null,
+            'sks_wajib' => 120,
+            'sks_pilihan' => 24,
+            'sks_total' => 144,
+            'status_aktif' => true,
+            'status' => 'active',
+            'created_at' => '2025-08-21T07:19:14.446540Z',
+            'created_by' => null,
+            'updated_at' => null,
+            'updated_by' => null,
+        ],
+    ];
     // dd($data);
     return view('curriculums.list.index', get_defined_vars());
   }

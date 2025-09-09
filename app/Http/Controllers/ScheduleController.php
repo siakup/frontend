@@ -90,6 +90,26 @@ class ScheduleController extends Controller
     ]);
 }
 
+    public function show($id)
+    {
+        // ambil dari service / DB
+        $item = [
+            'id' => $id,
+            'semester' => 3,
+            'mata_kuliah' => 'Pemrograman Web',
+            'nama_kelas' => 'Informatika A',
+            'kapasitas' => 40,
+            'jadwal' => [
+                ['hari'=>'Senin','waktu'=>'07:00-08:40','ruang'=>'B201'],
+                ['hari'=>'Rabu','waktu'=>'09:00-10:40','ruang'=>'B202'],
+            ],
+            'pengajar' => 'Agus Ivan Setiaji'
+        ];
+
+        return response()->json($item);
+    }
+
+
     public function destroy($id)
     {
         // Validasi ringan
@@ -235,12 +255,6 @@ class ScheduleController extends Controller
         return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
     }
 
-
-    public function store(Request $r)      { /* TODO: call API create */ }
-    public function show($id)              { return view('academics.schedule.prodi_schedule.show', compact('id')); }
-    public function edit($id)              { return view('academics.schedule.prodi_schedule.edit', compact('id')); }
-    public function update(Request $r,$id) { /* TODO: call API update */ }
-    // public function destroy($id)           { /* TODO: call API delete */ }
     public function importFet1(Request $r) {
         return view('academics.schedule.prodi_schedule.upload', get_defined_vars());
     }
@@ -320,7 +334,7 @@ class ScheduleController extends Controller
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
       $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
       $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-      
+
       $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
       $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
       $programStudiList = $responseProgramStudiList->data;
@@ -405,12 +419,12 @@ class ScheduleController extends Controller
       $limit = $request->input('limit', 5);
       $page = $request->input('page', 1);
 
-      $pengajar = array_values(array_filter($pengajar, function($p) use ($request) { 
-        return str_starts_with(strtolower($p['nip']), strtolower($request->input('search', ''))) || 
-          str_starts_with(strtolower($p['nama_pengajar']), strtolower($request->input('search', ''))) || 
-          str_starts_with(strtolower($p['pengajar_program_studi']), strtolower($request->input('search', ''))); 
+      $pengajar = array_values(array_filter($pengajar, function($p) use ($request) {
+        return str_starts_with(strtolower($p['nip']), strtolower($request->input('search', ''))) ||
+          str_starts_with(strtolower($p['nama_pengajar']), strtolower($request->input('search', ''))) ||
+          str_starts_with(strtolower($p['pengajar_program_studi']), strtolower($request->input('search', '')));
       }));
-      
+
       $pengajar = array_chunk($pengajar, $limit);
       $lastPage = count($pengajar);
       $pengajar = count($pengajar) > 0 ? $pengajar[$page - 1] : [];
@@ -513,11 +527,11 @@ class ScheduleController extends Controller
       $responsePeriode = getCurl($urlPeriode, null, getHeaders());
       $periodeData = $responsePeriode->data->periode;
 
-      $mata_kuliah_list = array_values(array_filter($mata_kuliah_list, function($p) use ($request) { 
-        return str_starts_with(strtolower($p['kode_matakuliah']), strtolower($request->input('search', ''))) || 
-          str_starts_with(strtolower($p['nama_matakuliah']), strtolower($request->input('search', ''))); 
+      $mata_kuliah_list = array_values(array_filter($mata_kuliah_list, function($p) use ($request) {
+        return str_starts_with(strtolower($p['kode_matakuliah']), strtolower($request->input('search', ''))) ||
+          str_starts_with(strtolower($p['nama_matakuliah']), strtolower($request->input('search', '')));
       }));
-      
+
       $mata_kuliah_list = array_chunk($mata_kuliah_list, $limit);
       $lastPage = count($mata_kuliah_list);
       $mata_kuliah_list = count($mata_kuliah_list) > 0 ? $mata_kuliah_list[$page - 1] : [];

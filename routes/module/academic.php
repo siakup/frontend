@@ -132,9 +132,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::prefix('persiapan-perkuliahan')->group(function () {
         Route::prefix('jadwal-kuliah')->name('academics.schedule.')->group(function () {
-
             Route::prefix('program-studi')->name('prodi-schedule.')->group(function () {
-
                 Route::get('/', [ScheduleController::class, 'index'])->name('index');
                 Route::get('/tambah', [ScheduleController::class, 'create'])->name('create');
                 Route::post('/',       [ScheduleController::class, 'store'])->name('store');
