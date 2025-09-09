@@ -33,6 +33,20 @@
 
 @section('javascript')
 <script>
+function onClickShowSchedule(e) {
+  const id = e.getAttribute('data-id');
+  $.ajax({
+    url: "{{ route('academics.schedule.parent-institution-schedule.view', ['id' => 'id']) }}".replace("'id'", id),
+    method: 'GET',
+    headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+    },
+    success: function(html) {
+      $('#view-schedule').html(html);
+      $('#modalViewParentInstitutionSchedule').show();
+    },
+  });
+}
 document.addEventListener('DOMContentLoaded', function () {
   const campusBtn   = document.querySelector('#sortButtonCampus');
   const campusDrop  = document.querySelector('#sortDropdownCampus');
@@ -243,13 +257,13 @@ document.addEventListener('DOMContentLoaded', function () {
               </x-table-cell>
               <x-table-cell>
                 <div class="center">
-                  <a href="{{route('curriculum.list.view', ['id' => $d['id']])}}" type="button" class="btn-icon btn-view-periode-academic"
-                      data-periode-akademik="" title="Lihat">
+                  <button type="button" class="btn-icon btn-view-periode-academic"
+                      data-id="{{$d['id']}}" title="Lihat" onclick="onClickShowSchedule(this)">
                       <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
                       <span>Lihat</span>
-                  </a>
+                  </button>
                   <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                      href="{{route('curriculum.list.edit', ['id' => $d['id']])}}"
+                      href="{{route('academics.schedule.parent-institution-schedule.edit', ['id' => $d['id']])}}"
                       style="text-decoration: none; color: inherit;">
                       <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
                       <span style="color: #E62129">Ubah</span>
@@ -287,4 +301,6 @@ document.addEventListener('DOMContentLoaded', function () {
 {{-- @if (isset($data['data']))
 @endif --}}
 </div>
+
+<div id="view-schedule"></div>
 @endsection

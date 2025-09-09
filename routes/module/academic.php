@@ -122,6 +122,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'persiapan-perkuliahan/jadwal-kuliah/program-studi'], function () {
 
+        Route::get('/tambah/dosen', [ScheduleController::class, 'dosen'])->name('academics.schedule.prodi-schedule.add-lecture');
+        Route::get('/create/mata-kuliah/{periode}', [ScheduleController::class, 'mataKuliah'])->name('academics.schedule.prodi-schedule.add-course');
+        Route::get('/create/kelas/', [ScheduleController::class, 'jadwalKelas'])->name('academics.schedule.prodi-schedule.add-class-schedule');
+
         // LIST
         Route::get('/', [ScheduleController::class, 'index'])
             ->name('academics.schedule.prodi-schedule.index');
@@ -129,7 +133,7 @@ Route::group(['middleware' => ['auth']], function () {
         // CREATE
         Route::get('/tambah', [ScheduleController::class, 'create'])
             ->name('academics.schedule.prodi-schedule.create');
-        Route::post('/', [ScheduleController::class, 'store'])
+        Route::post('/tambah', [ScheduleController::class, 'store'])
             ->name('academics.schedule.prodi-schedule.store');
 
         // SHOW
@@ -137,7 +141,7 @@ Route::group(['middleware' => ['auth']], function () {
             ->name('academics.schedule.prodi-schedule.show');
 
         // EDIT
-        Route::get('/{id}/ubah', [ScheduleController::class, 'edit'])
+        Route::get('/ubah/{id}', [ScheduleController::class, 'edit'])
             ->name('academics.schedule.prodi-schedule.edit');
         Route::put('/{id}', [ScheduleController::class, 'update'])
             ->name('academics.schedule.prodi-schedule.update');
@@ -160,12 +164,18 @@ Route::group(['middleware' => ['auth']], function () {
     // UploadResult **dikeluarkan dari prefix**, supaya tombol form di view tetap jalan
     Route::post('/persiapan-perkuliahan/jadwal-kuliah/program-studi/upload', [ScheduleController::class, 'uploadResult'])
         ->name('academics.schedule.prodi-schedule.upload-result');
-    Route::prefix('parent-institution')->name('parent-institution-schedule.')->group(function () {
-      Route::get('/', [ScheduleController::class, 'parentInstitutionIndex'])->name('index');
-      Route::get('/create', [ScheduleController::class, 'parentInstitutionCreate'])->name('create');
-      Route::get('/create/add-lecture', [ScheduleController::class, 'parentInstitutionLectureList'])->name('add-lecture');
-      Route::get('/create/add-course/{periode}', [ScheduleController::class, 'parentInstitutionCourseList'])->name('add-course');
-      Route::get('/create/add-class-schedule/', [ScheduleController::class, 'parentInstitutionClassScheduleCreate'])->name('add-class-schedule');
-      Route::post('/create', [ScheduleController::class, 'parentInstitutionStore'])->name('store');
-    });
+
+    Route::prefix('persiapan-perkuliahan/jadwal-kuliah')->group(function () {
+            Route::prefix('parent-institution')->name('academics.schedule.parent-institution-schedule.')->group(function () {
+              Route::get('/', [ScheduleController::class, 'parentInstitutionIndex'])->name('index');
+              Route::get('/create', [ScheduleController::class, 'parentInstitutionCreate'])->name('create');
+              Route::get('/edit/{id}', [ScheduleController::class, 'parentInstitutionEdit'])->name('edit');
+              Route::put('/edit/{id}', [ScheduleController::class, 'parentInstitutionUpdate'])->name('update');
+              Route::get('/create/add-lecture', [ScheduleController::class, 'parentInstitutionLectureList'])->name('add-lecture');
+              Route::get('/create/add-course/{periode}', [ScheduleController::class, 'parentInstitutionCourseList'])->name('add-course');
+              Route::get('/create/add-class-schedule/', [ScheduleController::class, 'parentInstitutionClassScheduleCreate'])->name('add-class-schedule');
+              Route::post('/create', [ScheduleController::class, 'parentInstitutionStore'])->name('store');
+              Route::get('/view/{id}', [ScheduleController::class, 'parentInstitutionView'])->name('view');
+            });
+        });
 });
