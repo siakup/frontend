@@ -7,6 +7,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Excel as ExcelFormat;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+
 
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\PeriodAcademicService;
@@ -92,22 +96,32 @@ class ScheduleController extends Controller
 
     public function show($id)
     {
-        // ambil dari service / DB
-        $item = [
-            'id' => $id,
-            'semester' => 3,
-            'mata_kuliah' => 'Pemrograman Web',
-            'nama_kelas' => 'Informatika A',
-            'kapasitas' => 40,
-            'jadwal' => [
-                ['hari'=>'Senin','waktu'=>'07:00-08:40','ruang'=>'B201'],
-                ['hari'=>'Rabu','waktu'=>'09:00-10:40','ruang'=>'B202'],
+        // TODO: ganti ke service asli kamu
+        // Contoh mock agar front-end langsung jalan
+        $data = [
+            'id' => (int)$id,
+            'periode' => '2025–Ganjil',
+            'program_perkuliahan' => 'Reguler',
+            'program_studi' => 'Ilmu Komputer',
+            'mata_kuliah' => 'Fisika Dasar 2',
+            'nama_kelas' => 'Fisika Dasar 2 - C2',
+            'nama_singkat' => 'C2',
+            'kapasitas' => 50,
+            'kelas_mbkm' => 'Tidak',
+            'tanggal_mulai' => '05-02-2025',
+            'tanggal_selesai' => '06-06-2025',
+            'pengajar' => [
+                ['nama'=>'Ayu Kartini','status'=>'utama'],
+                ['nama'=>'Ika Dyth Mulyawati','status'=>'bukan'],
             ],
-            'pengajar' => 'Agus Ivan Setiaji'
+            'jadwal' => [
+                ['hari'=>'Selasa','waktu'=>'12:30–14:10','ruang'=>'B204'],
+                ['hari'=>'Kamis','waktu'=>'07:00–08:40','ruang'=>'B201'],
+            ],
         ];
-
-        return response()->json($item);
+        return response()->json($data);
     }
+
 
 
     public function destroy($id)
@@ -152,18 +166,23 @@ class ScheduleController extends Controller
         // Convert file ke array of object/array
         $file_data = convertFileDataExcelToObject($file);
 
-        // Sesuaikan dengan struktur data CSV yang baru
+        // Sesuaikan dengan struktur data CSV baru
         $file_data = array_map(function ($value) {
             return [
-                'kode_matakuliah' => $value['kode_matakuliah'] ?? null,
-                'kode_cpl'        => $value['kode_cpl'] ?? null,
-                'bobot'           => $value['bobot'] ?? null,
+                'activity_id'    => $value['Activity Id'] ?? null,
+                'day'            => $value['Day'] ?? null,
+                'hour'           => $value['Hour'] ?? null,
+                'students_sets'  => $value['Students Sets'] ?? null,
+                'subject'        => $value['Subject'] ?? null,
+                'teachers'       => $value['Teachers'] ?? null,
+                'activity_tags'  => $value['Activity Tags'] ?? null,
+                'room'           => $value['Room'] ?? null,
+                'comments'       => $value['Comments'] ?? null,
             ];
         }, $file_data);
 
         return view('academics.schedule.prodi_schedule.upload-result', get_defined_vars());
     }
-
 
     public function downloadTemplate(Request $request)
     {
@@ -175,31 +194,46 @@ class ScheduleController extends Controller
         }
 
         $data = [
-            ['kode_matakuliah', 'kode_cpl', 'bobot'],
-            ['MK001', 'CPL-01', 30],
-            ['MK001', 'CPL-02', 60],
-            ['MK002', 'CPL-01', 40],
-            ['MK003', 'CPL-03', 50],
+            [
+                'Activity Id','Day','Hour','Students Sets','Subject','Teachers','Activity Tags','Room','Comments'
+            ],
+            [1, 'Rabu', '13:00-13:30', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
+            [1, 'Rabu', '13:30-14:00', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
+            [1, 'Rabu', '14:00-14:30', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
         ];
 
-        $filename = 'template-cpl.' . $type;
+        $filename = 'template-activity.' . $type;
 
-        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+        return Excel::download(new class($data) implements FromArray, WithHeadings, WithCustomCsvSettings {
             private $rows;
+
             public function __construct($rows)
             {
                 $this->rows = $rows;
             }
+
             public function array(): array
             {
                 return array_slice($this->rows, 1);
             }
+
             public function headings(): array
             {
                 return $this->rows[0];
             }
+
+            public function getCsvSettings(): array
+            {
+                return [
+                    'delimiter' => ';',
+                    'enclosure' => '"',
+                    'line_ending' => "\n",
+                    'use_bom' => true,
+                ];
+            }
         }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
     }
+
 
     public function uploadStore(Request $request)
     {

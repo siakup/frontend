@@ -258,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <a href="javascript:void(0)"
                     class="btn-icon btn-view-periode-academic"
                     title="Lihat"
-                    onclick="openViewModal({{ $r['id'] }})">
+                    onclick="openViewModal('{{ route('academics.schedule.prodi-schedule.show', $r['id']) }}')">
                     <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
                     <span>Lihat</span>
                     </a>
@@ -290,7 +290,6 @@ document.addEventListener('DOMContentLoaded', function () {
 </div>
   <div class="card-header">
       <div class="right gap-5">
-          {{-- <a href="{{route('academics.schedule.prodi-schedule.import-fet1')}}">import</a> --}}
           <a href="{{route('academics.schedule.prodi-schedule.import-fet1')}}" class="button-clean" id="">
               <span>Impor File FET</span>
               <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">

@@ -304,7 +304,7 @@
                 <a href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
             </div>
             <div class="upload-area">
-                <div class="upload-area-title">Impor CSV Pemetaan CPL File</div>
+                <div class="upload-area-title">Impor CSV Jadwal Kuliah File</div>
                 <div class="upload-card-and-buttons">
                     <form action="{{ route('academics.schedule.prodi-schedule.upload-result') }}" method="POST" enctype="multipart/form-data"
                         style="display: contents;" id="uploadForm">
@@ -348,22 +348,28 @@
 
         <div class="content-inside-card">
             <div style="font-weight: 500; margin-bottom: 12px;">
-                File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma ","<br>
+                File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma ";"<br>
                 Urutan kolom sebagai berikut:
             </div>
             <ul style="text-sm-rg-red">
-                <li>kode_matakuliah: kode mata kuliah yang dipetakan ke CPL</li>
-                <li>kode_cpl: kode CPL yang menjadi target pemetaan</li>
-                <li>bobot: bobot kontribusi CPL (dalam persen atau skala angka)</li>
+                <li>Activity Id: ID aktivitas</li>
+                <li>Day: Hari pelaksanaan (misal Senin, Selasa, Rabu)</li>
+                <li>Hour: Jam kegiatan (misal 13:00-13:30)</li>
+                <li>Students Sets: Kelas atau kelompok mahasiswa</li>
+                <li>Subject: Mata kuliah yang diajarkan</li>
+                <li>Teachers: Nama dosen pengajar</li>
+                <li>Activity Tags: Tipe aktivitas (misal GP, Lab)</li>
+                <li>Room: Ruang kelas</li>
+                <li>Comments: Catatan tambahan</li>
             </ul>
 
             <div class="text-md-rg" style="margin-top: 5%;">
-                kode_matakuliah; kode_cpl; bobot<br>
-                MK001; CPL-01; 30<br>
-                MK001; CPL-02; 60<br>
-                MK002; CPL-01; 40<br>
-                MK003; CPL-03; 50<br>
+                Activity Id;Day;Hour;Students Sets;Subject;Teachers;Activity Tags;Room;Comments<br>
+                1;Rabu;13:00-13:30;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;<br>
+                1;Rabu;13:30-14:00;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;<br>
+                1;Rabu;14:00-14:30;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;
             </div>
+
             <div class="text-md-rg" style="margin-top: 5%;">
                 <span>Jumlah Data : 0</span><br>
                 <span>Jumlah Data Sukses: 0</span><br>
@@ -379,7 +385,7 @@
                     <img src="{{ asset('assets/icon-caution.svg') }}" alt="icon-caution">
                 </div>
                 <div class="modal-custom-body">
-                    <div>Apakah Anda yakin ingin membatalkan unggah mata kuliah?</div>
+                    <div>Apakah Anda yakin ingin membatalkan unggah jadwal kuliah?</div>
                 </div>
                 <div class="modal-custom-footer">
                     <button type="button" class="button button-clean" id="btnKembali">Kembali</button>
