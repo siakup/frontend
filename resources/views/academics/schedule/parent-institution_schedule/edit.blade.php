@@ -476,7 +476,7 @@
 
         document.getElementById('chooseLecture').addEventListener('click', () => {
           $.ajax({
-            url: "{{ route('academics.schedule.prodi-schedule.add-lecture') }}",
+            url: "{{ route('academics.schedule.parent-institution-schedule.add-lecture') }}",
             method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'
@@ -490,7 +490,7 @@
 
         document.getElementById('createScheduleClass').addEventListener('click', () => {
           $.ajax({
-            url: "{{ route('academics.schedule.prodi-schedule.add-class-schedule') }}",
+            url: "{{ route('academics.schedule.parent-institution-schedule.add-class-schedule') }}",
             method: 'GET',
             headers: {
                 'X-Requested-With': 'XMLHttpRequest'

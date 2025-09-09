@@ -7,6 +7,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Excel as ExcelFormat;
 use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+
 
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\PeriodAcademicService;
@@ -339,18 +343,23 @@ class ScheduleController extends Controller
         // Convert file ke array of object/array
         $file_data = convertFileDataExcelToObject($file);
 
-        // Sesuaikan dengan struktur data CSV yang baru
+        // Sesuaikan dengan struktur data CSV baru
         $file_data = array_map(function ($value) {
             return [
-                'kode_matakuliah' => $value['kode_matakuliah'] ?? null,
-                'kode_cpl'        => $value['kode_cpl'] ?? null,
-                'bobot'           => $value['bobot'] ?? null,
+                'activity_id'    => $value['Activity Id'] ?? null,
+                'day'            => $value['Day'] ?? null,
+                'hour'           => $value['Hour'] ?? null,
+                'students_sets'  => $value['Students Sets'] ?? null,
+                'subject'        => $value['Subject'] ?? null,
+                'teachers'       => $value['Teachers'] ?? null,
+                'activity_tags'  => $value['Activity Tags'] ?? null,
+                'room'           => $value['Room'] ?? null,
+                'comments'       => $value['Comments'] ?? null,
             ];
         }, $file_data);
 
         return view('academics.schedule.prodi_schedule.upload-result', get_defined_vars());
     }
-
 
     public function downloadTemplate(Request $request)
     {
@@ -362,31 +371,46 @@ class ScheduleController extends Controller
         }
 
         $data = [
-            ['kode_matakuliah', 'kode_cpl', 'bobot'],
-            ['MK001', 'CPL-01', 30],
-            ['MK001', 'CPL-02', 60],
-            ['MK002', 'CPL-01', 40],
-            ['MK003', 'CPL-03', 50],
+            [
+                'Activity Id','Day','Hour','Students Sets','Subject','Teachers','Activity Tags','Room','Comments'
+            ],
+            [1, 'Rabu', '13:00-13:30', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
+            [1, 'Rabu', '13:30-14:00', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
+            [1, 'Rabu', '14:00-14:30', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
         ];
 
-        $filename = 'template-cpl.' . $type;
+        $filename = 'template-activity.' . $type;
 
-        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+        return Excel::download(new class($data) implements FromArray, WithHeadings, WithCustomCsvSettings {
             private $rows;
+
             public function __construct($rows)
             {
                 $this->rows = $rows;
             }
+
             public function array(): array
             {
                 return array_slice($this->rows, 1);
             }
+
             public function headings(): array
             {
                 return $this->rows[0];
             }
+
+            public function getCsvSettings(): array
+            {
+                return [
+                    'delimiter' => ';',
+                    'enclosure' => '"',
+                    'line_ending' => "\n",
+                    'use_bom' => true,
+                ];
+            }
         }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
     }
+
 
     public function uploadStore(Request $request)
     {

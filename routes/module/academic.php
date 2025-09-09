@@ -119,40 +119,54 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/template', [CurriculumController::class, 'cplDownloadTemplateCurriculumEquivalence'])->name('curriculum.equivalence.template');
     });
 
-    Route::group(['prefix' => 'pemetaan-cpl'], function () {
-        Route::get('/', [CplMapping::class, 'index'])->name('cpl-mapping.index');
-        Route::get('/tambah', [CplMapping::class, 'create'])->name('cpl-mapping.create');
-        Route::get('/edit/{id}', [CplMapping::class, 'edit'])->name('cpl-mapping.edit');
-        Route::get('/view/{id}', [CplMapping::class, 'view'])->name('cpl-mapping.view');
-        Route::get('/upload', [CplMapping::class, 'upload'])->name('cpl-mapping.upload');
-        Route::post('/upload', [CplMapping::class, 'uploadResult'])->name('cpl-mapping.upload-result');
-        Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
-        Route::get('/template', [CplMapping::class, 'cplDownloadTemplate'])->name('cpl-mapping.template');
+
+    Route::group(['prefix' => 'persiapan-perkuliahan/jadwal-kuliah/program-studi'], function () {
+
+        Route::get('/tambah/dosen', [ScheduleController::class, 'dosen'])->name('academics.schedule.prodi-schedule.add-lecture');
+        Route::get('/create/mata-kuliah/{periode}', [ScheduleController::class, 'mataKuliah'])->name('academics.schedule.prodi-schedule.add-course');
+        Route::get('/create/kelas/', [ScheduleController::class, 'jadwalKelas'])->name('academics.schedule.prodi-schedule.add-class-schedule');
+
+        // LIST
+        Route::get('/', [ScheduleController::class, 'index'])
+            ->name('academics.schedule.prodi-schedule.index');
+
+        // CREATE
+        Route::get('/tambah', [ScheduleController::class, 'create'])
+            ->name('academics.schedule.prodi-schedule.create');
+        Route::post('/tambah', [ScheduleController::class, 'store'])
+            ->name('academics.schedule.prodi-schedule.store');
+
+        // SHOW
+        Route::get('/{id}', [ScheduleController::class, 'show'])
+            ->name('academics.schedule.prodi-schedule.show');
+
+        // EDIT
+        Route::get('/ubah/{id}', [ScheduleController::class, 'edit'])
+            ->name('academics.schedule.prodi-schedule.edit');
+        Route::put('/{id}', [ScheduleController::class, 'update'])
+            ->name('academics.schedule.prodi-schedule.update');
+
+        // DELETE
+        Route::delete('/{id}', [ScheduleController::class, 'destroy'])
+            ->name('academics.schedule.prodi-schedule.delete');
+
+        // IMPORT FET_1
+        Route::get('/import/fet1', [ScheduleController::class, 'importFet1'])
+            ->name('academics.schedule.prodi-schedule.import-fet1');
+        Route::post('/save-upload', [ScheduleController::class, 'uploadStore'])
+            ->name('academics.schedule.prodi-schedule.save-upload');
+
     });
+        // TEMPLATE DOWNLOAD
+    Route::get('/template-jadwal-kuliah', [ScheduleController::class, 'downloadTemplate'])
+        ->name('academics.schedule.prodi-schedule.template');
 
-    Route::prefix('persiapan-perkuliahan')->group(function () {
-        Route::prefix('jadwal-kuliah')->name('academics.schedule.')->group(function () {
+    // UploadResult **dikeluarkan dari prefix**, supaya tombol form di view tetap jalan
+    Route::post('/persiapan-perkuliahan/jadwal-kuliah/program-studi/upload', [ScheduleController::class, 'uploadResult'])
+        ->name('academics.schedule.prodi-schedule.upload-result');
 
-            Route::prefix('program-studi')->name('prodi-schedule.')->group(function () {
-
-                Route::get('/', [ScheduleController::class, 'index'])->name('index');
-                Route::get('/tambah', [ScheduleController::class, 'create'])->name('create');
-                Route::get('/tambah/dosen', [ScheduleController::class, 'dosen'])->name('add-lecture');
-                Route::get('/create/mata-kuliah/{periode}', [ScheduleController::class, 'mataKuliah'])->name('add-course');
-                Route::get('/create/kelas/', [ScheduleController::class, 'jadwalKelas'])->name('add-class-schedule');
-                Route::post('/tambah', [ScheduleController::class, 'store'])->name('store');
-                Route::get('/{id}', [ScheduleController::class, 'show'])->name('show');
-                Route::get('/ubah/{id}', [ScheduleController::class, 'edit'])->name('edit');
-                Route::put('/{id}',      [ScheduleController::class, 'update'])->name('update');
-                Route::delete('/{id}', [ScheduleController::class, 'destroy'])->name('delete');
-
-                Route::get('/import/fet1', [ScheduleController::class, 'importFet1'])->name('import-fet1');
-                Route::post('/upload', [ScheduleController::class, 'uploadResult'])->name('upload-result');
-                Route::post('/save-upload', [ScheduleController::class, 'uploadStore'])->name('save-upload');
-                Route::get('/template', [ScheduleController::class, 'downloadTemplate'])->name('template');
-            });
-
-            Route::prefix('parent-institution')->name('parent-institution-schedule.')->group(function () {
+    Route::prefix('persiapan-perkuliahan/jadwal-kuliah')->group(function () {
+            Route::prefix('parent-institution')->name('academics.schedule.parent-institution-schedule.')->group(function () {
               Route::get('/', [ScheduleController::class, 'parentInstitutionIndex'])->name('index');
               Route::get('/create', [ScheduleController::class, 'parentInstitutionCreate'])->name('create');
               Route::get('/edit/{id}', [ScheduleController::class, 'parentInstitutionEdit'])->name('edit');
@@ -164,5 +178,4 @@ Route::group(['middleware' => ['auth']], function () {
               Route::get('/view/{id}', [ScheduleController::class, 'parentInstitutionView'])->name('view');
             });
         });
-    });
 });
