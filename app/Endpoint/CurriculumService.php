@@ -15,35 +15,21 @@ class CurriculumService
     return self::$instance;
   }
 
+    /**
+     * Constructs the base URL for accessing the calendar API.
+     *
+     * @return string The base URL for the calendar API.
+     */
+
     public function url()
     {
         return config('endpoint.lecture.url') . '/api/curriculums';
     }
-    
-    public function courseUrl() 
+
+    public function listCurriculum()
     {
-      return config('endpoint.lecture.url') . '/api/courses';
+        return $this->url() . '/';
     }
-
-    public function courseCurriculumUrl($id)
-    {
-      return config('endpoint.lecture.url') . '/api/curriculum-course/' . $id;
-    }
-
-    public function cplUrl() 
-    {
-      return config('endpoint.lecture.url') . '/api/cpl/list';
-    }
-
-  public function url()
-  {
-    return config('endpoint.lecture.url') . '/api/curriculums';
-  }
-
-  public function listCurriculum()
-  {
-    return $this->url() . '/';
-  }
 
   public function listCourseCurriculums($id)
   {
@@ -65,10 +51,10 @@ class CurriculumService
     return config('endpoint.lecture.url') . '/api/courses';
   }
 
-  public function getJenisMataKuliah()
-  {
-    return $this->courseUrl() . '/category';
-  }
+    public function getJenisMataKuliah()
+    {
+      return $this->courseUrl() . '/category';
+    }
 
   public function assignedCourse($id)
   {

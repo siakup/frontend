@@ -283,8 +283,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   <div class="card-header">
       <div class="right gap-5">
-          <a href="{{route('academics.schedule.prodi-schedule.import-fet1')}}">impo</a>
-          <a href="{{route('academics.schedule.prodi-schedule.upload')}}" class="button-clean" id="">
+          <a href="{{route('academics.schedule.prodi-schedule.import-fet1')}}" class="button-clean" id="">
               <span>Impor File FET</span>
               <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
           </a>
