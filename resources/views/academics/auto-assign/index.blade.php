@@ -14,6 +14,9 @@
                 async submit() {
                     this.loading = true;
 
+                    // buka modal loading
+                    this.$dispatch('open-modal', { id: 'loading-modal' });
+
                     try {
                         const form = document.getElementById('autoAssignForm');
                         const formData = new FormData(form);
@@ -38,16 +41,43 @@
                         console.error('Error:', error);
                         alert('Gagal assign, coba lagi.');
                         this.loading = false;
+                        this.$dispatch('close-modal', { id: 'loading-modal' });
                     }
                 }
             }
-        }
+        };
+
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('autoAssign', () => ({
+                progress: 0,
+                intervalId: null,
+
+                startLoading() {
+                    this.progress = 0;
+                    this.intervalId = setInterval(() => {
+                        if (this.progress < 100) {
+                            this.progress += 5;
+                        } else {
+                            clearInterval(this.intervalId);
+                        }
+                    }, 300);
+
+                    this.$dispatch('open-modal', { id: 'loading-modal' });
+                },
+
+                stopLoading() {
+                    clearInterval(this.intervalId);
+                    this.$dispatch('close-modal', { id: 'loading-modal' });
+                }
+            }))
+        })
     </script>
 @endsection
 
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <x-container variant="content-wrapper" x-data="autoAssign">
         <x-typography variant="heading-h6" bold>
             Auto Assign Peserta Kelas Perkuliahan
         </x-typography>
@@ -88,7 +118,7 @@
                 <div class="flex gap-5">
                     <x-button.secondary type="button" href="{{route('academics.schedule.prodi-schedule.index')}}">Kembali</x-button.secondary>
 
-                    <x-button.primary type="submit" x-bind:disabled="loading">
+                    <x-button.primary type="submit" x-on:click="startLoading" x-bind:disabled="loading">
                         <template x-if="!loading">
                             <span>Assign</span>
                         </template>
@@ -140,6 +170,25 @@
                 </x-table-body>
             </x-table>
         </x-container>
+
+        {{-- Modal Loading --}}
+        <x-modal.container id="loading-modal" :show="false">
+            <div class="flex flex-col items-center justify-center p-6 space-y-4">
+                <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden relative">
+                    <div class="h-2.5 bg-blue-600 rounded-full transition-all duration-300"
+                         :style="'width:' + progress + '%'">
+                    </div>
+                </div>
+
+                <x-typography variant="body-small-semibold" class="text-gray-700">
+                    Loading... <span x-text="progress + '%'"></span>
+                </x-typography>
+            </div>
+        </x-modal.container>
+
+
+        <x-flash-message type="success" message="Peserta berhasil dihapus"
+                         redirect="{{ route('curriculum.equivalence') }}" />
 
     </x-container>
 @endsection

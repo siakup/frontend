@@ -59,23 +59,71 @@
         }
 
 
-
         /**
          * Lihat detail Auto Assign
          */
         public function autoAssignView()
         {
-            // TODO: implementasi halaman view Auto Assign
-            return view('academics.auto-assign.view');
+            $data = [
+                [
+                    'nama' => 'Pak Budi',
+                    'kode_mata_ajar' => 'MK001',
+                    'nama_mata_ajar' => 'Algoritma dan Pemrograman',
+                    'peserta' => 20,
+                    'disetujui' => 18,
+                    'kapasitas' => 30,
+                ],
+                [
+                    'nama' => 'Bu Sari',
+                    'kode_mata_ajar' => 'MK002',
+                    'nama_mata_ajar' => 'Basis Data',
+                    'peserta' => 25,
+                    'disetujui' => 22,
+                    'kapasitas' => 30,
+                ],
+                [
+                    'nama' => 'Pak Andi',
+                    'kode_mata_ajar' => 'MK003',
+                    'nama_mata_ajar' => 'Pemrograman Web',
+                    'peserta' => 30,
+                    'disetujui' => 30,
+                    'kapasitas' => 30,
+                ],
+            ];
+
+            return view('academics.auto-assign.view', get_defined_vars());
         }
+
 
         /**
          * Data peserta yang sudah diisi
          */
         public function autoAssignFilledMember()
         {
-            // TODO: implementasi peserta diisi Auto Assign
-            return view('academics.auto-assign.filled-member');
+            $makul = 'Aljabar Linear';
+
+            $data = [
+                [
+                    'nim' => '20211001',
+                    'nama' => 'Andi Pratama',
+                    'status' => 'Terdaftar',
+                    'status_akademik' => 'Aktif',
+                ],
+                [
+                    'nim' => '20211002',
+                    'nama' => 'Budi Santoso',
+                    'status' => 'Menunggu',
+                    'status_akademik' => 'Cuti',
+                ],
+                [
+                    'nim' => '20211003',
+                    'nama' => 'Citra Lestari',
+                    'status' => 'Terdaftar',
+                    'status_akademik' => 'Aktif',
+                ],
+            ];
+
+            return view('academics.auto-assign.filled-member', get_defined_vars());
         }
 
         /**
@@ -83,9 +131,30 @@
          */
         public function autoAssignApprovedMember()
         {
-            // TODO: implementasi peserta disetujui Auto Assign
+            $makul = 'Aljabar Linear';
 
-            return view('academics.auto-assign.approved-member');
+            $data = [
+                [
+                    'nim' => '20211001',
+                    'nama' => 'Andi Pratama',
+                    'status' => 'Terdaftar',
+                    'status_akademik' => 'Aktif',
+                ],
+                [
+                    'nim' => '20211002',
+                    'nama' => 'Budi Santoso',
+                    'status' => 'Menunggu',
+                    'status_akademik' => 'Cuti',
+                ],
+                [
+                    'nim' => '20211003',
+                    'nama' => 'Citra Lestari',
+                    'status' => 'Terdaftar',
+                    'status_akademik' => 'Aktif',
+                ],
+            ];
+
+            return view('academics.auto-assign.approved-member', get_defined_vars());
         }
 
         /**
