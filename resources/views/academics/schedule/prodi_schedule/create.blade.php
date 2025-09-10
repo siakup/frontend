@@ -9,13 +9,57 @@
 @section('css')
 <link rel="stylesheet" href="{{ asset('css/plugins/flatpckr.css') }}" />
 <style>
-  .table {
-    color: black;
-  }
+    .prodi-create .page-wrap{width:100%;}
+    .prodi-create .content-card{width:100%;max-width:none;}
+    .prodi-create .section-card{border:1px solid #E5E7EB;border-radius:12px;background:#fff;margin-bottom:20px}
+    .prodi-create .section-title{padding:12px 16px;font-weight:600;border-bottom:1px solid #F1F5F9}
+    .prodi-create .section-body{padding:16px}
+    .prodi-create .grid-3{display:grid;grid-template-columns:180px minmax(0,1fr) minmax(0,1fr);column-gap:16px;row-gap:12px;align-items:center}
+    .prodi-create .row{display:contents;}
+    .prodi-create .label{font-size:14px;font-weight:500;color:#374151}
+    .prodi-create .cell{display:block}
+    .prodi-create .span-2{grid-column:2 / span 2;}
+    .prodi-create .mini-label{font-size:12px;color:#6B7280;margin-bottom:6px}
+    .prodi-create .input{width:100%;height:40px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;padding:0 12px}
+    .prodi-create .input.muted{background:#F5F7FA;color:#6B7280;border-color:#E5E7EB}
+    .prodi-create .filter-box{position:relative}
+    .prodi-create .filter-box .input{display:flex;align-items:center;justify-content:space-between}
+    .prodi-create .sort-dropdown.select{
+    position:absolute;left:783;right:0;top:44px;z-index:30;display:none;
+    background:#fff;border:1px solid #E5E7EB;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.06)
+    }
+    .prodi-create .sort-dropdown.select .dropdown-item{padding:10px 14px;cursor:pointer}
+    .prodi-create .sort-dropdown.select .dropdown-item:hover{background:#EB474D}
+    .prodi-create .date-input{position:relative}
+    .prodi-create .date-input input{padding-right:38px}
+    .prodi-create .date-input .icon{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:18px;height:18px;cursor:pointer}
+
+    .prodi-create .btn{border-radius:8px;padding:8px 16px;line-height:24px;cursor:pointer;border:1px solid transparent}
+    .prodi-create .btn-primary{background:#E62129;color:#fff;border-color:#E62129}
+    .prodi-create .btn-primary:disabled{background:#E5E7EB;border-color:#E5E7EB;color:#9CA3AF;cursor:not-allowed}
+    .prodi-create .btn-secondary{background:#fff;border:1px solid #E5E7EB;color:#6B7280}
+    .prodi-create .btn-outline{background:#fff;border:1px solid #E62129;color:#E62129}
+    .prodi-create .form-footer{display:flex;justify-content:flex-end;gap:12px;margin-top:20px}
+
+    .prodi-create .inline-field .filter-box{ flex:1; }
+    .prodi-create .inline-field{display:grid;grid-template-columns: auto 1fr;align-items:center;gap:16px;}
+    .prodi-create .inline-title{font-weight:600;color:#262626;white-space:nowrap;}
+
+    .prodi-create .mk-wrap{display:flex; align-items:center; gap:12px;}
+    .prodi-create .mk-wrap .input{ flex:1; }
+    .prodi-create .mk-wrap .btn{ flex-shrink:0; }
+
+    @media(max-width:992px){
+    .prodi-create .grid-3{grid-template-columns:120px 1fr}
+    .prodi-create .span-2{grid-column:2 / span 1}
+    .prodi-create .form-footer .btn{flex:1}
+    .table {
+        color: black;
+    }
     .form-section {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
     }
 
     .form-group {
@@ -102,7 +146,7 @@
         outline: none;
         cursor: pointer;
         padding: 0;
-        width: auto; 
+        width: auto;
     }
 
     .modal-custom-footer {
@@ -491,11 +535,12 @@
 
     });
 </script>
+
 @section('content')
     <div class="page-header">
         <div class="page-title-text">Tambah Jadwal Program Studi</div>
     </div>
-    
+
     <a href="{{ route('academics.schedule.prodi-schedule.index') }}" class="button-no-outline-left">
         <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Jadwal Kuliah Program Studi
     </a>

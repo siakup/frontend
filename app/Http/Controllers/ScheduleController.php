@@ -18,10 +18,8 @@ use App\Endpoint\UserService;
 
 class ScheduleController extends Controller
 {
-    // LIST (SCRUM-305)
     public function index(Request $req)
     {
-        // --- dummy data untuk slicing; ganti ke hasil API kalau sudah siap ---
         $rows = [
             [
                 'id'=>101,'semester'=>1,'mata_kuliah'=>'Bahasa Indonesia',
@@ -37,7 +35,6 @@ class ScheduleController extends Controller
             ],
         ];
 
-        // pagination sederhana
         $page    = (int) $req->query('page', 1);
         $perPage = (int) $req->query('per_page', 7);
         $slice   = collect($rows)->forPage($page, $perPage)->values();
@@ -151,8 +148,7 @@ class ScheduleController extends Controller
           'pengajar_program_studi' => 'Ilmu Komputer'
         ],
       ];
-
-      $limit = $request->input('limit', 5);
+    $limit = $request->input('limit', 5);
       $page = $request->input('page', 1);
 
       $pengajar = array_values(array_filter($pengajar, function($p) use ($request) {
@@ -326,6 +322,60 @@ class ScheduleController extends Controller
       return view('academics.schedule.prodi_schedule._create-schedule', get_defined_vars())->render();
     }
 
+    public function show($id)
+    {
+        // TODO: ganti ke service asli kamu
+        // Contoh mock agar front-end langsung jalan
+        $data = [
+            'id' => (int)$id,
+            'periode' => '2025–Ganjil',
+            'program_perkuliahan' => 'Reguler',
+            'program_studi' => 'Ilmu Komputer',
+            'mata_kuliah' => 'Fisika Dasar 2',
+            'nama_kelas' => 'Fisika Dasar 2 - C2',
+            'nama_singkat' => 'C2',
+            'kapasitas' => 50,
+            'kelas_mbkm' => 'Tidak',
+            'tanggal_mulai' => '05-02-2025',
+            'tanggal_selesai' => '06-06-2025',
+            'pengajar' => [
+                ['nama'=>'Ayu Kartini','status'=>'utama'],
+                ['nama'=>'Ika Dyth Mulyawati','status'=>'bukan'],
+            ],
+            'jadwal' => [
+                ['hari'=>'Selasa','waktu'=>'12:30–14:10','ruang'=>'B204'],
+                ['hari'=>'Kamis','waktu'=>'07:00–08:40','ruang'=>'B201'],
+            ],
+        ];
+        return response()->json($data);
+    }
+
+
+
+    public function destroy($id)
+    {
+        // Validasi ringan
+        if (!ctype_digit((string)$id)) {
+            return response()->json(['message' => 'ID tidak valid'], 422);
+        }
+
+        try {
+            // TODO: taruh logika hapus di sini
+            // $ok = EventCalendarService::deleteSchedule((int)$id);
+            // if (!$ok) throw new \RuntimeException('Gagal hapus di service');
+            $ok = true;
+
+            if ($ok) {
+                return response()->json(['message' => 'Jadwal berhasil dihapus.'], 200);
+            }
+
+            return response()->json(['message' => 'Gagal menghapus data.'], 500);
+
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Terjadi kesalahan: '.$e->getMessage()], 500);
+        }
+    }
+
     public function uploadResult(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -466,12 +516,10 @@ class ScheduleController extends Controller
         return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
     }
 
-
     public function store(Request $request)      {
       dd($request->all());
     }
 
-    public function show($id)              { return view('academics.schedule.prodi_schedule.show', compact('id')); }
     public function edit($id)
     {
       $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
@@ -545,7 +593,7 @@ class ScheduleController extends Controller
     }
 
     public function update(Request $r,$id) { /* TODO: call API update */ }
-    public function destroy($id)           { /* TODO: call API delete */ }
+
     public function importFet1(Request $r) {
         return view('academics.schedule.prodi_schedule.upload', get_defined_vars());
     }

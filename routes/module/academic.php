@@ -137,8 +137,11 @@ Route::group(['middleware' => ['auth']], function () {
             ->name('academics.schedule.prodi-schedule.store');
 
         // SHOW
-        Route::get('/{id}', [ScheduleController::class, 'show'])
-            ->name('academics.schedule.prodi-schedule.show');
+        Route::get(
+        '/academics/schedule/prodi-schedule/{id}',
+        [\App\Http\Controllers\ScheduleController::class, 'show']
+        )->name('academics.schedule.prodi-schedule.show');
+
 
         // EDIT
         Route::get('/ubah/{id}', [ScheduleController::class, 'edit'])
@@ -148,7 +151,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         // DELETE
         Route::delete('/{id}', [ScheduleController::class, 'destroy'])
-            ->name('academics.schedule.prodi-schedule.delete');
+            ->name('academics.schedule.prodi-schedule.destroy');
 
         // IMPORT FET_1
         Route::get('/import/fet1', [ScheduleController::class, 'importFet1'])
