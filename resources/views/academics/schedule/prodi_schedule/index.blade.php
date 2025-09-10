@@ -249,6 +249,29 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span style="display:inline-block; min-width:56px">{{ $j['hari'] ?? '-' }}</span>
                     • {{ $j['waktu'] ?? '-' }}
                     <span class="text-gray-500">[{{ $j['ruang'] ?? '-' }}]</span>
+                </div>
+                @endforeach
+            </x-table-cell>
+            <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
+            <x-table-cell>
+                    <div class="center">
+                        <a href="" type="button" class="btn-icon btn-view-periode-academic"
+                            data-periode-akademik="" title="Lihat">
+                            <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
+                            <span>Lihat</span>
+                        </a>
+
+                        <a class="btn-icon btn-edit-periode-academic" title="Ubah"
+                            href="{{route('academics.schedule.prodi-schedule.edit', ['id' => $r['id']])}}"
+                            style="text-decoration: none; color: inherit;">
+                            <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
+                            <span style="color: #E62129">Ubah</span>
+                        </a>
+
+                        <button type="button" class="btn-icon btn-delete" data-id="" title="Hapus">
+                            <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+                            <span class="text-[#8C8C8C]">Hapus</span>
+                        </button>
                     </div>
                 @endforeach
                 </x-table-cell>
