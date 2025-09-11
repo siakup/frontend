@@ -184,12 +184,12 @@
     const selectedLecture = document.getElementById('selected-lecture').querySelector('tbody');
     const lectureData = JSON.parse(e.getAttribute('data-lecture'));
     const lectureBefore = selectedLecture.querySelectorAll('tr');
-    if (Array.from(lectureBefore).map(value => value.querySelector('input').value).filter(value => value == lectureData.id).length == 0) {
+    if (Array.from(lectureBefore).map(value => value.querySelector('input').value).filter(value => value == lectureData.id_dosen).length == 0) {
       const newLectureList = `<tr class="${Array.from(lectureBefore).length % 2 == 0 ? 'bg-white' : 'bg-[#F5F5F5]'} border-b-0">
-        <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['id']" value="${lectureData.id}" />
-        <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['nama_pengajar']" value="${lectureData.nama_pengajar}" />
+        <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['id']" value="${lectureData.id_dosen}" />
+        <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['nama_pengajar']" value="${lectureData.nama}" />
         <input type="hidden" name="selected_lecture[${Array.from(lectureBefore).length}]['pengajar_program_studi']" value="${lectureData.pengajar_program_studi}" />
-        <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${lectureData.nama_pengajar}</td>
+        <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${lectureData.nama}</td>
         <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">
           <div class="filter-box" class="status-pengajar">
               <button type="button" class="button-clean input" id="sortProgramPerkuliahan" onclick="onClickShowDropdown(this)">
@@ -383,9 +383,9 @@
                 <x-table-body>
                   @forelse($pengajar as $lecture)
                     <x-table-row>
-                      <x-table-cell>{{ $lecture['nip'] }}</x-table-cell>
-                      <x-table-cell>{{ $lecture['nama_pengajar'] }}</x-table-cell>
-                      <x-table-cell>{{ $lecture['pengajar_program_studi'] }}</x-table-cell>
+                      <x-table-cell>{{ $lecture->nomor_induk }}</x-table-cell>
+                      <x-table-cell>{{ $lecture->nama }}</x-table-cell>
+                      <x-table-cell>{{ $lecture->pengajar_program_studi }}</x-table-cell>
                       <x-table-cell>
                         <button type="button" href="" class="button button-outline !w-full add-lecture" onclick="onClickLectureOption(this)" data-lecture='@json($lecture)' id="">
                           Pilih Pengajar Ini

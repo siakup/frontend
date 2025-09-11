@@ -319,7 +319,7 @@
                   </button>
                   <div id="Option-Ruangan" class="sort-dropdown select !left-0 !top-[42px] z-999" style="display: none;">
                     @foreach($ruangans as $ruangan)
-                      <div class="dropdown-item text-black" data-event="{{$ruangan['id_ruangan']}}" onclick="onClickDropdownOption(this)">{{$ruangan['nama_ruangan']}}</div>
+                      <div class="dropdown-item text-black" data-event="{{$ruangan->id_ruangan}}" onclick="onClickDropdownOption(this)">{{$ruangan->nama_ruangan}}</div>
                     @endforeach
                   </div>
                   <input type="hidden" value="" name="ruangan">
