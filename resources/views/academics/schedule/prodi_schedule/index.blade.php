@@ -32,6 +32,7 @@
 @endsection
 
 @section('javascript')
+<script src="{{ asset('js/delete-modal.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const campusBtn   = document.querySelector('#sortButtonCampus');
@@ -232,16 +233,19 @@ document.addEventListener('DOMContentLoaded', function () {
     @endphp
 
         @forelse ($rows as $r)
-            <x-table-row>
-            <x-table-cell>{{ $r['semester'] ?? '-' }}</x-table-cell>
-            <x-table-cell>
+            <x-table-row
+                data-row-id="{{ $r['id'] }}"
+                data-row-name="{{ $r['nama_kelas'] ?? $r['mata_kuliah'] ?? 'Jadwal' }}"
+            >
+                <x-table-cell>{{ $r['semester'] ?? '-' }}</x-table-cell>
+                <x-table-cell>
                 <div class="font-medium">{{ $r['mata_kuliah'] ?? '-' }}</div>
-            </x-table-cell>
-            <x-table-cell>{{ $r['nama_kelas'] ?? '-' }}</x-table-cell>
-            <x-table-cell>{{ $r['kapasitas'] ?? '-' }}</x-table-cell>
-            <x-table-cell>
+                </x-table-cell>
+                <x-table-cell>{{ $r['nama_kelas'] ?? '-' }}</x-table-cell>
+                <x-table-cell>{{ $r['kapasitas'] ?? '-' }}</x-table-cell>
+                <x-table-cell>
                 @foreach(($r['jadwal'] ?? []) as $j)
-                <div class="mb-1">
+                    <div class="mb-1">
                     <span style="display:inline-block; min-width:56px">{{ $j['hari'] ?? '-' }}</span>
                     • {{ $j['waktu'] ?? '-' }}
                     <span class="text-gray-500">[{{ $j['ruang'] ?? '-' }}]</span>
@@ -251,36 +255,67 @@ document.addEventListener('DOMContentLoaded', function () {
             <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
             <x-table-cell>
                     <div class="center">
-                        <a href="" type="button" class="btn-icon btn-view-periode-academic"
-                            data-periode-akademik="" title="Lihat">
-                            <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
-                            <span>Lihat</span>
-                        </a>
+                    <a href="javascript:void(0)"
+                    class="btn-icon btn-view-periode-academic"
+                    title="Lihat"
+                    onclick="openViewModal('{{ route('academics.schedule.prodi-schedule.show', $r['id']) }}')">
+                    <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
+                    <span>Lihat</span>
+                    </a>
 
-                        <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                            href="{{route('academics.schedule.prodi-schedule.edit', ['id' => $r['id']])}}"
-                            style="text-decoration: none; color: inherit;">
-                            <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                            <span style="color: #E62129">Ubah</span>
-                        </a>
+                    <a class="btn-icon btn-edit-periode-academic" title="Ubah" href=""
+                    style="text-decoration: none; color: inherit;">
+                    <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit"><span style="color: #E62129">Ubah</span>
+                    </a>
 
-                        <button type="button" class="btn-icon btn-delete" data-id="" title="Hapus">
-                            <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                            <span class="text-[#8C8C8C]">Hapus</span>
-                        </button>
-                    </div>
-            </x-table-cell>
+
+
+                    <button type="button" class="btn-icon btn-delete"
+                            data-delete-url="{{ route('academics.schedule.prodi-schedule.destroy', $r['id']) }}"
+                            data-delete-name="{{ $r['nama_kelas'] ?? $r['mata_kuliah'] }}"
+                            title="Hapus">
+                    <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+                    <span class="text-[#8C8C8C]">Hapus</span>
+                    </button>
+
+                </div>
+                </x-table-cell>
+                {{-- <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
+                <x-table-cell>
+                <div class="center">
+                    <a href="javascript:void(0)"
+                    class="btn-icon btn-view-periode-academic"
+                    title="Lihat"
+                    onclick="openViewModal('{{ route('academics.schedule.prodi-schedule.show', $r['id']) }}')">
+                    <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
+                    <span>Lihat</span>
+                    </a>
+
+                    <a class="btn-icon btn-edit-periode-academic" title="Ubah" href=""
+                    style="text-decoration: none; color: inherit;">
+                    <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit"><span style="color: #E62129">Ubah</span>
+                    </a>
+
+
+
+                    <button type="button" class="btn-icon btn-delete"
+                            data-delete-url="{{ route('academics.schedule.prodi-schedule.destroy', $r['id']) }}"
+                            data-delete-name="{{ $r['nama_kelas'] ?? $r['mata_kuliah'] }}"
+                            title="Hapus">
+                    <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+                    <span class="text-[#8C8C8C]">Hapus</span>
+                    </button>
+
+                </div>
+                </x-table-cell> --}}
             </x-table-row>
-            @empty
-                @include('academics.periode.error-filter')
+        @empty
+            @include('academics.periode.error-filter')
         @endforelse
     </x-table-body>
 
     </x-table>
 </div>
-
-
-
   <div class="card-header">
       <div class="right gap-5">
           <a href="{{route('academics.schedule.prodi-schedule.import-fet1')}}" class="button-clean" id="">
@@ -301,5 +336,11 @@ document.addEventListener('DOMContentLoaded', function () {
     ])
     {{-- @if (isset($data['data']))
     @endif --}}
+
 </div>
+
+@include('academics.schedule.prodi_schedule.delete')
+@include('academics.schedule.prodi_schedule.view')
+
+
 @endsection
