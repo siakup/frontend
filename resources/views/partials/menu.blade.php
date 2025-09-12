@@ -104,7 +104,7 @@
 
             <li class="menu-item">
                 <a href="{{ route('academics.schedule.prodi-schedule.index') }}"
-                class="menu-link {{ Request::is('persiapan-perkuliahan*') ? 'active' : '' }}">
+                class="menu-link {{ Request::is('persiapan-perkuliahan/jadwal-kuliah*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-calendar.svg') }}"
                             alt="Jadwal Kuliah Icon"
@@ -113,6 +113,19 @@
                     </div>
                 </a>
             </li>
+
+            <li class="menu-item">
+                <a href="{{ route('academics.auto-assign.index') }}"
+                   class="menu-link {{ Request::is('persiapan-perkuliahan/auto-assign*') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <img src="{{ asset('assets/base/icon-prodi.svg') }}"
+                             alt="Auto Assign Peserta Kelas Icon"
+                             class="menu-icon">
+                        <span>Auto Assign Peserta Kelas</span>
+                    </div>
+                </a>
+            </li>
+
             <li class="menu-item">
                 <a href="{{ route('study.index') }}"
                     class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
