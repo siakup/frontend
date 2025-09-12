@@ -14,6 +14,7 @@ use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\PeriodAcademicService;
+use App\Endpoint\ScheduleService;
 use App\Endpoint\UserService;
 
 class ScheduleController extends Controller
@@ -687,7 +688,51 @@ class ScheduleController extends Controller
 
     public function parentInstitutionStore(Request $request)
     {
-      dd($request->all());
+      $validated = $request->validate([
+        'program_perkuliahan' => 'required',
+        'program_studi' => 'required',
+        'periode' => 'required',
+        'nama_matakuliah' => 'required',
+        'matakuliah' => 'required',
+        'nama_kelas' => 'required',
+        'nama_singkat' => 'required',
+        'kapasitas_peserta' => 'required',
+        'kelas_mbkm' => 'required',
+        'tanggal_mulai' => 'required',
+        'tanggal_akhir' => 'required',
+        'selected_lecture' => 'array',
+        'class_schedule' => 'array',
+      ]);
+
+      $url = ScheduleService::getInstance()->createSchedule();
+      $data = [
+        'perkuliahan' => $validated['program_perkuliahan'],
+        'id_prodi' => $validated['program_studi'],
+        'id_periode_akademik' => $validated['periode'],
+        'id_mata_kuliah' => $validated['matakuliah']['id'],
+        'nama_jadwal' => $validated['nama_kelas'],
+        'singkatan_jadwal' => $validated['nama_singkat'],
+        'jumlah_peserta' => $validated['kapasitas_peserta'],
+        'is_mbkm' => $validated['kelas_mbkm'],
+        'tanggal_mulai' => $validated['tanggal_mulai'],
+        'tanggal_akhir' => $validated['tanggal_akhir'],
+        'ruangan' => array_map(function ($ruangan) { return [
+            'id_ruangan' => $ruangan["'ruangan'"], 
+            'hari' => $ruangan["'hari'"], 
+            'mulai_kelas' => $ruangan["'jam_mulai_kelas'"],
+            'selesai_kelas' => $ruangan["'jam_akhir_kelas'"]
+        ];}, $validated['class_schedule']),
+        'pengajar' => array_map(function ($pengajar) { return [
+            "id_pengajar" => $pengajar["'id'"],
+            "nama_pengajar" => $pengajar["'nama_pengajar'"],
+            "status_pengajar" => $pengajar["'status_pengajar'"],
+        ];}, $validated['selected_lecture']),
+      ];
+      $response = postCurl($url, $data, getHeaders());
+
+      if($response->success) {
+        return redirect()->route('academics.schedule.parent-institution-schedule.index')->with('success', 'Jadwal Kuliah Institusi Parent berhasil ditambahkan.');
+      }
     }
 
     public function parentInstitutionEdit(Request $request, $id)
@@ -769,81 +814,15 @@ class ScheduleController extends Controller
 
     public function parentInstitutionLectureList(Request $request)
     {
-      $pengajar = [
-        [
-          'id' => 1,
-          'nip' => '12001',
-          'nama_pengajar' => 'Ade Irawan, Ph.D',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 2,
-          'nip' => '12001',
-          'nama_pengajar' => 'Dr. Tasmi, S.Si, M.Si',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 3,
-          'nip' => '12001',
-          'nama_pengajar' => 'Rangga Ganzar Nugraha, Ph.D',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 4,
-          'nip' => '12001',
-          'nama_pengajar' => 'Meredita Susanty, M.Sc',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 5,
-          'nip' => '12001',
-          'nama_pengajar' => 'Randi Farmana Putra, M.Si',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 6,
-          'nip' => '12001',
-          'nama_pengajar' => 'Dr. Tasmi, S.Si, M.Si',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 7,
-          'nip' => '12001',
-          'nama_pengajar' => 'Ade Irawan, Ph.D',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 8,
-          'nip' => '12001',
-          'nama_pengajar' => 'Rangga Ganzar Nugraha, Ph.D',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 9,
-          'nip' => '12001',
-          'nama_pengajar' => 'Meredita Susanty, M.Sc',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-        [
-          'id' => 10,
-          'nip' => '12001',
-          'nama_pengajar' => 'Randi Farmana Putra, M.Si',
-          'pengajar_program_studi' => 'Ilmu Komputer'
-        ],
-      ];
-
       $limit = $request->input('limit', 5);
       $page = $request->input('page', 1);
+      $search = $request->input('search', '');
+      $params = compact('limit', 'page', 'search');
 
-      $pengajar = array_values(array_filter($pengajar, function($p) use ($request) {
-        return str_starts_with(strtolower($p['nip']), strtolower($request->input('search', ''))) ||
-          str_starts_with(strtolower($p['nama_pengajar']), strtolower($request->input('search', ''))) ||
-          str_starts_with(strtolower($p['pengajar_program_studi']), strtolower($request->input('search', '')));
-      }));
-
-      $pengajar = array_chunk($pengajar, $limit);
-      $lastPage = count($pengajar);
-      $pengajar = count($pengajar) > 0 ? $pengajar[$page - 1] : [];
+      $url = ScheduleService::getInstance()->getLectureList();
+      $response = getCurl($url, $params, getHeaders());
+      $pengajar = $response->data->data;
+      $lastPage = $response->data->last_page;
 
       if ($request->ajax()) {
           return view('academics.schedule.parent-institution_schedule._lecture-view', get_defined_vars())->render();
@@ -853,104 +832,20 @@ class ScheduleController extends Controller
 
     public function parentInstitutionCourseList(Request $request, $periode)
     {
-      $mata_kuliah_list = [
-        [
-          'id' => 1,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Akuisisi dan Pengolahan Data Seismik Refleksi',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 2,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Analisis Sinyal Geofisika',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 3,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Elektronika dan Instrumentasi Geofisika',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 4,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Evaluasi Farmasi',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 5,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Fisika Batuan',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 6,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Akuisisi dan Pengolahan Data Seismik Refleksi',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 7,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Analisis Sinyal Geofisika',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 8,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Elektronika dan Instrumentasi Geofisika',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 9,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Fisika Batuan',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-        [
-          'id' => 10,
-          'kode_matakuliah' => '12001',
-          'nama_matakuliah' => 'Evaluasi Farmasi',
-          'jenis_matakuliah' => 'Mata Kuliah Program Studi',
-          'sks' => 2,
-          'kurikulum' => 'Kurikulum 2021 - Teknik Geofisika',
-        ],
-      ];
-
       $limit = $request->input('limit', 5);
       $page = $request->input('page', 1);
+      $search = $request->input('search', '');
+      $params = compact('limit', 'page', 'search');
+      $url = ScheduleService::getInstance()->getCourseList($periode);
+      $response = getCurl($url, $params, getHeaders());
+      $mata_kuliah_list = $response->data->data;
+      
 
       $urlPeriode = PeriodAcademicService::getInstance()->periodeUrl($periode);
       $responsePeriode = getCurl($urlPeriode, null, getHeaders());
       $periodeData = $responsePeriode->data->periode;
 
-      $mata_kuliah_list = array_values(array_filter($mata_kuliah_list, function($p) use ($request) {
-        return str_starts_with(strtolower($p['kode_matakuliah']), strtolower($request->input('search', ''))) ||
-          str_starts_with(strtolower($p['nama_matakuliah']), strtolower($request->input('search', '')));
-      }));
-
-      $mata_kuliah_list = array_chunk($mata_kuliah_list, $limit);
-      $lastPage = count($mata_kuliah_list);
-      $mata_kuliah_list = count($mata_kuliah_list) > 0 ? $mata_kuliah_list[$page - 1] : [];
+      $lastPage = $response->data->last_page;
 
       if ($request->ajax()) {
           return view('academics.schedule.parent-institution_schedule._course-view', get_defined_vars())->render();
@@ -1033,48 +928,9 @@ class ScheduleController extends Controller
 
     public function parentInstitutionClassScheduleCreate(Request $request)
     {
-      $ruangans = [
-        [
-          'id_ruangan' => 1,
-          'nama_ruangan' => 'Online'
-        ],
-        [
-          'id_ruangan' => 2,
-          'nama_ruangan' => 'Ruang Kelas ABC'
-        ],
-        [
-          'id_ruangan' => 3,
-          'nama_ruangan' => '2201'
-        ],
-        [
-          'id_ruangan' => 4,
-          'nama_ruangan' => '2202'
-        ],
-        [
-          'id_ruangan' => 5,
-          'nama_ruangan' => '2203'
-        ],
-        [
-          'id_ruangan' => 6,
-          'nama_ruangan' => '2401'
-        ],
-        [
-          'id_ruangan' => 7,
-          'nama_ruangan' => '2402'
-        ],
-        [
-          'id_ruangan' => 8,
-          'nama_ruangan' => '2403'
-        ],
-        [
-          'id_ruangan' => 9,
-          'nama_ruangan' => '2501'
-        ],
-        [
-          'id_ruangan' => 10,
-          'nama_ruangan' => '2502'
-        ],
-      ];
+      $url = ScheduleService::getInstance()->getRoomList();
+      $response = getCurl($url, null, getHeaders());
+      $ruangans = $response->data;
 
       return view('academics.schedule.parent-institution_schedule._create-schedule', get_defined_vars())->render();
     }

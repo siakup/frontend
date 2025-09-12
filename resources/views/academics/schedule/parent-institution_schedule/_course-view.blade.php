@@ -155,12 +155,12 @@
 
   function onSelectCourse(e) {
     const dataCourse = JSON.parse(e.getAttribute('data-course'));
-    document.querySelector('input[name="nama_matakuliah"]').value = dataCourse.nama_matakuliah;
-    document.querySelector('input[name="matakuliah[jenis_matakuliah]"]').value = dataCourse.jenis_matakuliah;
+    document.querySelector('input[name="nama_matakuliah"]').value = dataCourse.nama_matakuliah_id;
+    document.querySelector('input[name="matakuliah[jenis_matakuliah]"]').value = dataCourse.id_jenis;
     document.querySelector('input[name="matakuliah[sks]"]').value = dataCourse.sks;
-    document.querySelector('input[name="matakuliah[kurikulum]"]').value = dataCourse.kurikulum;
+    document.querySelector('input[name="matakuliah[kurikulum]"]').value = dataCourse.curriculum_course.curriculum.nama_kurikulum;
     document.querySelector('input[name="matakuliah[kode_matakuliah]"]').value = dataCourse.kode_matakuliah;
-    document.querySelector('input[name="matakuliah[id]"]').value = dataCourse.id;
+    document.querySelector('input[name="matakuliah[id]"]').value = dataCourse.id_matakuliah;
     successToast("Berhasil Menambahkan Mata Kuliah");
   }
 </script>
@@ -329,11 +329,11 @@
                 <x-table-body>
                   @forelse($mata_kuliah_list as $course)
                     <x-table-row>
-                      <x-table-cell>{{ $course['kode_matakuliah'] }}</x-table-cell>
-                      <x-table-cell>{{ $course['nama_matakuliah'] }}</x-table-cell>
-                      <x-table-cell>{{ $course['jenis_matakuliah'] }}</x-table-cell>
-                      <x-table-cell>{{ $course['sks'] }}</x-table-cell>
-                      <x-table-cell>{{ $course['kurikulum'] }}</x-table-cell>
+                      <x-table-cell>{{ $course->kode_matakuliah }}</x-table-cell>
+                      <x-table-cell>{{ $course->nama_matakuliah_id }}</x-table-cell>
+                      <x-table-cell>{{ $course->id_jenis }}</x-table-cell>
+                      <x-table-cell>{{ $course->sks }}</x-table-cell>
+                      <x-table-cell>{{ $course->curriculum_course->curriculum->nama_kurikulum }}</x-table-cell>
                       <x-table-cell>
                         <button type="button" href="" class="button button-outline !w-full" onclick="onSelectCourse(this)" data-course='@json($course)' id="">
                           Pilih Mata Kuliah Ini

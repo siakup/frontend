@@ -255,27 +255,32 @@ document.addEventListener('DOMContentLoaded', function () {
             <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
             <x-table-cell>
                     <div class="center">
-                        <a href="" type="button" class="btn-icon btn-view-periode-academic"
-                            data-periode-akademik="" title="Lihat">
-                            <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
-                            <span>Lihat</span>
-                        </a>
+                    <a href="javascript:void(0)"
+                    class="btn-icon btn-view-periode-academic"
+                    title="Lihat"
+                    onclick="openViewModal('{{ route('academics.schedule.prodi-schedule.show', $r['id']) }}')">
+                    <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
+                    <span>Lihat</span>
+                    </a>
 
-                        <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                            href="{{route('academics.schedule.prodi-schedule.edit', ['id' => $r['id']])}}"
-                            style="text-decoration: none; color: inherit;">
-                            <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                            <span style="color: #E62129">Ubah</span>
-                        </a>
+                    <a class="btn-icon btn-edit-periode-academic" title="Ubah" href=""
+                    style="text-decoration: none; color: inherit;">
+                    <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit"><span style="color: #E62129">Ubah</span>
+                    </a>
 
-                        <button type="button" class="btn-icon btn-delete" data-id="" title="Hapus">
-                            <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                            <span class="text-[#8C8C8C]">Hapus</span>
-                        </button>
-                    </div>
-                @endforeach
+
+
+                    <button type="button" class="btn-icon btn-delete"
+                            data-delete-url="{{ route('academics.schedule.prodi-schedule.destroy', $r['id']) }}"
+                            data-delete-name="{{ $r['nama_kelas'] ?? $r['mata_kuliah'] }}"
+                            title="Hapus">
+                    <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+                    <span class="text-[#8C8C8C]">Hapus</span>
+                    </button>
+
+                </div>
                 </x-table-cell>
-                <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
+                {{-- <x-table-cell>{{ $r['pengajar'] ?? '-' }}</x-table-cell>
                 <x-table-cell>
                 <div class="center">
                     <a href="javascript:void(0)"
@@ -302,9 +307,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     </button>
 
                 </div>
-                </x-table-cell>
+                </x-table-cell> --}}
             </x-table-row>
-            @empty
+        @empty
             @include('academics.periode.error-filter')
         @endforelse
     </x-table-body>

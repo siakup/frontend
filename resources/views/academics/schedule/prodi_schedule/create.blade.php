@@ -49,7 +49,7 @@
     .prodi-create .mk-wrap .input{ flex:1; }
     .prodi-create .mk-wrap .btn{ flex-shrink:0; }
 
-    @media(max-width:992px){
+    /* @media(max-width:992px){ */
     .prodi-create .grid-3{grid-template-columns:120px 1fr}
     .prodi-create .span-2{grid-column:2 / span 1}
     .prodi-create .form-footer .btn{flex:1}
