@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Jadwal Kuliah Program Studi')
+@section('title', 'Jadwal Kuliah Institusi Parent')
 
 @section('breadcrumbs')
   <div class="breadcrumb-item">Beranda</div>
@@ -37,8 +37,9 @@
 <script>
 function onClickShowSchedule(e) {
   const id = e.getAttribute('data-id');
+  console.log("{{ route('academics.schedule.parent-institution-schedule.view', ['id' => 'id']) }}".replace("'id'", id));
   $.ajax({
-    url: "{{ route('academics.schedule.parent-institution-schedule.view', ['id' => 'id']) }}".replace("'id'", id),
+    url: "{{ route('academics.schedule.parent-institution-schedule.view', ['id' => 'id']) }}".replace("id", id),
     method: 'GET',
     headers: {
         'X-Requested-With': 'XMLHttpRequest'

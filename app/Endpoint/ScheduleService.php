@@ -44,5 +44,10 @@ class ScheduleService
     {
       return $this->url() . '/';
     }
+
+    public function detailSchedule($id)
+    {
+      return $this->url() . '/' . $id;
+    }
     
 }
