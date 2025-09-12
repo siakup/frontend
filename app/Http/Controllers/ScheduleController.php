@@ -688,7 +688,51 @@ class ScheduleController extends Controller
 
     public function parentInstitutionStore(Request $request)
     {
-      dd($request->all());
+      $validated = $request->validate([
+        'program_perkuliahan' => 'required',
+        'program_studi' => 'required',
+        'periode' => 'required',
+        'nama_matakuliah' => 'required',
+        'matakuliah' => 'required',
+        'nama_kelas' => 'required',
+        'nama_singkat' => 'required',
+        'kapasitas_peserta' => 'required',
+        'kelas_mbkm' => 'required',
+        'tanggal_mulai' => 'required',
+        'tanggal_akhir' => 'required',
+        'selected_lecture' => 'array',
+        'class_schedule' => 'array',
+      ]);
+
+      $url = ScheduleService::getInstance()->createSchedule();
+      $data = [
+        'perkuliahan' => $validated['program_perkuliahan'],
+        'id_prodi' => $validated['program_studi'],
+        'id_periode_akademik' => $validated['periode'],
+        'id_mata_kuliah' => $validated['matakuliah']['id'],
+        'nama_jadwal' => $validated['nama_kelas'],
+        'singkatan_jadwal' => $validated['nama_singkat'],
+        'jumlah_peserta' => $validated['kapasitas_peserta'],
+        'is_mbkm' => $validated['kelas_mbkm'],
+        'tanggal_mulai' => $validated['tanggal_mulai'],
+        'tanggal_akhir' => $validated['tanggal_akhir'],
+        'ruangan' => array_map(function ($ruangan) { return [
+            'id_ruangan' => $ruangan["'ruangan'"], 
+            'hari' => $ruangan["'hari'"], 
+            'mulai_kelas' => $ruangan["'jam_mulai_kelas'"],
+            'selesai_kelas' => $ruangan["'jam_akhir_kelas'"]
+        ];}, $validated['class_schedule']),
+        'pengajar' => array_map(function ($pengajar) { return [
+            "id_pengajar" => $pengajar["'id'"],
+            "nama_pengajar" => $pengajar["'nama_pengajar'"],
+            "status_pengajar" => $pengajar["'status_pengajar'"],
+        ];}, $validated['selected_lecture']),
+      ];
+      $response = postCurl($url, $data, getHeaders());
+
+      if($response->success) {
+        return redirect()->route('academics.schedule.parent-institution-schedule.index')->with('success', 'Jadwal Kuliah Institusi Parent berhasil ditambahkan.');
+      }
     }
 
     public function parentInstitutionEdit(Request $request, $id)

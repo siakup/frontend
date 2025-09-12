@@ -31,6 +31,8 @@
 </style>
 @endsection
 
+@include('partials.success-notification-modal', ['route' => route('academics.schedule.parent-institution-schedule.index')])
+
 @section('javascript')
 <script>
 function onClickShowSchedule(e) {

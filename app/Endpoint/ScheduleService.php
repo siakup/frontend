@@ -39,5 +39,10 @@ class ScheduleService
     {
       return $this->urlLecture() . '/rooms';
     }
+
+    public function createSchedule()
+    {
+      return $this->url() . '/';
+    }
     
 }
