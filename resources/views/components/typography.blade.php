@@ -22,6 +22,7 @@
         'body-medium-italic' => 'text-[16px] leading-[24px] italic',
         'body-small-regular' => 'text-[14px] leading-[22px]',
         'body-small-bold' => 'text-[14px] leading-[22px] font-bold',
+        'body-small-semibold' => 'text-[14px] leading-[22px] font-semibold',
         'body-small-italic' => 'text-[14px] leading-[22px] italic',
 
         'caption-regular' => 'text-[12px] leading-[20px]',

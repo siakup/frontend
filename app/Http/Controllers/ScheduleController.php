@@ -876,4 +876,148 @@ class ScheduleController extends Controller
 
       return view('academics.schedule.parent-institution_schedule._create-schedule', get_defined_vars())->render();
     }
+
+    public function parentInstitutionUpload(Request $request)
+    {
+      return view('academics.schedule.parent-institution_schedule.upload');
+    }
+
+    public function parentInstitutionUploadResult(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|file|mimes:csv,xlsx|max:5120'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator);
+        }
+
+        $file = $request->file('file');
+        $file_data = [];
+        $errors = [];
+
+        // Convert file ke array of object/array
+        $file_data = convertFileDataExcelToObject($file);
+
+        // Sesuaikan dengan struktur data CSV baru
+        $file_data = array_map(function ($value) {
+            return [
+                'activity_id'    => $value['activity_id'] ?? null,
+                'day'            => $value['day'] ?? null,
+                'hour'           => $value['hour'] ?? null,
+                'students_sets'  => $value['students_sets'] ?? null,
+                'subject'        => $value['subject'] ?? null,
+                'teachers'       => $value['teachers'] ?? null,
+                'activity_tags'  => $value['activity_tags'] ?? null,
+                'room'           => $value['room'] ?? null,
+                'comments'       => $value['comments'] ?? null,
+            ];
+        }, $file_data);
+
+        return view('academics.schedule.parent-institution_schedule.upload-result', get_defined_vars());
+    }
+
+    public function parentInstitutionDownloadTemplate(Request $request)
+    {
+        $type = $request->query('type', 'xlsx');
+        $allowed = ['xlsx', 'csv'];
+
+        if (!in_array($type, $allowed)) {
+            return redirect()->back()->with('error', 'Format file tidak valid');
+        }
+
+        $data = [
+            [
+                'Activity Id','Day','Hour','Students Sets','Subject','Teachers','Activity Tags','Room','Comments'
+            ],
+            [1, 'Rabu', '13:00-13:30', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
+            [1, 'Rabu', '13:30-14:00', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
+            [1, 'Rabu', '14:00-14:30', 'GP2+GP2DD', '10103#Bahasa Inggris II', 'Harumi Manik Ayu Yamin', 'GP', '2602', ''],
+        ];
+
+        $filename = 'template-parent-institution-schedule.' . $type;
+
+        return Excel::download(new class($data) implements FromArray, WithHeadings, WithCustomCsvSettings {
+            private $rows;
+
+            public function __construct($rows)
+            {
+                $this->rows = $rows;
+            }
+
+            public function array(): array
+            {
+                return array_slice($this->rows, 1);
+            }
+
+            public function headings(): array
+            {
+                return $this->rows[0];
+            }
+
+            public function getCsvSettings(): array
+            {
+                return [
+                    'delimiter' => ';',
+                    'enclosure' => '"',
+                    'line_ending' => "\n",
+                    'use_bom' => true,
+                ];
+            }
+        }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
+    }
+
+    public function parentInstitutionUploadStore(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+
+        $file = $request->file('file');
+        $path = $file->getRealPath();
+        $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+        // Tentukan delimiter (koma atau titik koma)
+        $rows = array_map(function ($line) {
+            $delimiter = substr_count($line, ';') > substr_count($line, ',') ? ';' : ',';
+            return str_getcsv($line, $delimiter);
+        }, $lines);
+
+        // Ambil header
+        $header = array_map('trim', $rows[0]);
+        unset($rows[0]);
+
+        $dataCplMapping = [];
+        foreach ($rows as $index => $row) {
+            $row = array_map('trim', $row);
+
+            // Skip kalau jumlah kolom tidak sesuai (harus 3)
+            if (count($row) < 3) {
+                continue;
+            }
+
+            $dataCplMapping[] = [
+                'kode_matakuliah' => $row[0],
+                'kode_cpl'        => $row[1],
+                'bobot'           => is_numeric($row[2]) ? (int)$row[2] : 0,
+            ];
+        }
+
+        // $url = EventCalendarService::getInstance()->bulkStore();
+        // $response = postCurl($url, [
+        //   'events' => $eventAkademik,
+        //   'idperiode' => $id,
+        // ], getHeaders());
+
+        return redirect()->route('cpl-mapping.index', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+        // if (isset($response->success) && $response->success) {
+        //   return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+        // }
+
+        return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
+    }
 }

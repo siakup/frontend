@@ -6,7 +6,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\ScheduleController;
-use App\Http\Controllers\CplMapping;
+use App\Http\Controllers\AutoAssignController;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'academics'], function () {
@@ -179,6 +179,18 @@ Route::group(['middleware' => ['auth']], function () {
               Route::get('/create/add-class-schedule/', [ScheduleController::class, 'parentInstitutionClassScheduleCreate'])->name('add-class-schedule');
               Route::post('/create', [ScheduleController::class, 'parentInstitutionStore'])->name('store');
               Route::get('/view/{id}', [ScheduleController::class, 'parentInstitutionView'])->name('view');
+              Route::get('/upload', [ScheduleController::class, 'parentInstitutionUpload'])->name('upload');
+              Route::post('/upload', [ScheduleController::class, 'parentInstitutionUploadResult'])->name('upload-result');
+              Route::get('/download-template', [ScheduleController::class, 'parentInstitutionDownloadTemplate'])->name('download-template');
+              Route::post('/upload-store', [ScheduleController::class, 'parentInstitutionUploadStore'])->name('upload-store');
             });
         });
+
+    Route::prefix('persiapan-perkuliahan/auto-assign')->name('academics.auto-assign.')->group(function () {
+        Route::get('/', [AutoAssignController::class, 'autoAssignIndex'])->name('index');
+        Route::get('/lihat', [AutoAssignController::class, 'autoAssignView'])->name('view');
+        Route::get('/peserta-diisi', [AutoAssignController::class, 'autoAssignFilledMember'])->name('filled-member');
+        Route::get('/peserta-disetujui', [AutoAssignController::class, 'autoAssignApprovedMember'])->name('approved-member');
+        Route::post('/submit', [AutoAssignController::class, 'autoAssignSubmit'])->name('submit');
+    });
 });
