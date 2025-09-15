@@ -155,7 +155,9 @@
 
   function onClickSaveSchedule(e) {
     const hari = document.querySelector('input[name="hari"]').value;
-    const ruangan = document.querySelector('input[name="ruangan"]').value;
+    const ruangan = document.querySelector('input[name="ruangan"]');
+    const ruanganName = ruangan.previousElementSibling.querySelector(`.dropdown-item[data-event="${ruangan.value}"]`).innerHTML;
+
     const jamMulai = document.querySelector('input[name="jam_mulai_kelas"]').value;
     const jamSelesai = document.querySelector('input[name="jam_akhir_kelas"]').value;
 
@@ -163,13 +165,13 @@
     const classScheduleBefore = classSchedule.querySelectorAll('tr');
     const newClassSchedule = `<tr class="${Array.from(classScheduleBefore).length % 2 == 0 ? 'bg-white' : 'bg-[#F5F5F5]'} border-b-0">
       <input type="hidden" name="class_schedule[${Array.from(classScheduleBefore).length}]['hari']" value="${hari}" />
-      <input type="hidden" name="class_schedule[${Array.from(classScheduleBefore).length}]['ruangan']" value="${ruangan}" />
+      <input type="hidden" name="class_schedule[${Array.from(classScheduleBefore).length}]['ruangan']" value="${ruangan.value}" />
       <input type="hidden" name="class_schedule[${Array.from(classScheduleBefore).length}]['jam_mulai_kelas']" value="${jamMulai}" />
       <input type="hidden" name="class_schedule[${Array.from(classScheduleBefore).length}]['jam_akhir_kelas']" value="${jamSelesai}" />
       <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${hari}</td>
       <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${jamMulai}</td>
       <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${jamSelesai}</td>
-      <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${ruangan}</td>
+      <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">${ruanganName}</td>
       <td class="px-6 py-[24px] text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0">
         <div class="center flex items-center w-full justify-center">
           <button type="button" onclick="onClickDeleteSchedule(this)" class="btn-icon btn-delete !flex !items-center !justify-center gap-1" title="Hapus" >

@@ -614,7 +614,7 @@ class ScheduleController extends Controller
 
       $data = [
         [
-          'id' => 1,
+          'id' => 4,
           'mata_kuliah' => 'Bahasa Indonesia',
           'nama_kelas' => 'Bahasa Indonesia I-CE1-2024',
           'kapasitas' => 50,
@@ -749,67 +749,61 @@ class ScheduleController extends Controller
       $responsePeriode = getCurl($urlPeriode, null, getHeaders());
       $periodeList = $responsePeriode->data;
 
-      $data = [
-        "program_perkuliahan" => "Reguler",
-        "program_studi" => "3",
-        "periode" => "17",
-        "nama_matakuliah" => "Elektronika dan Instrumentasi Geofisika",
-        "matakuliah" => [
-          "jenis_matakuliah" => "Mata Kuliah Program Studi",
-          "sks" => "2",
-          "kurikulum" => "Kurikulum 2021 - Teknik Geofisika",
-          "kode_matakuliah" => "12001",
-          "id" => "3",
-        ],
-        "nama_kelas" => "Elektronika dan Instrumentasi Geofisika - EIG4",
-        "nama_singkat" => "EIG4",
-        "kapasitas_peserta" => "50",
-        "kelas_mbkm" => false,
-        "tanggal_mulai" => "09-09-2025, 12:00",
-        "tanggal_akhir" => "30-09-2025, 12:00",
-        "selected_lecture" => [
-          [
-            "id" => "1",
-            "nama_pengajar" => "Ade Irawan, Ph.D",
-            "pengajar_program_studi" => "Ilmu Komputer",
-            "status_pengajar" => "Pengajar Utama",
-            "hari" => "Senin",
-            "ruangan" => "2",
-            "jam_mulai_kelas" => "12:00",
-            "jam_akhir_kelas" => "14:00",
-          ],
-          1 => [
-            "id" => "2",
-            "nama_pengajar" => "Dr. Tasmi, S.Si, M.Si",
-            "pengajar_program_studi" => "Ilmu Komputer",
-            "status_pengajar" => "Bukan Pengajar Utama",
-            "hari" => "Selasa",
-            "ruangan" => "3",
-            "jam_mulai_kelas" => "12:00",
-            "jam_akhir_kelas" => "14:00",
-          ]
-        ],
-        "class_schedule" => [
-          [
-            "hari" => "Senin",
-            "ruangan" => "2",
-            "jam_mulai_kelas" => "12:00",
-            "jam_akhir_kelas" => "14:00",
-          ],
-          [
-            "hari" => "Selasa",
-            "ruangan" => "2",
-            "jam_mulai_kelas" => "12:00",
-            "jam_akhir_kelas" => "14:00",
-          ]
-        ]
-      ];
+      $url = ScheduleService::getInstance()->detailSchedule($id);
+      $response = getCurl($url, null, getHeaders());
+      $data = $response->data;
+
       return view('academics.schedule.parent-institution_schedule.edit', get_defined_vars());
     }
 
     public function parentInstitutionUpdate(Request $request, $id)
     {
-      dd($request->all());
+      $validated = $request->validate([
+        'program_perkuliahan' => 'required',
+        'program_studi' => 'required',
+        'periode' => 'required',
+        'nama_matakuliah' => 'required',
+        'matakuliah' => 'required',
+        'nama_kelas' => 'required',
+        'nama_singkat' => 'required',
+        'kapasitas_peserta' => 'required',
+        'kelas_mbkm' => 'required',
+        'tanggal_mulai' => 'required',
+        'tanggal_akhir' => 'required',
+        'selected_lecture' => 'array',
+        'class_schedule' => 'array',
+      ]);
+
+      $data = [
+        'perkuliahan' => $validated['program_perkuliahan'],
+        'id_prodi' => $validated['program_studi'],
+        'id_periode_akademik' => $validated['periode'],
+        'id_mata_kuliah' => $validated['matakuliah']['id'],
+        'nama_jadwal' => $validated['nama_kelas'],
+        'singkatan_jadwal' => $validated['nama_singkat'],
+        'jumlah_peserta' => $validated['kapasitas_peserta'],
+        'is_mbkm' => $validated['kelas_mbkm'],
+        'tanggal_mulai' => $validated['tanggal_mulai'],
+        'tanggal_akhir' => $validated['tanggal_akhir'],
+        'ruangan' => array_map(function ($ruangan) { return [
+            'id_ruangan' => $ruangan["'ruangan'"], 
+            'hari' => $ruangan["'hari'"], 
+            'mulai_kelas' => $ruangan["'jam_mulai_kelas'"],
+            'selesai_kelas' => $ruangan["'jam_akhir_kelas'"]
+        ];}, $validated['class_schedule']),
+        'pengajar' => array_map(function ($pengajar) { return [
+            "id_pengajar" => $pengajar["'id'"],
+            "nama_pengajar" => $pengajar["'nama_pengajar'"],
+            "status_pengajar" => $pengajar["'status_pengajar'"],
+        ];}, $validated['selected_lecture']),
+      ];
+
+      $url = ScheduleService::getInstance()->detailSchedule($id);
+      $response = putCurl($url, $data, getHeaders());
+
+      if($response->success) {
+        return redirect()->route('academics.schedule.parent-institution-schedule.index')->with('success', 'Jadwal Kuliah Institusi Parent berhasil diubah.');
+      }
     }
 
     public function parentInstitutionLectureList(Request $request)
@@ -867,61 +861,9 @@ class ScheduleController extends Controller
       $responsePeriode = getCurl($urlPeriode, null, getHeaders());
       $periodeList = $responsePeriode->data;
 
-      $data = [
-        "program_perkuliahan" => "Reguler",
-        "program_studi" => "3",
-        "periode" => "17",
-        "nama_matakuliah" => "Elektronika dan Instrumentasi Geofisika",
-        "matakuliah" => [
-          "jenis_matakuliah" => "Mata Kuliah Program Studi",
-          "sks" => "2",
-          "kurikulum" => "Kurikulum 2021 - Teknik Geofisika",
-          "kode_matakuliah" => "12001",
-          "id" => "3",
-        ],
-        "nama_kelas" => "Elektronika dan Instrumentasi Geofisika - EIG4",
-        "nama_singkat" => "EIG4",
-        "kapasitas_peserta" => "50",
-        "kelas_mbkm" => false,
-        "tanggal_mulai" => "09-09-2025, 12:00",
-        "tanggal_akhir" => "30-09-2025, 12:00",
-        "selected_lecture" => [
-          [
-            "id" => "1",
-            "nama_pengajar" => "Ade Irawan, Ph.D",
-            "pengajar_program_studi" => "Ilmu Komputer",
-            "status_pengajar" => "Pengajar Utama",
-            "hari" => "Senin",
-            "ruangan" => "2",
-            "jam_mulai_kelas" => "12:00",
-            "jam_akhir_kelas" => "14:00",
-          ],
-          1 => [
-            "id" => "2",
-            "nama_pengajar" => "Dr. Tasmi, S.Si, M.Si",
-            "pengajar_program_studi" => "Ilmu Komputer",
-            "status_pengajar" => "Bukan Pengajar Utama",
-            "hari" => "Selasa",
-            "ruangan" => "3",
-            "jam_mulai_kelas" => "12:00",
-            "jam_akhir_kelas" => "14:00",
-          ]
-        ],
-        "class_schedule" => [
-          [
-            "hari" => "Senin",
-            "ruangan" => "2",
-            "jam_mulai_kelas" => "12:00",
-            "jam_akhir_kelas" => "14:00",
-          ],
-          [
-            "hari" => "Selasa",
-            "ruangan" => "2",
-            "jam_mulai_kelas" => "12:00",
-            "jam_akhir_kelas" => "14:00",
-          ]
-        ]
-      ];
+      $url = ScheduleService::getInstance()->detailSchedule($id);
+      $response = getCurl($url, null, getHeaders());
+      $data = $response->data;
 
       return view('academics.schedule.parent-institution_schedule._view', get_defined_vars())->render();
     }
