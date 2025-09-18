@@ -64,6 +64,13 @@ class StudyController extends Controller
 
   public function create(Request $request)
   {
+    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+    $programStudiList = $responseProgramStudiList->data;
+
+    // dd($programStudiList);
+
+
     return view('study.create', get_defined_vars());
   }
 

@@ -132,26 +132,6 @@
 
             <div class="space-y-5">
                 <!-- Single column fields (2:10 ratio) -->
-                <div class="grid grid-cols-12 gap-5 items-center">
-                    <div class="col-span-2">
-                        <x-typography variant="body-small-regular" class="font-semibold">
-                            Program Studi
-                        </x-typography>
-                    </div>
-                    <div class="col-span-10">
-                        <x-form.input name="study_program" type="select" placeholder="Pilih Program Studi"
-                            :options="[
-                                '' => 'Pilih Program Studi',
-                                'ti' => 'Teknik Informatika',
-                                'si' => 'Sistem Informasi',
-                                'mi' => 'Manajemen Informatika',
-                                'tk' => 'Teknik Komputer',
-                                'if' => 'Informatika',
-                                'ti' => 'Teknik Industri',
-                            ]" />
-
-                    </div>
-                </div>
 
                 <div class="grid grid-cols-12 gap-5 items-center">
                     <div class="col-span-2">
@@ -286,8 +266,20 @@
                         ]" />
                     </div>
                 </div>
-
                 <div class="grid grid-cols-12 gap-5 items-center">
+                  <div class="col-span-2">
+                        <x-typography variant="body-small-regular" class="font-semibold">
+                            Program Studi
+                        </x-typography>
+                    </div>
+                    <div class="col-span-4">
+                        <x-form.input name="study_program" type="select" placeholder="Pilih Program Studi"
+                            :options="[
+                                '' => 'Pilih Program Studi',
+                                ...(array_column(json_decode(json_encode($programStudiList), true), 'nama', 'id'))
+                            ]" />
+
+                    </div>
                     <div class="col-span-2">
                         <x-typography variant="body-small-regular" class="font-semibold">
                             MK Spesial
@@ -298,18 +290,6 @@
                             '' => 'Pilih Status',
                             'ya' => 'Ya (MK Khusus)',
                             'tidak' => 'Tidak (MK Reguler)',
-                        ]" />
-                    </div>
-                    <div class="col-span-2">
-                        <x-typography variant="body-small-regular" class="font-semibold">
-                            Untuk Prodi Lain
-                        </x-typography>
-                    </div>
-                    <div class="col-span-4">
-                        <x-form.input name="open_for_other" type="select" :options="[
-                            '' => 'Pilih Status',
-                            'ya' => 'Ya (Terbuka)',
-                            'tidak' => 'Tidak (Eksklusif)',
                         ]" />
                     </div>
                 </div>
@@ -339,6 +319,7 @@
                             'tidak' => 'Tidak (Reguler)',
                         ]" />
                     </div>
+                    
                 </div>
 
                 <div class="grid grid-cols-12 gap-5 items-center">
@@ -391,6 +372,20 @@
                             '' => 'Pilih Status',
                             'ya' => 'Ya (Program Minor)',
                             'tidak' => 'Tidak (Non-Minor)',
+                        ]" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-12 gap-5 items-center">
+                  <div class="col-span-2">
+                        <x-typography variant="body-small-regular" class="font-semibold">
+                            Untuk Prodi Lain
+                        </x-typography>
+                    </div>
+                    <div class="col-span-4">
+                        <x-form.input name="open_for_other" type="select" :options="[
+                            '' => 'Pilih Status',
+                            'ya' => 'Ya (Terbuka)',
+                            'tidak' => 'Tidak (Eksklusif)',
                         ]" />
                     </div>
                 </div>

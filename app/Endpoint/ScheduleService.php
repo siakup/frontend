@@ -22,12 +22,12 @@ class ScheduleService
 
     private function urlLecture()
     {
-      return config('endpoint.lecture.url') . '/api/lecture-preparation';
+      return config('endpoint.lecture.url') . '/api/lectures';
     }
 
     public function getCourseList($periode)
     {
-        return $this->url() . '/course/' . $periode;
+        return $this->url() . '/parent-institution-course/' . $periode;
     }
 
     public function getLectureList()

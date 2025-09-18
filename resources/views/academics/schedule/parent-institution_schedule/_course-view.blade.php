@@ -333,7 +333,7 @@
                       <x-table-cell>{{ $course->nama_matakuliah_id }}</x-table-cell>
                       <x-table-cell>{{ $course->id_jenis }}</x-table-cell>
                       <x-table-cell>{{ $course->sks }}</x-table-cell>
-                      <x-table-cell>{{ $course->curriculum_course->curriculum->nama_kurikulum }}</x-table-cell>
+                      <x-table-cell>{{ isset($course->curriculum_course) ? $course->curriculum_course->curriculum->nama_kurikulum : '-' }}</x-table-cell>
                       <x-table-cell>
                         <button type="button" href="" class="button button-outline !w-full" onclick="onSelectCourse(this)" data-course='@json($course)' id="">
                           Pilih Mata Kuliah Ini
