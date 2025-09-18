@@ -88,27 +88,27 @@
                     await new Promise(resolve => setTimeout(resolve, 1000));
                     console.log('Simulasi proses simpan selesai');
 
-                    // try {
-                    //     const res = await fetch('http://localhost:8005/api/courses', {
-                    //         method: 'POST',
-                    //         headers: {
-                    //             'Content-Type': 'application/json',
-                    //             'Accept': 'application/json',
-                    //             'X-CSRF-TOKEN': token
-                    //         },
-                    //         body: JSON.stringify(payload)
-                    //     });
-                    //
-                    //     if (!res.ok) throw new Error('Gagal menyimpan');
-                    //
-                    //     const data = await res.json();
-                    //     console.log('Berhasil:', data);
-                    //     alert('Mata kuliah berhasil ditambahkan!');
-                    //     window.location.href = '/subject';
-                    // } catch (error) {
-                    //     console.error(error);
-                    //     alert('Terjadi kesalahan: ' + error.message);
-                    // }
+                    try {
+                        const res = await fetch('/mata-kuliah/tambah', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': token
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                    
+                        if (!res.ok) throw new Error('Gagal menyimpan');
+                    
+                        const data = await res.json();
+                        console.log('Berhasil:', data);
+                        alert('Mata kuliah berhasil ditambahkan!');
+                        // window.location.href = '/subject';
+                    } catch (error) {
+                        console.error(error);
+                        alert('Terjadi kesalahan: ' + error.message);
+                    }
                 },
 
                 // Init function yang akan dijalankan ketika komponen dimuat
@@ -117,6 +117,27 @@
                 }
             }));
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+          const inputJenisMK = document.querySelector('select[name="course_type"]')
+          
+          inputJenisMK.addEventListener('input', () => {
+            const inputProgramStudi = document.querySelector('select[name="study_program"]');
+            if(inputJenisMK.value != "Mata Kuliah Program Studi") {
+              const fixOption = new Option("Universitas Pertamina", "1");
+              inputProgramStudi.add(fixOption);
+              inputProgramStudi.disabled = true;
+              inputProgramStudi.value = 1;
+            } else {
+              inputProgramStudi.disabled = false;
+              inputProgramStudi.value = "";
+              const deletedOption = inputProgramStudi.querySelectorAll('option[value="1"]');
+              if(deletedOption) {
+                Array.from(deletedOption).map(value => value.remove());
+              }
+            }
+          })
+        })
     </script>
 @endsection
 {{-- END --}}
@@ -245,11 +266,10 @@
                     <div class="col-span-4">
                         <x-form.input name="course_type" type="select" :options="[
                             '' => 'Pilih Jenis MK',
-                            'wajib' => 'Wajib Program Studi',
-                            'pilihan' => 'Pilihan Program Studi',
-                            'konsentrasi' => 'Wajib Konsentrasi',
-                            'umum' => 'Mata Kuliah Umum',
-                        ]" />
+                            
+                        ] + array_merge(...array_map(function ($jenis) {
+                              return [$jenis => $jenis];
+                            }, $jenis_mata_kuliah))" />
                     </div>
                     <div class="col-span-2">
                         <x-typography variant="body-small-regular" class="font-semibold">
@@ -276,8 +296,7 @@
                         <x-form.input name="study_program" type="select" placeholder="Pilih Program Studi"
                             :options="[
                                 '' => 'Pilih Program Studi',
-                                ...(array_column(json_decode(json_encode($programStudiList), true), 'nama', 'id'))
-                            ]" />
+                            ] + $programStudiList" />
 
                     </div>
                     <div class="col-span-2">

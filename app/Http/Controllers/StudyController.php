@@ -67,9 +67,9 @@ class StudyController extends Controller
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
     $programStudiList = $responseProgramStudiList->data;
+    $programStudiList = collect($programStudiList)->pluck('nama', 'id')->toArray();
 
-    // dd($programStudiList);
-
+    $jenis_mata_kuliah = config('static-data.jenis_mata_kuliah');
 
     return view('study.create', get_defined_vars());
   }
@@ -171,9 +171,51 @@ class StudyController extends Controller
     return redirect()->route('calendar.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
   }
 
-  public function store(Request $request, $id)
+  public function store(Request $request)
   {
-    return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
+    $validated = $request->validate([
+      'kode' => 'required',
+      'nama_id' => 'required',
+      'nama_en' => 'required',
+      'sks' => 'required',
+      'semester' => 'required',
+      'id_prodi' => 'required',
+      'tujuan' => 'required',
+      'deskripsi' => 'required',
+      'daftar_pustaka' => 'required',
+      'status' => 'required',
+    ]);
+
+    $mataKuliah = [
+        'kode_matakuliah' => $validated['kode'],
+        'nama_matakuliah_id' => $validated['nama_id'],
+        'nama_matakuliah_en' => $validated['nama_en'],
+        'nama_singkat' => $validated['short_name'],
+        'id_prodi' => $validated['id_prodi'],
+        'sks' => $validated['sks'],
+        'semester' => $validated['semester'],
+        'deskripsi' => $validated['deskripsi'],
+        'tujuan' => $validated['tujuan'],
+        'daftar_pustaka' => $validated['daftar_pustaka'],
+        'id_jenis' => $validated['course_type'],
+        'id_koordinator' => $validated['coordinator'],
+        'matakuliah_spesial' => $validated['special_course'],
+        'prodi_lain' => $validated['open_for_other'],
+        'matakuliah_wajib' => $validated['mandatory'],
+        'kampus_merdeka' => $validated['merdeka_campus'],
+        'matakuliah_capstone' => $validated['capstone'],
+        'matakuliah_kerja_praktik' => $validated['internship'],
+        'matakuliah_tugas_akhir' => $validated['final_assignment'],
+        'matakuliah_minor' => $validated['minor'],
+        'status' => $validated['status'] === 1 ? "active" : 'inactive',
+        'created_by' => $validated['created_by'],
+        'updated_by' => $validated['updated_by'] ?? $validated['created_by'],
+    ];
+      
+    $url = CourseService::getInstance()->url();
+    $response = postCurl($url, null, $mataKuliah);
+    
+    return $response;
   }
 
   public function send(Request $request, $id)
