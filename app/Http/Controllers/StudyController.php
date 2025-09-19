@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Endpoint\CourseService;
+use App\Endpoint\ScheduleService;
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\UserService;
 use App\Traits\ApiResponse;
@@ -62,6 +63,28 @@ class StudyController extends Controller
     ]);
   }
 
+  public function getMataKuliahList(Request $request) {
+    $search = $request->input('search');
+    $page = $request->input('page', 1);
+    $limit = $request->input('limit', 10);
+    $programStudi = $request->input('programStudi');
+    $sortBy = $request->input('sortBy');
+
+    $params = [
+      'search' => $search,
+      'page' => $page,
+      'limit' => $limit,
+      'programStudi' => $programStudi,
+      'sortBy' => $sortBy
+    ];
+
+    $url = CourseService::getInstance()->url();
+    $response = getCurl($url, $params, getHeaders());
+    $mataKuliahList = $response->data ?? [];
+
+    return $mataKuliahList;
+  }
+
   public function create(Request $request)
   {
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
@@ -71,8 +94,30 @@ class StudyController extends Controller
 
     $jenis_mata_kuliah = config('static-data.jenis_mata_kuliah');
 
+    $urlCoursePrerequisite = CourseService::getInstance()->prerequisiteCoursesBaseUrl();
+    $responseCoursePrerequisite = getCurl($urlCoursePrerequisite, null, getHeaders());
+    $coursePrerequisite = $responseCoursePrerequisite->data->mataKuliahPrasyarat;
+
+    $limit = $request->input('limit', 1000);
+    $page = $request->input('page', 1);
+    $search = $request->input('search', '');
+    $params = compact('limit', 'page', 'search');
+
+    $url = ScheduleService::getInstance()->getLectureList();
+    $response = getCurl($url, $params, getHeaders());
+    $pengajar = $response->data->data;
+    $pengajar = collect($pengajar)->pluck('nama', 'id_dosen')->toArray();
+
     return view('study.create', get_defined_vars());
   }
+
+  public function getCoursePrerequisiteList(Request $request) {
+    $urlCoursePrerequisite = CourseService::getInstance()->prerequisiteCoursesBaseUrl();
+    $responseCoursePrerequisite = getCurl($urlCoursePrerequisite, null, getHeaders());
+    $coursePrerequisite = $responseCoursePrerequisite->data->mataKuliahPrasyarat;
+
+    return $coursePrerequisite;
+  } 
 
   public function edit(Request $request, $id)
   {
@@ -177,13 +222,27 @@ class StudyController extends Controller
       'kode' => 'required',
       'nama_id' => 'required',
       'nama_en' => 'required',
+      'short_name' => 'required',
       'sks' => 'required',
       'semester' => 'required',
       'id_prodi' => 'required',
+      'course_type' => 'required',
+      'coordinator' => 'required',
+      'special_course' => 'required',
+      'open_for_other' => 'required',
+      'mandatory' => 'required',
+      'merdeka_campus' => 'required',
+      'capstone' => 'required',
+      'internship' => 'required',
+      'final_assignment' => 'required',
+      'minor' => 'required',
       'tujuan' => 'required',
       'deskripsi' => 'required',
       'daftar_pustaka' => 'required',
       'status' => 'required',
+      'selected_prerequisites' => 'array',
+      'selected_prerequisites.*.id' => 'required_with:selected_prerequisites.*',
+      'selected_prerequisites.*.type' => 'required_with:selected_prerequisites.*',
     ]);
 
     $mataKuliah = [
@@ -208,12 +267,11 @@ class StudyController extends Controller
         'matakuliah_tugas_akhir' => $validated['final_assignment'],
         'matakuliah_minor' => $validated['minor'],
         'status' => $validated['status'] === 1 ? "active" : 'inactive',
-        'created_by' => $validated['created_by'],
-        'updated_by' => $validated['updated_by'] ?? $validated['created_by'],
+        'prasyarat' => $validated['selected_prerequisites']
     ];
-      
+
     $url = CourseService::getInstance()->url();
-    $response = postCurl($url, null, $mataKuliah);
+    $response = postCurl($url, $mataKuliah, getHeaders());
     
     return $response;
   }

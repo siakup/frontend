@@ -38,7 +38,7 @@ class CourseService
 
     public function prerequisiteCoursesBaseUrl()
     {
-        return config('endpoint.lecture.url') . '/api/prerequisite-courses';
+        return config('endpoint.lecture.url') . '/api/prerequisiteCourses';
     }
 
     public function prerequisiteCourseDetailUrl($id)

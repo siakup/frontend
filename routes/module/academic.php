@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'mata-kuliah'], function () {
         Route::get('/', [StudyController::class, 'index'])->name('study.index');
         Route::get('/tambah', [StudyController::class, 'create'])->name('study.create');
+        Route::get('/tambah/get-matakuliah-prasyarat', [StudyController::class, 'getCoursePrerequisiteList'])->name('study.prerequisite-course');
         Route::post('/tambah', [StudyController::class, 'store'])->name('study.store');
         Route::delete('/study/{id}', [StudyController::class, 'delete'])->name('study.delete');
         Route::get('/edit/{id}', [StudyController::class, 'edit'])->name('study.edit');
