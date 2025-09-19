@@ -833,7 +833,6 @@ class ScheduleController extends Controller
       $url = ScheduleService::getInstance()->getCourseList($periode);
       $response = getCurl($url, $params, getHeaders());
       $mata_kuliah_list = $response->data->data;
-      
 
       $urlPeriode = PeriodAcademicService::getInstance()->periodeUrl($periode);
       $responsePeriode = getCurl($urlPeriode, null, getHeaders());
