@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Endpoint\ScheduleService;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Mail;
@@ -47,9 +48,8 @@ class StudyController extends Controller
     $response = getCurl($url, $params, getHeaders());
     $mataKuliahList = $response->data ?? [];
 
-
     $courses = [
-      'getmataKuliah' => $response->data ?? [],
+      'getmataKuliah' => $mataKuliahList ?? [],
       'getprogramStudiList' => $programStudiList ?? [],
     ];
 
@@ -69,6 +69,51 @@ class StudyController extends Controller
 
   public function edit(Request $request, $id)
   {
+    $search = $request->input('search');
+    $page = $request->input('page', 1);
+    $limit = $request->input('limit', 10);
+    $programStudi = $request->input('programStudi');
+    $sortBy = $request->input('sortBy');
+
+    $params = [
+      'search' => $search,
+      'page' => $page,
+      'limit' => $limit,
+      'programStudi' => $programStudi,
+      'sortBy' => $sortBy
+    ];
+
+    $urlMataKuliah = CourseService::getInstance()->url();
+    $responseMataKuliah = getCurl($urlMataKuliah, $params, getHeaders());
+    $mataKuliahList = $responseMataKuliah->data ?? [];
+
+    $urlProgramStudi = UserService::getInstance()->getListAllInstitution();
+    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+    $programStudiList = $responseProgramStudiList->data ?? [];
+
+    $mataKuliahUrl = CourseService::getInstance()->courseUrl($id);
+    $mataKuliahResponse = getCurl($mataKuliahUrl, null, getHeaders());
+    $mataKuliah = $mataKuliahResponse->data ?? [];
+
+    $dosenUrl = ScheduleService::getInstance()->getLectureList();
+    $responseDosen = getCurl($dosenUrl, null, getHeaders());
+    $dosenList = $responseDosen->data->data ?? [];
+
+    $jenisMataKuliah = config('static-data.jenis_mata_kuliah');
+
+    $addedPrasyarat = collect($mataKuliah->prasyarat ?? [])
+      ->values()
+      ->toArray();
+
+    $prasyaratMataKuliahList = $mataKuliahList;
+
+    $currentPage = $responseMataKuliah->pagination->current_page ?? 1;
+    $totalPages = $responseMataKuliah->pagination->total ?? 11;
+    $perPage = $responseMataKuliah->pagination->per_page ?? 10;
+    $lastPage = $responseMataKuliah->pagination->last_page ?? 2;
+
+//    dd($id, $mataKuliah, $responseMataKuliah, $mataKuliahList, $programStudiList);
+
     return view('study.edit', get_defined_vars());
   }
 
