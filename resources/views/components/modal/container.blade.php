@@ -27,7 +27,7 @@
     open() { this.show = true }
 }" x-on:keydown.escape="close()" x-on:open-modal.window="if ($event.detail.id === id) open()"
     x-on:close-modal.window="if ($event.detail.id === id) close()" {!! $id ? 'x-id="[\'' . $id . '\']"' : '' !!} class="fixed inset-0 z-50"
-    style="display: none" x-show="show" x-cloak>
+    style="display: none; z-index: 9999" x-show="show" x-cloak>
     <!-- Overlay -->
     <div x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
         x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
