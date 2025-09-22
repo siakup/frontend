@@ -16,6 +16,7 @@
         document.addEventListener('alpine:init', () => {
             Alpine.data('mataKuliahForm', () => ({
                 courses: [], // Untuk menyimpan data mata kuliah
+                selectedPrerequisites: [],
                 isLoading: false,
                 errorMessage: null,
 
@@ -25,7 +26,7 @@
                     this.errorMessage = null;
 
                     try {
-                        const url = `${window.LECTURER_API_URL}/courses`;
+                        const url = `{{route('study.prerequisite-course')}}`;
                         const res = await fetch(url, {
                             method: 'GET',
                             headers: {
@@ -71,44 +72,60 @@
                         kode: document.querySelector('[name="code"]').value,
                         nama_id: document.querySelector('[name="name"]').value,
                         nama_en: document.querySelector('[name="english_name"]').value,
+                        short_name: document.querySelector('[name="short_name"]').value,
                         sks: parseInt(document.querySelector('[name="credits"]').value || 0),
-                        semester: parseInt(document.querySelector('[name="semester"]').value ||
-                            0),
+                        semester: parseInt(document.querySelector('[name="semester"]').value || 0),
                         id_prodi: document.querySelector('[name="study_program"]').value,
+                        course_type: document.querySelector('[name="course_type"]').value,
+                        coordinator: document.querySelector('[name="coordinator"]').value,
+                        special_course: document.querySelector('[name="special_course"]').value,
+                        open_for_other: document.querySelector('[name="open_for_other"]').value,
+                        mandatory: document.querySelector('[name="mandatory"]').value,
+                        merdeka_campus: document.querySelector('[name="merdeka_campus"]').value,
+                        capstone: document.querySelector('[name="capstone"]').value,
+                        internship: document.querySelector('[name="internship"]').value,
+                        final_assignment: document.querySelector('[name="final_assignment"]').value,
+                        minor: document.querySelector('[name="minor"]').value,
                         tujuan: document.querySelector('[name="objective"]').value,
                         deskripsi: document.querySelector('[name="description"]').value,
                         daftar_pustaka: document.querySelector('[name="bibliography"]').value,
                         status: document.querySelector('[name="user_active"]').checked ? 1 : 0,
                         created_by: 1,
-                        updated_by: 1
+                        updated_by: 1,
+                        selected_prerequisites: this.selectedPrerequisites.map(selected => this.courses.find(course => course.kode == selected)),
                     };
 
                     console.log('Payload:', payload);
 
                     await new Promise(resolve => setTimeout(resolve, 1000));
                     console.log('Simulasi proses simpan selesai');
+                    console.log(this.selectedPrerequisites);
 
-                    // try {
-                    //     const res = await fetch('http://localhost:8005/api/courses', {
-                    //         method: 'POST',
-                    //         headers: {
-                    //             'Content-Type': 'application/json',
-                    //             'Accept': 'application/json',
-                    //             'X-CSRF-TOKEN': token
-                    //         },
-                    //         body: JSON.stringify(payload)
-                    //     });
-                    //
-                    //     if (!res.ok) throw new Error('Gagal menyimpan');
-                    //
-                    //     const data = await res.json();
-                    //     console.log('Berhasil:', data);
-                    //     alert('Mata kuliah berhasil ditambahkan!');
-                    //     window.location.href = '/subject';
-                    // } catch (error) {
-                    //     console.error(error);
-                    //     alert('Terjadi kesalahan: ' + error.message);
-                    // }
+                    try {
+                        const res = await fetch('/mata-kuliah/tambah', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Accept': 'application/json',
+                                'X-CSRF-TOKEN': token
+                            },
+                            body: JSON.stringify(payload)
+                        });
+                    
+                        if (!res.ok) throw new Error('Gagal menyimpan');
+                    
+                        const data = await res.json();
+                        console.log('Berhasil:', data);
+                        if(data.success) {
+                          alert('Mata kuliah berhasil ditambahkan!');
+                          window.location.href = "{{ route('study.index') }}";
+                        } else {
+                          throw new Error(data.message || "Gagal menambahkan mata kuliah")
+                        }
+                    } catch (error) {
+                        console.error(error);
+                        alert('Terjadi kesalahan: ' + error.message);
+                    }
                 },
 
                 // Init function yang akan dijalankan ketika komponen dimuat
@@ -117,13 +134,34 @@
                 }
             }));
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+          const inputJenisMK = document.querySelector('select[name="course_type"]')
+          
+          inputJenisMK.addEventListener('input', () => {
+            const inputProgramStudi = document.querySelector('select[name="study_program"]');
+            if(inputJenisMK.value != "Mata Kuliah Program Studi") {
+              const fixOption = new Option("Universitas Pertamina", "1");
+              inputProgramStudi.add(fixOption);
+              inputProgramStudi.disabled = true;
+              inputProgramStudi.value = 1;
+            } else {
+              inputProgramStudi.disabled = false;
+              inputProgramStudi.value = "";
+              const deletedOption = inputProgramStudi.querySelectorAll('option[value="1"]');
+              if(deletedOption) {
+                Array.from(deletedOption).map(value => value.remove());
+              }
+            }
+          })
+        })
     </script>
 @endsection
 {{-- END --}}
 
 
 @section('content')
-    <div class="px-5 flex flex-col gap-5">
+    <div x-data="mataKuliahForm" class="px-5 flex flex-col gap-5">
         <x-typography variant="heading-h6" bold class="">
             Tambah Mata Kuliah
         </x-typography>
@@ -132,26 +170,6 @@
 
             <div class="space-y-5">
                 <!-- Single column fields (2:10 ratio) -->
-                <div class="grid grid-cols-12 gap-5 items-center">
-                    <div class="col-span-2">
-                        <x-typography variant="body-small-regular" class="font-semibold">
-                            Program Studi
-                        </x-typography>
-                    </div>
-                    <div class="col-span-10">
-                        <x-form.input name="study_program" type="select" placeholder="Pilih Program Studi"
-                            :options="[
-                                '' => 'Pilih Program Studi',
-                                'ti' => 'Teknik Informatika',
-                                'si' => 'Sistem Informasi',
-                                'mi' => 'Manajemen Informatika',
-                                'tk' => 'Teknik Komputer',
-                                'if' => 'Informatika',
-                                'ti' => 'Teknik Industri',
-                            ]" />
-
-                    </div>
-                </div>
 
                 <div class="grid grid-cols-12 gap-5 items-center">
                     <div class="col-span-2">
@@ -265,11 +283,10 @@
                     <div class="col-span-4">
                         <x-form.input name="course_type" type="select" :options="[
                             '' => 'Pilih Jenis MK',
-                            'wajib' => 'Wajib Program Studi',
-                            'pilihan' => 'Pilihan Program Studi',
-                            'konsentrasi' => 'Wajib Konsentrasi',
-                            'umum' => 'Mata Kuliah Umum',
-                        ]" />
+                            
+                        ] + array_merge(...array_map(function ($jenis) {
+                              return [$jenis => $jenis];
+                            }, $jenis_mata_kuliah))" />
                     </div>
                     <div class="col-span-2">
                         <x-typography variant="body-small-regular" class="font-semibold">
@@ -279,15 +296,22 @@
                     <div class="col-span-4">
                         <x-form.input name="coordinator" type="select" :options="[
                             '' => 'Pilih Koordinator',
-                            'D001' => 'Prof. Dr. Ahmad Fauzi, M.Kom.',
-                            'D002' => 'Dr. Budi Santoso, S.Kom., M.T.',
-                            'D003' => 'Dr. Citra Dewi, S.Si., M.Sc.',
-                            'D004' => 'Diana Putri, S.Kom., M.Kom.',
-                        ]" />
+                        ] + $pengajar" />
                     </div>
                 </div>
-
                 <div class="grid grid-cols-12 gap-5 items-center">
+                  <div class="col-span-2">
+                        <x-typography variant="body-small-regular" class="font-semibold">
+                            Program Studi
+                        </x-typography>
+                    </div>
+                    <div class="col-span-4">
+                        <x-form.input name="study_program" type="select" placeholder="Pilih Program Studi"
+                            :options="[
+                                '' => 'Pilih Program Studi',
+                            ] + $programStudiList" />
+
+                    </div>
                     <div class="col-span-2">
                         <x-typography variant="body-small-regular" class="font-semibold">
                             MK Spesial
@@ -298,18 +322,6 @@
                             '' => 'Pilih Status',
                             'ya' => 'Ya (MK Khusus)',
                             'tidak' => 'Tidak (MK Reguler)',
-                        ]" />
-                    </div>
-                    <div class="col-span-2">
-                        <x-typography variant="body-small-regular" class="font-semibold">
-                            Untuk Prodi Lain
-                        </x-typography>
-                    </div>
-                    <div class="col-span-4">
-                        <x-form.input name="open_for_other" type="select" :options="[
-                            '' => 'Pilih Status',
-                            'ya' => 'Ya (Terbuka)',
-                            'tidak' => 'Tidak (Eksklusif)',
                         ]" />
                     </div>
                 </div>
@@ -339,6 +351,7 @@
                             'tidak' => 'Tidak (Reguler)',
                         ]" />
                     </div>
+                    
                 </div>
 
                 <div class="grid grid-cols-12 gap-5 items-center">
@@ -394,6 +407,20 @@
                         ]" />
                     </div>
                 </div>
+                <div class="grid grid-cols-12 gap-5 items-center">
+                  <div class="col-span-2">
+                        <x-typography variant="body-small-regular" class="font-semibold">
+                            Untuk Prodi Lain
+                        </x-typography>
+                    </div>
+                    <div class="col-span-4">
+                        <x-form.input name="open_for_other" type="select" :options="[
+                            '' => 'Pilih Status',
+                            'ya' => 'Ya (Terbuka)',
+                            'tidak' => 'Tidak (Eksklusif)',
+                        ]" />
+                    </div>
+                </div>
 
                 <div class="grid grid-cols-12 gap-5 items-center">
                     <div class="col-span-2">
@@ -439,44 +466,38 @@
                         <x-table-header>Aksi</x-table-header>
                     </x-table-row>
                 </x-table-head>
-
-                @php
-                    $addedPrasyarat = $addedPrasyarat ?? [];
-                @endphp
-
-                <x-table-body x-data="{ showDeleteConfirmation: false, item: null }">
-                    @if (count($addedPrasyarat) > 0)
-                        @foreach ($addedPrasyarat as $matkul)
-                            <x-table-row :odd="$loop->odd" :last="$loop->last">
-                                <x-table-cell>{{ $matkul['kode'] }}</x-table-cell>
-                                <x-table-cell>{{ $matkul['nama'] }}</x-table-cell>
-                                <x-table-cell>{{ $matkul['tipe'] }}</x-table-cell>
-                                <x-table-cell>
-                                    <div class="flex gap-3 justify-center">
-                                        <a href="{{ route('subject.edit') }}" class="">
-                                            <x-button.action type="edit" label="Edit" />
-                                        </a>
-                                        <x-button.action type="delete" label="Hapus"
-                                            x-on:click="
-                            $dispatch('open-modal', {
-                                id: 'delete-confirmation',
-                                detail: {
-                                    id: '{{ $matkul['kode'] }}',
-                                    name: '{{ $matkul['nama'] }}'
-                                }
-                            });
-                        " />
-                                    </div>
-                                </x-table-cell>
-                            </x-table-row>
-                        @endforeach
-                    @else
-                        <x-table-row>
-                            <x-table-cell colspan="6" class="text-center py-4">
-                                Tidak ada data prasyarat yang ditambahkan
+      
+                <x-table-body>
+                  <template x-if="!isLoading && selectedPrerequisites.length > 0">
+                    <template x-for="(item, index) in selectedPrerequisites" :key="index">
+                        <x-table-row x-data="{ course: courses.find(value => value.kode == item) }">
+                            <x-table-cell x-text="course.kode"></x-table-cell>
+                            <x-table-cell x-text="course.nama_id"></x-table-cell>
+                            <x-table-cell x-text="course.type"></x-table-cell>
+                            <x-table-cell>
+                              <div class="flex items-center justify-center gap-3">
+                                <button class="btn-icon btn-edit-periode-academic flex items-center" title="Ubah"
+                                    style="text-decoration: none; color: inherit;" x-on:click="$dispatch('open-modal', {id: 'edit-prasyarat-modal', kode: course.kode})">
+                                    <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
+                                    <span style="color: #E62129">Ubah</span>
+                                </button>
+                                <button type="button" class="btn-icon btn-delete flex items-center" title="Hapus" @click="selectedPrerequisites.splice(index, 1)">
+                                    <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
+                                    <span class="text-[#8C8C8C]">Hapus</span>
+                                </button>
+                              </div>
                             </x-table-cell>
                         </x-table-row>
-                    @endif
+                    </template>
+                </template>
+
+                <template x-if="!isLoading && selectedPrerequisites.length === 0">
+                    <x-table-row>
+                        <x-table-cell colspan="7" class="text-center py-4">
+                            Tidak ada data prasyarat yang ditambahkan
+                        </x-table-cell>
+                    </x-table-row>
+                </template>
                 </x-table-body>
             </x-table>
         </x-container>
@@ -495,12 +516,7 @@
                 </div>
             </x-container>
         </div>
-
-    </div>
-@endsection
-
-@section('modals')
-    <div x-data class="text-gray-800">
+<div class="text-gray-800">
         <!-- Modal Konfirmasi Batal -->
         <x-modal.confirmation id="cancel-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan"
             cancelText="Kembali">
@@ -508,16 +524,16 @@
 
             <div
                 x-on:confirmed.window="
-            // Aksi ketika konfirmasi batal diklik
-            console.log('Perubahan dibatalkan');
-            // Redirect atau reset form bisa dilakukan di sini
-            window.location.href = '/'; // Contoh redirect ke home
-        ">
+                    // Aksi ketika konfirmasi batal diklik
+                    console.log('Perubahan dibatalkan');
+                    // Redirect atau reset form bisa dilakukan di sini
+                    window.location.href = '/'; // Contoh redirect ke home
+                ">
             </div>
         </x-modal.confirmation>
 
         <!-- Modal Konfirmasi Simpan -->
-        <div class="" x-data="mataKuliahForm" @on-submit.window="await submitForm()">
+        <div class="" @on-submit.window="await submitForm()">
             <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
                 cancelText="Cek Kembali">
                 <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
@@ -543,7 +559,7 @@
         </x-modal.confirmation>
 
         {{-- MODAL TAMBAH PRASYARAT --}}
-        <x-modal.container x-data='mataKuliahForm' id="prasyarat-modal" maxWidth="7xl"
+        <x-modal.container id="prasyarat-modal" maxWidth="7xl"
             x-on:open-modal.window="if ($event.detail.id === 'tambah-prasyarat-modal') { show = true }">
             <x-slot name="header">
                 <div class="w-full relative">
@@ -595,18 +611,26 @@
                                     <x-table-row>
                                         <x-table-cell>
                                             <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
-                                                x-bind:name="'selected[' + index + ']'" x-bind:value="item.kode">
+                                                x-bind:name="'selected[' + index + ']'"
+                                                x-bind:value="item.kode" 
+                                                x-model="selectedPrerequisites">
                                         </x-table-cell>
                                         <x-table-cell x-text="item.kode"></x-table-cell>
                                         <x-table-cell x-text="item.nama_id"></x-table-cell>
                                         <x-table-cell x-text="item.sks"></x-table-cell>
                                         <x-table-cell x-text="item.semester"></x-table-cell>
-                                        <x-table-cell x-text="item.jenis"></x-table-cell>
+                                        <x-table-cell x-text="item.id_jenis"></x-table-cell>
                                         <x-table-cell>
-                                            <span x-text="item.status === 'active' ? 'Aktif' : 'Nonaktif'"
-                                                :class="{ 'text-green-500': item.status === 'active', 'text-red-500': item
-                                                        .status !== 'active' }">
-                                            </span>
+                                            <x-form.input 
+                                              name="" 
+                                              type="select" 
+                                              :options="[
+                                                '' => 'Pilih Status',
+                                                'Pre-Requisite' => 'Pre-Requisite',
+                                                'Co-Requisite' => 'Co-Requisite',
+                                              ]" 
+                                              x-model="courses[index].type"
+                                            />
                                         </x-table-cell>
                                     </x-table-row>
                                 </template>
@@ -632,5 +656,108 @@
                 </div>
             </x-slot>
         </x-modal.container>
+
+        {{-- MODAL EDIT PRASYARAT --}}
+        <x-modal.container id="edit-prasyarat-modal" maxWidth="7xl"
+            x-data="{ show: false, kode: null }"
+            x-on:open-modal.window="if ($event.detail.id === 'edit-prasyarat-modal' && $event.detail.kode) { show = true; kode = $event.detail.kode }">
+            <x-slot name="header">
+                <div class="w-full relative">
+                    <x-typography variant="heading-h5" class="w-full inline-block text-center text-gray-800">
+                        Edit Mata Kuliah Prasyarat
+                    </x-typography>
+                    <button x-on:click.stop="close()"
+                        class="text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0">
+                        <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="w-[32px] h-[32px]" />
+                    </button>
+                </div>
+            </x-slot>
+
+            <div class="p-4">
+                <!-- Konten modal -->
+                <div>
+                    <x-table>
+                        <x-table-head>
+                            <x-table-row>
+                                <x-table-header></x-table-header>
+                                <x-table-header>Kode Mata Kuliah</x-table-header>
+                                <x-table-header>Nama Mata Kuliah</x-table-header>
+                                <x-table-header>SKS</x-table-header>
+                                <x-table-header>Semester</x-table-header>
+                                <x-table-header>Jenis Mata Kuliah</x-table-header>
+                                <x-table-header>Tipe Prasyarat</x-table-header>
+                            </x-table-row>
+                        </x-table-head>
+
+                        <x-table-body>
+                            <template x-if="isLoading">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4">
+                                        Memuat data...
+                                    </x-table-cell>
+                                </x-table-row>
+                            </template>
+
+                            <template x-if="errorMessage">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4 text-red-500"
+                                        x-text="errorMessage">
+                                    </x-table-cell>
+                                </x-table-row>
+                            </template>
+
+                            <template x-if="!isLoading && courses.length > 0">
+                                <template x-for="(item, index) in courses" :key="item.id">
+                                  <template x-if="item.kode == kode">
+                                    <x-table-row>
+                                        <x-table-cell>
+                                            <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
+                                                x-bind:name="'selected[' + index + ']'"
+                                                x-bind:value="item.kode" 
+                                                x-model="selectedPrerequisites">
+                                        </x-table-cell>
+                                        <x-table-cell x-text="item.kode"></x-table-cell>
+                                        <x-table-cell x-text="item.nama_id"></x-table-cell>
+                                        <x-table-cell x-text="item.sks"></x-table-cell>
+                                        <x-table-cell x-text="item.semester"></x-table-cell>
+                                        <x-table-cell x-text="item.id_jenis"></x-table-cell>
+                                        <x-table-cell>
+                                            <x-form.input 
+                                              name="" 
+                                              type="select" 
+                                              :options="[
+                                                '' => 'Pilih Status',
+                                                'Pre-Requisite' => 'Pre-Requisite',
+                                                'Co-Requisite' => 'Co-Requisite',
+                                              ]" 
+                                              x-model="courses[index].type"
+                                            />
+                                        </x-table-cell>
+                                    </x-table-row>
+                                  </template>
+                                </template>
+                            </template>
+
+                            <template x-if="!isLoading && courses.length === 0">
+                                <x-table-row>
+                                    <x-table-cell colspan="7" class="text-center py-4">
+                                        Tidak ada data mata kuliah
+                                    </x-table-cell>
+                                </x-table-row>
+                            </template>
+                        </x-table-body>
+                    </x-table>
+                </div>
+            </div>
+
+            <x-slot name="footer">
+                <div class="flex justify-center gap-4 w-full">
+                    {{-- TODO: Pagination --}}
+                    <x-button.secondary label="Batal" x-on:click.stop="close()" />
+                    <x-button.primary label="Simpan" x-on:click.stop="close()" />
+                </div>
+            </x-slot>
+        </x-modal.container>
+    </div>
     </div>
 @endsection

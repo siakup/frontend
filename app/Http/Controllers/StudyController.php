@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Endpoint\CourseService;
+use App\Endpoint\ScheduleService;
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\UserService;
 use App\Traits\ApiResponse;
@@ -62,10 +63,61 @@ class StudyController extends Controller
     ]);
   }
 
+  public function getMataKuliahList(Request $request) {
+    $search = $request->input('search');
+    $page = $request->input('page', 1);
+    $limit = $request->input('limit', 10);
+    $programStudi = $request->input('programStudi');
+    $sortBy = $request->input('sortBy');
+
+    $params = [
+      'search' => $search,
+      'page' => $page,
+      'limit' => $limit,
+      'programStudi' => $programStudi,
+      'sortBy' => $sortBy
+    ];
+
+    $url = CourseService::getInstance()->url();
+    $response = getCurl($url, $params, getHeaders());
+    $mataKuliahList = $response->data ?? [];
+
+    return $mataKuliahList;
+  }
+
   public function create(Request $request)
   {
+    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+    $programStudiList = $responseProgramStudiList->data;
+    $programStudiList = collect($programStudiList)->pluck('nama', 'id')->toArray();
+
+    $jenis_mata_kuliah = config('static-data.jenis_mata_kuliah');
+
+    $urlCoursePrerequisite = CourseService::getInstance()->prerequisiteCoursesBaseUrl();
+    $responseCoursePrerequisite = getCurl($urlCoursePrerequisite, null, getHeaders());
+    $coursePrerequisite = $responseCoursePrerequisite->data->mataKuliahPrasyarat;
+
+    $limit = $request->input('limit', 1000);
+    $page = $request->input('page', 1);
+    $search = $request->input('search', '');
+    $params = compact('limit', 'page', 'search');
+
+    $url = ScheduleService::getInstance()->getLectureList();
+    $response = getCurl($url, $params, getHeaders());
+    $pengajar = $response->data->data;
+    $pengajar = collect($pengajar)->pluck('nama', 'id_dosen')->toArray();
+
     return view('study.create', get_defined_vars());
   }
+
+  public function getCoursePrerequisiteList(Request $request) {
+    $urlCoursePrerequisite = CourseService::getInstance()->prerequisiteCoursesBaseUrl();
+    $responseCoursePrerequisite = getCurl($urlCoursePrerequisite, null, getHeaders());
+    $coursePrerequisite = $responseCoursePrerequisite->data->mataKuliahPrasyarat;
+
+    return $coursePrerequisite;
+  } 
 
   public function edit(Request $request, $id)
   {
@@ -209,9 +261,64 @@ class StudyController extends Controller
     return redirect()->route('calendar.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
   }
 
-  public function store(Request $request, $id)
+  public function store(Request $request)
   {
-    return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
+    $validated = $request->validate([
+      'kode' => 'required',
+      'nama_id' => 'required',
+      'nama_en' => 'required',
+      'short_name' => 'required',
+      'sks' => 'required',
+      'semester' => 'required',
+      'id_prodi' => 'required',
+      'course_type' => 'required',
+      'coordinator' => 'required',
+      'special_course' => 'required',
+      'open_for_other' => 'required',
+      'mandatory' => 'required',
+      'merdeka_campus' => 'required',
+      'capstone' => 'required',
+      'internship' => 'required',
+      'final_assignment' => 'required',
+      'minor' => 'required',
+      'tujuan' => 'required',
+      'deskripsi' => 'required',
+      'daftar_pustaka' => 'required',
+      'status' => 'required',
+      'selected_prerequisites' => 'array',
+      'selected_prerequisites.*.id' => 'required_with:selected_prerequisites.*',
+      'selected_prerequisites.*.type' => 'required_with:selected_prerequisites.*',
+    ]);
+
+    $mataKuliah = [
+        'kode_matakuliah' => $validated['kode'],
+        'nama_matakuliah_id' => $validated['nama_id'],
+        'nama_matakuliah_en' => $validated['nama_en'],
+        'nama_singkat' => $validated['short_name'],
+        'id_prodi' => $validated['id_prodi'],
+        'sks' => $validated['sks'],
+        'semester' => $validated['semester'],
+        'deskripsi' => $validated['deskripsi'],
+        'tujuan' => $validated['tujuan'],
+        'daftar_pustaka' => $validated['daftar_pustaka'],
+        'id_jenis' => $validated['course_type'],
+        'id_koordinator' => $validated['coordinator'],
+        'matakuliah_spesial' => $validated['special_course'],
+        'prodi_lain' => $validated['open_for_other'],
+        'matakuliah_wajib' => $validated['mandatory'],
+        'kampus_merdeka' => $validated['merdeka_campus'],
+        'matakuliah_capstone' => $validated['capstone'],
+        'matakuliah_kerja_praktik' => $validated['internship'],
+        'matakuliah_tugas_akhir' => $validated['final_assignment'],
+        'matakuliah_minor' => $validated['minor'],
+        'status' => $validated['status'] === 1 ? "active" : 'inactive',
+        'prasyarat' => $validated['selected_prerequisites']
+    ];
+
+    $url = CourseService::getInstance()->url();
+    $response = postCurl($url, $mataKuliah, getHeaders());
+    
+    return $response;
   }
 
   public function send(Request $request, $id)
