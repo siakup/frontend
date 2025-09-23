@@ -372,26 +372,6 @@ class CurriculumController extends Controller
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
     $programStudiList = $responseProgramStudiList->data;
-    $programStudiList = [
-      (object)[
-        'id' => 3,
-        'ids_role' => '[2, 3, 4]',
-        'kode_institusi' => '011',
-        'nama' => 'Teknik Kimia',
-        'nama_en' => 'Chemical Engineering',
-        'created_at' => '2025-08-20T08:18:04.456359Z',
-        'updated_ad' => null,
-      ],
-      (object)[
-        'id' => 4,
-        'ids_role' => '[2, 3, 4]',
-        'kode_institusi' => '012',
-        'nama' => 'Teknik Mesin',
-        'nama_en' => 'Mechanical Engineering',
-        'created_at' => '2025-08-20T09:18:04.456359Z',
-        'updated_ad' => null,
-      ],
-    ];
     $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
 
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
@@ -496,10 +476,8 @@ class CurriculumController extends Controller
 
   public function createCurriculumEquivalence(Request $request, $prodi, $programPerkuliahan)
   {
-    return view('curriculums.equivalence.create', [
-      'prodi' => $prodi,
-      'programPerkuliahan' => $programPerkuliahan,
-    ]);
+      $jenisMataKuliah = config('static-data.jenis_mata_kuliah');
+    return view('curriculums.equivalence.create', get_defined_vars());
   }
 
   public function editCurriculumEquivalence(Request $request, $id)

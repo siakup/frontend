@@ -406,6 +406,8 @@
 
             <div class="p-4 text-gray-800 flex flex-col gap-5">
                 <!-- Konten modal -->
+
+{{--                TODO: Filter belum jalan--}}
                 <div class="grid grid-cols-12 gap-5 items-center">
                     <div class="col-span-2">
                         <x-typography variant="body-small-regular" class="font-semibold">
@@ -413,12 +415,12 @@
                         </x-typography>
                     </div>
                     <div class="col-span-10">
-                        <select x-model="jenisFilter" class="w-full border rounded px-3 py-2">
-                            <option value="">Pilih Jenis Mata Kuliah</option>
-                            <template x-for="opt in jenisOptions" :key="opt">
-                                <option :value="opt" x-text="opt"></option>
-                            </template>
-                        </select>
+                        <x-form.input name="course_type" type="select" :options="[
+                            '' => 'Pilih Jenis MK',
+
+                        ] + array_merge(...array_map(function ($jenis) {
+                              return [$jenis => $jenis];
+                            }, $jenisMataKuliah))" />
                     </div>
                 </div>
 
@@ -436,7 +438,7 @@
 
                 <div class="w-full flex justify-end gap-5">
                     <x-button.secondary label="Batal" x-on:click="" />
-                    <x-button.primary label="Cari" x-on:click="currentPage = 1; applyFiltersAndPagination()" />
+                    <x-button.primary type="submit" label="Cari" x-on:click="currentPage = 1; applyFiltersAndPagination()" />
                 </div>
 
                 <div>

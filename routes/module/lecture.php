@@ -7,7 +7,7 @@ use App\Http\Controllers\CurriculumController;
 use App\Http\Controllers\StudyController;
 use App\Http\Controllers\CplMapping;
 
-// Route::group(['middleware' => ['auth']], function () {
+ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'lectures'], function () {
         Route::get('/', [LectureController::class, 'index'])->name('lectures.index');
     });
@@ -40,6 +40,7 @@ use App\Http\Controllers\CplMapping;
         });
         Route::get('/structure/required', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
         Route::get('/structure/optional', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
+
         Route::get('/equivalence', [CurriculumController::class, 'curriculumEquivalence'])->name('curriculum.equivalence');
         Route::get(
             '/equivalence/add/{prodi}/{programPerkuliahan}',
@@ -62,4 +63,4 @@ use App\Http\Controllers\CplMapping;
         Route::post('/save-upload', [CplMapping::class, 'uploadStore'])->name('cpl-mapping.save-upload');
         Route::get('/template', [CplMapping::class, 'cplDownloadTemplate'])->name('cpl-mapping.template');
     });
-// });
+ });
