@@ -12,9 +12,6 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-
-
-
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\PeriodAcademicService;
 use App\Endpoint\ScheduleService;
