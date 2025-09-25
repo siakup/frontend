@@ -89,4 +89,9 @@ class UserService
     {
         return $this->url() . 'institutions/list-by-user';
     }
+
+    public function getListLecturer()
+    {
+        return $this->url() . 'lecturers/';
+    }
 }

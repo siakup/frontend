@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Jadwal Kuliah Program Studi')
+@section('title', 'Jadwal Kuliah Institusi Parent')
 
 @section('breadcrumbs')
     <div class="breadcrumb-item">Beranda</div>
