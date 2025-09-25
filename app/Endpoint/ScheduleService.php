@@ -20,6 +20,8 @@ class ScheduleService
         return config('endpoint.lecture.url') . '/api/schedule-preparation';
     }
 
+    
+
     private function urlLecture()
     {
       return config('endpoint.lecture.url') . '/api/lecture-preparation';
@@ -44,5 +46,4 @@ class ScheduleService
     {
       return $this->url() . '/';
     }
-    
 }

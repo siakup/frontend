@@ -325,8 +325,7 @@ class ScheduleController extends Controller
 
     public function show($id)
     {
-        // TODO: ganti ke service asli kamu
-        // Contoh mock agar front-end langsung jalan
+        // TODO: ganti ke service asli 
         $data = [
             'id' => (int)$id,
             'periode' => '2025–Ganjil',
@@ -491,7 +490,6 @@ class ScheduleController extends Controller
         foreach ($rows as $index => $row) {
             $row = array_map('trim', $row);
 
-            // Skip kalau jumlah kolom tidak sesuai (harus 3)
             if (count($row) < 3) {
                 continue;
             }
