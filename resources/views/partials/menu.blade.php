@@ -156,6 +156,15 @@
                 </a>
             </li>
             <li class="menu-item">
+                <a href="{{ route('tutelage-group.index') }}"
+                    class="menu-link {{ Request::is('tutelage-group*') ? 'active' : '' }}">
+                    <div class="menu-content">
+                        <img src="{{ asset('assets/icon-two-people.svg') }}" alt="Staff Icon" class="menu-icon">
+                        <span>Kelompok Perwalian</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu-item">
                 <a href="/home" class="menu-link">
                     <div class="menu-content">
                         <img src="{{ asset('assets/base/icon-masukan-komplain.svg') }}" alt="Research Icon"

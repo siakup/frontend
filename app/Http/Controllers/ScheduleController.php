@@ -28,6 +28,7 @@ class ScheduleController extends Controller
 
     $urlSchedule = ScheduleService::getInstance()->getSchedule();
     $responseSchedule = getCurl($urlSchedule, null, getHeaders());
+    
     $data = $responseSchedule->data;
 
     $rows = collect($data)->map(function ($item) {
@@ -199,8 +200,103 @@ class ScheduleController extends Controller
         'message' => 'Terjadi kesalahan saat mengambil data ruangan.',
         'data'    => [],
       ], 500);
+
     }
   }
+
+public function update(Request $r,$id) { /* TODO: call API update */ }
+
+public function importFet1(Request $r) {
+return view('academics.schedule.prodi_schedule.upload', get_defined_vars());
+}
+
+public function parentInstitutionIndex(Request $request) {
+$urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+$responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+$programStudiList = $responseProgramStudiList->data;
+$program_studi = $request->input('study_program', $programStudiList ? $programStudiList[0]->id : null);
+
+$urlPeran = UserService::getInstance()->getListAllRoles();
+$responsePeranList = getCurl($urlPeran, null, getHeaders());
+$peranList = $responsePeranList->data;
+$peran = $request->input('role', $peranList ? $peranList[0]->id : null);
+
+$sort = $request->input('sort', 'created_at,desc');
+
+$data = [
+[
+  'id' => 1,
+  'mata_kuliah' => 'Bahasa Indonesia',
+  'nama_kelas' => 'Bahasa Indonesia I-CE1-2024',
+  'kapasitas' => 50,
+  'jadwal' => [
+    [
+      'hari' => 'Selasa',
+      'jam_mulai' => '13.00',
+      'jam_selesai' => '14.40',
+      'ruangan' => 2201
+    ]
+  ],
+  'pengajar' => ['Acep Iwan Saidi']
+],
+[
+  'id' => 2,
+  'mata_kuliah' => 'Bahasa Inggris I',
+  'nama_kelas' => 'Bahasa Inggris I-CE1-2024',
+  'kapasitas' => 50,
+  'jadwal' => [
+    [
+      'hari' => 'Selasa',
+      'jam_mulai' => '11.30',
+      'jam_selesai' => '12.30',
+      'ruangan' => 2801
+    ],
+    [
+      'hari' => 'Rabu',
+      'jam_mulai' => '08.00',
+      'jam_selesai' => '09.40',
+      'ruangan' => 2801
+    ]
+  ],
+  'pengajar' => ['Rinaldi Medali', 'Rachman']
+],
+[
+  'id' => 3,
+  'mata_kuliah' => 'Berpikir Kritis',
+  'nama_kelas' => 'Berpikir Kritis-CE1A-2024',
+  'kapasitas' => 70,
+  'jadwal' => [
+    [
+      'hari' => 'Kamis',
+      'jam_mulai' => '09.00',
+      'jam_selesai' => '10.40',
+      'ruangan' => 2201
+    ]
+  ],
+  'pengajar' => ['Alfina Permata Sari']
+]
+];
+
+return view('academics.schedule.parent-institution_schedule.index', get_defined_vars());
+}
+
+public function parentInstitutionCreate(Request $request)
+{
+$urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
+$responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
+$programPerkuliahanList = $responseProgramPerkuliahanList->data;
+
+$urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+$responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+$programStudiList = $responseProgramStudiList->data;
+
+$urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+$responsePeriode = getCurl($urlPeriode, null, getHeaders());
+$periodeList = $responsePeriode->data;
+
+return view('academics.schedule.parent-institution_schedule.create', get_defined_vars());
+}
+
 
   public function show($id)
   {
@@ -421,7 +517,7 @@ class ScheduleController extends Controller
     //   return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
     // }
 
-    return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
+    // return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
   }
 
   public function store(Request $request)
@@ -579,103 +675,6 @@ class ScheduleController extends Controller
       ]
     ];
     return view('academics.schedule.prodi_schedule.edit', get_defined_vars());
-  }
-
-  public function update(Request $r, $id)
-  { /* TODO: call API update */
-  }
-
-  public function importFet1(Request $r)
-  {
-    return view('academics.schedule.prodi_schedule.upload', get_defined_vars());
-  }
-
-  public function parentInstitutionIndex(Request $request)
-  {
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
-    $program_studi = $request->input('study_program', $programStudiList ? $programStudiList[0]->id : null);
-
-    $urlPeran = UserService::getInstance()->getListAllRoles();
-    $responsePeranList = getCurl($urlPeran, null, getHeaders());
-    $peranList = $responsePeranList->data;
-    $peran = $request->input('role', $peranList ? $peranList[0]->id : null);
-
-    $sort = $request->input('sort', 'created_at,desc');
-
-    $data = [
-      [
-        'id' => 4,
-        'mata_kuliah' => 'Bahasa Indonesia',
-        'nama_kelas' => 'Bahasa Indonesia I-CE1-2024',
-        'kapasitas' => 50,
-        'jadwal' => [
-          [
-            'hari' => 'Selasa',
-            'jam_mulai' => '13.00',
-            'jam_selesai' => '14.40',
-            'ruangan' => 2201
-          ]
-        ],
-        'pengajar' => ['Acep Iwan Saidi']
-      ],
-      [
-        'id' => 2,
-        'mata_kuliah' => 'Bahasa Inggris I',
-        'nama_kelas' => 'Bahasa Inggris I-CE1-2024',
-        'kapasitas' => 50,
-        'jadwal' => [
-          [
-            'hari' => 'Selasa',
-            'jam_mulai' => '11.30',
-            'jam_selesai' => '12.30',
-            'ruangan' => 2801
-          ],
-          [
-            'hari' => 'Rabu',
-            'jam_mulai' => '08.00',
-            'jam_selesai' => '09.40',
-            'ruangan' => 2801
-          ]
-        ],
-        'pengajar' => ['Rinaldi Medali', 'Rachman']
-      ],
-      [
-        'id' => 3,
-        'mata_kuliah' => 'Berpikir Kritis',
-        'nama_kelas' => 'Berpikir Kritis-CE1A-2024',
-        'kapasitas' => 70,
-        'jadwal' => [
-          [
-            'hari' => 'Kamis',
-            'jam_mulai' => '09.00',
-            'jam_selesai' => '10.40',
-            'ruangan' => 2201
-          ]
-        ],
-        'pengajar' => ['Alfina Permata Sari']
-      ]
-    ];
-
-    return view('academics.schedule.parent-institution_schedule.index', get_defined_vars());
-  }
-
-  public function parentInstitutionCreate(Request $request)
-  {
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
-
-    $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
-    $responsePeriode = getCurl($urlPeriode, null, getHeaders());
-    $periodeList = $responsePeriode->data;
-
-    return view('academics.schedule.parent-institution_schedule.create', get_defined_vars());
   }
 
   public function parentInstitutionStore(Request $request)
@@ -1026,6 +1025,6 @@ class ScheduleController extends Controller
     //   return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
     // }
 
-    return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
+    // return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
   }
 }

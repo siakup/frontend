@@ -282,7 +282,24 @@ class Menu
                   'isExpandable' => false
                 ]
               ]
-            ]
+            ],
+            'tutelage-group-student-list' => [
+                'name' => 'Kelompok Perwalian',
+                'url' => '/tutelage-group/student-list',
+                'parent' => 'tutelage-group.index',
+                'isExpandable' => true,
+                'children' => [
+                    'tutelage-group' => [
+                        'name' => 'Detail Kartu Mahasiswa',
+                        'url' => '/tutelage-group/student-list/detail/krs/*',
+                        'parent' => 'tutelage-group.student-list.detail-krs',
+                        'isExpandable' => true,
+                        'children' => [
+                            
+                        ]
+                    ],
+                ]
+            ],
         ];
     }
 

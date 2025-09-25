@@ -15,6 +15,11 @@ class ScheduleService
     return self::$instance;
   }
 
+    private function urlLecture()
+    {
+      return config('endpoint.lecture.url') . '/api/lecture-preparation';
+    }
+
   private function url()
   {
     return config('endpoint.lecture.url') . '/api/schedule-preparation';

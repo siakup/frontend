@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Endpoint\CourseService;
-use App\Endpoint\ScheduleService;
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\UserService;
 use App\Traits\ApiResponse;
