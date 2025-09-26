@@ -353,4 +353,22 @@ class CalendarController extends Controller
       }
     }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
   }
+
+
+    public function generate(){
+        // Data dummy untuk periode sebelumnya
+        $dataSebelumnya = [
+            ['indikator' => 'Jumlah mahasiswa periode sebelumnya', 'nilai' => '60'],
+            ['indikator' => 'Jumlah mahasiswa lulus / DO / mengundurkan diri / transfer periode sebelumnya', 'nilai' => '120'],
+        ];
+
+        // Data dummy untuk periode aktif
+        $dataAktif = [
+            ['indikator' => 'Jumlah mahasiswa lama periode ini', 'nilai' => '7'],
+            ['indikator' => 'Jumlah mahasiswa baru', 'nilai' => '20'],
+            ['indikator' => 'Jumlah mahasiswa dengan riwayat akademik', 'nilai' => '7'],
+        ];
+
+        return view('academics.calendar.generate', get_defined_vars());
+    }
 }
