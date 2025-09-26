@@ -131,12 +131,8 @@ document.addEventListener('DOMContentLoaded', function () {
         @include('partials.dropdown-filter', [
             'buttonId' => 'sortButtonCampus',
             'dropdownId' => 'sortCampus',
-            'dropdownItem' => [
-                'Reguler' => '1',
-                'Double Degree' => '2',
-                'International' => '3',
-            ],
-            'label' =>  'Reguler',
+            'dropdownItem' => $programPerkuliahanList,
+            'label' =>  $programPerkuliahanList[$id_program] ?? 'Semua Program',
             'url' => route('academics.schedule.prodi-schedule.index'),
             'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
             'dropdownClass' => '!top-[27%] !left-[20.5%]',
@@ -150,12 +146,9 @@ document.addEventListener('DOMContentLoaded', function () {
         @include('partials.dropdown-filter', [
             'buttonId' => 'sortButtonStudy',
             'dropdownId' => 'sortStudy',
-            'dropdownItem' => [
-                'Kimia' => '1',
-                'Teknik Kimia' => '2',
-                'Teknik Perminyakan' => '3',
-            ],
-            'label' =>  'Kimia',
+            'dropdownItem' => $programStudiList,
+            
+            'label' =>  $programStudiList[$id_prodi] ?? 'Semua Prodi',
             'url' => route('academics.schedule.prodi-schedule.index'),
             'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
             'dropdownClass' => '!top-[27%] !left-[43.7%]',
@@ -263,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <span>Lihat</span>
                     </a>
 
-                    <a class="btn-icon btn-edit-periode-academic" title="Ubah" href=""
+                    <a class="btn-icon btn-edit-periode-academic" title="Ubah" href= "{{ route('academics.schedule.prodi-schedule.edit', $r['id']) }}"
                     style="text-decoration: none; color: inherit;">
                     <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit"><span style="color: #E62129">Ubah</span>
                     </a>

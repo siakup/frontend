@@ -62,6 +62,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::group(['prefix' => 'calendar'], function () {
         Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
+        Route::get('/generate', [CalendarController::class, 'generate'])->name('calendar.generate');
+
         Route::get('/event/{id}', [CalendarController::class, 'show'])->name('calendar.show');
         Route::post('/event/{id}', [CalendarController::class, 'store'])->name('calendar.store');
         Route::put('/event/{id}', [CalendarController::class, 'update'])->name('calendar.update');

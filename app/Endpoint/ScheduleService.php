@@ -32,7 +32,7 @@ class ScheduleService
 
   public function getCourseList($periode)
   {
-    return $this->url() . '/course/' . $periode;
+    return $this->lectureUrl() . '/' . $periode . '/courses';
   }
 
   public function getLectureList()
@@ -60,6 +60,11 @@ class ScheduleService
     return $this->lectureUrl() . '/';
   }
 
+  public function createInstitutionSchedule()
+  {
+    return $this->lectureUrl() . '/';
+  }
+
 
   public function createSchedule()
   {
@@ -67,6 +72,11 @@ class ScheduleService
   }
 
   public function detailSchedule($id)
+  {
+    return $this->lectureUrl() . '/' . $id;
+  }
+
+  public function destroySchedule($id)
   {
     return $this->lectureUrl() . '/' . $id;
   }
