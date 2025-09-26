@@ -736,9 +736,10 @@
                             </button>
                             <div id="Option-Program-Perkuliahan" class="sort-dropdown select !top-[20%] !left-[15.9%]"
                                 style="display: none;">
-                                @foreach ($programPerkuliahanList as $programPerkuliahan)
-                                    <div class="dropdown-item" data-event="{{ $programPerkuliahan->name }}">
-                                        {{ $programPerkuliahan->name }}</div>
+                                @foreach ($programPerkuliahanList as $name => $value)
+                                    <div class="dropdown-item" data-event="{{ $name }}">
+                                        {{ $name }}
+                                    </div>
                                 @endforeach
                             </div>
                             <input type="hidden" value="" name="program_perkuliahan">
