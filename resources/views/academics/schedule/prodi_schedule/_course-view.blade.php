@@ -328,20 +328,22 @@
                 </x-table-head>
                 <x-table-body>
                   @forelse($mata_kuliah_list as $course)
-                    <x-table-row>
-                      <x-table-cell>{{ $course['kode_matakuliah'] }}</x-table-cell>
-                      <x-table-cell>{{ $course['nama_matakuliah'] }}</x-table-cell>
-                      <x-table-cell>{{ $course['jenis_matakuliah'] }}</x-table-cell>
-                      <x-table-cell>{{ $course['sks'] }}</x-table-cell>
-                      <x-table-cell>{{ $course['kurikulum'] }}</x-table-cell>
-                      <x-table-cell>
-                        <button type="button" href="" class="button button-outline !w-full" onclick="onSelectCourse(this)" data-course='@json($course)' id="">
-                          Pilih Mata Kuliah Ini
-                        </button>
-                      </x-table-cell>
-                    </x-table-row>
+                      <x-table-row>
+                          <x-table-cell>{{ $course->kode_matakuliah ?? '-' }}</x-table-cell>
+                          <x-table-cell>{{ $course->nama_matakuliah ?? '-' }}</x-table-cell>
+                          <x-table-cell>{{ $course->jenis_matakuliah ?? '-' }}</x-table-cell>
+                          <x-table-cell>{{ $course->sks ?? '-' }}</x-table-cell>
+                          <x-table-cell>{{ $course->kurikulum ?? '-' }}</x-table-cell>
+                          <x-table-cell>
+                              <button type="button" class="button button-outline !w-full"
+                                  onclick="onSelectCourse(this)" 
+                                  data-course='@json($course)'>
+                                  Pilih Mata Kuliah Ini
+                              </button>
+                          </x-table-cell>
+                      </x-table-row>
                   @empty
-                    @include('academics.periode.error-filter')
+                      @include('academics.periode.error-filter')
                   @endforelse
                 </x-table-body>
               </x-table>

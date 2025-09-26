@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Endpoint\EventAcademicService;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Validator;
@@ -12,21 +13,39 @@ use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
+
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\PeriodAcademicService;
 use App\Endpoint\ScheduleService;
 use App\Endpoint\UserService;
+use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Log\Logger;
 
 class ScheduleController extends Controller
 {
   public function index(Request $req)
   {
+    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+    $programStudiList = collect($responseProgramStudiList->data)->pluck('id', 'nama')->toArray();
+
+    $programPerkuliahanList = config('static-data.program_perkuliahan');
+    $programPerkuliahanList = collect($programPerkuliahanList)->pluck('code', 'name')->toArray();
+
+    $params  = [
+      'program_perkuliahan' => (int) $req->query('program_perkuliahan'),
+      'program_studi' => (int) $req->query('program_studi'),
+      'q'                   => $req->query('q', ''),
+      'sort'                => $req->query('sort', 'created_at,desc'),
+      'page'                => (int) $req->query('page', 1),
+      'per_page'            => (int) $req->query('per_page', 10),
+    ];
 
     $urlSchedule = ScheduleService::getInstance()->getSchedule();
-    $responseSchedule = getCurl($urlSchedule, null, getHeaders());
-    
-    $data = $responseSchedule->data;
+    $responseSchedule = getCurl($urlSchedule, $params, getHeaders());
+    $data = $responseSchedule->data ?? [];
 
     $rows = collect($data)->map(function ($item) {
       return [
@@ -44,71 +63,56 @@ class ScheduleController extends Controller
         })->toArray(),
         'pengajar' => collect($item->classLecturer)->pluck('nama_pengajar')->join(', '),
       ];
-    })->toArray();
+    });
 
-    $page    = (int) $req->query('page', 1);
-    $perPage = (int) $req->query('per_page', 7);
-    $slice   = collect($rows)->forPage($page, $perPage)->values();
-
-    $items = new LengthAwarePaginator($slice, count($rows), $perPage, $page, [
+    $slice = collect($rows)->forPage($params['page'], $params['per_page'])->values();
+    $items = new LengthAwarePaginator($slice, count($rows), $params['per_page'], $params['page'], [
       'path' => url()->current()
     ]);
-
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
 
     return view('academics.schedule.prodi_schedule.index', [
       'items' => $items,
       'programPerkuliahanList' => $programPerkuliahanList,
       'programStudiList'       => $programStudiList,
-      'id_program'             => (int) $req->query('program_perkuliahan', 1),
-      'id_prodi'               => (int) $req->query('program_studi', 10),
-      'q'                      => $req->query('q', ''),
-      'sort'                   => $req->query('sort', 'created_at,desc'),
-
+      'id_program'             => $params['program_perkuliahan'],
+      'id_prodi'               => $params['program_studi'],
+      'q'                      => $params['q'],
+      'sort'                   => $params['sort'],
     ]);
   }
 
-  // ====== skeleton CRUD (nanti tinggal isi API) ======
   public function create(Request $request)
   {
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+    $programPerkuliahanList = config('static-data.program_perkuliahan');
+    $programPerkuliahanList = collect($programPerkuliahanList)->pluck('code', 'name')->toArray();
 
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
+    $programStudiList = $responseProgramStudiList->data ?? [];
 
     $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
     $responsePeriode = getCurl($urlPeriode, null, getHeaders());
-    $periodeList = $responsePeriode->data;
+    $periodeList = $responsePeriode->data ?? [];
 
-    return view('academics.schedule.prodi_schedule.create', get_defined_vars());
+    return view('academics.schedule.prodi_schedule.create', [
+      'programPerkuliahanList' => $programPerkuliahanList,
+      'programStudiList'       => $programStudiList,
+      'periodeList'            => $periodeList,
+    ]);
   }
 
   public function dosen(Request $request)
   {
-    $limit = $request->input('limit', 5);
-    $page = $request->input('page', 1);
-    $search = $request->input('search', '');
-    $params = compact('limit', 'page', 'search');
+    $limit  = $request->input('limit', 10);
+    $page   = $request->input('page', 1);
+    $search = strtolower(trim($request->input('search', '')));
 
-    $url = ScheduleService::getInstance()->getListLecture();
-    $response = getCurl($url, $params, getHeaders());
-    $pengajar = json_decode(json_encode($response->data->data), true);
+    $urlDosen  = UserService::getInstance()->getListLecturer();
+    $response  = getCurl($urlDosen, ['limit' => $limit, 'page' => $page, 'search' => $search], getHeaders());
 
-    $pengajar = array_values(array_filter($pengajar, function ($p) use ($request) {
-      $search = strtolower(trim($request->input('search', '')));
-      return str_contains(strtolower($p['nip']), $search) ||
-        str_contains(strtolower($p['nama_pengajar']), $search) ||
-        str_contains(strtolower($p['pengajar_program_studi']), $search);
-    }));
+    $pengajar = array_map(function ($item) {
+      return (object) $item;
+    }, json_decode(json_encode($response->data->data), true));
 
 
     $pengajar = array_chunk($pengajar, $limit);
@@ -116,38 +120,56 @@ class ScheduleController extends Controller
     $pengajar = count($pengajar) > 0 ? $pengajar[$page - 1] : [];
 
     if ($request->ajax()) {
-      return view('academics.schedule.prodi_schedule._lecture-view', get_defined_vars())->render();
+      return view('academics.schedule.parent-institution_schedule._lecture-view', get_defined_vars())->render();
     }
     return redirect()->route('academics.schedule.prodi_schedule.create');
   }
 
   public function mataKuliah(Request $request, $periode)
   {
-    $limit = $request->input('limit', 5);
-    $page = $request->input('page', 1);
+    $limit  = $request->input('limit', 5);
+    $page   = $request->input('page', 1);
     $search = $request->input('search', '');
+
     $params = compact('limit', 'page', 'search');
+
     $url = ScheduleService::getInstance()->getCourseList($periode);
     $response = getCurl($url, $params, getHeaders());
-    $mata_kuliah_list = $response->data->data;
+
+    $mata_kuliah_list = [];
+
+    $pagination = null;
+    $lastPage   = 1;
+    $currentPage = 1;
+
+    if ($response && ($response->success ?? false)) {
+      $mata_kuliah_list = collect($response->data ?? [])->map(function ($item) {
+        return (object)[
+          'id'               => $item->id ?? null,
+          'kode_matakuliah'  => $item->kode ?? null,
+          'nama_matakuliah'  => $item->nama_id ?? null,
+          'jenis_matakuliah' => $item->id_jenis ?? null,
+          'sks'              => $item->sks ?? null,
+          'kurikulum'       => $item->semester ? 'Semester ' . $item->semester : null,
+        ];
+      });
+      $pagination  = $response->pagination ?? null;
+      $lastPage    = $pagination->last_page ?? 1;
+      $currentPage = $pagination->current_page ?? 1;
+    }
 
     $urlPeriode = PeriodAcademicService::getInstance()->periodeUrl($periode);
     $responsePeriode = getCurl($urlPeriode, null, getHeaders());
-    $periodeData = $responsePeriode->data->periode;
-
-    $mata_kuliah_list = array_values(array_filter($mata_kuliah_list, function ($p) use ($request) {
-      return str_starts_with(strtolower($p['kode_matakuliah']), strtolower($request->input('search', ''))) ||
-        str_starts_with(strtolower($p['nama_matakuliah']), strtolower($request->input('search', '')));
-    }));
-
-    $mata_kuliah_list = array_chunk($mata_kuliah_list, $limit);
-    $lastPage = count($mata_kuliah_list);
-    $mata_kuliah_list = count($mata_kuliah_list) > 0 ? $mata_kuliah_list[$page - 1] : [];
+    $periodeData = $responsePeriode->data->periode ?? null;
 
     if ($request->ajax()) {
-      return view('academics.schedule.parent-institution_schedule._course-view', get_defined_vars())->render();
+      return view(
+        'academics.schedule.prodi_schedule._course-view',
+        get_defined_vars()
+      )->render();
     }
-    return redirect()->route('academics.schedule.prodi_schedule.create');
+
+    return redirect()->route('academics.schedule.prodi_schedule-schedule.create');
   }
 
   public function jadwalKelas(Request $request)
@@ -173,7 +195,6 @@ class ScheduleController extends Controller
     try {
       $url = ScheduleService::getInstance()->getAvailableRooms();
       $response = getCurl($url, $params, getHeaders());
-
       if (!empty($response->data)) {
         return response()->json([
           'success' => true,
@@ -297,8 +318,20 @@ return view('academics.schedule.parent-institution_schedule.create', get_defined
 
   public function show($id)
   {
+    $programPerkuliahanList = config('static-data.program_perkuliahan');
+    $programPerkuliahanList = collect($programPerkuliahanList)->pluck('code', 'name')->toArray();
+
+    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+    $programStudiList = $responseProgramStudiList->data ?? [];
+
+    $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+    $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+    $periodeList = $responsePeriode->data ?? [];
+
     $url = ScheduleService::getInstance()->detailSchedule($id);
     $response = getCurl($url, null, getHeaders());
+
 
     if (!isset($response->data)) {
       return response()->json([
@@ -317,7 +350,7 @@ return view('academics.schedule.parent-institution_schedule.create', get_defined
 
     $data = [
       'id' => $item->id_kelas,
-      'periode' => $periode,
+      'periode' => $periodeList,
       'program_perkuliahan' => $item->perkuliahan ?? null,
       'program_studi' => $program_studi,
       'mata_kuliah' => $item->nama_matakuliah ?? null,
@@ -327,6 +360,7 @@ return view('academics.schedule.parent-institution_schedule.create', get_defined
       'kelas_mbkm' => $item->is_mbkm ? 'Ya' : 'Tidak',
       'tanggal_mulai' => $item->tanggal_mulai,
       'tanggal_selesai' => $item->tanggal_akhir,
+
       'pengajar' => collect($item->classLecturer)->map(function ($p) {
         return [
           'nama' => $p->nama_pengajar,
@@ -345,30 +379,27 @@ return view('academics.schedule.parent-institution_schedule.create', get_defined
     return response()->json($data);
   }
 
-
-
   public function destroy($id)
   {
-    // Validasi ringan
     if (!ctype_digit((string)$id)) {
       return response()->json(['message' => 'ID tidak valid'], 422);
     }
 
     try {
-      // TODO: taruh logika hapus di sini
-      // $ok = EventCalendarService::deleteSchedule((int)$id);
-      // if (!$ok) throw new \RuntimeException('Gagal hapus di service');
-      $ok = true;
+      $url = ScheduleService::getInstance()->destroySchedule($id);
+      $ok  = deleteCurl($url, getHeaders());
 
-      if ($ok) {
-        return response()->json(['message' => 'Jadwal berhasil dihapus.'], 200);
+      if (!isset($ok->data)) {
+        return response()->json(['message' => 'Gagal menghapus data.'], 500);
       }
 
-      return response()->json(['message' => 'Gagal menghapus data.'], 500);
+      return response()->json(['message' => 'Jadwal berhasil dihapus.'], 200);
     } catch (\Throwable $e) {
       return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
     }
   }
+
+
 
   public function uploadResult(Request $request)
   {
@@ -519,84 +550,55 @@ return view('academics.schedule.parent-institution_schedule.create', get_defined
 
   public function store(Request $request)
   {
-    $validated = [
-      'program_perkuliahan' => 'Sarjana',
-      'program_studi' => 11,
-      'periode' => 20251,
-      'nama_matakuliah' => 'Algoritma dan Struktur Data',
-      'matakuliah' => [
-        'id' => 101,
-        'jenis_matakuliah' => 'Wajib',
-        'sks' => 3,
-        'kurikulum' => '2020',
-        'kode_matakuliah' => 'IF101'
-      ],
-      'nama_kelas' => 'Algoritma-IF2',
-      'nama_singkat' => 'IF2',
-      'kapasitas_peserta' => 50,
-      'kelas_mbkm' => false,
-      'tanggal_mulai' => '2025-09-20 08:00:00',
-      'tanggal_akhir' => '2025-12-15 12:00:00',
-      'selected_lecture' => [
-        [
-          'id' => 501,
-          'nama_pengajar' => 'Dr. Andi Setiawan',
-          'status_pengajar' => 'Dosen Tetap'
-        ],
-        [
-          'id' => 502,
-          'nama_pengajar' => 'Ir. Budi Hartono',
-          'status_pengajar' => 'Dosen Luar Biasa'
-        ]
-      ],
-      'class_schedule' => [
-        [
-          'ruangan' => 301,
-          'hari' => 'senin',
-          'jam_mulai_kelas' => '08:00',
-          'jam_akhir_kelas' => '10:00'
-        ],
-        [
-          'ruangan' => 302,
-          'hari' => 'rabu',
-          'jam_mulai_kelas' => '10:00',
-          'jam_akhir_kelas' => '12:00'
-        ]
-      ]
-    ];
+    $validated = $request->validate([
+      'program_perkuliahan' => 'required',
+      'program_studi' => 'required',
+      'periode' => 'required',
+      'nama_matakuliah' => 'required',
+      'matakuliah' => 'required',
+      'nama_kelas' => 'required',
+      'nama_singkat' => 'required',
+      'kapasitas_peserta' => 'required',
+      'kelas_mbkm' => 'required',
+      'tanggal_mulai' => 'required',
+      'tanggal_akhir' => 'required',
+      'selected_lecture' => 'array',
+      'class_schedule' => 'array',
+    ]);
 
-    $url = ScheduleService::getInstance()->createSchedule();
+    $url = ScheduleService::getInstance()->createInstitutionSchedule();
     $data = [
       'perkuliahan' => $validated['program_perkuliahan'],
       'id_prodi' => $validated['program_studi'],
-      'id_periode_akademik' => $validated['periode'],
+      'id_periode' => $validated['periode'],
       'id_matkul' => $validated['matakuliah']['id'],
       'nama_jadwal' => $validated['nama_kelas'],
       'singkatan_jadwal' => $validated['nama_singkat'],
       'jumlah_peserta' => $validated['kapasitas_peserta'],
-      'is_mbkm' => $validated['kelas_mbkm'],
-      'tanggal_mulai' => $validated['tanggal_mulai'],
-      'tanggal_akhir' => $validated['tanggal_akhir'],
-      'username' => Auth::user()->username,
-      'ruangan' => array_map(function ($ruangan) {
+      'is_mbkm' => $validated['kelas_mbkm'] === 'true',
+      'tanggal_mulai' => Carbon::createFromFormat('d-m-Y, H:i', $validated['tanggal_mulai'])->format('Y-m-d H:i:s'),
+      'tanggal_akhir' => Carbon::createFromFormat('d-m-Y, H:i', $validated['tanggal_akhir'])->format('Y-m-d H:i:s'),
+      'username' => session('username'),
+      'jadwal_kelas' => array_map(function ($ruangan) {
         return [
-          'id_ruangan'   => $ruangan['ruangan'],
-          'nama_ruangan' => $ruangan['nama_ruangan'],
-          'hari'         => $ruangan['hari'],
-          'mulai_kelas'  => $ruangan['jam_mulai_kelas'],
-          'selesai_kelas' => $ruangan['jam_akhir_kelas']
+          'id_ruangan'   => $ruangan["'ruangan'"],
+          'hari'         => $ruangan["'hari'"],
+          'mulai_kelas'  => $ruangan["'jam_mulai_kelas'"],
+          'selesai_kelas' => $ruangan["'jam_akhir_kelas'"],
         ];
-      }, $validated['class_schedule']),
+      }, $validated['class_schedule'] ?? []),
+
       'pengajar' => array_map(function ($pengajar) {
         return [
-          'id_pengajar'    => $pengajar['id'],
-          'nama_pengajar'  => $pengajar['nama_pengajar'],
-          'status_pengajar' => $pengajar['status_pengajar'],
+          'id_pengajar' => $pengajar["id"] ?? 1,
+          'nama_pengajar'           => $pengajar["'nama_pengajar'"],
+          'pengajar_program_studi'  => $pengajar["'pengajar_program_studi'"],
+          'status_pengajar'         => $pengajar["'status_pengajar'"],
         ];
-      }, $validated['selected_lecture']),
+      }, $validated['selected_lecture'] ?? []),
     ];
-    $response = postCurl($url, $data, getHeaders());
 
+    $response = postCurl($url, $data, getHeaders());
     if ($response->success) {
       return redirect()->route('academics.schedule.prodi-schedule.index')->with('success', 'Jadwal Kuliah Program Studi berhasil ditambahkan.');
     }
