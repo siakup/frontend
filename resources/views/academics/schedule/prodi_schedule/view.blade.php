@@ -11,7 +11,7 @@
 
     <div class="mkv-body prodi-view">
       <style>
-        /* ——— Modal primitive ——— */
+
         .mkv-modal{
         position:fixed; inset:0; z-index:9999;
         display:none; align-items:center; justify-content:center;
@@ -23,15 +23,15 @@
         box-shadow:0 4px 24px rgba(0,0,0,.12);
         margin:0 16px; width:840px; max-width:90vw;
 
-        /* biar kalau tinggi > viewport masih bisa scroll, tapi scrollbar disembunyikan */
+
         max-height:90vh; overflow:auto;
-        -ms-overflow-style:none;            /* IE/Edge lama */
-        scrollbar-width:none;               /* Firefox */
+        -ms-overflow-style:none;
+        scrollbar-width:none;
         }
-        .mkv-content::-webkit-scrollbar{ display:none; }  /* Chrome/Safari */
+        .mkv-content::-webkit-scrollbar{ display:none; }
 
         .mkv-header{
-        position:sticky; top:0; z-index:1;           /* header tetap terlihat saat scroll isi */
+        position:sticky; top:0; z-index:1;
         display:flex; align-items:center; justify-content:space-between;
         padding:14px 16px; border-bottom:1px solid #F1F5F9; background:#fff;
         padding-bottom:0px;
@@ -44,12 +44,11 @@
         }
         .mkv-close:hover{ background:#F9FAFB; }
 
-        /* ——— View styles ——— */
+
         .prodi-view{padding:16px}
-        /* Judul header accordion */
         .prodi-view .acc-head{ font-size:14px; }
         .prodi-view .acc-head .acc-title{
-        font-weight:600; color:#111827 !important;   /* paksa tampil */
+        font-weight:600; color:#111827 !important;
         }
         .prodi-view .acc-head .acc-right{
         display:flex; align-items:center; gap:8px;
@@ -192,21 +191,18 @@
 
 <script>
 (function(){
-  // ——— Accordion toggle
   document.addEventListener('click', function(e){
     const t = e.target.closest('[data-acc-toggle]');
     if(!t) return;
     t.closest('.acc-item').classList.toggle('open');
   });
 
-  // ——— Modal control
   const modal = document.getElementById('modalViewProdi');
   const open  = ()=>{ modal.style.display='flex'; document.body.style.overflow='hidden'; };
   const close = ()=>{ modal.style.display='none'; document.body.style.overflow=''; };
   modal.addEventListener('click', (e)=>{ if(e.target.matches('[data-close]')) close(); });
   document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && modal.style.display==='flex') close(); });
 
-  // ——— Helpers render
   const setVal=(id,val='-')=>{ const el=document.getElementById(id); if(el) el.value=((val??'')+'').trim()||'-'; };
 
   function renderPengajar(list){
@@ -241,7 +237,6 @@
     }).join('');
   }
 
-  // ——— API utama yang dipanggil dari index: openViewModal(ID | DATA)
   const SHOW_URL_TMPL = @json(route('academics.schedule.prodi-schedule.show', ['id' => '__ID__']));
 
 window.openViewModal = async function(arg){
@@ -249,16 +244,14 @@ window.openViewModal = async function(arg){
     let data = null, url = null;
 
     if (typeof arg === 'string') {
-      url = arg; // sudah full dari blade
+      url = arg;
     } else if (typeof arg === 'number' || /^[0-9]+$/.test(String(arg))) {
-      // fallback kalau masih kirim ID
       url = SHOW_URL_TMPL.replace('__ID__', String(arg));
     } else if (typeof arg === 'object') {
-      data = arg; // payload langsung
+      data = arg;
     }
 
     if (!data) {
-      // pastikan absolute URL (bukan relatif)
       if (!/^https?:\/\//.test(url)) {
         url = window.location.origin + (url.startsWith('/') ? '' : '/') + url;
       }
@@ -271,7 +264,6 @@ window.openViewModal = async function(arg){
       if (data && data.data) data = data.data;
     }
 
-    // ... lanjut isi field seperti sebelumnya
     setVal('vw-program_perkuliahan', data.program_perkuliahan || data.programPerkuliahan);
     setVal('vw-program_studi',       data.program_studi || data.programStudi);
     setVal('vw-periode',             data.periode);
@@ -286,7 +278,6 @@ window.openViewModal = async function(arg){
     renderPengajar(data.pengajar || data.daftar_pengajar || []);
     renderJadwal(data.jadwal || data.daftar_jadwal || []);
 
-    // buka modal
     document.getElementById('modalViewProdi').style.display='flex';
     document.body.style.overflow='hidden';
   }catch(err){

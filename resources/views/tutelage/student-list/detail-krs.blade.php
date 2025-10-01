@@ -50,7 +50,9 @@
 </div>
 
 <div class="academics-layout">
-  @include('tutelage.student-list.layout.navbar-tutelage')
+  @include('tutelage.student-list.layout.navbar-tutelage', [
+    "id" => $id
+    ])
 
   <div class="academics-slicing-content content-card p-[10px]">
 

@@ -289,13 +289,33 @@ class Menu
                 'parent' => 'tutelage-group.index',
                 'isExpandable' => true,
                 'children' => [
-                    'tutelage-group' => [
+                    'tutelage-group-student-list-krs' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/krs/*',
                         'parent' => 'tutelage-group.student-list.detail-krs',
                         'isExpandable' => true,
                         'children' => [
-                            
+
+                        ]
+                    ],
+
+                    'tutelage-group-student-list-student-data' => [
+                        'name' => 'Detail Kartu Mahasiswa',
+                        'url' => '/tutelage-group/student-list/detail/student-data/*',
+                        'parent' => 'tutelage-group.student-list.detail-student-data',
+                        'isExpandable' => true,
+                        'children' => [
+
+                        ]
+                    ],
+
+                    'tutelage-group-student-list-transkrip-resmi' => [
+                        'name' => 'Detail Kartu Mahasiswa',
+                        'url' => '/tutelage-group/student-list/detail/transkrip-resmi/*',
+                        'parent' => 'tutelage-group.student-list.detail-transkrip-resmi',
+                        'isExpandable' => true,
+                        'children' => [
+
                         ]
                     ],
                 ]
