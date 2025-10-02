@@ -6,7 +6,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(0,0,0,0.25); 
+        background: rgba(0,0,0,0.25);
     }
 
     .modal-custom-backdrop {
@@ -29,7 +29,6 @@
         box-shadow: 0 4px 24px rgba(0,0,0,0.12);
         width: 80vw;
         min-width: 340px;
-        /* max-width: 600px; */
         margin: 0 auto;
         margin-top: 10%;
         display: flex;
@@ -78,7 +77,7 @@
     }
 
     .modal-divider {
-        width: calc(100% + 32px); 
+        width: calc(100% + 32px);
         height: 1px;
         background: #E5E6E8;
         margin: 24px 0 18px 0;
@@ -96,7 +95,7 @@
       justify-items: flex-start;
       padding-top: 12px;
       padding-bottom: 12px;
-      
+
     }
 
     .checkbox-group .checkbox-form {
@@ -174,17 +173,17 @@
     const previousButton = document.querySelector('#previousButton');
     const nextButton = document.querySelector('#nextButton');
     const input = document.querySelector('input[name="search"]');
-  
+
     Array.from(pageButton).map((page) => {
       if(!page.classList.contains('dont-click'))
         page.addEventListener('click', function(e) {
           const limit = e.target.getAttribute('data-limit');
           const page = e.target.getAttribute('data-page');
-          
+
           const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode])}}");
           url.searchParams.set('limit', limit);
           url.searchParams.set('page', page);
-  
+
           $.ajax({
             url: url.toString(),
             method: 'GET',
@@ -204,16 +203,16 @@
           });
         })
     })
-  
+
     if(previousButton) {
       previousButton.addEventListener('click', function () {
         const limit = previousButton.getAttribute('data-limit');
         const page = previousButton.getAttribute('data-page');
-  
+
         const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode])}}");
         url.searchParams.set('limit', limit);
         url.searchParams.set('page', page);
-  
+
         $.ajax({
           url: url.toString(),
           method: 'GET',
@@ -233,16 +232,16 @@
         });
       })
     }
-  
+
     if(nextButton) {
       nextButton.addEventListener('click', function () {
         const limit = nextButton.getAttribute('data-limit');
         const page = nextButton.getAttribute('data-page');
-  
+
         const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode])}}");
         url.searchParams.set('limit', limit);
         url.searchParams.set('page', page);
-  
+
         $.ajax({
           url: url.toString(),
           method: 'GET',
@@ -262,7 +261,7 @@
         });
       })
     }
-  
+
     if (select) {
       select.addEventListener('change', (event) => {
           const url = new URL("{{route('academics.schedule.parent-institution-schedule.add-course', ['periode' => $periode])}}");
@@ -286,7 +285,7 @@
             },
           });
       });
-    } 
+    }
   }
   initPagination();
 </script>
@@ -313,7 +312,7 @@
                     Cari
                 </button>
             </div>
-          </div>  
+          </div>
           <div class="flex flex-col gap-5 mt-5 px-4">
               <x-table id="Lecture-List">
                 <x-table-head>
@@ -336,7 +335,7 @@
                           <x-table-cell>{{ $course->kurikulum ?? '-' }}</x-table-cell>
                           <x-table-cell>
                               <button type="button" class="button button-outline !w-full"
-                                  onclick="onSelectCourse(this)" 
+                                  onclick="onSelectCourse(this)"
                                   data-course='@json($course)'>
                                   Pilih Mata Kuliah Ini
                               </button>
