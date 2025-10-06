@@ -289,7 +289,7 @@ class Menu
     public static function getMenuName($segment)
     {
         $menus = self::getMenuItems();
-
+        
         // Check direct menu items
         if (isset($menus[$segment])) {
             return $menus[$segment]['name'];
@@ -327,23 +327,29 @@ class Menu
             foreach ($items as $key => $item) {
                 if (isset($item['url'])) {
                     $menuUrl = trim($item['url'], '/');
-                    $target = trim($targetPath, '/');
-                    // Cek wildcard
-                    if (strpos($menuUrl, '*') !== false) {
-                        $pattern = '#^' . str_replace('\*', '.*', preg_quote($menuUrl, '#')) . '$#';
-                        if (preg_match($pattern, $target)) {
-                          if (isset($item['children'])) {
-                              $result = $findMenuByPath($item['children'], $targetPath);
-                              if ($result !== null) {
-                                  return array_merge([$item], $result);
-                              }
-                          }
-                          return [$item];
+                    $target  = trim($targetPath, '/');
+
+                    $menuSegments   = explode('/', $menuUrl);
+                    $targetSegments = explode('/', $target);
+
+                    $isMatch = true;
+
+                    if (count($menuSegments) === count($targetSegments)) {
+                        foreach ($menuSegments as $i => $seg) {
+                            if ($seg !== '*' && $seg !== $targetSegments[$i]) {
+                                $isMatch = false;
+                                break;
+                            }
                         }
-                    } elseif ($menuUrl === $target) {
+                    } else {
+                        $isMatch = false;
+                    }
+
+                    if ($isMatch) {
                         return [$item];
                     }
                 }
+
                 if (isset($item['children'])) {
                     $result = $findMenuByPath($item['children'], $targetPath);
                     if ($result !== null) {
@@ -354,11 +360,12 @@ class Menu
             return null;
         };
 
+
         $currentPath = '';
         foreach ($segments as $segment) {
             $currentPath .= '/' . $segment;
             $menuChain = $findMenuByPath($menus, $currentPath);
-
+            
             if ($menuChain !== null) {
                 foreach ($menuChain as $index => $menuItem) {
                     // Skip if it's already in breadcrumbs
@@ -369,7 +376,7 @@ class Menu
                             break;
                         }
                     }
-
+                    
                     if (!$exists) {
                         $breadcrumbs[] = [
                             'name' => $menuItem['name'],
@@ -380,6 +387,19 @@ class Menu
                 }
             }
         }
+
+        $currentSegments = explode('/', trim($currentPath, '/'));
+
+        foreach ($breadcrumbs as &$crumb) {
+            $urlSegments = explode('/', trim($crumb['url'], '/'));
+            foreach ($urlSegments as $i => &$seg) {
+                if ($seg === '*') {
+                    $seg = $currentSegments[$i] ?? $seg; // replace * dengan segment asli
+                }
+            }
+            $crumb['url'] = '/' . implode('/', $urlSegments);
+        }
+        unset($crumb);
 
         return $breadcrumbs;
     }

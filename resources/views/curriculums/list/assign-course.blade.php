@@ -141,7 +141,7 @@
                           <x-table-cell>{{ $d->kode }}</x-table-cell>
                           <x-table-cell>{{ $d->nama_id }}</x-table-cell>
                           <x-table-cell>{{ $d->sks }}</x-table-cell>
-                          <x-table-cell>{{ current(array_filter($programStudiList, function ($item) use ($d) { return $item->id == $d->id_prodi; }))->nama }}</x-table-cell>
+                          <x-table-cell>{{ current(array_filter($programStudiList, function ($item) use ($d) { return $item->id == $d->id_prodi; })) ? current(array_filter($programStudiList, function ($item) use ($d) { return $item->id == $d->id_prodi; })) : "" }}</x-table-cell>
                           <x-table-cell>{{ $d->id_jenis }}</x-table-cell>
                       </x-table-row>
                   @empty
