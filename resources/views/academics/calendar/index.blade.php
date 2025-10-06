@@ -146,7 +146,7 @@
             </table>
         </div>
         <div class="right">
-            <a href="" class="button button-outline">Generate Riwayat Akademik</a>
+            <a href="{{route('calendar.generate')}}" class="button button-outline">Generate Riwayat Akademik</a>
         </div>
     </div>
 @endsection

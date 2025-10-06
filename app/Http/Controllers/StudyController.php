@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use App\Endpoint\CourseService;
-use App\Endpoint\ScheduleService;
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\UserService;
 use App\Traits\ApiResponse;
@@ -116,7 +115,7 @@ class StudyController extends Controller
     $coursePrerequisite = $responseCoursePrerequisite->data->mataKuliahPrasyarat;
 
     return $coursePrerequisite;
-  } 
+  }
 
   public function edit(Request $request, $id)
   {
@@ -316,7 +315,7 @@ class StudyController extends Controller
 
     $url = CourseService::getInstance()->url();
     $response = postCurl($url, $mataKuliah, getHeaders());
-    
+
     return $response;
   }
 

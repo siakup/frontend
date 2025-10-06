@@ -5,15 +5,39 @@
     'closeText' => 'Close',
 ])
 
-<x-modal.container :id="$id" :show="$show">
+@php
+    $id = $id ?? 'success-modal-' . uniqid();
+@endphp
+
+<x-modal.container
+    :id="$id"
+    :show="$show"
+    x-data="{
+        open: @js($show),
+        closeModal() {
+            this.open = false;
+            this.$dispatch('close-success');
+        }
+    }"
+    x-show="open"
+    x-on:keydown.escape="closeModal()"
+    x-transition
+>
     <!-- Header -->
-    <x-slot name="header">
-        <div class="flex items-center justify-between">
-            <h3 class="text-lg font-medium text-green-600">{{ $title }}</h3>
-            <button x-on:click="close()" class="text-gray-400 hover:text-gray-500">
-                close
-            </button>
-        </div>
+    <x-slot name="header" class="relative text-center">
+        <x-typography variant="heading-h3">{{ $title }}</x-typography>
+
+        <button
+            x-on:click="closeModal()"
+            class="absolute top-[20px] right-[20px] cursor-pointer w-8 h-8 flex items-center justify-center"
+            type="button"
+        >
+            <img
+                src="{{ asset('assets/icon-tick-circle.svg') }}"
+                alt="close"
+                class="w-[32px] h-[32px]"
+            />
+        </button>
     </x-slot>
 
     <!-- Content -->
@@ -22,11 +46,9 @@
     </div>
 
     <!-- Footer -->
-    <x-slot name="footer">
-        <div class="flex justify-end">
-            <button x-on:click="close()" class="px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700">
-                {{ $closeText }}
-            </button>
-        </div>
+    <x-slot name="footer" class="text-center">
+        <x-button.primary x-on:click="closeModal()" type="button">
+            {{ $closeText }}
+        </x-button.primary>
     </x-slot>
 </x-modal.container>
