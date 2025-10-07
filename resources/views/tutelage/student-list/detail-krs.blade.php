@@ -214,6 +214,15 @@
                 </x-button.primary>
             </div>
 
+{{--            TODO: Tambah Kalender--}}
+            <div class="mx-[10px] box-border border rounded-xl border-[#D9D9D9] overflow-clip">
+                <x-full-calendar :events="$events" />
+            </div>
+
+            <div class="flex justify-end mx-[10px] my-5">
+                <x-button.secondary href="{{route('tutelage-group.list-student')}}">Kembali</x-button.secondary>
+            </div>
+
         </div>
     </div>
 @endsection

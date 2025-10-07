@@ -91,6 +91,16 @@
                     @endforeach
                 </x-table-body>
             </x-table>
+
+            <div class="box-border border rounded-xl border-[#D9D9D9] overflow-clip">
+                <x-full-calendar :events="$events" />
+            </div>
+
+            <div class="flex gap-5 justify-end">
+                <x-button.secondary href="{{route('tutelage-group.list-student')}}">Batal</x-button.secondary>
+                <x-button.primary href="">Tambahkan Kelas</x-button.primary>
+            </div>
         </x-container>
+
     </x-container>
 @endsection

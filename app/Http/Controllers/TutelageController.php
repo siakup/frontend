@@ -144,6 +144,29 @@ class TutelageController extends Controller
             ],
         ];
 
+        $events = [
+            [
+                'title' => 'Pemrograman Web',
+                'start_date' => '2025-09-27', // mulai semester
+                'end_date'   => '2026-01-27', // akhir semester
+                'day_of_week' => 0, // Senin (0=minggu, 1=senin, dst)
+                'start_time' => '09:00:00',
+                'end_time'   => '12:00:00',
+                'color' => '#EB474D',
+            ],
+            [
+                'title' => 'Pancasila',
+                'start_date' => '2025-09-27',
+                'end_date'   => '2026-01-27',
+                'day_of_week' => 2, // Selasa
+                'start_time' => '13:00:00',
+                'end_time'   => '15:00:00',
+                'color' => '#EB474D',
+            ],
+        ];
+
+
+
         // Kolom tabel
         $cols = [
             'No','Nama Kelas','Nama Mata Kuliah','SKS','Nilai',
@@ -156,9 +179,7 @@ class TutelageController extends Controller
         $tblRejected = array_filter($courses, fn($c) => $c['status'] === 'rejected');
         $tblApproved = array_filter($courses, fn($c) => $c['status'] === 'approved');
 
-        return view('tutelage.student-list.detail-krs', compact(
-            'student','krsInfo','cols','tblPending','tblDeletion','tblRejected','tblApproved'
-        ));
+        return view('tutelage.student-list.detail-krs', get_defined_vars());
     }
 
 
@@ -230,6 +251,27 @@ class TutelageController extends Controller
                     'Pak Joko',
                     'Pak Budi',
                 ],
+            ],
+        ];
+
+        $events = [
+            [
+                'title' => 'Pemrograman Web',
+                'start_date' => '2025-09-27', // mulai semester
+                'end_date'   => '2026-01-27', // akhir semester
+                'day_of_week' => 0, // Senin (0=minggu, 1=senin, dst)
+                'start_time' => '09:00:00',
+                'end_time'   => '12:00:00',
+                'color' => '#EB474D',
+            ],
+            [
+                'title' => 'Pancasila',
+                'start_date' => '2025-09-27',
+                'end_date'   => '2026-01-27',
+                'day_of_week' => 2, // Selasa
+                'start_time' => '13:00:00',
+                'end_time'   => '15:00:00',
+                'color' => '#EB474D',
             ],
         ];
 
