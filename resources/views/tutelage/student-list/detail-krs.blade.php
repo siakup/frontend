@@ -42,8 +42,8 @@
         <div class="page-title-text">Detail Kartu Studi Mahasiswa</div>
     </div>
 
-    <div class="academics-layout">
-        @include('tutelage.student-list.layout.navbar-tutelage')
+<div class="academics-layout">
+  @include('tutelage.student-list.layout.navbar-tutelage')
 
         <div class="academics-slicing-content content-card p-[10px]" style="border-top-left-radius: 0">
 
