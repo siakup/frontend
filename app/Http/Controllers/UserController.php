@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Traits\ApiResponse;
 use App\Endpoint\UserService;
-
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use Exception;
 
 class UserController extends Controller
@@ -19,32 +20,30 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $sort = $request->input('sort', 'nama,asc');
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 10);
+      $search = $request->input('search');
+      $sort = $request->input('sort', 'nama,asc');
+      $page = $request->input('page', 1);
+      $limit = $request->input('limit', 10);
 
-        $params = [
-            'search' => $search,
-            'page' => $page,
-            'sort' => $sort,
-            'limit' => $limit,
-        ];
-        
-        $url = UserService::getInstance()->getListAllUsers();
-        $response = getCurl($url, $params, getHeaders());
-        $data = json_decode(json_encode($response), true);
+      $params = [
+          'search' => $search,
+          'page' => $page,
+          'sort' => $sort,
+          'limit' => $limit,
+      ];
+      
+      $url = UserService::getInstance()->getListAllUsers();
+      $response = getCurl($url, $params, getHeaders());
+      $data = json_decode(json_encode($response), true);
 
-        if ($request->ajax()) {
-            // Tambahan pengecekan jika response tidak valid
-            if (!isset($response->data)) {
-                return $this->errorResponse($response->message);
-            }
-            
-            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+      if ($request->ajax()) {
+        if (!isset($response->data)) {
+            return $this->errorResponse($response->message);
         }
-        
-        return view('users.index', get_defined_vars());
+        return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+      }
+      
+      return view('users.index', get_defined_vars());
     }
 
     public function getUser($username)
@@ -76,18 +75,9 @@ class UserController extends Controller
         return view('users.create', get_defined_vars());
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $userData = [
-            'nip' => $request->input('nip'),
-            'nama_lengkap' => $request->input('nama_lengkap'),
-            'username' => $request->input('username'),
-            'email' => $request->input('email'),
-            'status' => $request->input('status'),
-            'peran' => $request->input('peran'),
-            'type' => 'staff'
-        ];
-
+        $userData = array_merge($request->all(), ['type' => 'staff']);
         logger()->info('User store debug', $userData);
 
         // send userData to API to create user and roles
@@ -127,16 +117,14 @@ class UserController extends Controller
         return view('users.edit', get_defined_vars());
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        $userData = [
-            'nip' => $request->input('nip'),
-            'nama_lengkap' => $request->input('nama_lengkap'),
-            'username' => $request->input('username'),
-            'email' => $request->input('email'),
-            'status' => $request->input('status'),
-            'peran' => $request->input('peran'),
-        ];
+        $userData = array_merge($request->all(), [
+            'status' => 
+              ($request->input('status') == 'active' || $request->input('status') == "true") 
+                ? 'active' 
+                : 'inactive'
+        ]);
 
         logger()->info( 'User update debug', $userData);
 

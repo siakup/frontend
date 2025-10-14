@@ -71,7 +71,7 @@
     padding-left: 0;
 }
 
-.input-by-search .form-control {
+.form-control {
     width: 100%;
     padding-right: 40px; /* space for the icon on the right */
     box-sizing: border-box;
