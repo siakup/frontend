@@ -156,7 +156,7 @@
                 </a>
             </li>
             <li class="menu-item">
-                <a href="{{ route('tutelage-group.index') }}"
+                <a href="{{ route('tutelage-group.list-student') }}"
                     class="menu-link {{ Request::is('tutelage-group*') ? 'active' : '' }}">
                     <div class="menu-content">
                         <img src="{{ asset('assets/icon-two-people.svg') }}" alt="Staff Icon" class="menu-icon">

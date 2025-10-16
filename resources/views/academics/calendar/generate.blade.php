@@ -55,7 +55,7 @@
 
 @section('content')
     <x-container variant="content-wrapper" x-data="riwayatAkademik">
-        <x-typography variant="heading-h6" bold>
+        <x-typography variant="heading-h6">
             Generate Riwayat Akademik
         </x-typography>
 
