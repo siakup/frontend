@@ -3,38 +3,8 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('javascript')
+<script src="{{asset('js/custom/helper.js')}}"></script>
 <script src="{{asset('js/custom/user.js')}}"></script>
-<script>
-  function handleSaveData() {
-    document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-    const data = collectData();
-    const userId = document.getElementById('user_id').value;
-
-    $.ajax({
-      url: "/users/" + userId,
-      type: 'PUT',
-      data: JSON.stringify(data),
-      contentType: 'application/json',
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      success: function(response) {
-        console.log('AJAX Response:', response);
-        localStorage.setItem('flash_type', response.success ? 'success' : 'error');
-        localStorage.setItem('flash_message', response.message || 'Pengguna berhasil diubah');
-        window.location.href = response.redirect_uri;
-      },
-      error: function(xhr, status, error) {
-        let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
-        if (xhr.responseJSON && xhr.responseJSON.message) {
-          errorMessage = xhr.responseJSON.message;
-        }
-        errorToast(errorMessage);
-        console.error('AJAX Error:', error);
-      }
-    });
-  }
-</script>
 @endsection
 
 @section('content')
@@ -234,7 +204,7 @@
         ">
           Cek Kembali
         </x-button.secondary>
-      <x-button.primary id="btnYaSimpan" onclick="handleSaveData()">Ya, Simpan Sekarang</x-button.primary>
+      <x-button.primary id="btnYaSimpan" onclick="handleUpdateData()">Ya, Simpan Sekarang</x-button.primary>
     </x-slot>
   </x-modal.container-pure-js>
 

@@ -1,17 +1,63 @@
-function formatDateTime(dateTimeStr) {
-  const date = new Date(dateTimeStr);
-  const formattedDate = date.toLocaleDateString('id-ID', {
-      day: '2-digit',
-      month: 'long',
-      year: 'numeric'
+
+function handleCreateData(route) {
+  document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+  const data = collectData();
+
+  $.ajax({
+    url: route,
+    type: 'POST',
+    data: JSON.stringify(data),
+    contentType: 'application/json',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function(response) {
+      console.log('AJAX Response:', response);
+      localStorage.setItem('flash_type', response.success ? 'success' : 'error');
+      localStorage.setItem('flash_message', response.message || 'Pengguna berhasil dibuat');
+      window.location.href = response.redirect_uri;
+    },
+    error: function(xhr, status, error) {
+      let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
+      if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMessage = xhr.responseJSON.message;
+      }
+
+      errorToast(errorMessage);
+      console.error('AJAX Error:', error);
+    }
   });
-  const formattedTime = date.toLocaleTimeString('id-ID', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
-  });
-  return `${formattedDate}, ${formattedTime} WIB`;
 }
+
+function handleUpdateData() {
+    document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
+    const data = collectData();
+    const userId = document.getElementById('user_id').value;
+
+    $.ajax({
+      url: "/users/" + userId,
+      type: 'PUT',
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      success: function(response) {
+        console.log('AJAX Response:', response);
+        localStorage.setItem('flash_type', response.success ? 'success' : 'error');
+        localStorage.setItem('flash_message', response.message || 'Pengguna berhasil diubah');
+        window.location.href = response.redirect_uri;
+      },
+      error: function(xhr, status, error) {
+        let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
+        if (xhr.responseJSON && xhr.responseJSON.message) {
+          errorMessage = xhr.responseJSON.message;
+        }
+        errorToast(errorMessage);
+        console.error('AJAX Error:', error);
+      }
+    });
+  }
 
 function updateTambahPeranButtonState() {
   const allFilled =
