@@ -2,336 +2,139 @@
 
 @section('title', 'Manajemen Pengguna')
 
-@section('css')
-
-@endsection
-
 @section('javascript')
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.getElementById('searchInput');
-            const dropdown = document.getElementById('searchDropdown');
+      function handleViewUserButtonClick(element) {
+        const nomorInduk = element.getAttribute('data-nomor-induk');
+        if (nomorInduk) {
+          $.ajax({
+              url: "{{ route('users.detail') }}", 
+              method: 'GET',
+              data: { nomor_induk: nomorInduk }, 
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              success: function(html) {
+                $('#userDetailModalContainer').html(html);
+                $('#modalDetailPengguna').removeClass('hidden').addClass('flex');
+              }
+          });
+        }
+      }
 
-            // Create loading indicator
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.className = 'dropdown-item text-center';
-            loadingIndicator.innerHTML = 'Sedang mencari...';
+      function handleResetUserPassButtonClick(element) {
+        const nomorInduk = element.getAttribute('data-nomor-induk');
+        if (nomorInduk) {
+          $.ajax({
+              url: "{{ route('users.resetPassword') }}", 
+              method: 'GET',
+              data: { nomor_induk: nomorInduk }, 
+              headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+              },
+              success: function(html) {
+                $('#userDetailModalContainer').html(html);
+                $('#modalResetPassword').removeClass('hidden').addClass('flex');
+              }
+          });
+        }
+      }
 
-            input.addEventListener('input', function() {
-                const keyword = this.value.trim();
-                if (keyword.length < 1) {
-                    dropdown.style.display = 'none';
-                    return;
-                }
-                dropdown.innerHTML = '';
-                dropdown.appendChild(loadingIndicator);
-                dropdown.style.display = 'block';
-                $.ajax({
-                    url: `{{ route('users.index') }}`,
-                    method: 'GET',
-                    data: {
-                        search: keyword
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (!data.success || !Array.isArray(data.data) || data.data.length ===
-                            0) {
-                            dropdown.innerHTML =
-                                '<div class="dropdown-item text-center">Tidak ada hasil ditemukan</div>';
-                            return;
-                        }
-                        dropdown.innerHTML = '';
-                        data.data.forEach(user => {
-                            const item = document.createElement('div');
-                            item.className = 'dropdown-item';
-                            item.textContent = user.username;
-                            item.onclick = () => {
-                                dropdown.querySelectorAll('.dropdown-item').forEach(
-                                    i => i.classList.remove('active'));
-                                item.classList.add('active');
-                                input.value = user.username;
-                                dropdown.style.display = 'none';
-                                refreshTable(user.username);
-                            };
-                            dropdown.appendChild(item);
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        dropdown.innerHTML =
-                            '<div class="dropdown-item text-center text-danger">Terjadi kesalahan, silakan coba lagi</div>';
-                    }
-                });
-            });
+      function showSuccessModal(message) {
+          document.getElementById('successModalMessage').textContent = message;
+          document.getElementById('successModal').style.display = 'block';
+      }
 
-            function refreshTable(username) {
-                $.ajax({
-                    url: '{{ route('users.index') }}',
-                    method: 'GET',
-                    data: {
-                        search: username
-                    },
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(response) {
-                        window.location.href = '{{ route('users.index') }}' + '?search=' +
-                            encodeURIComponent(username);
-                    },
-                    error: function() {
-                        $('tbody').html(
-                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                        );
-                    }
-                });
-            }
+      function closeSuccessModal() {
+          document.getElementById('successModal').style.display = 'none';
+      }
 
-            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    sortDropdown.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove(
-                        'active'));
-                    const sortKey = this.getAttribute('data-sort');
-                    this.classList.add('active');
-                    sortDropdown.style.display = 'none';
-                    sortTable(sortKey); // Panggil AJAX sortTable
-                });
-            });
-
-            function sortTable(value) {
-                $.ajax({
-                    url: '{{ route('users.index') }}',
-                    method: 'GET',
-                    data: {
-                        sort: value
-                    },
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(response) {
-                        window.location.href = '{{ route('users.index') }}' + '?sort=' +
-                            encodeURIComponent(value);
-                    },
-                    error: function() {
-                        $('tbody').html(
-                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                        );
-                    }
-                });
-            }
-
-            // Close dropdown if click outside
-            document.addEventListener('click', function(e) {
-                if (!dropdown.contains(e.target) && !input.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
-
-            document.getElementById('sortButton').addEventListener('click', function(event) {
-                const dropdown = document.getElementById('sortDropdown');
-                const toggleBtn = document.getElementById('sortButton');
-
-                const isOpen = dropdown.style.display === 'none' || dropdown.style.display === '';
-                dropdown.style.display = isOpen ? 'block' : 'none';
-
-                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                    toggleBtn.classList.remove('active');
-                }
-                toggleBtn.classList.toggle('active', isOpen);
-
-                event.stopPropagation();
-            });
-
-            document.querySelectorAll('#sortDropdown .dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const sortValue = this.dataset.sort;
-                    const sortText = this.textContent.trim();
-
-                    const sortLabel = document.getElementById('sortLabel');
-                    if (sortLabel) {
-                        sortLabel.textContent = sortText;
-                    }
-
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('sort', sortValue);
-                    url.searchParams.set('page', 1);
-                    window.location.href = url.toString();
-                });
-            });
-
-            const params = new URLSearchParams(window.location.search);
-            const currentSort = params.get('sort');
-            if (currentSort) {
-                const currentItem = Array.from(document.querySelectorAll('#sortDropdown .dropdown-item'))
-                    .find(item => item.dataset.sort === currentSort);
-                if (currentItem) {
-                    const sortLabel = document.getElementById('sortLabel');
-                    if (sortLabel) {
-                        sortLabel.textContent = currentItem.textContent.trim();
-                    }
-                }
-            }
-            document.addEventListener('click', function(e) {
-                const toggleBtn = document.getElementById('sortButton');
-                const dropdown = document.getElementById('sortDropdown');
-
-                if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-                    dropdown.style.display = 'none';
-                }
-            });
-
-            document.addEventListener('click', function(e) {
-                const btn = e.target.closest('.btn-view-user');
-                if (btn) {
-                const nomorInduk = btn.getAttribute('data-nomor-induk');
-                    if (nomorInduk) {
-                    $.ajax({
-                        url: "{{ route('users.detail') }}", 
-                        method: 'GET',
-                        data: { nomor_induk: nomorInduk }, 
-                        headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        success: function(html) {
-                        $('#userDetailModalContainer').html(html);
-                        $('#modalDetailPengguna').show();
-                        }
-                    });
-                    }
-                }
-            });
-
-            document.addEventListener('click', function(e) {
-                const btn = e.target.closest('.btn-reset-pass');
-                if (btn) {
-                const nomorInduk = btn.getAttribute('data-nomor-induk');
-                    if (nomorInduk) {
-                    $.ajax({
-                        url: "{{ route('users.resetPassword') }}", 
-                        method: 'GET',
-                        data: { nomor_induk: nomorInduk }, 
-                        headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        success: function(html) {
-                        $('#userDetailModalContainer').html(html);
-                        $('#modalResetPassword').show();
-                        }
-                    });
-                    }
-                }
-            });
-
-            function showSuccessModal(message) {
-                document.getElementById('successModalMessage').textContent = message;
-                document.getElementById('successModal').style.display = 'block';
-            }
-
-            function closeSuccessModal() {
-                document.getElementById('successModal').style.display = 'none';
-            }
-
-            @if (request('success'))
-                showSuccessModal(@json(request('success')));
-                window.history.replaceState(null, '', window.location.pathname);
-            @endif
-        });
+      @if (request('success'))
+          showSuccessModal(@json(request('success')));
+          window.history.replaceState(null, '', window.location.pathname);
+      @endif
     </script>
 @endsection
+
 @section('content')
-    <div class="page-header">
-        <div class="page-title-text">Manajemen Pengguna</div>
-    </div>
+    <x-title-page :title="'Manajemen Pengguna'" />
 
-    <div class="right">
-        <a href="{{ route('users.create') }}" class="button button-outline">Tambah Pengguna Baru</a>
+    <div class="flex items-center justify-end w-full px-4">
+      <x-button.primary :href="route('users.create')">Tambah Pengguna Baru</x-button.primary>
     </div>
-    <div class="content-card content-card-search">
-        <div class="card-header">
-            <div class="search-section">
-                <div class="search-container">
-                    <input type="text" placeholder="Username / Nama / Status" class="search-filter" id="searchInput"
-                        autocomplete="off" value="{{ $search }}">
-                    <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
-                    <div class="search-dropdown" id="searchDropdown"></div>
-                </div>
-            </div>
-            <div class="filter-box">
-                <button class="button-clean" id="sortButton">
-                    <span id="sortLabel">Urutkan</span>
-                    <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
-                </button>
-                <div id="sortDropdown" class="sort-dropdown" style="display: none;">
-                    <div class="dropdown-item" data-sort="active">Aktif</div>
-                    <div class="dropdown-item" data-sort="inactive">Tidak Aktif</div>
-                    <div class="dropdown-item" data-sort="nama,asc">A-Z</div>
-                    <div class="dropdown-item" data-sort="nama,desc">Z-A</div>
-                    <div class="dropdown-item" data-sort="created_at,desc">Terbaru</div>
-                    <div class="dropdown-item" data-sort="created_at,asc">Terlama</div>
-                </div>
-            </div>
+    <x-white-box :class="''">
+      <div class="flex justify-between items-center p-4">
+        <div class="w-64">
+          <x-form.search-v2 
+            class="w-64"
+            :routes="route('users.index')"
+            :fieldKey="'username'"
+            :placeholder="'Username / Nama / Status'"
+            :search="$search"
+          />
         </div>
-    </div>
-    <!-- <div class="content-card"> -->
-    <div class="table-responsive">
-        <table class="table" id="list-user" style="--table-cols:7">
-            <thead>
-                <tr>
-                    <th>NIP/NIM</th>
-                    <th>Nama</th>
-                    <th>Username</th>
-                    <th>Dibuat Pada</th>
-                    <th>Status</th>
-                    <th>Reset</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($response->data ?? [] as $user): ?>
-                <tr>
-                    <td>{{ $user->nomor_induk }}</td>
-                    <td>{{ $user->nama }}</td>
-                    <td>{{ $user->username }}</td>
-                    <td class="text-gray-12">{{ formatDateTime($user->created_at) }}</td>
-                    <td>
-                        @if ($user->status === 'active')
-                            <span class="badge badge-active">Aktif</span>
-                        @else
-                            <span class="badge badge-inactive">Tidak Aktif</span>
-                        @endif
-                    </td>
-                    <td>
-                        <a href="#" class="link-blue btn-reset-pass"
-                            data-nomor-induk="{{ $user->nomor_induk }}">Reset Password</a>
-                    </td>
-                    <td>
-                        <div class="action-buttons">
-                            <button class="btn-icon btn-view-user" data-nomor-induk="{{ $user->nomor_induk }}"
-                                title="View" type="button">
-                                <img src="{{ asset('assets/button-view.svg') }}" alt="View">
-                            </button>
-                            <a class="btn-icon" title="Edit"
-                                href="{{ route('users.edit', ['nomor_induk' => $user->nomor_induk]) }}">
-                                <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
-                            </a>
-                        </div>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </div>
-    <!-- </div> -->
+        <x-filter-button />
+      </div>
+    </x-white-box>
+    <x-table :variant="'old'">
+      <x-table-head :variant="'old'">
+          <x-table-row :variant="'old'">
+              <x-table-header :variant="'old'">NIP/NIM</x-table-header>
+              <x-table-header :variant="'old'">Nama</x-table-header>
+              <x-table-header :variant="'old'">Username</x-table-header>
+              <x-table-header :variant="'old'">Dibuat Pada</x-table-header>
+              <x-table-header :variant="'old'">Status</x-table-header>
+              <x-table-header :variant="'old'">Reset</x-table-header>
+              <x-table-header :variant="'old'">Aksi</x-table-header>
+          </x-table-row>
+      </x-table-head>
+      <tbody>
+          @foreach($response->data ?? [] as $user)
+            <x-table-row :variant="'old'">
+                <x-table-cell :variant="'old'">{{ $user->nomor_induk }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $user->nama }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $user->username }}</x-table-cell>
+                <x-table-cell 
+                  :variant="'old'" 
+                  class=" text-gray-12"
+                >
+                  {{ formatDateTime($user->created_at) }}
+                </x-table-cell>
+                <x-table-cell :variant="'old'">
+                    @if ($user->status === 'active')
+                        <span class="px-3 py-1 rounded-sm text-xs bg-[#D0DE68] flex h-6 min-w-8 min-h-2.5 items-center justify-center">Aktif</span>
+                    @else
+                        <span class="rounded-sm bg-[#FAFBEE] border-[1px] border-[#D0DE68] flex h-6 min-w-8 min-h-2.5 py-1 px-3 items-center justify-center text-[#98A725] text-xs leading-5">Tidak Aktif</span>
+                    @endif
+                </x-table-cell>
+                <x-table-cell :variant="'old'">
+                    <a href="#" onclick="handleResetUserPassButtonClick(this)" class="link-blue text-[#0076BE] text-center text-xs leading-5 text-none no-underline"
+                        data-nomor-induk="{{ $user->nomor_induk }}">Reset Password</a>
+                </x-table-cell>
+                <x-table-cell :variant="'old'">
+                    <div class="flex gap-2">
+                        <button class="p-1 border-none bg-transparent cursor-pointer" onclick="handleViewUserButtonClick(this)" data-nomor-induk="{{ $user->nomor_induk }}"
+                            title="View" type="button">
+                            <img src="{{ asset('assets/button-view.svg') }}" alt="View">
+                        </button>
+                        <a class="p-1 border-none bg-transparent cursor-pointer" title="Edit"
+                            href="{{ route('users.edit', ['nomor_induk' => $user->nomor_induk]) }}">
+                            <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
+                        </a>
+                    </div>
+                </x-table-cell>
+              </x-table-row>
+          @endforeach
+      </tbody>
+    </x-table>
     @if(isset($data['data']))
-    @include('partials.pagination', [
-        'currentPage' => $data['pagination']['current_page'],
-        'lastPage' => $data['pagination']['last_page'],
-        // "lastPage" => 10,
-        'limit' => $limit,
-        'routes' => route('users.index'),
-    ])
-    <div id="userDetailModalContainer"></div>
-
-    @include('partials.success-modal')
+      @include('partials.pagination', [
+          'currentPage' => $data['pagination']['current_page'],
+          'lastPage' => $data['pagination']['last_page'],
+          'limit' => $limit,
+          'routes' => route('users.index'),
+      ])
     @endif
+    <div id="userDetailModalContainer"></div>
+    @include('partials.success-modal')
 @endsection

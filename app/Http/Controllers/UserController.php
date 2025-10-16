@@ -2,16 +2,12 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Storage;
 
 use App\Traits\ApiResponse;
 use App\Endpoint\UserService;
-
-use Exception;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 
 class UserController extends Controller
 {
@@ -19,100 +15,120 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $sort = $request->input('sort', 'nama,asc');
-        $page = $request->input('page', 1);
-        $limit = $request->input('limit', 10);
+      $search = $request->input('search');
+      $sort = $request->input('sort', 'nama,asc');
+      $page = $request->input('page', 1);
+      $limit = $request->input('limit', 10);
 
-        $params = [
-            'search' => $search,
-            'page' => $page,
-            'sort' => $sort,
-            'limit' => $limit,
-        ];
-        
-        $url = UserService::getInstance()->getListAllUsers();
-        $response = getCurl($url, $params, getHeaders());
-        $data = json_decode(json_encode($response), true);
+      $params = [
+          'search' => $search,
+          'page' => $page,
+          'sort' => $sort,
+          'limit' => $limit,
+      ];
+      
+      $url = UserService::getInstance()->getListAllUsers();
+      $response = getCurl($url, $params, getHeaders());
+      $data = json_decode(json_encode($response), true);
 
-        if ($request->ajax()) {
-            // Tambahan pengecekan jika response tidak valid
-            if (!isset($response->data)) {
-                return $this->errorResponse($response->message);
-            }
-            
-            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+      if ($request->ajax()) {
+        if (!isset($response->data)) {
+            return $this->errorResponse($response->message);
         }
-        
-        return view('users.index', get_defined_vars());
+        return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+      }
+      
+      return view('users.index', get_defined_vars());
     }
 
     public function getUser($username)
     {
-        $url = UserService::getInstance()->getUserByUsername($username);
-        $response = getCurl($url, null, getHeaders());
+      $url = UserService::getInstance()->getUserByUsername($username);
+      $response = getCurl($url, null, getHeaders());
 
-        return view('users.view', get_defined_vars());
+      return view('users.view', get_defined_vars());
     }
 
     public function detail(Request $request)
     {
-        $nomor_induk = $request->input('nomor_induk');
-        $url = UserService::getInstance()->getUserDetail($nomor_induk);
-        $response = getCurl($url, null, getHeaders());
-        if ($request->ajax()) {
-            return view('users._modal-view', get_defined_vars())->render();
-        }
-        return view('users.view', get_defined_vars());
+      $nomor_induk = $request->input('nomor_induk');
+      $url = UserService::getInstance()->getUserDetail($nomor_induk);
+      $response = getCurl($url, null, getHeaders());
+      if ($request->ajax()) {
+          return view('users._modal-view', get_defined_vars())->render();
+      }
+      return view('users.view', get_defined_vars());
     }
 
     public function create(Request $request)
     {
-        $url = UserService::getInstance()->getListAllRoles();
-        $roles = getCurl($url, null, getHeaders());
-        if (!$roles || !isset($roles->data) || empty($roles->data)) {
-            abort(500, 'Roles not found or response invalid.');
-        }
-        return view('users.create', get_defined_vars());
+      $url = UserService::getInstance()->getListAllRoles();
+      $roles = getCurl($url, null, getHeaders());
+      if (!$roles || !isset($roles->data) || empty($roles->data)) {
+          abort(500, 'Roles not found or response invalid.');
+      }
+      return view('users.create', get_defined_vars());
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $userData = [
-            'nip' => $request->input('nip'),
-            'nama_lengkap' => $request->input('nama_lengkap'),
-            'username' => $request->input('username'),
-            'email' => $request->input('email'),
-            'status' => $request->input('status'),
-            'peran' => $request->input('peran'),
-            'type' => 'staff'
-        ];
+      $userData = array_merge($request->all(), ['type' => 'staff']);
+      logger()->info('User store debug', $userData);
 
-        logger()->info('User store debug', $userData);
+      $url = UserService::getInstance()->store();
+      $response = postCurl($url, $userData, getHeaders());
 
-        // send userData to API to create user and roles
-        $url = UserService::getInstance()->store();
-        $response = postCurl($url, $userData, getHeaders());
-
-        if ($request->ajax()) {
-            if ($response && isset($response->success) && $response->success) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'User berhasil disimpan',
-                    'data' => $response->data ?? null,
-                    'redirect_uri' => route('users.index')
-                ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => $response->message ?? 'Gagal menyimpan user',
-                    'data' => null
-                ], 422);
-            }
+      if ($request->ajax()) {
+        if ($response && isset($response->success) && $response->success) {
+          return response()->json([
+            'success' => true,
+            'message' => 'User berhasil disimpan',
+            'data' => $response->data ?? null,
+            'redirect_uri' => route('users.index')
+          ]);
         } else {
-            return redirect()->route('users.index');
+          return response()->json([
+            'success' => false,
+            'message' => $response->message ?? 'Gagal menyimpan user',
+            'data' => null
+          ], 422);
         }
+      } else {
+        return redirect()->route('users.index');
+      }
+    }
 
+    public function update(UpdateUserRequest $request, $id)
+    {
+      $userData = array_merge($request->all(), [
+        'status' => 
+          ($request->input('status') == 'active' || $request->input('status') == "true") 
+            ? 'active' 
+            : 'inactive'
+      ]);
+
+      logger()->info( 'User update debug', $userData);
+
+      $url = UserService::getInstance()->update($id);
+      $response = putCurl($url, $userData, header: getHeaders());
+      if ($request->ajax()) {
+        if ($response && isset($response->success) && $response->success) {
+          return response()->json([
+            'success' => true,
+            'message' => 'Berhasil disimpan',
+            'data' => $response->data ?? null,
+            'redirect_uri' => route('users.index')
+          ]);
+        } else {
+          return response()->json([
+            'success' => false,
+            'message' => $response->message ?? 'Gagal menyimpan',
+            'data' => null
+          ], 422);
+        }
+      } else {
+        return redirect()->route('users.index');
+      }
     }
 
     public function edit($nomor_induk)
@@ -122,64 +138,27 @@ class UserController extends Controller
         $urlRoles = UserService::getInstance()->getListAllRoles();
         $roles = getCurl($urlRoles, null, getHeaders());
         if (!$roles || !isset($roles->data) || empty($roles->data)) {
-            abort(500, 'Roles not found or response invalid.');
+          abort(500, 'Roles not found or response invalid.');
         }
         return view('users.edit', get_defined_vars());
     }
 
-    public function update(Request $request, $id)
-    {
-        $userData = [
-            'nip' => $request->input('nip'),
-            'nama_lengkap' => $request->input('nama_lengkap'),
-            'username' => $request->input('username'),
-            'email' => $request->input('email'),
-            'status' => $request->input('status'),
-            'peran' => $request->input('peran'),
-        ];
-
-        logger()->info( 'User update debug', $userData);
-
-        $url = UserService::getInstance()->update($id);
-        $response = putCurl($url, $userData, header: getHeaders());
-        if ($request->ajax()) {
-            if ($response && isset($response->success) && $response->success) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Berhasil disimpan',
-                    'data' => $response->data ?? null,
-                    'redirect_uri' => route('users.index')
-                ]);
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => $response->message ?? 'Gagal menyimpan',
-                    'data' => null
-                ], 422);
-            }
-        } else {
-            return redirect()->route('users.index');
-        }
-    }
-
     public function updateStatus(Request $request, $id)
     {
-        $status = [
-            'status' => $request->input('status')
-        ];
+        $status = ['status' => $request->input('status')];
         $url = UserService::getInstance()->updateStatus($id);
         $response = putCurl($url, $status, header: getHeaders());
         if (isset($response->success) && $response->success) {
             return response()->json([
-                'success' => true,
-                'message' => 'Status berhasil diperbarui',
-                'data' => $response->data ?? null
+              'success' => true,
+              'message' => 'Status berhasil diperbarui',
+              'data' => $response->data ?? null
             ]);
         } else {
             return response()->json([
-                'success' => false,
-                'message' => $response->message ?? 'Gagal memperbarui status',
-                'data' => null
+              'success' => false,
+              'message' => $response->message ?? 'Gagal memperbarui status',
+              'data' => null
             ], 422);
         }
     }

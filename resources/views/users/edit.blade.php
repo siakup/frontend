@@ -2,568 +2,230 @@
 
 @section('title', 'Manajemen Pengguna')
 
-@section('css')
-<style>
-    .modal-custom {
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .modal-custom-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(0,0,0,0.25); 
-        z-index: 1;
-    }
-
-    .modal-custom-content {
-        position: relative;
-        background: #fff;
-        border-radius: 14px;
-        box-shadow: 0 4px 24px rgba(0,0,0,0.12);
-        /* padding: 32px 32px 24px 32px; */
-        width: 40vw; 
-        min-width: 340px;
-        max-width: 600px;
-        z-index: 2;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .modal-custom-header {
-        border-radius: 12px 12px 0px 0px;
-        border: 1px solid var(--Surface-Border-Primary, #D9D9D9);
-        background: var(--Background-Disable-White, #F5F5F5);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        /* gap: 10px; */
-        align-self: stretch;
-    }
-
-    .modal-custom-footer {
-        display: flex;
-        justify-content: flex-start;
-    }
-
-    /* Custom dropdown style for modal select */
-    .modal-custom-content select.form-control {
-        width: 100%;
-        padding: 10px 36px 10px 16px;
-        border: 1px solid var(--Surface-Border-Secondary, #BFBFBF);
-        border-radius: 8px;
-        font-family: Poppins;
-        font-size: 14px;
-        font-weight: 400;
-        color: var(--Surface-Border-Secondary, #BFBFBF); /* grey for placeholder */
-        background: var(--Neutral-Gray-50, #FFF) url('/icons/icon-arrow-down-grey-24.svg') no-repeat right 16px center/18px 18px;
-        appearance: none;
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        box-sizing: border-box;
-        outline: none;
-        transition: border 0.2s;
-        height: 40px;
-    }
-
-    .modal-custom-content select.form-control:focus {
-        border-color: var(--Red-Red-500, #E62129);
-    }
-
-    .modal-custom-content select.form-control option {
-        color: #222;
-    }
-
-    .modal-custom-content select.form-control option[value=""] {
-        color: var(--Surface-Border-Secondary, #BFBFBF) !important;
-    }
-
-    .modal-custom-content select.form-control option[disabled][hidden] {
-        color: var(--Surface-Border-Secondary, #BFBFBF) !important;
-    }
-
-    .modal-custom-content select.form-control:not(:focus):not([value=""]):not(:invalid) {
-        color: #222;
-    }
-
-    .modal-custom-content select.form-control:focus:not([value=""]):not(:invalid) {
-        color: #222;
-    }
-
-    /* Highlight selected option in dropdown with red background */
-    .modal-custom-content select.form-control option:checked {
-        background: var(--Red-Red-500, #E62129) !important;
-        color: #fff !important;
-    }
-
-    /* Highlight hovered option in dropdown with red background */
-    .modal-custom-content select.form-control option:hover {
-        background: var(--Red-Red-500, #E62129) !important;
-        color: #fff !important;
-    }
-
-    input.form-control[readonly] {
-        background: var(--Neutral-Gray-200, #F5F5F5);
-        color: var(--Neutral-Gray-600, #8C8C8C);
-        border-color: var(--Neutral-Gray-300, #E8E8E8);
-        cursor: not-allowed;
-        opacity: 1;
-    }
-
-    @media (max-width: 900px) {
-        .modal-custom-content {
-            width: 90vw;
-            min-width: unset;
-            max-width: 98vw;
-            padding: 16px;
-        }
-
-        .modal-custom-title { font-size: 18px; }
-    }
-</style>
-@endsection
-
 @section('javascript')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton = document.getElementById('toggleButton');
-    const toggleIcon = document.getElementById('toggleIcon');
-    const toggleInfo = document.querySelector('.toggle-info');
-    let isActive = "{{ $response->data->user->status ?? 'inactive' }}" === "active";
-    const statusValue = isActive ? 'active' : 'inactive';
-
-    // Set initial state based on server value
-    toggleIcon.src = isActive ? "{{ asset('components/toggle-on-disabled-false.svg') }}" : "{{ asset('components/toggle-off-disabled-true.svg') }}";
-    toggleInfo.textContent = isActive ? "Aktif" : "Tidak Aktif";
-    document.getElementById('statusValue').value = isActive ? "active" : "inactive";
-
-    toggleButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        isActive = !isActive;
-        if (isActive) {
-            toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
-            toggleInfo.textContent = "Aktif";
-            statusValue.value = "active";
-        } else {
-            toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
-            toggleInfo.textContent = "Tidak Aktif";
-            statusValue.value = "inactive";
-        }
-        
-        document.getElementById('statusValue').value = isActive ? "active" : "inactive";
-
-        // const userId = document.getElementById('user_id').value;
-        // $.ajax({
-        //     url: `/users/${userId}/status`,
-        //     type: 'PUT',
-        //     data: JSON.stringify({ status: document.getElementById('statusValue').value}),
-        //     contentType: 'application/json',
-        //     headers: {
-        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //     },
-        //     success: function(response) {
-        //         successToast(response.message);
-        //     },
-        //     error: function(xhr) {
-        //         errorToast(errorMessage);
-        //     }
-        // });
-    });
-
-    const modal = document.getElementById('modalTambahPeran');
-    const btnShowModal = document.getElementById('btnShowModal');
-    if (btnShowModal && modal) {
-        btnShowModal.addEventListener('click', function(e) {
-            e.preventDefault(); 
-            modal.style.display = 'flex'; 
-        });
-    }
-
-    const btnBatalModal = document.getElementById('btnBatalModal');
-    // Hide modal
-    btnBatalModal.addEventListener('click', function() {
-        modal.style.display = 'none';
-    });
-
-    // Hide modal when click outside modal-custom-content only
-    modal.addEventListener('mousedown', function(e) {
-        if (e.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-
-    document.querySelectorAll('.modal-custom-content select.form-control').forEach(function(select) {
-        function updateColor() {
-            if (select.value === "") {
-                select.style.color = 'var(--Surface-Border-Secondary, #BFBFBF)';
-            } else {
-                select.style.color = '#222';
-            }
-        }
-        select.addEventListener('change', updateColor);
-        updateColor();
-    });
-
-    const roleSelect = document.getElementById('roleSelect');
-    const institusiSelect = document.getElementById('institusiSelect');
-    const btnTambahModal = document.getElementById('btnTambahModal');
-
-    function updateTambahButtonState() {
-        if (roleSelect.value && institusiSelect.value) {
-            btnTambahModal.disabled = false;
-            btnTambahModal.classList.remove('button-radius');
-            btnTambahModal.classList.add('button-outline');
-        } else {
-            btnTambahModal.disabled = true;
-            btnTambahModal.classList.remove('button-outline');
-            btnTambahModal.classList.add('button-radius');
-        }
-    }
-    roleSelect.addEventListener('change', updateTambahButtonState);
-    institusiSelect.addEventListener('change', updateTambahButtonState);
-    updateTambahButtonState();
-
-    // Chained dropdown for institusi by role
-    roleSelect.addEventListener('change', function() {
-        const roleId = this.value;
-        institusiSelect.innerHTML = '<option value="" selected disabled hidden>Pilih Institusi</option>';
-        institusiSelect.disabled = true;
-        if (roleId) {
-            fetch(`/institutions/role?role=${roleId}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data && data.data && data.data.length > 0) {
-                        data.data.forEach(function(inst) {
-                            const opt = document.createElement('option');
-                            opt.value = inst.id;
-                            opt.textContent = inst.nama;
-                            institusiSelect.appendChild(opt);
-                        });
-                        institusiSelect.disabled = false;
-                    } else {
-                        institusiSelect.disabled = true;
-                    }
-                })
-                .catch(() => {
-                    institusiSelect.disabled = true;
-                });
-        }
-    });
-
-    function formatDateTime(dateTimeStr) {
-        const date = new Date(dateTimeStr);
-
-        const formattedDate = date.toLocaleDateString('id-ID', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        });
-
-        const formattedTime = date.toLocaleTimeString('id-ID', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false
-        });
-
-        return `${formattedDate}, ${formattedTime} WIB`;
-    }
-
-    btnTambahModal.addEventListener('click', function() {
-        if (btnTambahModal.disabled) return;
-        const roleId = roleSelect.value;
-        const roleText = roleSelect.options[roleSelect.selectedIndex].textContent;
-        const institusiId = institusiSelect.value;
-        const institusiText = institusiSelect.options[institusiSelect.selectedIndex].textContent;
-        if (!roleId || !institusiId || institusiId === 'undefined') {
-            alert('Pilih peran dan institusi yang valid.');
-            return;
-        }
-        const now = new Date();
-        const createdAt = now.toLocaleString('id-ID', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-        const tbody = document.querySelector('.table tbody');
-        // Remove empty rows if present
-        tbody.querySelectorAll('tr').forEach(tr => {
-            if ([...tr.children].every(td => td.textContent.trim() === '')) tr.remove();
-        });
-        // Insert new row with data attributes for IDs
-        const tr = document.createElement('tr');
-        tr.setAttribute('data-role-id', roleId);
-        tr.setAttribute('data-institusi-id', institusiId);
-        tr.innerHTML = `<td>${roleText}</td>
-                        <td>${institusiText}</td>
-                        <td>${formatDateTime(now)}</td>
-                        <td style="display: flex; justify-content: center; align-items: center;">
-                                <button class=" btnHapusPeran btn-icon btn-hapus" title="Hapus">
-                                    <img src="{{ asset('assets/active/icon-delete.svg') }}" alt="Delete">
-                                    <span>Hapus</span>
-                                </button>
-                        </td>`;
-        tbody.insertBefore(tr, tbody.firstChild); 
-        
-        modal.style.display = 'none';
-        
-        roleSelect.value = '';
-        institusiSelect.innerHTML = '<option value="" selected disabled hidden>Pilih Institusi</option>';
-        institusiSelect.disabled = true;
-        updateTambahButtonState();
-    });
-
-    let rowToDelete = null;
-
-    document.querySelector('.table tbody').addEventListener('click', function(e) {
-        const btn = e.target.closest('.btnHapusPeran');
-        if (btn) {
-            rowToDelete = btn.closest('tr');
-            document.getElementById('modalKonfirmasiHapus').style.display = 'flex';
-        }
-    });
-
-    document.getElementById('btnYaHapus').addEventListener('click', function() {
-        if (rowToDelete) {
-            successToast("Berhasil dihapus");
-            rowToDelete.remove();
-            rowToDelete = null;
-            // If table is empty, add back empty rows
-            const tbody = document.querySelector('.table tbody');
-            if (tbody.querySelectorAll('tr').length === 0) {
-                tbody.innerHTML = `<tr><td></td><td></td><td></td><td></td></tr><tr><td></td><td></td><td></td><td></td></tr>`;
-            }
-        }
-        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
-    });
-
-    document.getElementById('btnBatalHapus').addEventListener('click', function() {
-        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
-    });
-
-    document.getElementById('btnBatalDaftarPeran').addEventListener('click', function() {
-        window.location.href = "{{ route('users.index') }}";
-    });
-
-    document.getElementById('btnSimpan').addEventListener('click', function() {
-        document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';
-    });
-
-    document.getElementById('btnCekKembali').addEventListener('click', function() {
-        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-    });
-
-    document.getElementById('btnYaSimpan').addEventListener('click', function() {
-        document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-
-        // Collect form data
-        const userId = document.getElementById('user_id').value;
-        const nip = document.getElementById('nip').value.trim();
-        const nama_lengkap = document.getElementById('nama_lengkap').value.trim();
-        const username = document.getElementById('username').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const status = document.getElementById('statusValue').value;
-
-        // Collect Daftar Peran table data
-        const peran = [];
-        document.querySelectorAll('.table tbody tr').forEach(tr => {
-            const tds = tr.querySelectorAll('td');
-            if (tds.length >= 4 && tds[0].textContent.trim() && tds[1].textContent.trim()) {
-                peran.push({
-                    role_id: tr.getAttribute('data-role-id'),
-                    institusi_id: tr.getAttribute('data-institusi-id'),
-                    role: tds[0].textContent.trim(),
-                    institusi: tds[1].textContent.trim(),
-                    created_at: tds[2].textContent.trim()
-                });
-            }
-        });
-
-        const data = {
-            nip,
-            nama_lengkap,
-            username,
-            email,
-            status,
-            peran
-        };
-
-        $.ajax({
-            url: "/users/" + userId,
-            type: 'PUT',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                console.log('AJAX Response:', response);
-                localStorage.setItem('flash_type', response.success ? 'success' : 'error');
-                localStorage.setItem('flash_message', response.message || 'Pengguna berhasil diubah');
-                window.location.href = response.redirect_uri;
-            },
-            error: function(xhr, status, error) {
-                let errorMessage = 'Gagal menyimpan data. Silakan coba lagi.';
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    errorMessage = xhr.responseJSON.message;
-                }
-                errorToast(errorMessage);
-                console.error('AJAX Error:', error);
-            }
-        });
-    });
-});
-</script>
+<script src="{{asset('js/custom/helper.js')}}"></script>
+<script src="{{asset('js/custom/user.js')}}"></script>
 @endsection
 
 @section('content')
-    <div class="page-header">
-        <div class="page-title-text">Ubah Informasi</div>
+  <x-title-page :title="'Ubah Informasi'" />
+  <x-button.back
+    :href="route('users.index')"
+    :class="'ml-4'"
+  >
+    Manajemen Pengguna
+  </x-button.back>
+
+  <x-white-box :class="''">
+    <x-title-page :title="'Ubah Informasi Data Pengguna'" />
+    <div class="flex flex-col gap-4 py-2.5 px-5">
+      <input type="hidden" id="user_id" value="{{ $response->data->user->id }}">
+      <x-form.input-container id="nip-search">
+        <x-slot name="label">NIP</x-slot>
+        <x-slot name="input">
+          <div class="w-full flex-1">
+            <x-form.search-v2 
+              class="w-full"
+              :routes="route('users.index')"
+              :fieldKey="'username'"
+              :placeholder="'Nomor Induk Pegawai (NIP)'"
+              :search="''"
+              id="nip-search"
+              value="{{ $response->data->user->nomor_induk ?? '' }}"
+              readonly
+            />
+            <input type="hidden" id="nip" name="nip" value="{{ $response->data->user->nomor_induk ?? '' }}">
+          </div>
+        </x-slot>
+      </x-form.input-container>
+
+      <x-form.input-container id="nama_lengkap">
+        <x-slot name="label">Nama Lengkap</x-slot>
+        <x-slot name="input">
+          <input 
+            type="text" 
+            id="nama_lengkap" 
+            class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" 
+            placeholder="Auto Generate" 
+            value="{{ $response->data->user->nama ?? '' }}"
+            readonly 
+          />
+        </x-slot>
+      </x-form.input-container>
+
+      <x-form.input-container id="username">
+        <x-slot name="label">Username</x-slot>
+        <x-slot name="input">
+          <input 
+            type="text" 
+            id="username" 
+            class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" 
+            placeholder="Auto Generate"
+            value="{{ $response->data->user->username ?? '' }}" 
+            readonly 
+          />
+        </x-slot>
+      </x-form.input-container>
+
+      <x-form.input-container id="email">
+        <x-slot name="label">Email</x-slot>
+        <x-slot name="input">
+          <input 
+            type="text" 
+            id="email" 
+            class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" 
+            placeholder="Auto Generate" 
+            value="{{ $response->data->user->email }}"
+            readonly />
+        </x-slot>
+      </x-form.input-container>
+
+      <x-form.toggle :id="'user-status'" :value="($response->data->user->status ?? 'inactive') === 'active'" />
+
+      <div class="flex items-center justify-end w-full px-8 py-4">
+        <x-button.primary 
+          onclick="
+            document.getElementById('modalTambahPeran').classList.add('flex');
+            document.getElementById('modalTambahPeran').classList.remove('hidden');
+          "
+          :class="''"
+          id="btnShowModal"
+        >
+          Tambah Peran
+        </x-button.primary>
+      </div>
     </div>
-    
-    <a href="{{ route('users.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Manajemen Pengguna
-    </a>
-    <div class="content-card">
-        <div class="form-title-text">Ubah Informasi Data Pengguna</div>
-        <div class="form-section">
-            <input type="hidden" id="user_id" value="{{ $response->data->user->id }}">
-            <div class="form-group">
-                <label for="nip">NIP</label>
-                <div class="input-by-search">
-                    <input type="text" id="nip" class="form-control" value="{{ $response->data->user->nomor_induk ?? '' }}" readonly>
-                </div>
-            </div>
+  </x-white-box>
 
-            <div class="form-group">
-                <label for="nama_lengkap">Nama Lengkap</label>
-                <input type="text" id="nama_lengkap" class="form-control" value="{{ $response->data->user->nama ?? '' }}"readonly>
-            </div>
-
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" class="form-control" value="{{ $response->data->user->username ?? '' }}" readonly>
-            </div>
-
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="text" id="email" class="form-control" value="{{ 'email@universitaspertamina.ac.id' }}" readonly>
-            </div>
-
-            @php
-                $isActive = ($response->data->user->status ?? 'inactive') === 'active';
-            @endphp
-            <div class="form-group">
-                <label for="status">Status</label>
-                <button id="toggleButton" class="btn-toggle" type="button">
-                    <img src="{{ asset($isActive ? 'components/toggle-on-disabled-false.svg' : 'components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
-                    <span class="toggle-info text-sm-bd">{{ $isActive ? 'Aktif' : 'Tidak Aktif' }}</span>
-                </button>
-                <input type="hidden" name="status" id="statusValue" value="{{ $isActive ? 'active' : 'inactive' }}">
-            </div>
-            <div class="right">
-                <button type="button" class="button button-outline" style="margin-top: 16px;" id="btnShowModal">Tambah Peran</button>
-            </div>
-        </div>
+  <x-white-box :class="'mx-4'">
+    <x-title-page :title="'Daftar Peran'" />
+    <x-table id="list-role" :variant="'old'">
+      <x-table-head :variant="'old'">
+        <x-table-row :variant="'old'">
+          <x-table-header :variant="'old'">Nama Peran</x-table-header>
+          <x-table-header :variant="'old'">Institusi</x-table-header>
+          <x-table-header :variant="'old'">Dibuat Pada</x-table-header>
+          <x-table-header :variant="'old'">Aksi</x-table-header>
+        </x-table-row>
+      </x-table-head>
+      <tbody>
+        @foreach($response->data->roles as $role)
+          <x-table-row 
+            data-role-id="{{ $role->id_role }}" 
+            data-institusi-id="{{ $role->id_institusi }}" 
+            :variant="'old'"
+          >
+            <x-table-cell :variant="'old'">{{ $role->role?->nama_role ?? '-' }}</x-table-cell>
+            <x-table-cell :variant="'old'">{{ $role->institusi?->nama_institusi ?? '-' }}</x-table-cell>
+            <x-table-cell :variant="'old'">{{ formatDateTime($role->created_at) }}</x-table-cell>
+            <x-table-cell :variant="'old'" class="flex items-center justify-center">
+              <x-button.secondary 
+                onclick="handleClickConfirmationDeleteRole(this)"
+                class="border-none"
+                :icon="asset('/assets/active/icon-delete.svg')"
+                :iconPosition="'left'"
+              >
+                <span>Hapus</span>
+              </x-button.secondary>
+            </x-table-cell>
+          </x-table-row>
+        @endforeach
+      </tbody>
+    </x-table>
+    <div class="gap-2 mt-4.5 justify-end items-center pb-4 px-4 flex" id="daftarPeranActions">
+      <x-button.secondary :href="route('users.index')">Batal</x-button.secondary>
+      <x-button.primary 
+        onclick="
+          document.getElementById('modalKonfirmasiSimpan').classList.add('flex');
+          document.getElementById('modalKonfirmasiSimpan').classList.remove('hidden');
+        ">Simpan</x-button.primary>
     </div>
-    <div class="content-card">
-        <div class="form-title-text">Daftar Peran</div>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Nama Peran</th>
-                        <th>Institusi</th>
-                        <th>Dibuat Pada</th>
-                        <th>Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach($response->data->roles as $role)
-                    <tr data-role-id="{{ $role->id_role }}" data-institusi-id="{{ $role->id_institusi }}">
-                        <td class="table-gray">{{ $role->role?->nama_role ?? '-' }}</td>
-                        <td  class="table-gray">{{ $role->institusi?->nama_institusi ?? '-' }}</td>
-                        <td  class="table-gray">{{ formatDateTime($role->created_at) }}</td>
-                        <td style="display: flex; justify-content: center; align-items: center;" class="table-gray">
-                            <button class="btn-icon btn-hapus btnHapusPeran" title="Hapus">
-                                <img src="{{ asset('assets/active/icon-delete.svg') }}" alt="Delete">
-                                <span>Hapus</span>
-                            </button>
-                        </td>
-                    </tr>
-                @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 24px;">
-            <button type="button" class="button button-clean" id="btnBatalDaftarPeran">Batal</button>
-            <button type="button" class="button button-outline" id="btnSimpan">Simpan</button>
-        </div>
-    </div>
+  </x-white-box>
 
-    <div id="modalTambahPeran" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Tambah Peran Pengguna</span>
-            </div>
-            <div class="modal-custom-body">
-                <div class="form-group">
-                    <label for="roleSelect">Nama Peran</label>
-                    <select id="roleSelect" class="form-control">
-                        <option value="" selected disabled hidden>Pilih Peran</option>
-                        @foreach($roles->data as $role)
-                            <option value="{{ $role->id }}">{{ $role->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="institusiSelect">Nama Institusi</label>
-                    <select id="institusiSelect" class="form-control" disabled>
-                        <option value="" selected disabled hidden>Pilih Institusi</option>
-                    </select>
-                </div>
-            </div>
-            <div class="divider"></div>
-            <div class="modal-custom-footer">
-                <button type="button" class="button button-clean" id="btnBatalModal">Batal</button>
-                <button type="button" class="button button-radius" id="btnTambahModal" disabled>Tambah</button>
-            </div>
-        </div>
-    </div>
+  <x-modal.container-pure-js id="modalTambahPeran">
+    <x-slot name="header">
+      <span class="text-lg-bd">Tambah Peran Pengguna</span>
+    </x-slot name="header">
+    <x-slot name="body">
+      <x-form.input-container id="">
+        <x-slot name="label">Nama Peran</x-slot>
+        <x-slot name="input">
+          <select 
+            id="roleSelect" 
+            class="w-full ps-3 pe-10 box-border border-[1px] border-[#D9D9D9] rounded-lg h-10" 
+            onchange="handleChangeRole(this)"
+          >
+            <option value="" selected disabled hidden>Pilih Peran</option>
+            @foreach($roles->data as $role)
+              <option value="{{ $role->id }}">{{ $role->nama }}</option>
+            @endforeach
+          </select>
+        </x-slot>
+      </x-form.input-container>
+      <x-form.input-container id="">
+        <x-slot name="label">Nama Institusi</x-slot>
+        <x-slot name="input">
+          <select 
+            id="institusiSelect" 
+            class="w-full ps-3 pe-10 box-border border-[1px] border-[#D9D9D9] rounded-lg h-10" 
+            onchange="updateTambahButtonState(document.getElementById('roleSelect'), this)" 
+            disabled
+          >
+            <option value="" selected disabled hidden>Pilih Institusi</option>
+          </select>
+        </x-slot>
+      </x-form.input-container>
+    </x-slot>
+    <x-slot name="footer">
+      <x-button.secondary 
+        onclick="
+          document.getElementById('modalTambahPeran').classList.add('hidden');
+          document.getElementById('modalTambahPeran').classList.remove('flex');
+        "
+      >
+        Cek Kembali
+      </x-button.secondary>
+      <x-button.primary id="btnTambahModal" onclick="handleClickAddRole(this)" disabled>Ya, Simpan Sekarang</x-button.primary>
+    </x-slot>
+  </x-modal.container-pure-js>
 
-    <div id="modalKonfirmasiSimpan" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Tunggu Sebentar</span>
-            </div>
-            <div class="modal-custom-body">
-                <div>Apakah anda yakin informasi anda sudah benar?</div>
-            </div>
-            <div class="modal-custom-footer">
-                <button type="button" class="button button-clean" id="btnCekKembali">Cek Kembali</button>
-                <button type="button" class="button button-outline" id="btnYaSimpan">Ya, Simpan Sekarang</button>
-            </div>
-        </div>
-    </div>
+  <x-modal.container-pure-js id="modalKonfirmasiSimpan">
+    <x-slot name="header">
+      <span class="text-lg-bd">Tunggu Sebentar</span>
+    </x-slot name="header">
+    <x-slot name="body">
+      <div>Apakah anda yakin informasi anda sudah benar?</div>
+    </x-slot>
+    <x-slot name="footer">
+      <x-button.secondary 
+        onclick="
+          document.getElementById('modalKonfirmasiSimpan').classList.add('hidden');
+          document.getElementById('modalKonfirmasiSimpan').classList.remove('flex');
+        ">
+          Cek Kembali
+        </x-button.secondary>
+      <x-button.primary id="btnYaSimpan" onclick="handleUpdateData()">Ya, Simpan Sekarang</x-button.primary>
+    </x-slot>
+  </x-modal.container-pure-js>
 
-    <div id="modalKonfirmasiHapus" class="modal-custom" style="display:none;">
-        <div class="modal-custom-backdrop"></div>
-        <div class="modal-custom-content">
-            <div class="modal-custom-header">
-                <span class="text-lg-bd">Hapus Peran Pengguna</span>
-            </div>
-            <div class="modal-custom-body">
-                <div>Apakah anda yakin ingin menghapus?</div>
-            </div>
-            <div class="modal-custom-footer">
-                <button type="button" class="button button-clean" id="btnBatalHapus">Batal</button>
-                <button type="button" class="button button-outline" id="btnYaHapus">Hapus</button>
-            </div>
-        </div>
-    </div>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+  <x-modal.container-pure-js id="modalKonfirmasiHapus">
+    <x-slot name="header">
+      <span class="text-lg-bd">Hapus Peran Pengguna</span>
+    </x-slot name="header">
+    <x-slot name="body">
+      <div>Apakah anda yakin ingin menghapus?</div>
+    </x-slot>
+    <x-slot name="footer">
+      <x-button.secondary 
+        onclick="
+          document.getElementById('modalKonfirmasiHapus').classList.add('hidden');
+          document.getElementById('modalKonfirmasiHapus').classList.remove('flex');
+        ">
+          Cek Kembali
+        </x-button.secondary>
+      <x-button.primary id="btnYaHapus" onclick="handleClickDeleteRole(this)">Ya, Hapus Sekarang</x-button.primary>
+    </x-slot>
+  </x-modal.container-pure-js>
+
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection

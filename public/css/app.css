@@ -121,6 +121,10 @@
     flex: 1 0 0;
 }
 
+* {
+  font-family: Poppins;
+}
+
 .page-title-text {
     color: var(--Neutral-Gray-800, #262626);
     font-family: Poppins;
