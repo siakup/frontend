@@ -28,7 +28,7 @@
             :routeQuery="'home'"
             :variant="'parent'"
           />
-          <x-menu.item
+          {{-- <x-menu.item
             :label="'Profil'"
             :haveIcon="true"
             :icon="asset('assets/base/icon-profile.svg')"
@@ -51,7 +51,7 @@
             :routeName="'home'"
             :routeQuery="'home'"
             :variant="'parent'"
-          />
+          /> --}}
           <x-menu.item
             :label="'Konfigurasi'"
             :haveIcon="true"
@@ -70,12 +70,12 @@
                 :routeQuery="'users*'"
                 :variant="'child'"
               />
-              <x-menu.item 
+              {{-- <x-menu.item 
                 :label="'Manajemen Peran'"
                 :routeName="'roles.index'"
                 :routeQuery="'roles*'"
                 :variant="'child'"
-              />
+              /> --}}
               <x-menu.item 
                 :label="'Akademik'"
                 :routeName="'academics-periode.index'"
@@ -132,14 +132,14 @@
             :routeQuery="'pemetaan-cpl*'"
             :variant="'parent'"
           />
-          <x-menu.item
+          {{-- <x-menu.item
             :label="'Manajemen Staf Pengajar'"
             :haveIcon="true"
             :icon="asset('assets/base/icon-prodi.svg')"
             :routeName="'lectures.index'"
             :routeQuery="'lectures*'"
             :variant="'parent'"
-          />
+          /> --}}
           <x-menu.item
             :label="'Kelompok Perwalian'"
             :haveIcon="true"
@@ -148,7 +148,7 @@
             :routeQuery="'tutelage-group*'"
             :variant="'parent'"
           />
-          <x-menu.item
+          {{-- <x-menu.item
             :label="'Penelitian'"
             :haveIcon="true"
             :icon="asset('assets/base/icon-masukan-komplain.svg')"
@@ -203,7 +203,7 @@
             :routeName="'home'"
             :routeQuery="'home'"
             :variant="'parent'"
-          />
+          /> --}}
         </x-menu.container>
     </nav>
 
