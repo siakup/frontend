@@ -46,7 +46,6 @@ class ScheduleController extends Controller
     $urlSchedule = ScheduleService::getInstance()->getSchedule();
     $responseSchedule = getCurl($urlSchedule, $params, getHeaders());
     $data = $responseSchedule->data ?? [];
-
     $rows = collect($data)->map(function ($item) {
       return [
         'id' => $item->id_kelas,
@@ -120,7 +119,7 @@ class ScheduleController extends Controller
     $pengajar = count($pengajar) > 0 ? $pengajar[$page - 1] : [];
 
     if ($request->ajax()) {
-      return view('academics.schedule.parent-institution_schedule._lecture-view', get_defined_vars())->render();
+      return view('academics.schedule.prodi_schedule._lecture-view', get_defined_vars())->render();
     }
     return redirect()->route('academics.schedule.prodi_schedule.create');
   }
@@ -321,17 +320,12 @@ return view('academics.schedule.parent-institution_schedule.create', get_defined
     $programPerkuliahanList = config('static-data.program_perkuliahan');
     $programPerkuliahanList = collect($programPerkuliahanList)->pluck('code', 'name')->toArray();
 
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data ?? [];
-
     $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
     $responsePeriode = getCurl($urlPeriode, null, getHeaders());
     $periodeList = $responsePeriode->data ?? [];
 
     $url = ScheduleService::getInstance()->detailSchedule($id);
     $response = getCurl($url, null, getHeaders());
-
 
     if (!isset($response->data)) {
       return response()->json([
@@ -606,74 +600,48 @@ return view('academics.schedule.parent-institution_schedule.create', get_defined
 
   public function edit($id)
   {
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+    $programPerkuliahanList = array_map(fn($item) => (object)$item, config('static-data.program_perkuliahan'));
 
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
+    $programStudiList = $responseProgramStudiList->data ?? [];
 
     $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
     $responsePeriode = getCurl($urlPeriode, null, getHeaders());
-    $periodeList = $responsePeriode->data;
+    $periodeList = $responsePeriode->data ?? [];
+
+    $urlDosen = UserService::getInstance()->getListLecturer();
+    $response = getCurl($urlDosen, null, getHeaders());
+    $pengajar = json_decode(json_encode($response->data->data), true);
+
+    $url = ScheduleService::getInstance()->detailSchedule($id);
+    $response = getCurl($url, null, getHeaders());
+    $data = isset($response->data) ? json_decode(json_encode($response->data), true) : [];
 
     $data = [
-      "program_perkuliahan" => "Reguler",
-      "program_studi" => "3",
-      "periode" => "17",
-      "nama_matakuliah" => "Elektronika dan Instrumentasi Geofisika",
-      "matakuliah" => [
-        "jenis_matakuliah" => "Mata Kuliah Program Studi",
-        "sks" => "2",
-        "kurikulum" => "Kurikulum 2021 - Teknik Geofisika",
-        "kode_matakuliah" => "12001",
-        "id" => "3",
-      ],
-      "nama_kelas" => "Elektronika dan Instrumentasi Geofisika - EIG4",
-      "nama_singkat" => "EIG4",
-      "kapasitas_peserta" => "50",
-      "kelas_mbkm" => false,
-      "tanggal_mulai" => "09-09-2025, 12:00",
-      "tanggal_akhir" => "30-09-2025, 12:00",
-      "selected_lecture" => [
-        [
-          "id" => "1",
-          "nama_pengajar" => "Ade Irawan, Ph.D",
-          "pengajar_program_studi" => "Ilmu Komputer",
-          "status_pengajar" => "Pengajar Utama",
-          "hari" => "Senin",
-          "ruangan" => "2",
-          "jam_mulai_kelas" => "12:00",
-          "jam_akhir_kelas" => "14:00",
-        ],
-        1 => [
-          "id" => "2",
-          "nama_pengajar" => "Dr. Tasmi, S.Si, M.Si",
-          "pengajar_program_studi" => "Ilmu Komputer",
-          "status_pengajar" => "Bukan Pengajar Utama",
-          "hari" => "Selasa",
-          "ruangan" => "3",
-          "jam_mulai_kelas" => "12:00",
-          "jam_akhir_kelas" => "14:00",
-        ]
-      ],
-      "class_schedule" => [
-        [
-          "hari" => "Senin",
-          "ruangan" => "2",
-          "jam_mulai_kelas" => "12:00",
-          "jam_akhir_kelas" => "14:00",
-        ],
-        [
-          "hari" => "Selasa",
-          "ruangan" => "2",
-          "jam_mulai_kelas" => "12:00",
-          "jam_akhir_kelas" => "14:00",
-        ]
-      ]
+      'program_perkuliahan' => $data['perkuliahan'],
+      'program_studi'       => $data['id_prodi'],
+      'periode'             =>  $data['periode']['id'],
+      'nama_matakuliah'     => $data['nama_matakuliah'],
+      'nama_kelas'          => $data['nama_jadwal'],
+      'nama_singkat'        => $data['singkatan_jadwal'],
+      'kapasitas_peserta'   => $data['jumlah_peserta'],
+      'kelas_mbkm'          => $data['is_mbkm'],
+      'tanggal_mulai'       => $data['tanggal_mulai'],
+      'tanggal_akhir'       => $data['tanggal_akhir'],
+      'nama_pengajar'       => $data['classLecturer']['nama_pengajar'] ?? [],
+      'status_pengajar'     => $data['classLecturer']['status_pengajar'] ?? [],
+      'kode_mata_kuliah'    => $data['curriculumCourse']['course']['kode_matakuliah'] ?? null,
+      'selected_lecture'    => $data['pengajar'] ?? [],
+      'class_schedule'           => $data['classSchedule'] ?? [],
     ];
-    return view('academics.schedule.prodi_schedule.edit', get_defined_vars());
+
+    return view('academics.schedule.prodi_schedule.edit', compact(
+      'programPerkuliahanList',
+      'programStudiList',
+      'periodeList',
+      'data'
+    ));
   }
 
   public function parentInstitutionStore(Request $request)
