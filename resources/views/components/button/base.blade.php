@@ -18,7 +18,7 @@
   @endif
   {{ 
     $attributes->merge([
-      'class' => "inline-flex w-fit min-w-[151px] justify-center items-center gap-1 px-4 py-2 rounded-lg cursor-pointer {$class}"
+      'class' => "inline-flex w-fit justify-center items-center gap-1 px-4 py-2 rounded-lg cursor-pointer {$class}"
     ]) 
   }}
 >

@@ -52,7 +52,7 @@
 
 @include('partials.success-notification-modal', ['route' => route('calendar.show', ['id' => $id])])
 @section('content')
-  @include('academics.calendar.create', ['id' => $id])
+  @include('academics.calendar.create', ['id' => $id, 'id_program' => $id_program, 'id_prodi' => $id_prodi]) 
   @include('academics.calendar.edit', ['id' => $id, 'data' => $data])
   <x-title-page 
     :title="'Lihat Event Kalender Akademik - Universitas Pertamina - Periode Akademik '
@@ -80,7 +80,7 @@
               array_filter(
                 $programPerkuliahanList, 
                 function($item) use($id_program) { 
-                  return $item->name == urldecode($id_program); 
+                  return $item['name'] == urldecode($id_program); 
                 }
               )
             ) > 0 
@@ -88,10 +88,10 @@
                   array_filter(
                     $programPerkuliahanList, 
                     function($item) use($id_program) { 
-                      return $item->name == urldecode($id_program); 
+                      return $item['name'] == urldecode($id_program); 
                     }
                   )
-                )[0]->name
+                )[0]['name']
               : ''
           "
           :imgSrc="asset('assets/active/icon-arrow-down.svg')"
@@ -129,7 +129,7 @@
           :imgSrc="asset('assets/active/icon-arrow-down.svg')"
           :isIconCanRotate="true"
           :isOptionRedirectableToURLQueryParameter="true"
-          :queryParameter="'program_perkuliahan'"
+          :queryParameter="'program_studi'"
           :url="route('calendar.show', ['id' => $id])"
           :dropdownItem="array_column($programStudiList, 'id', 'nama')"
         />
@@ -186,7 +186,7 @@
         <x-button.secondary 
           :icon="asset('assets/icon-upload-red-500.svg')"
           :iconPosition="'right'"
-          :href="route('calendar.upload', ['id' => $id])"
+          :href="route('calendar.upload', ['id' => $id, 'program_studi' => $id_prodi, 'program_perkuliahan' => $id_program])"
         >
           Impor Event Kalender Akademik
         </x-button.secondary>

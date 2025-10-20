@@ -49,32 +49,11 @@
       <span class="text-md-bd">Reset Password</span>
       <div class="flex items-center justify-center gap-3">
           <x-button.secondary :href="route('users.index')">Batal</x-button.secondary>
-          <x-button.primary onclick="handleReset()">Reset Password</x-button.primary>
+          <x-button.primary onclick="handleReset('{{ route('users.index') }}')">Reset Password</x-button.primary>
       </div>
     </div>
   </x-slot>
 </x-modal.container-pure-js>
 
-<script>
-  function handleReset() {
-    document.getElementById('modalResetPassword').style.display = 'none';
-    const userId = document.getElementById('user_id').value;
-
-    $.ajax({
-        url: "/users/" + userId + "/update-password",
-        type: 'POST',
-        data: {},
-        contentType: 'application/json',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(response) {
-            window.location.href = "{{ route('users.index') }}?success=" + encodeURIComponent(response.message);
-        },
-        error: function(xhr) {
-            errorToast(errorMessage);
-        }
-    });
-  }
-</script>
+<script src="{{asset('js/custom/user.js')}}"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">

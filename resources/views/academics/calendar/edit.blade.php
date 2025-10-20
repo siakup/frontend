@@ -17,7 +17,7 @@
     modalEditEvent.classList.add('flex');
     modalEditEvent.classList.remove('hidden');
 
-    editTanggalMulaiInput = flatpickr("#modalEditEvent #tanggal-mulai", {
+    editTanggalMulaiInput = flatpickr("#tanggal-mulai", {
         locale: 'id',
         enableTime: true,
         dateFormat: "d-m-Y, H:i",
@@ -34,7 +34,7 @@
         }
     });
 
-    editTanggalSelesaiInput = flatpickr("#modalEditEvent #tanggal-akhir", {
+    editTanggalSelesaiInput = flatpickr("#tanggal-akhir", {
         locale: 'id',
         enableTime: true,
         dateFormat: "d-m-Y, H:i",
@@ -123,8 +123,8 @@
       </x-button.secondary>
       <x-button.primary 
         onclick="
-          document.querySelector('#modalEditEvent #modalKonfirmasiSimpan').classList.add('flex');
-          document.querySelector('#modalEditEvent #modalKonfirmasiSimpan').classList.remove('hidden');
+          document.querySelector('#modalKonfirmasiEdit').classList.add('flex');
+          document.querySelector('#modalKonfirmasiEdit').classList.remove('hidden');
           document.querySelector('#modalEditEvent').classList.add('hidden');
           document.querySelector('#modalEditEvent').classList.remove('flex');
         " 
@@ -135,7 +135,7 @@
       </x-button.primary>
     </x-slot>
   </x-modal.container-pure-js>
-  <x-modal.container-pure-js id="modalKonfirmasiSimpan">
+  <x-modal.container-pure-js id="modalKonfirmasiEdit">
     <x-slot name="header">
       <span class="text-lg-bd">Tunggu Sebentar</span>
       <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="ikon peringatan">
@@ -148,8 +148,8 @@
         onclick="
           document.querySelector('#modalEditEvent').classList.add('flex');
           document.querySelector('#modalEditEvent').classList.remove('hidden');
-          document.querySelector('#modalEditEvent #modalKonfirmasiSimpan').classList.add('hidden');
-          document.querySelector('#modalEditEvent #modalKonfirmasiSimpan').classList.remove('flex');
+          document.querySelector('#modalKonfirmasiEdit').classList.add('hidden');
+          document.querySelector('#modalKonfirmasiEdit').classList.remove('flex');
         "
       >
         Cek Kembali

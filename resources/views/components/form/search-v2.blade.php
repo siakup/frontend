@@ -1,4 +1,10 @@
-@props(['routes', 'placeholder', 'fieldKey', 'search'])
+@props([
+  'routes', 
+  'placeholder', 
+  'fieldKey', 
+  'search',
+  'inputParentClass' => 'w-full'
+])
 <script>
   function refreshTable(searchKey, routes) {
       $.ajax({
@@ -65,16 +71,17 @@
             }
             dropdown.innerHTML = '';
             data.data.forEach(value => {
+              console.log(value, fieldKey);
                 const item = document.createElement('div');
                 item.className = 'dropdown-item';
-                item.textContent = value[fieldKey];
+                item.textContent = Array.isArray(fieldKey) ? fieldKey.map(field => value[field]).join(' - ') : value[fieldKey];
                 item.onclick = () => {
                     dropdown.querySelectorAll('.dropdown-item').forEach(
                         i => i.classList.remove('active'));
                     item.classList.add('active');
-                    e.value = value[fieldKey];
+                    e.value = value[Array.isArray(fieldKey) ? fieldKey[0] : fieldKey];
                     dropdown.style.display = 'none';
-                    refreshTable(value[fieldKey], routes);
+                    refreshTable(value[Array.isArray(fieldKey) ? fieldKey[0] : fieldKey], routes);
                 };
                 dropdown.appendChild(item);
             });
@@ -88,14 +95,14 @@
   }
 </script>
 
-<div class="w-full">
-  <div class="relative flex items-center">
+<div class="{{ $inputParentClass }}">
+  <div class="relative flex items-center px-[12px] py-[8px] border-[1px] border-solid border-[#D9D9D9] rounded-lg w-full {{ $attributes->has('readonly') ? 'border-[#E8E8E8] bg-[#F5F5F5] cursor-not-allowed' : '' }}">
       <input 
         type="text" 
         placeholder="{{$placeholder}}" 
         {{
           $attributes->merge([
-            'class' => "px-[12px] py-[8px] border-[1px] border-solid border-[#D9D9D9] rounded-lg text-sm read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:border-[#E8E8E8] read-only:cursor-not-allowed",
+            'class' => "text-sm read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:border-[#E8E8E8] read-only:cursor-not-allowed focus:border-none focus:outline-none",
           ])
         }}
         @if($attributes->has('id'))
@@ -106,7 +113,7 @@
         @if($attributes->has('oninput'))
           oninput="{{ $attributes->get('oninput') }}"
         @else
-          oninput="handleSearch(this, '{{$routes}}', '{{$fieldKey}}')"
+          oninput="handleSearch(this, '{{$routes}}', {{ is_array($fieldKey) ? json_encode($fieldKey) : json_encode($fieldKey)}})"
         @endif
         autocomplete="off"
         value="{{ $search }}"

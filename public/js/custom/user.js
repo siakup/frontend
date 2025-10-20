@@ -9,6 +9,7 @@ function handleCreateData(route) {
     data: JSON.stringify(data),
     contentType: 'application/json',
     headers: {
+      'X-Requested-With': 'XMLHttpRequest',
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     success: function(response) {
@@ -40,7 +41,9 @@ function handleUpdateData() {
       data: JSON.stringify(data),
       contentType: 'application/json',
       headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'X-Requested-With': 'XMLHttpRequest',
+        'Accept': 'application/json'
       },
       success: function(response) {
         console.log('AJAX Response:', response);
@@ -87,7 +90,12 @@ function handleChooseUser(element) {
   const nipSelect = document.getElementById('nip-search');
   const emailInput = document.getElementById('email');
   
-  fetch(`/users/generate-username?name=${encodeURIComponent(element.getAttribute('data-nama'))}`)
+  fetch(`/users/generate-username?name=${encodeURIComponent(element.getAttribute('data-nama'))}`, {
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest', 
+      'Accept': 'application/json'
+    }
+  })
     .then(res => res.json())
     .then(data => {
       if (data && data.data) {
@@ -121,7 +129,12 @@ function handleSearchNIP(element) {
     return;
   }
   nipTimeout = setTimeout(() => {
-    fetch(`/users/search-by-nip?search=${encodeURIComponent(val)}`)
+    fetch(`/users/search-by-nip?search=${encodeURIComponent(val)}`, {
+      headers: {
+        'X-Requested-With' : 'XMLHttpRequest',
+        'Accept': 'application/json'
+      }
+    })
       .then(res => res.json())
       .then(data => {
         if (data && data.data && data.data.length > 0) {
@@ -183,7 +196,12 @@ function handleChangeRole(element) {
   institusiSelect.innerHTML = '<option value="" selected disabled hidden>Pilih Institusi</option>';
   institusiSelect.disabled = true;
   if (roleId) {
-    fetch(`/institutions/role?role=${roleId}`)
+    fetch(`/institutions/role?role=${roleId}`, {
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest', 
+        'Accept': 'application/json'
+      }
+    })
       .then(response => response.json())
       .then(data => {
         if (data && data.data && data.data.length > 0) {
@@ -315,4 +333,62 @@ function collectData() {
   };
 
   return data;
+}
+
+function handleViewUserButtonClick(element, route) {
+  const nomorInduk = element.getAttribute('data-nomor-induk');
+  if (nomorInduk) {
+    $.ajax({
+      url: route, 
+      method: 'GET',
+      data: { nomor_induk: nomorInduk }, 
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      success: function(html) {
+        $('#userDetailModalContainer').html(html);
+        $('#modalDetailPengguna').removeClass('hidden').addClass('flex');
+      }
+    });
+  }
+}
+
+function handleResetUserPassButtonClick(element, route) {
+  const nomorInduk = element.getAttribute('data-nomor-induk');
+  if (nomorInduk) {
+    $.ajax({
+        url: route, 
+        method: 'GET',
+        data: { nomor_induk: nomorInduk }, 
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        success: function(html) {
+          $('#userDetailModalContainer').html(html);
+          $('#modalResetPassword').removeClass('hidden').addClass('flex');
+        }
+    });
+  }
+}
+
+function handleReset(routeRedirected) {
+  document.getElementById('modalResetPassword').style.display = 'none';
+  const userId = document.getElementById('user_id').value;
+
+  $.ajax({
+      url: "/users/" + userId + "/update-password",
+      type: 'POST',
+      data: {},
+      contentType: 'application/json',
+      headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+          'X-Requested-With': 'XMLHttpRequest'
+      },
+      success: function(response) {
+          window.location.href = routeRedirected+"?success=" + encodeURIComponent(response.message);
+      },
+      error: function(xhr) {
+          errorToast(errorMessage);
+      }
+  });
 }

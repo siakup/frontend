@@ -3,57 +3,21 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('javascript')
-    <script>
-      function handleViewUserButtonClick(element) {
-        const nomorInduk = element.getAttribute('data-nomor-induk');
-        if (nomorInduk) {
-          $.ajax({
-              url: "{{ route('users.detail') }}", 
-              method: 'GET',
-              data: { nomor_induk: nomorInduk }, 
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-              },
-              success: function(html) {
-                $('#userDetailModalContainer').html(html);
-                $('#modalDetailPengguna').removeClass('hidden').addClass('flex');
-              }
-          });
-        }
-      }
+  <script src="{{asset('js/custom/user.js')}}"></script>
+  <script>
+    function showSuccessModal(message) {
+      document.getElementById('successModalMessage').textContent = message;
+      document.getElementById('successModal').style.display = 'block';
+    }
 
-      function handleResetUserPassButtonClick(element) {
-        const nomorInduk = element.getAttribute('data-nomor-induk');
-        if (nomorInduk) {
-          $.ajax({
-              url: "{{ route('users.resetPassword') }}", 
-              method: 'GET',
-              data: { nomor_induk: nomorInduk }, 
-              headers: {
-              'X-Requested-With': 'XMLHttpRequest'
-              },
-              success: function(html) {
-                $('#userDetailModalContainer').html(html);
-                $('#modalResetPassword').removeClass('hidden').addClass('flex');
-              }
-          });
-        }
-      }
-
-      function showSuccessModal(message) {
-          document.getElementById('successModalMessage').textContent = message;
-          document.getElementById('successModal').style.display = 'block';
-      }
-
-      function closeSuccessModal() {
-          document.getElementById('successModal').style.display = 'none';
-      }
-
-      @if (request('success'))
-          showSuccessModal(@json(request('success')));
-          window.history.replaceState(null, '', window.location.pathname);
-      @endif
-    </script>
+    function closeSuccessModal() {
+      document.getElementById('successModal').style.display = 'none';
+    }
+    @if (request('success'))
+      showSuccessModal(@json(request('success')));
+      window.history.replaceState(null, '', window.location.pathname);
+    @endif
+  </script>
 @endsection
 
 @section('content')
@@ -102,25 +66,29 @@
                 </x-table-cell>
                 <x-table-cell :variant="'old'">
                     @if ($user->status === 'active')
-                        <span class="px-3 py-1 rounded-sm text-xs bg-[#D0DE68] flex h-6 min-w-8 min-h-2.5 items-center justify-center">Aktif</span>
+                      <x-badge class="bg-[#D0DE68]">Aktif</x-badge>
                     @else
-                        <span class="rounded-sm bg-[#FAFBEE] border-[1px] border-[#D0DE68] flex h-6 min-w-8 min-h-2.5 py-1 px-3 items-center justify-center text-[#98A725] text-xs leading-5">Tidak Aktif</span>
+                      <x-badge class="bg-[#FAFBEE] text-[#98A725] leading-5 border-[1px] border-[#D0DE68]">Tidak Aktif</x-badge>
                     @endif
                 </x-table-cell>
                 <x-table-cell :variant="'old'">
-                    <a href="#" onclick="handleResetUserPassButtonClick(this)" class="link-blue text-[#0076BE] text-center text-xs leading-5 text-none no-underline"
+                    <a href="#" onclick="handleResetUserPassButtonClick(this, '{{ route('users.resetPassword') }}')" class="link-blue text-[#0076BE] text-center text-xs leading-5 text-none no-underline"
                         data-nomor-induk="{{ $user->nomor_induk }}">Reset Password</a>
                 </x-table-cell>
                 <x-table-cell :variant="'old'">
-                    <div class="flex gap-2">
-                        <button class="p-1 border-none bg-transparent cursor-pointer" onclick="handleViewUserButtonClick(this)" data-nomor-induk="{{ $user->nomor_induk }}"
-                            title="View" type="button">
-                            <img src="{{ asset('assets/button-view.svg') }}" alt="View">
-                        </button>
-                        <a class="p-1 border-none bg-transparent cursor-pointer" title="Edit"
-                            href="{{ route('users.edit', ['nomor_induk' => $user->nomor_induk]) }}">
-                            <img src="{{ asset('assets/button-edit.svg') }}" alt="Edit">
-                        </a>
+                    <div class="flex gap-2 items-center justify-center">
+                      <x-button.base
+                          :icon="asset('assets/button-view.svg')"
+                          class="scale-250"
+                          onclick="handleViewUserButtonClick(this, '{{ route('users.detail') }}')" 
+                          data-nomor-induk="{{ $user->nomor_induk }}"
+                      />
+                      <x-button.base
+                          :icon="asset('assets/button-edit.svg')"
+                          :href="route('users.edit', ['nomor_induk' => $user->nomor_induk])"
+                          class="scale-210"
+                          data-nomor-induk="{{ $user->nomor_induk }}"
+                      />
                     </div>
                 </x-table-cell>
               </x-table-row>

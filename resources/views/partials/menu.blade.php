@@ -1,7 +1,7 @@
-<div class="sidebar">
-    <div class="logo">
-        <img src="{{ asset('images/uper.png') }}" alt="Logo" class="logo-image">
-        <div class="logo-lines">
+<div class="fixed left-0 top-0 w-80 h-[100vh] bg-white z-1000 flex flex-col">
+    <div class="shrink-0 py-5 px-2.5">
+        <img src="{{ asset('images/uper.png') }}" alt="Logo" class=" w-[180px] h-auto block my-0 mx-auto">
+        <div class="flex items-center justify-center gap-1 mb-1 w-[156px] mx-auto">
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="5" viewBox="0 0 40 5" fill="none">
                 <path d="M0.5 2.5H39.5" stroke="#0076BE" stroke-width="8" />
             </svg>
@@ -12,223 +12,203 @@
                 <path d="M0.5 2.5H59.5" stroke="#98A725" stroke-width="8" />
             </svg>
         </div>
-        <!-- <img src="{{ asset('images/siakad-.svg') }}" alt="Logo Text" class="logo-text"> -->
-        <div class="logo-text-container">
-            <span class="sistem">Sistem</span>
-            <span class="informasi">Informasi</span>
-            <span class="akademik">Akademik</span>
+        <div class="flex items-center justify-center gap-1 mb-1 w-[156px] mx-auto text-center text-xs leading-5">
+            <span class="text-[#0076BE]">Sistem</span>
+            <span class="text-[#E62129]">Informasi</span>
+            <span class="text-[#98A725]">Akademik</span>
         </div>
     </div>
-    <nav class="menu">
-        <ul class="menu-list">
-            <li class="menu-item">
-                <a href="{{ route('home') }}" class="menu-link {{ Request::is('home') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-home.svg') }}" alt="Home Icon" class="menu-icon">
-                        <span>Beranda</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-profile.svg') }}" alt="Profile Icon" class="menu-icon">
-                        <span>Profil</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-pesan.svg') }}" alt="Message Icon" class="menu-icon">
-                        <span>Pesan</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-pengumuman.svg') }}" alt="News Icon" class="menu-icon">
-                        <span>Pengumuman</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item has-submenu">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-admin.svg') }}" alt="Settings Icon" class="menu-icon">
-                        <span>Konfigurasi</span>
-                    </div>
-                    <img src="{{ asset('assets/base/icon-arrow-down.svg') }}" alt="Expand" class="arrow-icon">
-                </a>
-                <ul class="submenu">
-                    <li class="submenu-item">
-                        <a href="{{ route('users.index') }}" class="{{ Request::is('users*') ? 'active' : '' }}">
-                            <span>Manajemen Pengguna</span>
-                        </a>
-                    </li>
-                    <li class="submenu-item">
-                        <a href="{{ route('roles.index') }}" class="{{ Request::is('roles*') ? 'active' : '' }}">
-                            <span>Manajemen Peran</span>
-                        </a>
-                    </li>
-                    <li class="submenu-item">
-                        <a href="{{ route('academics-periode.index') }}"
-                            class="{{ Request::is('academics*') ? 'active' : '' }}">
-                            <span>Akademik</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="menu-item">
-                <a href="{{ route('calendar.index') }}"
-                    class="menu-link {{ Request::is('calendar*') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-admin.svg') }}" alt="Kalender Akademik Icon"
-                            class="menu-icon">
-                        <span>Kalender Akademik</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="menu-item">
-                <a href="{{ route('curriculum.list') }}"
-                    class="menu-link {{ Request::is('curriculums*') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-kurikulum.svg') }}" alt="Mata Kuliah Icon"
-                            class="menu-icon">
-                        <span>Kurikulum</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="menu-item">
-                <a href="{{ route('academics.schedule.prodi-schedule.index') }}"
-                class="menu-link {{ Request::is('persiapan-perkuliahan/jadwal-kuliah*') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-calendar.svg') }}"
-                            alt="Jadwal Kuliah Icon"
-                            class="menu-icon">
-                        <span>Jadwal Kuliah</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="menu-item">
-                <a href="{{ route('academics.auto-assign.index') }}"
-                   class="menu-link {{ Request::is('persiapan-perkuliahan/auto-assign*') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-prodi.svg') }}"
-                             alt="Auto Assign Peserta Kelas Icon"
-                             class="menu-icon">
-                        <span>Auto Assign Peserta Kelas</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="menu-item">
-                <a href="{{ route('study.index') }}"
-                    class="menu-link {{ Request::is('mata-kuliah*') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-mata-kuliah.svg') }}" alt="Mata Kuliah Icon"
-                            class="menu-icon">
-                        <span>Mata Kuliah</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="{{ route('cpl-mapping.index') }}"
-                    class="menu-link {{ Request::is('pemetaan-cpl*') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-prodi.svg') }}" alt="Mata Kuliah Icon"
-                            class="menu-icon">
-                        <span>Pemetaan CPL</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="{{ route('lectures.index') }}"
-                    class="menu-link {{ Request::is('lectures*') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-prodi.svg') }}" alt="Staff Icon" class="menu-icon">
-                        <span>Manajemen Staf Pengajar</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="{{ route('tutelage-group.list-student') }}"
-                    class="menu-link {{ Request::is('tutelage-group*') ? 'active' : '' }}">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/icon-two-people.svg') }}" alt="Staff Icon" class="menu-icon">
-                        <span>Kelompok Perwalian</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-masukan-komplain.svg') }}" alt="Research Icon"
-                            class="menu-icon">
-                        <span>Penelitian</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-pembayaran.svg') }}" alt="Payment Icon"
-                            class="menu-icon">
-                        <span>Pembayaran (Mahasiswa)</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-file.svg') }}" alt="Report Icon" class="menu-icon">
-                        <span>Laporan</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-ekuivalensi.svg') }}" alt="Survey Icon"
-                            class="menu-icon">
-                        <span>Manajemen Survei</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-pesan.svg') }}" alt="Faq Icon" class="menu-icon">
-                        <span>Manajemen FAQ</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-document-book.svg') }}" alt="Guide Icon"
-                            class="menu-icon">
-                        <span>Petunjuk Penggunaan</span>
-                    </div>
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="/home" class="menu-link">
-                    <div class="menu-content">
-                        <img src="{{ asset('assets/base/icon-lock.svg') }}" alt="Password Icon" class="menu-icon">
-                        <span>Ganti Password</span>
-                    </div>
-                </a>
-            </li>
-        </ul>
+    <nav class="flex-1 overflow-y-auto h-[calc(100vh-169px-56px)] scroll-thin">
+        <x-menu.container :variant="'main'">
+          <x-menu.item
+            :label="'Beranda'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-home.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Profil'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-profile.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Pesan'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-pesan.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Pengumuman'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-pengumuman.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Konfigurasi'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-admin.svg')"
+            :routeName="''"
+            :variant="'parent'"
+            :routeChild="['users*', 'roles*', 'academics*']"
+          >
+            <x-menu.container 
+              :variant="'submenu'"
+              :routeChild="['users*', 'roles*', 'academics*']"
+            >
+              <x-menu.item 
+                :label="'Manajemen Pengguna'"
+                :routeName="'users.index'"
+                :routeQuery="'users*'"
+                :variant="'child'"
+              />
+              <x-menu.item 
+                :label="'Manajemen Peran'"
+                :routeName="'roles.index'"
+                :routeQuery="'roles*'"
+                :variant="'child'"
+              />
+              <x-menu.item 
+                :label="'Akademik'"
+                :routeName="'academics-periode.index'"
+                :routeQuery="'academics*'"
+                :variant="'child'"
+              />
+            </x-menu.container>
+          </x-menu.item>
+          <x-menu.item
+            :label="'Kalender Akademik'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-admin.svg')"
+            :routeName="'calendar.index'"
+            :routeQuery="'calendar*'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Kurikulum'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-kurikulum.svg')"
+            :routeName="'curriculum.list'"
+            :routeQuery="'curriculums*'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Jadwal Kuliah'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-calendar.svg')"
+            :routeName="'academics.schedule.prodi-schedule.index'"
+            :routeQuery="'persiapan-perkuliahan/jadwal-kuliah*'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Auto Assign Peserta Kelas'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-prodi.svg')"
+            :routeName="'academics.auto-assign.index'"
+            :routeQuery="'persiapan-perkuliahan/auto-assign*'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Mata Kuliah'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-mata-kuliah.svg')"
+            :routeName="'study.index'"
+            :routeQuery="'mata-kuliah*'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Pemetaan CPL'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-prodi.svg')"
+            :routeName="'cpl-mapping.index'"
+            :routeQuery="'pemetaan-cpl*'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Manajemen Staf Pengajar'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-prodi.svg')"
+            :routeName="'lectures.index'"
+            :routeQuery="'lectures*'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Kelompok Perwalian'"
+            :haveIcon="true"
+            :icon="asset('assets/icon-two-people.svg')"
+            :routeName="'tutelage-group.list-student'"
+            :routeQuery="'tutelage-group*'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Penelitian'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-masukan-komplain.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Pembayaran (Mahasiswa)'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-pembayaran.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Laporan'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-file.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Manajemen Survei'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-ekuivalensi.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Manajemen FAQ'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-pesan.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Petunjuk Penggunaan'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-document-book.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+          <x-menu.item
+            :label="'Ganti Password'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-lock.svg')"
+            :routeName="'home'"
+            :routeQuery="'home'"
+            :variant="'parent'"
+          />
+        </x-menu.container>
     </nav>
 
-    <div class="sidebar-footer">
-        <div class="footer">
+    <div class="shrink-0">
+        <div class="text-[#262626] text-xs leading-5 py-4 px-6">
             <span>Copyright © 2025 Universitas Pertamina.</span>
             <span>All Rights Reserved.</span>
         </div>

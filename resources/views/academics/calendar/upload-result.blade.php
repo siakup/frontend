@@ -18,16 +18,18 @@
       <x-table-head :variant="'old'">
         <x-table-row :variant="'old'">
           <x-table-header :variant="'old'">Nama Event</x-table-header>
+          <x-table-header :variant="'old'">Program Perkuliahan</x-table-header>
           <x-table-header :variant="'old'">Tanggal Mulai</x-table-header>
           <x-table-header :variant="'old'">Tanggal Selesai</x-table-header>
         </x-table-row>
       </x-table-head>
       <tbody>
-        @foreach($data as $d)
+        @foreach($datas as $data)
           <x-table-row :variant="'old'">
-              <x-table-cell :variant="'old'">{{$d['name_event']}}</x-table-cell>
-              <x-table-cell :variant="'old'">{{ formatDateTime($d['tanggal_mulai']) }}</x-table-cell>
-              <x-table-cell :variant="'old'">{{ formatDateTime($d['tanggal_selesai']) }}</x-table-cell>
+              <x-table-cell :variant="'old'">{{$data['Nama Event']}}</x-table-cell>
+              <x-table-cell :variant="'old'">{{$data['Program Perkuliahan']}}</x-table-cell>
+              <x-table-cell :variant="'old'">{{ formatDateTime($data['Tanggal Mulai']) }}</x-table-cell>
+              <x-table-cell :variant="'old'">{{ formatDateTime($data['Tanggal Selesai']) }}</x-table-cell>
           </x-table-row>
           @endforeach
       </tbody>
@@ -43,12 +45,14 @@
         Simpan
       </x-button.primary>
     </div>
-    <form action="{{route('study.save-upload', ['id' => $id])}}" method="POST">
+    <form action="{{route('calendar.save', ['id' => $id])}}" method="POST">
       @csrf
-      @foreach($data as $index => $event)
-        <input type="hidden" name="data[{{$index}}][name_event]" value="{{$event['name_event']}}">
-        <input type="hidden" name="data[{{$index}}][tanggal_mulai]" value="{{$event['tanggal_mulai']}}">
-        <input type="hidden" name="data[{{$index}}][tanggal_selesai]" value="{{$event['tanggal_selesai']}}">
+      @foreach($datas as $index => $event)
+        <input type="hidden" name="data[{{$index}}][name_event]" value="{{$event['Nama Event']}}">
+        <input type="hidden" name="data[{{$index}}][tanggal_mulai]" value="{{$event['Tanggal Mulai']}}">
+        <input type="hidden" name="data[{{$index}}][tanggal_selesai]" value="{{$event['Tanggal Selesai']}}">
+        <input type="hidden" name="data[{{$index}}][program_studi]" value="{{$event['Program Studi']}}">
+        <input type="hidden" name="data[{{$index}}][program_perkuliahan]" value="{{$event['Program Perkuliahan']}}">
       @endforeach
       <x-modal.container-pure-js id="modalKonfirmasiUpload">
         <x-slot name="header">
