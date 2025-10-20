@@ -47,7 +47,6 @@
     }
   }
 </script>
-
 <form action="{{ route('calendar.store', ['id' => $id]) }}" method="POST">
   @csrf
   <x-modal.container-pure-js id="modalAddEvent">
@@ -71,8 +70,8 @@
             onclick="updateSaveButtonState()"
           />
           <input type="hidden" value="" name="name_event">
-          <input type="hidden" value="" name="status">
-          <input type="hidden" value="" name="id_calendar">
+          <input type="hidden" value="{{$id_program}}" name="id_program">
+          <input type="hidden" value="{{$id_prodi}}" name="id_prodi">
         </x-slot>
       </x-form.input-container>
       <x-form.input-container>

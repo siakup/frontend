@@ -6,6 +6,7 @@
     <div class="breadcrumb-item active">Upload Mata Kuliah</div>
 @endsection
 
+@include('partials.success-notification-modal', ['route' => route('calendar.upload', ['id' => $id])])
 @section('content')
   <x-title-page :title="'Unggah Event'" />
   <x-button.back :href="route('calendar.show', ['id' => $id])">View Event Kalender Akademik</x-button.back>
@@ -19,8 +20,8 @@
             <div>
                 Allowed Type: [.xlsx, .xls, .csv]
             </div>
-            <x-button.link href="{{ route('academics-event.template', ['type' => 'xlsx']) }}">Download Sample Data (.xlsx)</x-button.link>
-            <x-button.link href="{{ route('academics-event.template', ['type' => 'csv']) }}">Download Sample Data (.csv)</x-button.link>
+            <x-button.link href="{{ route('calendar.template', ['id' => $id,'type' => 'xlsx', 'program_studi' => $id_prodi, 'program_perkuliahan' => $id_program]) }}">Download Sample Data (.xlsx)</x-button.link>
+            <x-button.link href="{{ route('calendar.template', ['id' => $id,'type' => 'csv', 'program_studi' => $id_prodi, 'program_perkuliahan' => $id_program]) }}">Download Sample Data (.csv)</x-button.link>
         </div>
         <div class="grow-1 shrink-1 basis-0 min-w-3/4 flex flex-col gap-4 relative items-start w-full">
             <div class="font-medium w-full">Impor CSV Event Akademik File</div>
@@ -32,38 +33,18 @@
     </div>
     <div class="my-0 mx-auto flex flex-col p-5 max-w-96/100 w-full gap-2.5 rounded-xl border-[1px] border-[#D9D9D9] bg-[#FAFAFA]">
       <div>
-        File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma ","<br>
+        File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma "," atau file .xlsx<br>
         Urutan kolom sebagai berikut:
       </div>
       <ul>
-        <li class="text-[#E62129]">kode: kode mata kuliah*)</li>
-        <li class="text-[#E62129]">nama: nama mata kuliah *)</li>
-        <li class="text-[#E62129]">sks: jumlah sks mata kuliah *)</li>
-        <li class="text-[#E62129]">semester: semester mata kuliah *)</li>
-        <li class="text-[#E62129]">tujuan: tujuan mata kuliah</li>
-        <li class="text-[#E62129]">deskripsi: deskripsi singkat mata kuliah</li>
-        <li class="text-[#E62129]">jenis: jenis mata kuliah, pilih salah satu dari Mata Kuliah Dasar Teknik, Mata Kuliah Dasar Umum, Mata Kuliah Program Studi, Mata Kuliah Sains Dasar, Mata Kuliah Universitas Pertamina*)</li>
-        <li class="text-[#E62129]">koordinator: NIP Dosen koordinator</li>
-        <li class="text-[#E62129]">spesial: y/n, y jika mata kuliah spesial, n jika tidak *)</li>
-        <li class="text-[#E62129]">dibuka: y/n, y jika mata kuliah dibuka untuk prodi lain, n jika tidak *)</li>
-        <li class="text-[#E62129]">wajib: y/n, y jika mata kuliah wajib, n jika tidak *)</li>
-        <li class="text-[#E62129]">mbkm: y/n, y jika mata kuliah MBKM, n jika tidak *)</li>
-        <li class="text-[#E62129]">aktif: y/n, y jika mata kuliah aktif, n jika tidak *)</li>
-        <li class="text-[#E62129]">prasyarat mata kuliah: kode mata kuliah prasyarat</li>
-        <li class="text-[#E62129]">namasingkat: nama singkat atau akronim mata kuliah *)</li>
-        <li class="text-[#E62129]">*) regured, ika ma kliai nsongi, ika ad ulang akan menganti data sebelumnya, prasyarat mata kuliah hanya 1</li>
+        <li class="text-[#E62129]"><span class="font-bold">Program Perkuliahan</span>: jenis program perkuliahan (pilih salah satu) *)</li>
+        <li class="text-[#E62129]"><span class="font-bold">Program Studi</span>: nama program studi (pilih berdasarkan program studi yang tercantum pada template) *)</li>
+        <li class="text-[#E62129]"><span class="font-bold">Nama Event</span>: nama event yang ditambahkan ke kalender akademik (hapus baris pada suatu nama event yang ada pada template jika tidak sesuai)  *)</li>
+        <li class="text-[#E62129]"><span class="font-bold">Tanggal Mulai</span>: tanggal mulai suatu event pada kalender akademik (isi sesuai format yyyy-mm-dd hh:mm:ss dengan yyyy adalah tahun dengan 4 digit, mm dengan nomor bulan dengan 2 digit (jika satuan, tambahkan 0 didepannya), dd dengan tanggal (jika satuan, tambahkan 0 didepannya), hh dengan jam (jika satuan, tambahkan 0 didepannya), mm dengan menit (jika satuan tambahkan 0 didepannya), ss dengan detik (jika satuan, tambahkan 0 didepannya), ) *)</li>
+        <li class="text-[#E62129]"><span class="font-bold">Tanggal Selesai</span>: tanggal mulai suatu event pada kalender akademik (isi sesuai format yyyy-mm-dd hh:mm:ss dengan yyyy adalah tahun dengan 4 digit, mm dengan nomor bulan dengan 2 digit (jika satuan, tambahkan 0 didepannya), dd dengan tanggal (jika satuan, tambahkan 0 didepannya), hh dengan jam (jika satuan, tambahkan 0 didepannya), mm dengan menit (jika satuan tambahkan 0 didepannya), ss dengan detik (jika satuan, tambahkan 0 didepannya), ) *)</li>
+        
+        <li class="text-[#E62129]"><br> *) data perlu diisi, jika tidak diisi salah satu kolom pada baris, data dianggap tidak valid dan data pada baris bersangkutan tidak akan tersimpan</li>
       </ul>
-      <div>
-        kode; nama; sks; semester; tujuan; deskripsi; jenis; koordinator; spesial; dibuka; wajib; mbkm; aktif;
-        prasyarat; namasingkat<br>
-        UP001; Kalkulus; 3; 1; '', ', Mata Kuliah Dasar Umum; 116020; n; y; y; n; у; "*; K; у<br>
-        UP002; Kimia Dasar 2; 2; 1; *', * Mata Kuliah Dasar Umum; 116024; n; y; y; n; y; UP003-UP321; KD2; y<br>
-      </div>
-      <div>
-        <span>Jumlah Data : 0</span><br>
-        <span>Jumlah Data Sukses: 0</span><br>
-        <span>Jumlah Data Gagal:</span>
-      </div>
     </div>
     <x-modal.container-pure-js id="modalKonfirmasiBatal">
       <x-slot name="header">

@@ -36,10 +36,16 @@ class AcademicController extends Controller
 
         $url = PeriodAcademicService::getInstance()->getListAllPeriode();
         $response = getCurl($url, $params, getHeaders());
-
+        
         if ($request->ajax()) {
-            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+          return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
+
+        $namaSemester = [
+            1 => 'Ganjil',
+            2 => 'Genap',
+            3 => 'Pendek',
+        ];
 
         return view('academics.periode.index', [
             'data' => $response,
@@ -47,6 +53,7 @@ class AcademicController extends Controller
             'sort' => $sort,
             'page' => $page,
             'limit' => $limit,
+            'namaSemester' => $namaSemester
         ]);
     }
 

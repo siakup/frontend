@@ -53,7 +53,7 @@ class EventCalendarService
 
     public function bulkStore()
     {
-        return $this->url() . '/bulk-store';
+        return $this->url() . '/calendars/bulk-store';
     }
 
     public function edit($id)

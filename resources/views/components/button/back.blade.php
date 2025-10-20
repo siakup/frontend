@@ -1,4 +1,4 @@
-@props(['href' => $href, 'class' => ''])
+@props(['href' => '', 'class' => ''])
 
 <a 
   href="{{ $href }}"

@@ -122,6 +122,12 @@ class Menu
                           'isExpandable' => false,
                         ]
                       ]
+                    ],
+                    'generate-riwayat-akademik' => [
+                      'name' => 'Generate Riwayat Akademik',
+                      'url' => '/calendar/generate',
+                      'parent' => 'calendar.generate',
+                      'isExpandable' => false,
                     ]
                 ]
             ],

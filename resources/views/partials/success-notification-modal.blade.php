@@ -7,4 +7,10 @@
             }, 3000);
         })
     </script>
+@elseif($errors->has('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            successToast("{{ $errors->first('error') ?? 'Gagal menyimpan data' }}");
+        })
+    </script>
 @endif
