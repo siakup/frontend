@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/subject', function (){
-    return view('study.index');
+Route::get('/subject', function () {
+    return view('subjects.index');
 })->name('subject');
 
 Route::get('/subject/create', function () {
@@ -61,7 +62,7 @@ Route::get('/subject/create', function () {
 })->name('subject.create');
 
 
-Route::get('/subject/edit/', function (){
+Route::get('/subject/edit/', function () {
     $currentPage = 1;
     $totalPages = 1;
     $perPage = 10;
@@ -131,14 +132,13 @@ Route::get('/subject/edit/', function (){
         ],
     ];
 
-    $addedPrasyarat = array_values(array_filter($prasyaratMataKuliahList, fn ($item) => $item['isAdded']));
+    $addedPrasyarat = array_values(array_filter($prasyaratMataKuliahList, fn($item) => $item['isAdded']));
 
     return view('subjects.edit', compact('currentPage', 'totalPages', 'perPage', 'subject', 'prasyaratMataKuliahList', 'addedPrasyarat'));
-
 })->name('subject.edit');
 
-Route::get('/subject/view', function (){
-     $currentPage = 1;
+Route::get('/subject/view', function () {
+    $currentPage = 1;
     $totalPages = 1;
     $perPage = 10;
 
@@ -207,7 +207,7 @@ Route::get('/subject/view', function (){
         ],
     ];
 
-    $addedPrasyarat = array_values(array_filter($prasyaratMataKuliahList, fn ($item) => $item['isAdded']));
+    $addedPrasyarat = array_values(array_filter($prasyaratMataKuliahList, fn($item) => $item['isAdded']));
 
     return view('subjects.view', compact('currentPage', 'totalPages', 'perPage', 'subject', 'prasyaratMataKuliahList', 'addedPrasyarat'));
 })->name('subject.view');

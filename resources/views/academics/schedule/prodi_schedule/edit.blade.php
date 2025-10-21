@@ -539,21 +539,26 @@
                           <span id="selectedEventLabel" class="text-black">{{$data['program_perkuliahan']}}</span>
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                       </button>
+
                       <div id="Option-Program-Perkuliahan" class="sort-dropdown select !top-[20%] !left-[15.9%]" style="display: none;">
                           @foreach ($programPerkuliahanList as $programPerkuliahan)
-                            <div class="dropdown-item" data-event="{{$programPerkuliahan->name}}">{{$programPerkuliahan->name}}</div>
+                            <div class="dropdown-item" data-event="{{$programPerkuliahan->name}}"> {{$programPerkuliahan->name}}</div>
                           @endforeach
                       </div>
                       <input type="hidden" value="{{$data['program_perkuliahan']}}" name="program_perkuliahan">
                   </div>
                 </div>
                 <div class="form-group w-full">
-                  <label for="program_studi">Program Studi</label>
                   <div class="filter-box" id="program_studi">
                       <button type="button" class="button-clean input" id="sortProgramStudi">
-                          <span id="selectedEventLabel" class="text-black">{{current(array_filter($programStudiList, function ($programStudi) use($data) { return $programStudi->id == $data['program_studi']; }))->nama}}</span>
+                          <span id="selectedEventLabel" class="text-black">
+                              {{ current(array_filter($programStudiList, function ($programStudi) use($data) { 
+                                  return $programStudi->id == $data['program_studi']; 
+                              }))->nama }}
+                          </span>
                           <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
                       </button>
+
                       <div id="Option-Program-Studi" class="sort-dropdown select !top-[20%] !left-[64.6%]" style="display: none;">
                           @foreach ($programStudiList as $programStudi)
                             <div class="dropdown-item" data-event="{{$programStudi->id}}">{{$programStudi->nama}}</div>
@@ -583,11 +588,11 @@
                   <label for="Course-Name">Nama Mata Kuliah</label>
                   <div class="flex items-center border-[1px] border-[#D9D9D9] rounded-lg px-[12px] !bg-[#F5F5F5]">
                       <input placeholder="Pilih Mata Kuliah" name="nama_matakuliah" type="text" id="Class-Name" class="!border-transparent focus:outline-none !bg-[#F5F5F5]" value="{{$data['nama_matakuliah']}}" readonly>
-                      <input placeholder="Pilih Mata Kuliah" name="matakuliah[jenis_matakuliah]" type="hidden" value="{{$data['matakuliah']['jenis_matakuliah']}}">
+                      {{-- <input placeholder="Pilih Mata Kuliah" name="matakuliah[jenis_matakuliah]" type="hidden" value="{{$data['matakuliah']['jenis_matakuliah']}}">
                       <input placeholder="Pilih Mata Kuliah" name="matakuliah[sks]" type="hidden" value="{{$data['matakuliah']['sks']}}">
                       <input placeholder="Pilih Mata Kuliah" name="matakuliah[kurikulum]" type="hidden" value="{{$data['matakuliah']['kurikulum']}}">
                       <input placeholder="Pilih Mata Kuliah" name="matakuliah[kode_matakuliah]" type="hidden" value={{$data['matakuliah']['kode_matakuliah']}}>
-                      <input placeholder="Pilih Mata Kuliah" name="matakuliah[id]" type="hidden" value="{{$data['matakuliah']['id']}}">
+                      <input placeholder="Pilih Mata Kuliah" name="matakuliah[id]" type="hidden" value="{{$data['matakuliah']['id']}}"> --}}
                       <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </div>
                 </div>
@@ -729,14 +734,14 @@
                   @forelse($data['class_schedule'] as $key => $class_schedule)
                   <x-table-row>
                     <x-table-cell>{{$class_schedule['hari']}}</x-table-cell>
-                    <x-table-cell>{{$class_schedule['jam_mulai_kelas']}}</x-table-cell>
-                    <x-table-cell>{{$class_schedule['jam_akhir_kelas']}}</x-table-cell>
-                    <x-table-cell>{{$class_schedule['ruangan']}}</x-table-cell>
+                    <x-table-cell>{{$class_schedule['mulai_kelas']}}</x-table-cell>
+                    <x-table-cell>{{$class_schedule['selesai_kelas']}}</x-table-cell>
+                    <x-table-cell>{{$class_schedule['nama_ruangan']}}</x-table-cell>
                     <x-table-cell>
                       <input type="hidden" name="class_schedule[{{$key}}]['hari']" value="{{$class_schedule['hari']}}" />
-                      <input type="hidden" name="class_schedule[{{$key}}]['ruangan']" value="{{$class_schedule['ruangan']}}" />
-                      <input type="hidden" name="class_schedule[{{$key}}]['jam_mulai_kelas']" value="{{$class_schedule['jam_mulai_kelas']}}" />
-                      <input type="hidden" name="class_schedule[{{$key}}]['jam_akhir_kelas']" value="{{$class_schedule['jam_akhir_kelas']}}" />
+                      <input type="hidden" name="class_schedule[{{$key}}]['ruangan']" value="{{$class_schedule['nama_ruangan']}}" />
+                      <input type="hidden" name="class_schedule[{{$key}}]['jam_mulai_kelas']" value="{{$class_schedule['mulai_kelas']}}" />
+                      <input type="hidden" name="class_schedule[{{$key}}]['jam_akhir_kelas']" value="{{$class_schedule['selesai_kelas']}}" />
                       <div class="center flex items-center w-full justify-center">
                         <button type="button" onclick="onClickDelete(this)" class="btn-icon btn-delete !flex !items-center !justify-center gap-1" title="Hapus" >
                           <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
