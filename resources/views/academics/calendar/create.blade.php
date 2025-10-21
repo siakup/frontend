@@ -54,7 +54,7 @@
       <span class="text-lg-bd">Tambah Event Akademik</span>
     </x-slot>
     <x-slot name="body">
-      <x-form.input-container>
+      <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Nama Event</x-slot>
         <x-slot name="input">
           <x-form.dropdown 
@@ -74,13 +74,13 @@
           <input type="hidden" value="{{$id_prodi}}" name="id_prodi">
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container>
+      <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Tanggal Mulai</x-slot>
         <x-slot name="input">
           <x-form.calendar id="create-tanggal-mulai" name="tanggal_mulai" oninput="updateSaveButtonState()" />
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container>
+      <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Tanggal Selesai</x-slot>
         <x-slot name="input">
           <x-form.calendar id="create-tanggal-akhir" name="tanggal_selesai" oninput="updateSaveButtonState()" />
