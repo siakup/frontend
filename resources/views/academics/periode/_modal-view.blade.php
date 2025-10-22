@@ -1,11 +1,9 @@
-
-
 <x-modal.container-pure-js id="modalPeriodeAkademik">
   <x-slot name="header">
     <span class="text-lg-bd">Lihat Periode Akademik</span>
     <button 
       type="button" 
-      class="modal-close-btn"
+      class="absolute top-4 right-5 bg-none border-none text-[2rem] text-[#888] cursor-pointer z-10 transition-all duration-200 hover:text-[#E74C3C]"
       onclick="
         document.getElementById('modalPeriodeAkademik').classList.add('hidden');
         document.getElementById('modalPeriodeAkademik').classList.remove('flex');

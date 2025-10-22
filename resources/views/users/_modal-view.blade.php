@@ -3,7 +3,7 @@
     <span class="text-lg-bd w-3/4 text-center">Lihat Informasi Detail Pengguna</span>
     <button 
       type="button" 
-      class="absolute top-4 right-5 bg-none border-none text-[2rem] text-[#888] cursor-pointer z-10 transition-colors duration-200" 
+      class="absolute top-4 right-5 bg-none border-none text-[2rem] text-[#888] cursor-pointer z-10 transition-all duration-200 hover:text-[#E74C3C]" 
       onclick="
         document.getElementById('modalDetailPengguna').classList.remove('flex');
         document.getElementById('modalDetailPengguna').classList.add('hidden');
