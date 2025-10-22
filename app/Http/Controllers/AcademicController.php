@@ -6,15 +6,10 @@ use App\Endpoint\EventAcademicService;
 use App\Endpoint\PeriodAcademicService;
 use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Excel as ExcelFormat;
-// use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 use App\Traits\ApiResponse;
@@ -192,7 +187,6 @@ class AcademicController extends Controller
 
     public function eventEdit($id)
     {
-
         $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
 
@@ -203,6 +197,7 @@ class AcademicController extends Controller
 
     public function eventUpdate(Request $request, $id)
     {
+      dd($request->all());
         $request->validate([
             'nama_event' => 'required'
         ], [

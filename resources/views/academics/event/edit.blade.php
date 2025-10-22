@@ -6,197 +6,86 @@
     <div class="breadcrumb-item active">Akademik Event</div>
 @endsection
 
-@section('css')
-<style>
-  .checkbox-group {
-    display: flex;
-    gap: 60px;
-  }
-
-  .checkbox-form {
-    display: flex;
-    gap: 8px;
-  }
-
-  .checkbox-form label {
-    width: max-content;
-    font-weight: 400;
-    font-size: 14px;
-  }
-
-  .checkbox-form input {
-    accent-color: #E62129;
-    border-radius: 3px;
-  }
-
-  input.form-control[readonly] {
-      background: var(--Neutral-Gray-200, #F5F5F5);
-      color: var(--Neutral-Gray-600, #8C8C8C);
-      border-color: var(--Neutral-Gray-300, #E8E8E8);
-      cursor: not-allowed;
-      opacity: 1;
-  }
-  
-  .input {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    gap: 3px;
-  }
-  .input span {
-    color: #E62129;
-    font-size: 12px;
-  }
-</style>
-@endsection
-
-@section('javascript')
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const toggleButton = document.getElementById('toggleButton');
-    const toggleIcon = document.getElementById('toggleIcon');
-    const toggleInfo = document.querySelector('.toggle-info');
-    let isActive = @json($data['status'] == 'active' ? true : false);
-  
-    if (isActive) {
-        toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
-        toggleInfo.textContent = "Aktif";
-        toggleInfo.style.color = "black";
-    } else {
-        toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
-        toggleInfo.textContent = "Tidak Aktif";
-        toggleInfo.style.color = "#8C8C8C";
-    }
-
-    toggleButton.addEventListener('click', function(e) {
-      e.preventDefault();
-      isActive = !isActive;
-      const input = document.getElementById('statusValue');
-      if (isActive) {
-          input.value = "active";
-          toggleIcon.src = "{{ asset('components/toggle-on-disabled-false.svg') }}";
-          toggleInfo.textContent = "Aktif";
-          toggleInfo.style.color = "black";
-        } else {
-          input.value = "inactive";
-          toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
-          toggleInfo.textContent = "Tidak Aktif";
-          toggleInfo.style.color = "#8C8C8C"
-      }
-    });
-
-    const btnBatalUbahEvent = document.getElementById('btnBatalUbahEvent');
-    btnBatalUbahEvent.addEventListener("click", () => {
-      window.location.href = "{{ route('academics-event.index') }}"
-    });
-
-    const formCheckDatas = ["nilai", "irs", "lulus", "registrasi", "yudisium", "survei", "dosen"];
-    let flag = {
-      nilai:  @json($data['nilai_on']),
-      irs:  @json($data['irs_on']),
-      lulus:  @json($data['lulus_on']),
-      registrasi:  @json($data['registrasi_on']),
-      yudisium:  @json($data['yudisium_on']),
-      survei:  @json($data['survei_on']),
-      dosen:  @json($data['dosen_on'])
-    }
-    
-    formCheckDatas.map(check => {
-      document.querySelector(`label[for="${check}"]`).style.color = flag[check] ? "#262626" : "#8C8C8C";
-      document.getElementById(check).addEventListener("change", function (e) {
-        if(e.target.checked) {
-          document.querySelector(`label[for="${check}"]`).style.color = "#262626";
-        } else {
-          document.querySelector(`label[for="${check}"]`).style.color = "#8C8C8C";
-        }
-      })
-    })
-    
-  })
-</script>
-@endsection
-
 @section('content')
 <form action="{{route('academics-event.update', ['id' => $id])}}" method="POST">
   @csrf
   @method('PUT')
-  <div class="page-header">
-      <div class="page-title-text">Ubah Event Akademik</div>
-  </div>
-
-  <a href="{{ route('academics-event.index') }}" class="button-no-outline-left">
-      <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Event Akademik
-  </a>
-  
-  <div class="content-card">
-    <div class="form-title-text" style="padding: 20px;">Ubah Event Akademik</div>
-      <div class="form-section">
-        <div class="form-group">
-            <label for="name">Nama Event</label>
-            <div class="input-by-search input">
-                <input type="text" id="name" class="form-control" value="{{$data['nama_event']}}" name="nama_event" placeholder="Nama Event">
-                @error('nama_event')
-                  <span>{{ $message }}</span>
-                @enderror
-            </div>
-        </div>
-        <div class="form-group">
-          <label>Flag</label>
-          <div class="checkbox-group">
-            <div class="checkbox-form">
-              <input id="nilai" type="checkbox" name="nilai_on" class="form-control" value="true" @if($data['nilai_on']) checked @endif>
-              <label for="nilai">Nilai</label>
-            </div>
-            <div class="checkbox-form">
-              <input id="irs" type="checkbox" name="irs_on" class="form-control" value="true" @if($data['irs_on']) checked @endif>
-              <label for="irs">IRS</label>
-            </div>
-            <div class="checkbox-form">
-              <input id="lulus" type="checkbox" name="lulus_on" class="form-control" value="true" @if($data['lulus_on']) checked @endif>
-              <label for="lulus"l>Lulus</label>
-            </div>
-            <div class="checkbox-form">
-              <input id="registrasi" type="checkbox" name="registrasi_on" class="form-control" value="true" @if($data['registrasi_on']) checked @endif>
-              <label for="registrasi">Registrasi</label>
-            </div>
-            <div class="checkbox-form">
-              <input id="yudisium" type="checkbox" name="yudisium_on" class="form-control" value="true" @if($data['yudisium_on']) checked @endif>
-              <label for="yudisium">Yudisium</label>
-            </div>
-            <div class="checkbox-form">
-              <input id="survei" type="checkbox" name="survei_on" class="form-control" value="true" @if($data['survei_on']) checked @endif>
-              <label for="survei">Survei</label>
-            </div>
-            <div class="checkbox-form">
-              <input id="dosen" type="checkbox" name="dosen_on" class="form-control" value="true" @if($data['dosen_on']) checked @endif>
-              <label for="dosen">Dosen</label>
-            </div>
+  <x-title-page :title="'Ubah Event Akademik'" />
+  <x-button.back class="ml-4" :href="route('academics-event.index')">Event Akademik</x-button.back> 
+  <x-white-box :class="''">
+    <x-title-page :title="'Ubah Event Akademik'" />
+    <div class="px-5 pt-2.5 pb-0 flex flex-col gap-4">
+      <x-form.input-container class="min-w-[150px]" id="name-container">
+        <x-slot name="label">Nama Event</x-slot>
+        <x-slot name="input">
+          <div class="flex flex-col w-full">
+              <input 
+                type="text" 
+                id="name" 
+                class="w-full pe-10 box-border ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10" 
+                name="nama_event"
+                value="{{ $data['nama_event'] }}" 
+                placeholder='Nama Event'
+                oninput=""
+              />
+              @error('nama_event')
+                <span>{{ $message }}</span>
+              @enderror
           </div>
-        </div>
-        <div class="form-group">
-          <label>Status</label>
-          <div class="toggle-row"></div>
-          <button id="toggleButton" class="btn-toggle">
-              <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
-              <span class="toggle-info text-sm-bd">Tidak Aktif</span>
-          </button>
-          <input type="hidden" name="status" id="statusValue" value="{{$data['status']}}">
-        </div>
-      </div>
-      <div style="display: flex; gap: 20px; justify-content: flex-end; margin: 20px;">
-        <button type="button" class="button button-clean" id="btnBatalUbahEvent" style="padding: 8px 54.5px; margin: 0px;">Batal</button>
-        <button type="button" class="button button-outline btnSimpan" id="btnSimpan" style="padding: 8px 54.5px; margin: 0px;">Simpan</button>
-      </div>
+        </x-slot>
+      </x-form.input-container>
+      <x-form.input-container class="min-w-[150px]" id="flag">
+        <x-slot name="label">Flag</x-slot>
+        <x-slot name="input">
+          <div class="flex gap-8 justify-items-start py-3">
+            <x-form.checklist :id="'nilai'" :value="'true'" :label="'Nilai'" :name="'nilai_on'" :checked="$data['nilai_on']" />
+            <x-form.checklist :id="'irs'" :value="'true'" :label="'IRS'" :name="'irs_on'" :checked="$data['irs_on']" />
+            <x-form.checklist :id="'lulus'" :value="'true'" :label="'Lulus'" :name="'lulus_on'" :checked="$data['lulus_on']" />
+            <x-form.checklist :id="'registrasi'" :value="'true'" :label="'Registrasi'" :name="'registrasi_on'" :checked="$data['registrasi_on']" />
+            <x-form.checklist :id="'yudisium'" :value="'true'" :label="'Yudisium'" :name="'yudisium_on'" :checked="$data['yudisium_on']" />
+            <x-form.checklist :id="'survei'" :value="'true'" :label="'Survei'" :name="'survei_on'" :checked="$data['survei_on']" />
+            <x-form.checklist :id="'dosen'" :value="'true'" :label="'Dosen'" :name="'dosen_on'" :checked="$data['dosen_on']" />
+          </div>
+        </x-slot>
+      </x-form.input-container>
+      <x-form.toggle :id="'statusValue'" :value="$data['status'] === 'active'" />
     </div>
-    
-    @include('partials.modal', [
-      'modalId' => 'modalKonfirmasiSimpan',
-      'modalTitle' => 'Tunggu Sebentar',
-      'modalIcon' => asset('assets/base/icon-caution.svg'),
-      'modalMessage' => 'Apakah Anda yakin informasi yang diubah sudah benar?',
-      'triggerButton' => 'btnSimpan',
-      'cancelButtonLabel' => 'Cek Kembali',
-      'actionButtonLabel' => 'Ya, Ubah Sekarang'
-    ]);
+    <div class="flex gap-5 justify-end m-5">
+      <x-button.secondary :href="route('academics-event.index')">Batal</x-button.secondary>
+      <x-button.primary 
+        onclick="
+          document.getElementById('modalKonfirmasiSimpan').classList.add('flex');
+          document.getElementById('modalKonfirmasiSimpan').classList.remove('hidden');
+        "
+      >
+        Simpan
+      </x-button.primary>
+    </div>
+  </x-white-box>
+
+  <x-modal.container-pure-js id="modalKonfirmasiSimpan">
+    <x-slot name="header">
+      <span class="text-lg-bd">Tunggu Sebentar</span>
+      <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="ikon peringatan">
+    </x-slot>
+    <x-slot name="body">
+      Apakah Anda yakin informasi yang diubah sudah benar?
+    </x-slot>
+    <x-slot name="footer">
+      <x-button.secondary
+        onclick="
+          document.getElementById('modalKonfirmasiSimpan').classList.add('hidden');
+          document.getElementById('modalKonfirmasiSimpan').classList.remove('flex');
+        "
+      >
+        Cek Kembali
+      </x-button.secondary>
+      <x-button.primary
+        type="submit"
+      >
+        Ya, Ubah Sekarang
+      </x-button.primary>
+    </x-slot>
+  </x-modal.container-pure-js>
 </form>
 @endsection

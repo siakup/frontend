@@ -105,8 +105,8 @@
       <div class="flex items-center" id="StudyProgramSection">
         <x-title-page :title="'Program Studi'" />
         <x-form.dropdown 
-          :buttonId="'sortButtonCampus'"
-          :dropdownId="'sortCampus'"
+          :buttonId="'sortButtonStudyProgram'"
+          :dropdownId="'sortStudyProgram'"
           :label="
           count(
             array_filter(

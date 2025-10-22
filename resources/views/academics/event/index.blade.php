@@ -6,376 +6,194 @@
     <div class="breadcrumb-item active">Akademik</div>
 @endsection
 
-@section('css')
-    <style>
-        .center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
-        }
-
-        .center .btn-icon {
-            display: flex;
-            align-items: center;
-            justify-items: center;
-            text-decoration: none;
-            gap: 2px;
-            font-size: 12px !important;
-            width: auto !important;
-        }
-
-        .center .btn-delete-event-academic {
-            color: #8C8C8C;
-        }
-
-        .center .btn-view-event-academic {
-            color: #262626;
-        }
-
-        .center .btn-edit-event-academic {
-            color: #E62129;
-        }
-
-          .modal-custom-content {
-              max-width: 600px;
-              z-index: 2;
-              align-items: center;
-              gap: 16px;
-              align-self: auto;
-          }
-
-        .active-lable {
-            background-color: #D0DE68;
-            border-radius: 2px;
-            padding: 2px 29px;
-        }
-
-        .inactive-lable {
-            background-color: #FAFBEE;
-            color: #98A725;
-            border-radius: 2px;
-            padding: 2px 10px;
-        }
-
-        .modal-custom {
-            align-items: start;
-        }
-
-        @media (max-width: 900px) {
-            .modal-custom-content {
-                width: 90vw;
-                min-width: unset;
-                max-width: 98vw;
-                padding: 16px;
-            }
-
-            .modal-custom-title {
-                font-size: 18px;
-            }
-        }
-
-        .academics-menu {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-            margin-bottom: 24px;
-        }
-
-        .academics-menu .button-clean,
-        .academics-menu .button-outline {
-            height: 48px;
-            min-height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            font-family: Poppins;
-            border-radius: 10px;
-            padding: 0 32px;
-            box-sizing: border-box;
-        }
-
-        .btn-icon span {
-            font-family: Poppins;
-            font-size: 12px;
-            font-weight: 400;
-            color: inherit;
-        }
-
-        .status-lable {
-            margin-left: auto;
-            margin-right: auto;
-            text-align: center;
-        }
-
-        .btn-edit-event-academic {
-            color: #E62129;
-        }
-
-        #btnUpload:hover img {
-            filter: brightness(0) invert(1);
-        }
-    </style>
-@endsection
-
 @section('javascript')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const input = document.getElementById('searchInput');
-            const dropdown = document.getElementById('searchDropdown');
-
-            // Create loading indicator
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.className = 'dropdown-item text-center';
-            loadingIndicator.innerHTML = 'Sedang mencari...';
-
-            input.addEventListener('input', function() {
-                const keyword = this.value.trim();
-                if (keyword.length < 1) {
-                    dropdown.style.display = 'none';
-                    return;
-                }
-                dropdown.innerHTML = '';
-                dropdown.appendChild(loadingIndicator);
-                dropdown.style.display = 'block';
-                $.ajax({
-                    url: `{{ route('academics-event.index') }}`,
-                    method: 'GET',
-                    data: {
-                        search: keyword
-                    },
-                    dataType: 'json',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(data) {
-                        if (!data.success || !Array.isArray(data.data) || data.data.length ===
-                            0) {
-                            dropdown.innerHTML =
-                                '<div class="dropdown-item text-center">Tidak ada hasil ditemukan</div>';
-                            return;
-                        }
-                        dropdown.innerHTML = '';
-                        data.data.forEach(event => {
-                            const item = document.createElement('div');
-                            item.className = 'dropdown-item';
-                            item.textContent = event.nama_event;
-                            item.onclick = () => {
-                                dropdown.querySelectorAll('.dropdown-item').forEach(
-                                    i => i.classList.remove('active'));
-                                item.classList.add('active');
-                                input.value = event.nama_event;
-                                dropdown.style.display = 'none';
-                                refreshTable(event.nama_event);
-                            };
-                            dropdown.appendChild(item);
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        dropdown.innerHTML =
-                            '<div class="dropdown-item text-center text-danger">Terjadi kesalahan, silakan coba lagi</div>';
-                    }
-                });
-            });
-
-            document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
-                const id = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                $.ajax({
-                    url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id',
-                        id),
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(response) {
-                        document.getElementById('modalKonfirmasiHapus').removeAttribute(
-                            'data-id');
-                        document.getElementById('modalKonfirmasiHapus').style.display = 'none';
-                        successToast('Berhasil dihapus');
-                        setTimeout(() => {
-                            window.location.href =
-                                "{{ route('academics-event.index') }}";
-                        }, 5000);
-                    },
-                    error: function() {
-                        $('tbody').html(
-                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                        );
-                    }
-                });
-            });
-
-            function refreshTable(nama_event) {
-                $.ajax({
-                    url: '{{ route('academics-event.index') }}',
-                    method: 'GET',
-                    data: {
-                        search: nama_event
-                    },
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function(response) {
-                        window.location.href = '{{ route('academics-event.index') }}' + '?search=' +
-                            encodeURIComponent(nama_event);
-                    },
-                    error: function() {
-                        $('tbody').html(
-                            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-                        );
-                    }
-                });
-            }
-
-            document.addEventListener('click', function(e) {
-                const btn = e.target.closest('.btn-view-event-academic');
-                if (btn) {
-                    const id = btn.getAttribute('data-id');
-                    if (id) {
-                        $.ajax({
-                            url: "{{ route('academics-event.detail') }}",
-                            method: 'GET',
-                            data: {
-                                id: id
-                            },
-                            headers: {
-                                'X-Requested-With': 'XMLHttpRequest'
-                            },
-                            success: function(html) {
-                                $('#eventDetailModalContainer').html(html);
-                                $('#modalDetailEvent').show();
-                            }
-                        });
-                    }
-                }
-            });
-        })
-    </script>
-    @include('partials.success-notification-modal', ['route' => route('academics-event.index')])
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script>
+    function onClickViewDetailEventAcademic(element, route) {
+      const id = element.getAttribute('data-id');
+      if (id) {
+        $.ajax({
+          url: route,
+          method: 'GET',
+          data: {
+              id: id
+          },
+          headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+          },
+          success: function(html) {
+              $('#eventDetailModalContainer').html(html);
+              $('#modalDetailEvent').removeClass('hidden').addClass('flex');
+          }
+        });
+      }
+    }
+    
+    function onClickDeleteEventAcademic(element, redirectRoute, requestRoute) {
+      const modalKonfirmasiHapus = element.parentElement.parentElement.parentElement;
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+      $.ajax({
+          url: requestRoute,
+          method: 'DELETE',
+          headers: {
+            'X-CSRF-TOKEN': csrfToken,
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          success: function(response) {
+            modalKonfirmasiHapus.removeAttribute('data-id');
+            modalKonfirmasiHapus.classList.add('hidden');
+            modalKonfirmasiHapus.classList.remove('flex');
+            successToast('Berhasil dihapus');
+            setTimeout(() => {
+                window.location.href = redirectRoute;
+            }, 5000);
+          },
+          error: function() {
+            $('tbody').html(
+              '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
+            );
+          }
+      });
+    }
+  </script>
+  @include('partials.success-notification-modal', ['route' => route('academics-event.index')])
 @endsection
 
 @section('content')
-    <div class="academics-layout">
-        @include('academics.layouts.navbar-academic')
-        <div class="academics-slicing-content content-card">
-
-            <div class="academics-menu">
-                <a href="{{ route('academics-event.upload') }}" class="button button-clean" id="btnUpload">
-                    Unggah Event Akademik
-                    <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Upload">
-                </a>
-                <a href="{{ route('academics-event.create') }}" class="button button-outline">Tambah Event Akademik</a>
-            </div>
-            <div class="content-card content-card-search">
-                <div class="card-header">
-                    <div class="search-section">
-                        <div class="search-container">
-                            <input type="text" placeholder="Nama Event" class="search-filter" id="searchInput"
-                                autocomplete="off" value="{{ $search }}">
-                            <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right">
-                            <div class="search-dropdown" id="searchDropdown"></div>
-                        </div>
-                    </div>
-                    @include('partials.dropdown-filter', [
-                      'buttonId' => 'sortButton',
-                      'dropdownId' => 'sortDropdown',
-                      'dropdownItem' => [
-                        'Aktif' => 'active',
-                        'Tidak Aktif' => 'inactive',
-                        'A-Z' => 'nama, asc',
-                        'Z-A' => 'nama, desc',
-                        'Terbaru' => 'created_at,desc',
-                        'Terlama' => 'created_at,asc'
-                      ],
-                      'label' => empty($_GET) ? 'Terbaru' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))),
-                      'url' => route('academics-event.index'),
-                      'imgSrc' => asset('assets/icon-filter.svg'),
-                      'dropdownClass' => '',
-                      'isIconCanRotate' => false,
-                      'imgInvertSrc' => ''
-                    ])
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table" id="list-user" style="--table-cols:10">
-                    <thead>
-                        <tr>
-                            <th style="width: 45%;">Nama Event</th>
-                            <th style="width: 30%;">Event <br> Nilai</th>
-                            <th style="width: 30%;">Event <br> IRS</th>
-                            <th style="width: 30%;">Event <br> Lulus</th>
-                            <th style="width: 35%;">Event <br> Registrasi</th>
-                            <th style="width: 35%;">Event <br> Yudisium</th>
-                            <th style="width: 30%;">Event <br> Survei</th>
-                            <th style="width: 30%;">Event <br> Dosen</th>
-                            <th style="width: 35%;">Status</th>
-                            <th style="width: 100%;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data['data'] ?? [] as $event)
-                            <tr>
-                                <td>{{ $event['nama_event'] }}</td>
-                                <td>{{ $event['nilai_on'] ? 'Ya' : 'Tidak' }}</td>
-                                <td>{{ $event['irs_on'] ? 'Ya' : 'Tidak' }}</td>
-                                <td>{{ $event['lulus_on'] ? 'Ya' : 'Tidak' }}</td>
-                                <td>{{ $event['registrasi_on'] ? 'Ya' : 'Tidak' }}</td>
-                                <td>{{ $event['yudisium_on'] ? 'Ya' : 'Tidak' }}</td>
-                                <td>{{ $event['survei_on'] ? 'Ya' : 'Tidak' }}</td>
-                                <td>{{ $event['dosen_on'] ? 'Ya' : 'Tidak' }}</td>
-                                <td>
-                                    <span
-                                        class="{{ $event['status'] }}-lable status-lable">{{ $event['status'] === 'active' ? 'Aktif' : 'Tidak Aktif' }}
-                                    </span>
-                                </td>
-                                <td>
-                                    <div class="center">
-                                        <button class="btn-icon btn-view-event-academic" data-id="{{ $event['id'] }}"
-                                            title="View" type="button">
-                                            <img src="{{ asset('assets/icon-search.svg') }}" alt="View">
-                                            <span>Lihat</span>
-                                        </button>
-                                        <a class="btn-icon btn-edit-event-academic" title="Edit"
-                                            href="{{ route('academics-event.edit', ['id' => $event['id']]) }}">
-                                            <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                                            <span>Ubah</span>
-                                        </a>
-                                        <button class="btn-icon btn-delete-event-academic" data-id="{{ $event['id'] }}"
-                                            title="Delete" type="button">
-                                            <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Delete">
-                                            <span>Hapus</span>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+  <div class="flex flex-col gap-0">
+    <x-tab 
+      :tabItems="[
+        (object)[
+          'routeName' => 'academics-periode.index',
+          'routeQuery' => 'academics-periode.index',
+          'title' => 'Periode Akademik'
+        ],
+        (object)[
+          'routeName' => 'academics-event.index',
+          'routeQuery' => 'academics-event.index',
+          'title' => 'Event Akademik'
+        ],
+      ]"
+    />
+    <x-white-box :class="'flex flex-col rounded-tl-none items-stretch my-0 mx-4 border-t-[1px] border-t-[#F39194] relative !z-0'">
+      <div class="self-end flex gap-5 m-5 w-max">
+        <x-button.primary :icon="asset('assets/icon-upload-red-500.svg')" :iconPosition="'right'" :href="route('academics-event.upload')">Unggah Event Akademik</x-button.primary>
+        <x-button.primary :href="route('academics-event.create')">Tambah Event Akademik</x-button.primary>
+      </div>
+      <x-white-box :class="''">
+        <div class="flex justify-between items-center p-4">
+          <x-form.search-v2 
+            class="w-80"
+            :inputParentClass="'w-max'"
+            :routes="route('academics-event.index')"
+            :fieldKey="'nama_event'"
+            :placeholder="'Nama Event'"
+            :search="$search"
+          />
+          <x-filter-button />
         </div>
-        @if (isset($data['data']))
-            @include('partials.pagination', [
-                'currentPage' => $data['pagination']['current_page'],
-                'lastPage' => $data['pagination']['last_page'],
-                'limit' => $limit,
-                'routes' => route('academics-event.index'),
-            ])
-        @endif
+      </x-white-box>
+      <x-table :variant="'old'">
+        <x-table-head :variant="'old'">
+          <x-table-row :variant="'old'">
+            <x-table-header :variant="'old'">Nama Event</x-table-header>
+            <x-table-header :variant="'old'">Event <br> Nilai</x-table-header>
+            <x-table-header :variant="'old'">Event <br> IRS</x-table-header>
+            <x-table-header :variant="'old'">Event <br> Lulus</x-table-header>
+            <x-table-header :variant="'old'">Event <br> Registrasi</x-table-header>
+            <x-table-header :variant="'old'">Event <br> Yudisium</x-table-header>
+            <x-table-header :variant="'old'">Event <br> Survei</x-table-header>
+            <x-table-header :variant="'old'">Event <br> Dosen</x-table-header>
+            <x-table-header :variant="'old'">Status</x-table-header>
+            <x-table-header :variant="'old'">Aksi</x-table-header>
+          </x-table-row>
+        </x-table-head>
+        <tbody>
+          @foreach ($data['data'] ?? [] as $event)
+            <x-table-row :variant="'old'">
+                <x-table-cell :variant="'old'">{{ $event['nama_event'] }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $event['nilai_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $event['irs_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $event['lulus_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $event['registrasi_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $event['yudisium_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $event['survei_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
+                <x-table-cell :variant="'old'">{{ $event['dosen_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
+                <x-table-cell :variant="'old'">
+                  @if ($event['status'] === 'active')
+                    <x-badge class="bg-[#D0DE68]">Aktif</x-badge>
+                  @else
+                    <x-badge class="bg-[#FAFBEE] text-[#98A725] leading-5 border-[1px] border-[#D0DE68]">Tidak Aktif</x-badge>
+                  @endif
+                </x-table-cell>
+                <x-table-cell :variant="'old'">
+                    <div class="flex items-center justify-center">
+                      <x-button.base
+                          :icon="asset('assets/icon-search.svg')"
+                          class=" scale-75"
+                          onclick="onClickViewDetailEventAcademic(this, '{{ route('academics-event.detail') }}')" 
+                          data-id="{{ $event['id'] }}"
+                      >
+                        Lihat
+                      </x-button.base>
+                      <x-button.base
+                          :icon="asset('assets/icon-edit.svg')"
+                          :href="route('academics-event.edit', ['id' => $event['id']])"
+                          class="text-[#E62129] scale-75"
+                      >
+                        Ubah
+                      </x-button.base>
+                      <x-button.base
+                          :icon="asset('assets/icon-delete-gray-600.svg')"
+                          class="text-[#8C8C8C] scale-75 btn-delete-event-academic"
+                          onclick="
+                            document.getElementById('modalKonfirmasiHapus').setAttribute('data-id', {{ $event['id'] }});
+                            document.getElementById('modalKonfirmasiHapus').classList.add('flex');
+                            document.getElementById('modalKonfirmasiHapus').classList.remove('hidden');
+                          "
+                      >
+                        Hapus
+                      </x-button.base>
+                    </div>
+                </x-table-cell>
+            </x-table-row>
+          @endforeach
+        </tbody>
+      </x-table>
+    </x-white-box>
 
-        <div id="eventDetailModalContainer"></div>
-        @include('partials.modal', [
-          'modalId' => 'modalKonfirmasiHapus',
-          'modalTitle' => 'Tunggu Sebentar',
-          'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
-          'modalMessage' => 'Apakah Anda yakin ingin menghapus event akademik ini?',
-          'triggerButton' => 'btn-delete-event-academic',
-          'cancelButtonLabel' => 'Batal',
-          'actionButtonLabel' => 'Hapus'
-        ]);
-    </div>
+    @if (isset($data['data']))
+      @include('partials.pagination', [
+        'currentPage' => $data['pagination']['current_page'],
+        'lastPage' => $data['pagination']['last_page'],
+        'limit' => $limit,
+        'routes' => route('academics-event.index'),
+      ])
+    @endif
+
+    <div id="eventDetailModalContainer"></div>
+
+    <x-modal.container-pure-js id="modalKonfirmasiHapus">
+      <x-slot name="header"><span class="text-lg-bd">Tunggu Sebentar</span></x-slot>
+      <x-slot name="body">Apakah Anda yakin ingin menghapus event akademik ini?</x-slot>
+      <x-slot name="footer">
+        <x-button.secondary 
+          onclick="
+            document.getElementById('modalKonfirmasiHapus').classList.add('hidden');
+            document.getElementById('modalKonfirmasiHapus').classList.remove('flex');
+          "
+        >
+          Batal
+        </x-button.secondary>
+        <x-button.primary 
+          onclick="
+            const id = element.parentElement.parentElement.parentElement.getAttribute('data-id');
+            onClickDeleteEventAcademic(this, '{{ route('academics-event.index') }}', '{{ route('academics-event.delete', ['id' => ':id']) }}'.replace(':id', id))
+          "
+        >
+          Hapus
+        </x-button.primary>
+      </x-slot>
+    </x-modal.container-pure-js>
+  </div>
 @endsection

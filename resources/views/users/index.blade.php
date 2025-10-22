@@ -76,7 +76,7 @@
                         data-nomor-induk="{{ $user->nomor_induk }}">Reset Password</a>
                 </x-table-cell>
                 <x-table-cell :variant="'old'">
-                    <div class="flex gap-2 items-center justify-center">
+                    <div class="flex gap-10 items-center justify-center">
                       <x-button.base
                           :icon="asset('assets/button-view.svg')"
                           class="scale-250"

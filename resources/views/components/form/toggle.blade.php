@@ -1,16 +1,16 @@
 @props(['id', 'value' => null, 'variant' => 'default'])
 
 @php
- $variants = [
-  'default' => [
-    'imgSource' => asset('components/toggle-on-disabled-false.svg'),
-    'span' => 'text-[#262626] font-bold leading-5.5'
-  ],
-  'readonly' => [
-    'imgSource' => asset('components/toggle-on-disabled-true.svg'),
-    'span' => 'text-[#8C8C8C] font-semibold pl-4'
-  ]
- ]   
+  $variants = [
+    'default' => [
+      'imgSource' => asset('components/toggle-on-disabled-false.svg'),
+      'span' => 'text-[#262626] font-bold leading-5.5'
+    ],
+    'readonly' => [
+      'imgSource' => asset('components/toggle-on-disabled-true.svg'),
+      'span' => 'text-[#8C8C8C] font-semibold pl-4'
+    ]
+  ]   
 @endphp
 
 <script>
@@ -46,7 +46,7 @@
     type="button"
     class="p-0 border-none bg-transparent outline-none flex items-center cursor-pointer gap-4" 
     @if($variant !== 'readonly')
-      onclick="onHandleToggleInput(this, false)"
+      onclick="onHandleToggleInput(this, false);"
     @endif  
   >
       <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon">

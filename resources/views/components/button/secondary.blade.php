@@ -11,7 +11,7 @@
 
 @if($isUsedWithLabelTagForFileInput)
   <label class="{{$attributes->has('class') ? $attributes->get('class') : ''}} {{$class}} inline-flex w-fit min-w-[151px] justify-center items-center gap-1 px-4 py-2 rounded-lg bg-white border border-[#E62129] text-[#E62129] hover:bg-[#FBDADB] active:bg-[#F7B6B8] cursor-pointer disabled:border-[#E8E8E8] disabled:text-[#8C8C8C]">
-      {{ $slot->isNotEmpty() ? $slot : $label }}
+      {{ $slot }}
       <input 
         type="file"
         class="hidden"
@@ -29,7 +29,7 @@
     @endif
     {{ 
       $attributes->merge([
-        'class' => "inline-flex w-fit min-w-[151px] justify-center items-center gap-1 px-4 py-2 rounded-lg bg-white border border-[#E62129] text-[#E62129] hover:bg-[#FBDADB] active:bg-[#F7B6B8] cursor-pointer disabled:border-[#E8E8E8] disabled:text-[#8C8C8C] {$class}"
+        'class' => "inline-flex w-fit min-w-[151px] justify-center items-center gap-1 px-4 py-2 rounded-lg bg-white border border-[#E62129] text-[#E62129] hover:bg-[#FBDADB] active:bg-[#F7B6B8] cursor-pointer disabled:border-[#E8E8E8] disabled:text-[#8C8C8C] disabled:bg-white disabled:cursor-not-allowed {$class}"
       ]) 
     }}
   >

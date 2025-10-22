@@ -4,6 +4,10 @@
 ])
 <script src="{{asset('js/component-helpers/file.js')}}"></script>
 
+@php
+  $extraOnClick = $attributes->get('onclick');
+@endphp
+
 <div class="flex justify-between w-full gap-[100px] items-start">
   <input type="hidden" name="filename" id="filenameInput">
   <div 
@@ -12,8 +16,12 @@
       event.preventDefault();
       this.classList.add('border-[#E62129]');
       this.classList.add('bg-[#FDF4F4]');
+      this.classList.remove('border-[#D9D9D9]');
+      this.classList.remove('bg-white');
     "
     ondragleave="
+      this.classList.add('border-[#D9D9D9]');
+      this.classList.add('bg-white');
       this.classList.remove('border-[#E62129]');
       this.classList.remove('bg-[#FDF4D4]');
     "
@@ -65,6 +73,7 @@
     <x-button.primary
       id="btnUnggah"
       type="submit"
+      onclick="{{$extraOnClick}}"
       :icon="asset('assets/icon-upload-gray-600.svg')"
       :iconPosition="'right'"
       disabled
