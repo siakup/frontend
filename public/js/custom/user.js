@@ -95,8 +95,7 @@ function handleChooseUser(element) {
       'X-Requested-With': 'XMLHttpRequest', 
       'Accept': 'application/json'
     }
-  })
-    .then(res => res.json())
+  }).then(res => res.json())
     .then(data => {
       if (data && data.data) {
         setTimeout(() => {
@@ -112,8 +111,7 @@ function handleChooseUser(element) {
       } else {
         usernameInput.value = '';
       }
-    })
-    .catch(() => {
+    }).catch(() => {
       usernameInput.value = '';
     });
 }
@@ -134,8 +132,7 @@ function handleSearchNIP(element) {
         'X-Requested-With' : 'XMLHttpRequest',
         'Accept': 'application/json'
       }
-    })
-      .then(res => res.json())
+    }).then(res => res.json())
       .then(data => {
         if (data && data.data && data.data.length > 0) {
           nipDropdown.innerHTML = data.data.map(item =>
@@ -154,8 +151,7 @@ function handleSearchNIP(element) {
           nipDropdown.innerHTML = '<div style="padding:8px 16px; color:#888;">Tidak ditemukan</div>';
           nipDropdown.style.display = 'block';
         }
-      })
-      .catch(() => {
+      }).catch(() => {
         nipDropdown.innerHTML = '<div style="padding:8px 16px; color:#888;">Gagal mencari</div>';
         nipDropdown.style.display = 'block';
       });
@@ -172,19 +168,19 @@ function updateTambahButtonState(roleSelect, institusiSelect) {
 }
 
 function updateDaftarPeranActionsVisibility() {
-    const tbody = document.querySelector('.table tbody');
-    const actions = document.getElementById('daftarPeranActions');
-    
-    const hasData = Array.from(tbody.querySelectorAll('tr')).some(tr =>
-        Array.from(tr.children).some(td => td.textContent.trim() !== '')
-    );
-    if(hasData) {
-      actions.classList.add('flex')
-      actions.classList.remove('hidden')
-    } else {
-      actions.classList.add('hidden')
-      actions.classList.remove('flex')
-    }
+  const tbody = document.querySelector('.table tbody');
+  const actions = document.getElementById('daftarPeranActions');
+  
+  const hasData = Array.from(tbody.querySelectorAll('tr')).some(tr =>
+      Array.from(tr.children).some(td => td.textContent.trim() !== '')
+  );
+  if(hasData) {
+    actions.classList.add('flex')
+    actions.classList.remove('hidden')
+  } else {
+    actions.classList.add('hidden')
+    actions.classList.remove('flex')
+  }
 }
 
 function handleChangeRole(element) {
@@ -201,8 +197,7 @@ function handleChangeRole(element) {
         'X-Requested-With': 'XMLHttpRequest', 
         'Accept': 'application/json'
       }
-    })
-      .then(response => response.json())
+    }).then(response => response.json())
       .then(data => {
         if (data && data.data && data.data.length > 0) {
           data.data.forEach(function(inst) {
@@ -215,8 +210,7 @@ function handleChangeRole(element) {
         } else {
           institusiSelect.disabled = true;
         }
-      })
-      .catch(() => {
+      }).catch(() => {
         institusiSelect.disabled = true;
       });
   }

@@ -20,7 +20,7 @@
     <x-title-page :title="'Ubah Informasi Data Pengguna'" />
     <div class="flex flex-col gap-4 py-2.5 px-5">
       <input type="hidden" id="user_id" value="{{ $response->data->user->id }}">
-      <x-form.input-container id="nip-search">
+      <x-form.input-container class="min-w-[120px]" id="nip-search">
         <x-slot name="label">NIP</x-slot>
         <x-slot name="input">
           <div class="w-full flex-1">
@@ -39,7 +39,7 @@
         </x-slot>
       </x-form.input-container>
 
-      <x-form.input-container id="nama_lengkap">
+      <x-form.input-container class="min-w-[120px]" id="nama_lengkap">
         <x-slot name="label">Nama Lengkap</x-slot>
         <x-slot name="input">
           <input 
@@ -53,7 +53,7 @@
         </x-slot>
       </x-form.input-container>
 
-      <x-form.input-container id="username">
+      <x-form.input-container class="min-w-[120px]" id="username">
         <x-slot name="label">Username</x-slot>
         <x-slot name="input">
           <input 
@@ -67,7 +67,7 @@
         </x-slot>
       </x-form.input-container>
 
-      <x-form.input-container id="email">
+      <x-form.input-container class="min-w-[120px]" id="email">
         <x-slot name="label">Email</x-slot>
         <x-slot name="input">
           <input 
@@ -147,7 +147,7 @@
       <span class="text-lg-bd">Tambah Peran Pengguna</span>
     </x-slot name="header">
     <x-slot name="body">
-      <x-form.input-container id="">
+      <x-form.input-container class="min-w-[120px]" id="">
         <x-slot name="label">Nama Peran</x-slot>
         <x-slot name="input">
           <select 
@@ -162,7 +162,7 @@
           </select>
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container id="">
+      <x-form.input-container class="min-w-[120px]" id="">
         <x-slot name="label">Nama Institusi</x-slot>
         <x-slot name="input">
           <select 

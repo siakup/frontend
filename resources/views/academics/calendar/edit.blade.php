@@ -80,7 +80,7 @@
       <span class="text-lg-bd">Ubah Event Akademik</span>
     </x-slot>
     <x-slot name="body">
-      <x-form.input-container>
+      <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Nama Event</x-slot>
         <x-slot name="input">
           <x-form.dropdown 
@@ -99,13 +99,13 @@
           <input type="hidden" value="" name="id_calendar">
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container>
+      <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Tanggal Mulai</x-slot>
         <x-slot name="input">
           <x-form.calendar id="tanggal-mulai" name="tanggal_mulai" oninput="updateSaveEditButtonState()" />
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container>
+      <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Tanggal Selesai</x-slot>
         <x-slot name="input">
           <x-form.calendar id="tanggal-akhir" name="tanggal_selesai" oninput="updateSaveEditButtonState()" />

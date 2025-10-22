@@ -21,7 +21,7 @@
   <x-white-box :class="''">
     <x-title-page :title="'Pengguna Baru'" />
     <div class="flex flex-col gap-4 py-2.5 px-5">
-      <x-form.input-container id="nip-search">
+      <x-form.input-container class="min-w-[120px]" id="nip-search">
         <x-slot name="label">NIP</x-slot>
         <x-slot name="input">
           <div class="w-full flex-1">
@@ -38,19 +38,19 @@
           </div>
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container id="nama_lengkap">
+      <x-form.input-container class="min-w-[120px]" id="nama_lengkap">
         <x-slot name="label">Nama Lengkap</x-slot>
         <x-slot name="input">
           <input type="text" id="nama_lengkap" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" placeholder="Auto Generate" readonly />
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container id="username">
+      <x-form.input-container class="min-w-[120px]" id="username">
         <x-slot name="label">Username</x-slot>
         <x-slot name="input">
           <input type="text" id="username" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" placeholder="Auto Generate" readonly />
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container id="email">
+      <x-form.input-container class="min-w-[120px]" id="email">
         <x-slot name="label">Email</x-slot>
         <x-slot name="input">
           <input type="text" id="email" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" placeholder="Auto Generate" readonly />
@@ -104,7 +104,7 @@
       <span class="text-lg-bd">Tambah Peran Pengguna</span>
     </x-slot name="header">
     <x-slot name="body">
-      <x-form.input-container id="">
+      <x-form.input-container class="min-w-[120px]" id="">
         <x-slot name="label">Nama Peran</x-slot>
         <x-slot name="input">
           <select 
@@ -119,7 +119,7 @@
           </select>
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container id="">
+      <x-form.input-container class="min-w-[120px]" id="">
         <x-slot name="label">Nama Institusi</x-slot>
         <x-slot name="input">
           <select 
@@ -179,5 +179,4 @@
   </x-modal.container-pure-js>
 
   <meta name="csrf-token" content="{{ csrf_token() }}">
-
 @endsection

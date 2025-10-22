@@ -19,7 +19,7 @@
           headers: { 'X-Requested-With': 'XMLHttpRequest' },
           success: function(html) {
             $('#periodeDetailModalContainer').html(html);
-            $('#modalPeriodeAkademik').show();
+            $('#modalPeriodeAkademik').removeClass('hidden').addClass('flex');
           }
         });
       }
@@ -30,25 +30,27 @@
       const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
       $.ajax({
-          url: "/academics/periode/delete/" + id,
-          method: 'DELETE',
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          success: function(response) {
-              document.getElementById('modalKonfirmasiHapus').removeAttribute('data-id');
-              document.getElementById('modalKonfirmasiHapus').style.display = 'none';
-              successToast('Berhasil dihapus');
-              setTimeout(() => {
-                  window.location.href = redirectRoute;
-              }, 5000);
-          },
-          error: function() {
-              $('tbody').html(
-                  '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-              );
-          }
+        url: "/academics/periode/delete/" + id,
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': csrfToken,
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        success: function(response) {
+          const modalKonfirmasiHapus = document.getElementById('modalKonfirmasiHapus');
+          modalKonfirmasiHapus.removeAttribute('data-id');
+          modalKonfirmasiHapus.style.add('hidden');
+          modalKonfirmasiHapus.style.remove('flex');
+          successToast('Berhasil dihapus');
+          setTimeout(() => {
+            window.location.href = redirectRoute;
+          }, 5000);
+        },
+        error: function() {
+          $('tbody').html(
+            '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
+          );
+        }
       });
     }
   </script>
@@ -56,7 +58,20 @@
 
 @section('content')
   <div class="flex flex-col gap-0">
-      @include('academics.layouts.navbar-academic')
+      <x-tab 
+        :tabItems="[
+          (object)[
+            'routeName' => 'academics-periode.index',
+            'routeQuery' => 'academics-periode.index',
+            'title' => 'Periode Akademik'
+          ],
+          (object)[
+            'routeName' => 'academics-event.index',
+            'routeQuery' => 'academics-event.index',
+            'title' => 'Event Akademik'
+          ],
+        ]"
+      />
       <x-white-box :class="'flex flex-col rounded-tl-none items-stretch my-0 mx-4 border-t-[1px] border-t-[#F39194] relative !z-0'">
         <div class="self-end gap-5 m-5 w-max">
           <x-button.primary

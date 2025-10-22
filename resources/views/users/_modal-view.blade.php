@@ -1,6 +1,6 @@
 <x-modal.container-pure-js id="modalDetailPengguna">
   <x-slot name="header">
-    <span class="text-lg-bd">Lihat Informasi Detail Pengguna</span>
+    <span class="text-lg-bd w-3/4 text-center">Lihat Informasi Detail Pengguna</span>
     <button 
       type="button" 
       class="absolute top-4 right-5 bg-none border-none text-[2rem] text-[#888] cursor-pointer z-10 transition-colors duration-200" 
@@ -19,25 +19,25 @@
           <img id="icon-detail" class="float-right transition-transform duration-200" src="{{ asset('assets/icon-arrow-up-black-16.svg') }}"  />
       </div>
       <div class="expandable-content block" id="content-detail">
-        <x-form.input-container id="nip">
+        <x-form.input-container class="min-w-[120px]" id="nip">
           <x-slot name="label">NIP</x-slot>
           <x-slot name="input">
             <input type="text" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm rounded-lg leading-5 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed" value="{{ $response->data->user->nomor_induk }}" readonly>
           </x-slot>
         </x-form.input-container>
-        <x-form.input-container id="nama_lengkap">
+        <x-form.input-container class="min-w-[120px]" id="nama_lengkap">
           <x-slot name="label">Nama Lengkap</x-slot>
           <x-slot name="input">
             <input type="text" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm rounded-lg leading-5 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed" value="{{ $response->data->user->nama }}" readonly>
           </x-slot>
         </x-form.input-container>
-        <x-form.input-container id="username">
+        <x-form.input-container class="min-w-[120px]" id="username">
           <x-slot name="label">Username</x-slot>
           <x-slot name="input">
             <input type="text" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm rounded-lg leading-5 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed" value="{{ $response->data->user->username }}" readonly>
           </x-slot>
         </x-form.input-container>
-        <x-form.input-container id="email">
+        <x-form.input-container class="min-w-[120px]" id="email">
           <x-slot name="label">Email</x-slot>
           <x-slot name="input">
             <input type="text" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm rounded-lg leading-5 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed" value="{{ $response->data->user->email }}" readonly>
