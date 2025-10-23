@@ -1,8 +1,14 @@
-@props(['variant' => 'default'])
+@props(['variant' => 'default', 'position' => 'center'])
 @php
     $userClass = $attributes->get('class', '');
 
-    $base = 'px-6 text-center align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0';
+    $positions = [
+        'left' => 'text-left',
+        'center' => 'text-center',
+        'right' => 'text-right'
+    ];
+
+    $base = 'px-6 align-middle text-sm text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0 ' . $positions[$position];
 
     // cek apakah user kasih py-* atau px-*
     $hasPy = preg_match('/(^|\s)!?py-(\[[^\]]+\]|\d+)/', $userClass);
