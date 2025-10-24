@@ -21,25 +21,24 @@
 @endsection
 
 @section('content')
-    <x-title-page :title="'Manajemen Pengguna'" />
+  <x-container :variant="'content-wrapper'">
+    <x-typography :variant="'body-large-semibold'">Manajemen Pengguna</x-typography>
 
     <div class="flex items-center justify-end w-full px-4">
       <x-button.primary :href="route('users.create')">Tambah Pengguna Baru</x-button.primary>
     </div>
-    <x-white-box :class="''">
-      <div class="flex justify-between items-center p-4">
-        <div class="w-64">
-          <x-form.search-v2 
-            class="w-64"
-            :routes="route('users.index')"
-            :fieldKey="'username'"
-            :placeholder="'Username / Nama / Status'"
-            :search="$search"
-          />
-        </div>
-        <x-filter-button />
+    <x-container :class="'flex justify-between'">
+      <div class="w-64">
+        <x-form.search-v2 
+          class="w-64"
+          :routes="route('users.index')"
+          :fieldKey="'username'"
+          :placeholder="'Username / Nama / Status'"
+          :search="$search"
+        />
       </div>
-    </x-white-box>
+      <x-filter-button />
+    </x-container>
     <x-table :variant="'old'">
       <x-table-head :variant="'old'">
           <x-table-row :variant="'old'">
@@ -95,6 +94,7 @@
           @endforeach
       </tbody>
     </x-table>
+  </x-container>
     @if(isset($data['data']))
       @include('partials.pagination', [
           'currentPage' => $data['pagination']['current_page'],

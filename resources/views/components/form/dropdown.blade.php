@@ -5,6 +5,7 @@
   'imgSrc',
   'dropdownItem',
   'buttonStyleClass' => '',
+  'dropdownContainerClass' => '',
   'optionStyleClass' => '',
   'isIconCanRotate' => false,
   'isOptionRedirectableToURLQueryParameter' => false,
@@ -14,7 +15,7 @@
   'inputFieldName' => ''
 ])
 
-<div class="relative">
+<div class="relative {{ $dropdownContainerClass }}">
     <button 
       class="flex items-center gap-2 py-2 px-4 bg-transparent border-[1px] border-[#E62129] cursor-pointer text-[#E62129] transition-all duration-200 rounded-lg hover:bg-[#FBE8E6] {{ $buttonStyleClass }}"
       id="{{$buttonId}}"

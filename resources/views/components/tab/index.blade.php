@@ -2,7 +2,7 @@
   'tabItems' => [],
 
 ])
-<div class="flex ml-4 mt-4 relative -bottom-[1px] z-2">
+<div class="flex mt-4 relative -bottom-[1px] z-2">
   @if(!empty($tabItems))
     @foreach($tabItems as $tabItem)
       <a 

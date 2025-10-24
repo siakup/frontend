@@ -10,7 +10,7 @@
 @elseif($errors->has('error'))
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            successToast("{{ $errors->first('error') ?? 'Gagal menyimpan data' }}");
+            successToast("{{ json_encode($errors->first('error')) ?? 'Gagal menyimpan data' }}");
         })
     </script>
 @endif

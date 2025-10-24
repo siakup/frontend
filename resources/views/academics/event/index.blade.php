@@ -8,59 +8,12 @@
 
 @section('javascript')
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <script>
-    function onClickViewDetailEventAcademic(element, route) {
-      const id = element.getAttribute('data-id');
-      if (id) {
-        $.ajax({
-          url: route,
-          method: 'GET',
-          data: {
-              id: id
-          },
-          headers: {
-              'X-Requested-With': 'XMLHttpRequest'
-          },
-          success: function(html) {
-              $('#eventDetailModalContainer').html(html);
-              $('#modalDetailEvent').removeClass('hidden').addClass('flex');
-          }
-        });
-      }
-    }
-    
-    function onClickDeleteEventAcademic(element, redirectRoute, requestRoute) {
-      const modalKonfirmasiHapus = element.parentElement.parentElement.parentElement;
-      const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-      $.ajax({
-          url: requestRoute,
-          method: 'DELETE',
-          headers: {
-            'X-CSRF-TOKEN': csrfToken,
-            'X-Requested-With': 'XMLHttpRequest'
-          },
-          success: function(response) {
-            modalKonfirmasiHapus.removeAttribute('data-id');
-            modalKonfirmasiHapus.classList.add('hidden');
-            modalKonfirmasiHapus.classList.remove('flex');
-            successToast('Berhasil dihapus');
-            setTimeout(() => {
-                window.location.href = redirectRoute;
-            }, 5000);
-          },
-          error: function() {
-            $('tbody').html(
-              '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-            );
-          }
-      });
-    }
-  </script>
+  <script src="{{ asset('js/custom/event.js')}}"></script>
   @include('partials.success-notification-modal', ['route' => route('academics-event.index')])
 @endsection
 
 @section('content')
-  <div class="flex flex-col gap-0">
+  <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0">
     <x-tab 
       :tabItems="[
         (object)[
@@ -75,24 +28,22 @@
         ],
       ]"
     />
-    <x-white-box :class="'flex flex-col rounded-tl-none items-stretch my-0 mx-4 border-t-[1px] border-t-[#F39194] relative !z-0'">
-      <div class="self-end flex gap-5 m-5 w-max">
+    <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
+      <x-container :variant="'content-wrapper'" class="self-end flex flex-row items-end justify-end w-full gap-5 m-5 !px-0">
         <x-button.primary :icon="asset('assets/icon-upload-red-500.svg')" :iconPosition="'right'" :href="route('academics-event.upload')">Unggah Event Akademik</x-button.primary>
         <x-button.primary :href="route('academics-event.create')">Tambah Event Akademik</x-button.primary>
-      </div>
-      <x-white-box :class="''">
-        <div class="flex justify-between items-center p-4">
-          <x-form.search-v2 
-            class="w-80"
-            :inputParentClass="'w-max'"
-            :routes="route('academics-event.index')"
-            :fieldKey="'nama_event'"
-            :placeholder="'Nama Event'"
-            :search="$search"
-          />
-          <x-filter-button />
-        </div>
-      </x-white-box>
+      </x-container>
+      <x-container :class="'flex justify-between items-center p-4'">
+        <x-form.search-v2 
+          class="w-80"
+          :inputParentClass="'w-max'"
+          :routes="route('academics-event.index')"
+          :fieldKey="'nama_event'"
+          :placeholder="'Nama Event'"
+          :search="$search"
+        />
+        <x-filter-button />
+      </x-container>
       <x-table :variant="'old'">
         <x-table-head :variant="'old'">
           <x-table-row :variant="'old'">
@@ -127,7 +78,7 @@
                   @endif
                 </x-table-cell>
                 <x-table-cell :variant="'old'">
-                    <div class="flex items-center justify-center">
+                    <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
                       <x-button.base
                           :icon="asset('assets/icon-search.svg')"
                           class=" scale-75"
@@ -154,13 +105,13 @@
                       >
                         Hapus
                       </x-button.base>
-                    </div>
+                    </x-container>
                 </x-table-cell>
             </x-table-row>
           @endforeach
         </tbody>
       </x-table>
-    </x-white-box>
+    </x-container>
 
     @if (isset($data['data']))
       @include('partials.pagination', [
@@ -174,7 +125,12 @@
     <div id="eventDetailModalContainer"></div>
 
     <x-modal.container-pure-js id="modalKonfirmasiHapus">
-      <x-slot name="header"><span class="text-lg-bd">Tunggu Sebentar</span></x-slot>
+      <x-slot name="header">
+        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
+          <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
+        </x-container>
+      </x-slot>
       <x-slot name="body">Apakah Anda yakin ingin menghapus event akademik ini?</x-slot>
       <x-slot name="footer">
         <x-button.secondary 
@@ -187,7 +143,7 @@
         </x-button.secondary>
         <x-button.primary 
           onclick="
-            const id = element.parentElement.parentElement.parentElement.getAttribute('data-id');
+            const id = this.parentElement.parentElement.parentElement.getAttribute('data-id');
             onClickDeleteEventAcademic(this, '{{ route('academics-event.index') }}', '{{ route('academics-event.delete', ['id' => ':id']) }}'.replace(':id', id))
           "
         >
@@ -195,5 +151,5 @@
         </x-button.primary>
       </x-slot>
     </x-modal.container-pure-js>
-  </div>
+  </x-container>
 @endsection
