@@ -135,8 +135,8 @@
       <x-slot name="footer">
         <x-button.secondary 
           onclick="
-            document.getElementById('modalKonfirmasiHapus').classList.add('hidden');
-            document.getElementById('modalKonfirmasiHapus').classList.remove('flex');
+            this.parentElement.parentElement.parentElement.classList.add('hidden');
+            this.parentElement.parentElement.parentElement.classList.remove('flex');
           "
         >
           Batal

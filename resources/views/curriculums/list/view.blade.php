@@ -6,387 +6,155 @@
     <div class="breadcrumb-item active">Kurikulum</div>
 @endsection
 
-@section('css')
-<style>
-  .table {
-    color: black;
-  }
-    .form-section {
-        display: flex;
-        flex-direction: column;
-        gap: 32px;
-    }
-
-    .form-group {
-        display: grid;
-        grid-template-columns: 180px 1fr;
-        align-items: center;
-        margin-bottom: 0;
-    }
-
-    .checkbox-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 40px 32px; /* row-gap column-gap */
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        align-items: center;
-        box-sizing: border-box;
-    }
-
-    .checkbox-form {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    #toggleButton {
-        width: max-content !important;
-    }
-
-    .button-group {
-        display: flex;
-        gap: 20px;
-        justify-content: flex-end;
-        margin: 20px;
-    }
-
-    .checkbox-form label {
-        width: max-content;
-        font-weight: 400;
-    }
-
-    .checkbox-form input {
-        accent-color: #E62129;
-        border-radius: 3px;
-    }
-
-    .checkbox-form input[type="checkbox"]:not(:checked) {
-        accent-color: #BFBFBF;
-    }
-
-    .checkbox-form input[type="checkbox"]:not(:checked) + label {
-        color: #8C8C8C;
-    }
-
-    .button-group{
-        display: flex;
-        gap: 20px;
-        justify-content: flex-end;
-        margin: 20px;
-    }
-
-    .button{
-        padding: 8px 54.5px;
-        margin: 0px;"
-    }
-
-    button.input {
-        border: 1px solid #D9D9D9;
-        color: #D9D9D9;
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-    }
-
-    .btn-toggle {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        background: none;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 0;
-        width: auto; 
-    }
-
-    .modal-custom-footer {
-        display: flex;
-        justify-content: center;
-        gap: 24px;
-        width: 100%;
-        padding: 0 20px 24px 20px;
-        box-sizing: border-box;
-    }
-
-    .modal-custom-footer .button {
-        min-width: 220px;
-        padding: 14px 0;
-    }
-
-    .sort-dropdown {
-      top: 29% !important;
-      left: 15.8% !important;
-    }
-</style>
-@endsection
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const btnToggle   = document.getElementById('toggleButton');
-        const icon        = document.getElementById('toggleIcon');
-        const text        = btnToggle.querySelector('.toggle-info');
-        const hiddenInput = document.getElementById('statusValue');
-        const btnSave     = document.getElementById('btnSimpan');
-        const clearButton = document.querySelectorAll('.clear');
-
-        const nama = document.querySelector('input[name="curriculum_nama"]');
-        const deskripsi = document.querySelector('input[name="deskripsi"]');
-        const sksWajib = document.querySelector('input[name="sks_wajib"]');
-        const sksPilihan = document.querySelector('input[name="sks_pilihan"]');
-        const totalSKS = document.querySelector('input[name="total_sks"]');
-        const programPerkuliahan = document.querySelector('input[name="program_perkuliahan"]');
-
-        const status = @json($data->status);
-        if (status === 'active') {
-            icon.src = "{{ asset('components/toggle-on-disabled-true-grey.svg') }}";
-            text.textContent = "Aktif";
-            text.style.color = "#262626";
-            hiddenInput.value = "active";
-        } else {
-            icon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
-            text.textContent = "Tidak Aktif";
-            text.style.color = "#8C8C8C";
-            hiddenInput.value = "inactive";
-        }
-
-        function updateSaveButtonState() {
-          const programPerkuliahanFilled = programPerkuliahan.value.trim() !== '';
-          const namaFilled = nama.value.trim() !== '';
-          const deskripsiFilled = deskripsi.value.trim() !== '';
-          const sksWajibFilled = sksWajib.value.trim() !== '';
-          const sksPilihanFilled = sksPilihan.value.trim() !== '';
-          const totalSKSFilled = totalSKS.value.trim() !== '';
-          const statusFilled = hiddenInput.value === 'active' || hiddenInput.value === 'inactive' ? true : false;
-
-          if (programPerkuliahanFilled && namaFilled && deskripsiFilled && sksWajibFilled && sksPilihanFilled && totalSKSFilled && statusFilled) {
-              btnSave.disabled = false;
-              document.getElementById('btnBatal').disabled = false;
-            } else {
-              btnSave.disabled = true;
-              document.getElementById('btnBatal').disabled = true;
-          }
-        }
-
-        nama.addEventListener('input', () => {
-          updateSaveButtonState();
-          if(nama.value != '') {
-            nama.parentElement.querySelector('.clear').classList.remove('hidden');
-          } else {
-            nama.parentElement.querySelector('.clear').classList.add('hidden');
-          }
-        });
-
-        deskripsi.addEventListener('input', () => {
-          updateSaveButtonState();
-          if(deskripsi.value != '') {
-            deskripsi.parentElement.querySelector('.clear').classList.remove('hidden');
-          } else {
-            deskripsi.parentElement.querySelector('.clear').classList.add('hidden');
-          }
-        });
-        
-        sksWajib.addEventListener('input', () => {
-          updateSaveButtonState();
-          sksWajib.value = sksWajib.value.replace(/[^0-9]/g, '');
-          if(sksWajib.value != '') {
-            sksWajib.parentElement.querySelector('.clear').classList.remove('hidden');
-          } else {
-            sksWajib.parentElement.querySelector('.clear').classList.add('hidden');
-          }
-        });
-        
-        sksPilihan.addEventListener('input', () => {
-          updateSaveButtonState();
-          sksPilihan.value = sksPilihan.value.replace(/[^0-9]/g, '');
-          if(sksPilihan.value != '') {
-            sksPilihan.parentElement.querySelector('.clear').classList.remove('hidden');
-          } else {
-            sksPilihan.parentElement.querySelector('.clear').classList.add('hidden');
-          }
-        });
-        
-        totalSKS.addEventListener('input', () => {
-          updateSaveButtonState();
-          totalSks.value = totalSKS.value.replace(/[^0-9]/g, '');
-          if(totalSKS.value != '') {
-            totalSKS.parentElement.querySelector('.clear').classList.remove('hidden');
-          } else {
-            totalSKS.parentElement.querySelector('.clear').classList.add('hidden');
-          }
-        });
-
-        Array.from(clearButton).map(btn => {
-          btn.addEventListener('click', () => {
-            btn.parentElement.querySelector('input').value = '';
-            btn.classList.add('hidden');
-          })
-        })
-
-        document.getElementById('btnBatal').addEventListener('click', function() {
-            window.location.href = "{{ route('academics-event.index') }}";
-        });
-
-        btnToggle.addEventListener('click', () => {
-            const isActive = hiddenInput.value === 'active';
-            hiddenInput.value = isActive ? 'inactive' : 'active';
-            icon.src  = isActive
-                ? "{{ asset('components/toggle-off-disabled-true.svg') }}"
-                : "{{ asset('components/toggle-on-disabled-false.svg') }}";
-            text.textContent = isActive ? 'Tidak Aktif' : 'Aktif';
-            text.style.color = isActive ? '#8C8C8C' : '#262626'; 
-            updateSaveButtonState();
-        });
-        updateSaveButtonState();
-
-        const eventName = document.querySelector('input[name="program_perkuliahan"]');
-        const sortBtnEventName = document.querySelector('#sortEvent');
-        const sortDropdownEventName = document.querySelector('#Option-Program-Perkuliahan');
-
-        sortBtnEventName.addEventListener('click', function(e) {
-            e.stopPropagation();
-            sortDropdownEventName.style.display = (sortDropdownEventName.style.display === 'block') ?
-                'none' : 'block';
-            sortBtnEventName.querySelector('img').src = (sortBtnEventName.querySelector('img').src ===
-                    "{{ asset('assets/icon-arrow-up-black-20.svg') }}") ?
-                "{{ asset('assets/icon-arrow-down-grey-20.svg') }}" :
-                "{{ asset('assets/icon-arrow-up-black-20.svg') }}";
-        });
-
-        document.addEventListener('click', (e) => {
-            const dropdownStudy = e.target.closest('#program_perkuliahan');
-            if (dropdownStudy == null) {
-                sortDropdownEventName.style.display = 'none'
-                sortBtnEventName.querySelector('img').src =
-                    "{{ asset('assets/icon-arrow-down-grey-20.svg') }}";
-            }
-        });
-
-        document.querySelectorAll('#Option-Program-Perkuliahan .dropdown-item').forEach((dropdownItem) => {
-            dropdownItem.addEventListener('click', () => {
-                const value = dropdownItem.getAttribute('data-event');
-                const span = sortBtnEventName.querySelector('span');
-                span.innerHTML = dropdownItem.innerHTML;
-                span.style.color = "black";
-                eventName.value = value;
-                updateSaveButtonState();
-            });
-        });
-    });
-</script>
 @include('partials.success-notification-modal')
 @section('content')
-    <div class="page-header">
-        <div class="page-title-text">Lihat Detail Kurikulum</div>
-    </div>
-    
-    <a href="{{ route('curriculum.list') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Daftar Kurikulum
-    </a>
-    <form action="{{route('curriculum.list.update', ['id' => $id])}}" method="POST">
-      @csrf
-      <div class="content-card">
-          <div class="form-title-text" style="padding: 20px;">Detail Kurikulum</div>
-          <div class="form-section">
-              <div class="form-group">
-                  <label for="program_studi">Program Studi</label>
-                  <div>
-                      <input placeholder="Nama Kurikulum" name="program_studi" type="text" id="program_studi" class="form-control" value="{{current(array_filter($programStudiList, function ($item) use ($data) { return $item->id == $data->program_studi; }))->nama}}" readonly>
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="name">Program Perkuliahan</label>
-                  <div class="filter-box" id="program_perkuliahan">
-                      <button type="button" class="button-clean input !border-[1px] !border-[#BFBFBF]" id="sortEvent" disabled>
-                          <span id="selectedEventLabel">{{$data->perkuliahan}}</span>
-                          <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
-                      </button>
-                      <input type="hidden" value="{{$data->perkuliahan}}" name="program_perkuliahan">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="Curriculum-Name">Nama Kurikulum</label>
-                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="Nama Kurikulum" name="curriculum_nama" type="text" id="Curriculum-Name" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->nama_kurikulum}}" disabled>
-                      <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="Deskripsi">Deskripsi</label>
-                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="Deskripsi" name="deskripsi" type="text" id="Deskripsi" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->deskripsi}}" disabled>
-                      <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="Wajib">SKS Mata Kuliah Wajib</label>
-                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="SKS Mata Kuliah Wajib" name="sks_wajib" type="text" id="Wajib" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->sks_wajib}}" disabled>
-                      <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="Pilihan">SKS Mata Kuliah Pilihan</label>
-                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="SKS Mata Kuliah Pilihan" name="sks_pilihan" type="text" id="Pilihan" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->sks_pilihan}}" disabled>
-                      <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
-                  </div>
-              </div>
-              <div class="form-group">
-                  <label for="Total">Total SKS</label>
-                  <div class="flex items-center border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg px-[12px]">
-                      <input placeholder="Total SKS" name="total_sks" type="text" id="Total" class="!border-transparent focus:outline-none text-[#8C8C8C]" value="{{$data->sks_total}}" disabled>
-                      <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
-                  </div>
-              </div>
-              <div class="form-group !mb-[20px]">
-                <label>Status</label>
-                  <button id="toggleButton" type="button" class="btn-toggle">
-                      <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon" id="toggleIcon">
-                      <span class="toggle-info text-sm-bd" style="color: var(--Neutral-Gray-600, #8C8C8C)">Tidak Aktif</span>
-                  </button>
-                <input type="hidden" name="status" id="statusValue" value="{{$data->status}}" disabled>
-              </div>
-          </div>
-      </div>
-      <div class="content-card">
-          <div class="form-title-text" style="padding: 20px;">Jenis Mata Kuliah - Minimum SKS</div>
-          <div class="table-responsive">
-              <table class="table" id="list-matkul" style="--table-cols:2">
-                  <thead>
-                      <tr>
-                          <th class="!w-[50%]">Jenis Mata Kuliah</th>
-                          <th class="!w-[25%]"></th>
-                          <th class="!w-[25%]">Minimum SKS</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    @foreach($data->details as $details)
-                      <tr class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
-                          <td class="!text-[14px] !w-[50%] !py-[20px]">{{$details->jenis_mata_kuliah}}</td>
-                          <td class="py-[12px] !w-[25%]"></td>
-                          <td class="py-[12px] !w-[25%]">
-                            <div class="border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg py-[9px] ps-[39.5px] pe-[12px] flex">
-                              <input class="w-full bg-transparent !border-transparent focus:outline-none text-[14px] text-[#8C8C8C]" placeholder="Minimum SKS" type="number" value="{{$details->sks_minimal}}" disabled />
-                              <img class="clear hidden" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
-                            </div>
-                          </td>
-                      </tr>
-                    @endforeach
-                  </tbody>
-              </table>
-          </div>
-      </div>
-      <div class="content-card flex justify-end">
-        <div class="button-group">
-            <a href="{{route('curriculum.list.view.show-study', ['id' => $id])}}" class="button button-clean flex items-center justify-center" id="">
-              <span>Lihat Daftar Mata Kuliah</span>
-              <img src="{{asset('assets/icon-eye-red.svg')}}" alt="button-icon">
-            </a>
-        </div>
-      </div>
-    </form>
+  <x-container :variant="'content-wrapper'">
+    <x-typography :variant="'body-large-semibold'">Lihat Detail Kurikulum</x-typography>
+    <x-button.back :href="route('curriculum.list').'?program_studi='.$data->program_studi">Daftar Kurikulum</x-button.back>
+      <x-container>
+        <x-typography :variant="'body-medium-bold'">Detail Kurikulum</x-typography>
+        <x-container :variant="'content-wrapper'" :class="'!px-0'">
+          <x-form.input-container :class="'min-w-[175px]'">
+            <x-slot name="label">Program Studi</x-slot>
+            <x-slot name="input">
+              <input 
+                placeholder="Program Studi" 
+                name="program_studi" 
+                type="text" 
+                id="program_studi" 
+                class="w-full pe-10 box-border ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed" 
+                value="{{current(array_filter($programStudiList, function ($item) use ($data) { return $item->id == $data->program_studi; }))->nama}}" 
+                readonly
+              />
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container :class="'min-w-[175px]'">
+            <x-slot name="label">Program Perkuliahan</x-slot>
+            <x-slot name="input">
+              <button type="button" class="flex justify-between  items-center w-full box-border px-3 rounded-lg leading-5 h-10 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed !border-[1px] !border-[#BFBFBF]" disabled>
+                {{$data->perkuliahan}}
+                <img src="{{ asset('assets/icon-arrow-down-grey-20.svg') }}" alt="Filter">
+              </button>
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container :class="'min-w-[175px]'">
+            <x-slot name="label">Nama Kurikulum</x-slot>
+            <x-slot name="input">
+              <input 
+                placeholder="Nama Kurikulum" 
+                name="curriculum_nama" 
+                type="text" 
+                id="Curriculum-Name" 
+                class="w-full pe-10 box-border ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed" 
+                value="{{$data->nama_kurikulum}}" 
+                readonly
+              >
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container :class="'min-w-[175px]'">
+            <x-slot name="label">Deskripsi</x-slot>
+            <x-slot name="input">
+              <input 
+                placeholder="Deskripsi" 
+                name="deskripsi" 
+                type="text" 
+                id="Deskripsi" 
+                class="w-full pe-10 box-border ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed" 
+                value="{{$data->deskripsi}}" 
+                readonly
+              >
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container :class="'min-w-[175px]'">
+            <x-slot name="label">SKS Mata Kuliah Wajib</x-slot>
+            <x-slot name="input">
+              <input 
+                placeholder="SKS Mata Kuliah Wajib" 
+                name="sks_wajib" 
+                type="text" 
+                id="Wajib" 
+                class="w-full pe-10 box-border ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed" 
+                value="{{$data->sks_wajib}}" 
+                readonly
+              >
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container :class="'min-w-[175px]'">
+            <x-slot name="label">SKS Mata Kuliah Pilihan</x-slot>
+            <x-slot name="input">
+              <input 
+                placeholder="SKS Mata Kuliah Pilihan" 
+                name="sks_pilihan" 
+                type="text" 
+                id="Pilihan" 
+                class="w-full pe-10 box-border ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed" 
+                value="{{$data->sks_pilihan}}" 
+                readonly
+              >
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container :class="'min-w-[175px]'">
+            <x-slot name="label">Total SKS</x-slot>
+            <x-slot name="input">
+              <input 
+                placeholder="Total SKS" 
+                name="total_sks" 
+                type="text" 
+                id="Total" 
+                class="w-full pe-10 box-border ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed" 
+                value="{{$data->sks_total}}" 
+                readonly
+              >
+            </x-slot>
+          </x-form.input-container>
+          <x-form.toggle 
+            :id="'curriculum-status'" 
+            :value="$data->status === 'active'" 
+            :variant="'readonly'"
+          />
+        </x-container>
+      </x-container>
+      <x-container :class="'flex flex-col gap-5'">
+        <x-typography :variant="'body-medium-bold'">Jenis Mata Kuliah - Minimum SKS</x-typography>
+        <x-table :variant="'old'" id="list-matkul">
+          <x-table-head :variant="'old'">
+            <x-table-row :variant="'old'">
+              <x-table-header :variant="'old'">Jenis Mata Kuliah</x-table-header>
+              <x-table-header :variant="'old'"></x-table-header>
+              <x-table-header :variant="'old'">Minimum SKS</x-table-header>
+            </x-table-row>
+          </x-table-head>
+          <tbody>
+            @foreach($data->details as $details)
+              <x-table-row :variant="'old'" class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
+                  <x-table-cell :variant="'old'">{{$details->jenis_mata_kuliah}}</x-table-cell>
+                  <x-table-cell :variant="'old'" class="py-[12px] !w-[25%]"></x-table-cell>
+                  <x-table-cell :variant="'old'">
+                    <x-container :variant="'content-wrapper'" class="border-[1px] border-[#BFBFBF] bg-[#F5F5F5] rounded-lg !py-[9px] !ps-[39.5px] !pe-[12px]">
+                      <input 
+                        class="w-full bg-transparent !border-transparent focus:outline-none text-[14px] text-[#8C8C8C]" 
+                        placeholder="Minimum SKS" 
+                        type="number" 
+                        value="{{$details->sks_minimal}}" 
+                        disabled 
+                      />
+                    </x-container>
+                  </x-table-cell>
+              </x-table-row>
+            @endforeach
+          </tbody>
+        </x-table>
+      </x-container>
+      <x-container class="flex justify-end">
+        <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-end'">
+          <x-button.secondary 
+            :href="route('curriculum.list.view.show-study', ['id' => $id])" 
+            :icon="asset('assets/icon-eye-red.svg')" 
+            :iconPosition="'right'"
+          >
+            Lihat Daftar Mata Kuliah
+          </x-button.secondary>
+        </x-container>
+      </x-container>
+  </x-container>
 @endsection

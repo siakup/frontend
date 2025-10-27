@@ -12,7 +12,8 @@
   'queryParameter' => '',
   'url' => '',
   'isUsedForInputField' => false,
-  'inputFieldName' => ''
+  'inputFieldName' => '',
+  'inputValue' => ''
 ])
 
 <div class="relative {{ $dropdownContainerClass }}">
@@ -54,6 +55,9 @@
         </div>
       @endforeach
     </div>
+    @if($isUsedForInputField)
+      <input type="hidden" name="{{$inputFieldName}}" value="{{ $inputValue }}">
+    @endif
 </div>
 
 <script>

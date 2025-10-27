@@ -29,20 +29,18 @@ class CurriculumController extends Controller
         $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
         $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
         $programPerkuliahanList = $responseProgramPerkuliahanList->data ?? [];
-
-        $id_program = $request->input('program_perkuliahan');
+        $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->name);
 
         $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
         $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
         $programStudiList = $responseProgramStudiList->data ?? [];
 
-        // ✅ cek apakah ada program_studi dari request, kalau tidak ada fallback ke list pertama
         if ($request->filled('program_studi')) {
             $id_prodi = urldecode($request->input('program_studi'));
         } elseif (!empty($programStudiList)) {
             $id_prodi = $programStudiList[0]->id;
         } else {
-            $id_prodi = null; // atau kasih default lain
+            $id_prodi = null;
         }
 
         $params = [
@@ -78,7 +76,7 @@ class CurriculumController extends Controller
 
     public function storeCurriculumList(Request $request)
     {
-//        sprint 252, confirm to Mba Luluk
+      dd($request->all());
       return redirect()->route('curriculum.list.index')->with('success', 'Tambah Kurikulum Berhasil Disimpan');
     }
 

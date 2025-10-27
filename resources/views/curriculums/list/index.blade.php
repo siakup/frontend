@@ -6,209 +6,200 @@
     <div class="breadcrumb-item active">Daftar Kurikulum</div>
 @endsection
 
-@section('css')
-  <style>
-    .card-header.option-list {
-        justify-content: left;
-    }
-    .center {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 24px;
-    }
-    .center .btn-icon {
-        display: flex;
-        align-items: center;
-        justify-items: center;
-        text-decoration: none;
-        gap: 2px;
-        font-size: 12px;
-        width: max-content;
-    }
-    .center .btn-delete-periode-academic {
-        color: #8C8C8C;
-    }
-    .center .btn-view-periode-academic {
-        color: #262626;
-    }
-    .center .btn-edit-periode-academic {
-        color: #E62129;
-    }
-    .sub-title {
-      padding: 10px 20px !important;
-    }
-  </style>
-@endsection
-
 @section('javascript')
-<meta name="csrf-token" content="{{ csrf_token() }}">
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('modalKonfirmasiHapus-btnSimpan').addEventListener('click', function() {
-         const dataId = document.getElementById('modalKonfirmasiHapus').getAttribute('data-id');
-         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-         document.getElementById('modalKonfirmasiHapus').removeAttribute('data-id');
-          document.getElementById('modalKonfirmasiHapus').style.display = 'none';
-          successToast('Berhasil dihapus');
-          setTimeout(() => {
-            window.location.href = "{{route('curriculum.list')}}"
-          }, 5000);
-        //  $.ajax({
-        //      url: "{{ route('academics-event.delete', ['id' => ':id']) }}".replace(':id',
-        //          id),
-        //      method: 'DELETE',
-        //      headers: {
-        //          'X-CSRF-TOKEN': csrfToken,
-        //          'X-Requested-With': 'XMLHttpRequest'
-        //      },
-        //      success: function(response) {
-        //          document.getElementById('modalKonfirmasiSimpan').removeAttribute(
-        //              'data-id');
-        //          document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
-        //          successToast('Berhasil dihapus');
-        //          setTimeout(() => {
-        //              window.location.href =
-        //                  "{{ route('academics-event.index') }}";
-        //          }, 5000);
-        //      },
-        //      error: function() {
-        //          $('tbody').html(
-        //              '<tr><td colspan="7" class="text-center text-danger">Terjadi kesalahan saat memuat data</td></tr>'
-        //          );
-        //      }
-        //  });
-      });
-    });
-  </script>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <script src="{{ asset('js/custom/curriculum.js')}}"></script>
   @include('partials.success-notification-modal', ['route' => 'curriculum.list'])
 @endsection
 
 @section('content')
-  <div class="page-header">
-    <div class="page-title-text">Kurikulum</div>
-  </div>
-  <div class="academics-layout">
-    @include('curriculums.layout.navbar-curriculum')
-    <div class="academics-slicing-content content-card">
-      <x-typography variant="heading-h6" class="mb-2 p-[20px]">
-        Daftar Kurikulum - {{array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama}}
-      </x-typography>
-      <div class="card-header option-list">
-        <div class="card-header center" id="CampusProgramSection">
-            <div class="page-title-text sub-title">Program Perkuliahan</div>
-            @include('partials.dropdown-filter', [
-              'buttonId' => 'sortButtonProgramPerkuliahan',
-              'dropdownId' => 'sortProgramPerkuliahan',
-              'dropdownItem' => array_column($programPerkuliahanList, 'name', 'name'),
-              'label' =>  $id_program ? array_values(array_filter($programPerkuliahanList, function($item) use($id_program) { return $item->name == urldecode($id_program); }))[0]->name : "Semua",
-              'url' => route('curriculum.list'),
-              'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
-              'dropdownClass' => '!top-[25.2%] !left-[32.4%]',
-              'isIconCanRotate' => true,
-              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg'),
-              'queryParameter' => 'program_perkuliahan'
-            ])
-        </div>
-        <div class="card-header center" id="CampusProgramSection">
-            <div class="page-title-text sub-title">Program Studi</div>
-            @include('partials.dropdown-filter', [
-              'buttonId' => 'sortButtonProgramStudi',
-              'dropdownId' => 'sortProgramStudi',
-              'dropdownItem' => array_column($programStudiList, 'id', 'nama'),
-              'label' =>  array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama,
-              'url' => route('curriculum.list'),
-              'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
-              'dropdownClass' => '!top-[25.2%] !left-[62.4%]',
-              'isIconCanRotate' => true,
-              'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg'),
-              'queryParameter' => 'program_studi'
-            ])
-        </div>
-      </div>
-      <x-container class="border-none">
-        <div class="flex flex-col gap-5">
+  <x-container :variant="'content-wrapper'">
+    <x-typography :variant="'body-large-semibold'">Kurikulum</x-typography>
+    <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0">
+      <x-tab 
+        :tabItems="[
+          (object)[
+            'routeName' => 'curriculum.list',
+            'routeQuery' => 'curriculum.list',
+            'title' => 'Daftar Kurikulum'
+          ],
+          (object)[
+            'routeName' => 'curriculum.required-structure',
+            'routeQuery' => 'curriculum.required-structure',
+            'title' => 'Struktur Kurikulum'
+          ],
+          (object)[
+            'routeName' => 'curriculum.equivalence',
+            'routeQuery' => 'curriculum.equivalence',
+            'title' => 'Ekuivalensi Kurikulum'
+          ],
+        ]"
+      />
+      <x-container :class="'flex flex-col !gap-8 rounded-tl-none items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
+        <x-typography variant="body-large-semibold">
+          Daftar Kurikulum - {{array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama}}
+        </x-typography>
+        <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center !mx-0 !justify-start z-10 !px-0'">
+          <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
+            <x-typography :variant="'body-medium-bold'">Program Perkuliahan</x-typography>
+            <x-form.dropdown 
+              :buttonId="'sortButtonCampus'"
+              :dropdownId="'sortCampus'"
+              :label="
+                count(
+                  array_filter(
+                    $programPerkuliahanList, 
+                    function($item) use($id_program) { 
+                      return $item->name == urldecode($id_program); 
+                    }
+                  )
+                ) > 0 
+                  ? array_values(
+                      array_filter(
+                        $programPerkuliahanList, 
+                        function($item) use($id_program) { 
+                          return $item->name == urldecode($id_program); 
+                        }
+                      )
+                    )[0]->name
+                  : ''
+              "
+              :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+              :isIconCanRotate="true"
+              :isOptionRedirectableToURLQueryParameter="true"
+              :queryParameter="'program_perkuliahan'"
+              :url="route('curriculum.list')"
+              :dropdownItem="array_column($programPerkuliahanList, 'name', 'name')"
+            />
+          </x-container>
+          <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !w-max !px-0" id="StudyProgramSection">
+            <x-typography :variant="'body-medium-bold'">Program Studi</x-typography>
+            <x-form.dropdown 
+              :buttonId="'sortButtonStudyProgram'"
+              :dropdownId="'sortStudyProgram'"
+              :label="
+              count(
+                array_filter(
+                  $programStudiList, 
+                  function($item) use($id_prodi) { 
+                    return $item->id == $id_prodi; 
+                  }
+                )
+              ) > 0 
+                ? array_values(
+                  array_filter(
+                    $programStudiList, 
+                    function($item) use($id_prodi) { 
+                      return $item->id == $id_prodi; 
+                    }
+                  )
+                )[0]->nama 
+                : ''
+              "
+              :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+              :isIconCanRotate="true"
+              :isOptionRedirectableToURLQueryParameter="true"
+              :queryParameter="'program_studi'"
+              :url="route('curriculum.list')"
+              :dropdownItem="array_column($programStudiList, 'id', 'nama')"
+            />
+          </x-container>
+        </x-container>
+        <x-container :variant="'content-wrapper'" :class="'!px-0'">
           <x-table>
               <x-table-head>
                   <x-table-row>
-                      <x-table-header class="cursor-pointer">
-                          Nama
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Program Perkuliahan
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Deskripsi
-                      </x-table-header>
-                      <x-table-header class="cursor-pointer">
-                          Total SKS
-                      </x-table-header>
+                      <x-table-header>Nama</x-table-header>
+                      <x-table-header>Program Perkuliahan</x-table-header>
+                      <x-table-header>Deskripsi</x-table-header>
+                      <x-table-header>Total SKS</x-table-header>
                       <x-table-header>Status</x-table-header>
                       <x-table-header>Aksi</x-table-header>
                   </x-table-row>
               </x-table-head>
-              <x-table-body>
+              <tbody>
                   @forelse ($data as $d)
                       <x-table-row>
                           <x-table-cell>{{ $d->nama_kurikulum }}</x-table-cell>
                           <x-table-cell class="{{
-                              $d->perkuliahan == 'Double Degree' ? 'bg-[#E5EDAB]' :
-                              ($d->perkuliahan == 'International Class' ? 'bg-[#99D8FF]' :
-                              ($d->perkuliahan == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
+                            $d->perkuliahan == 'Double Degree' ? 'bg-[#E5EDAB]' :
+                            ($d->perkuliahan == 'International Class' ? 'bg-[#99D8FF]' :
+                            ($d->perkuliahan == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
                           }}"
-                          >{{ $d->perkuliahan }}</x-table-cell>
+                          >
+                            {{ $d->perkuliahan }}
+                          </x-table-cell>
                           <x-table-cell>{{ $d->deskripsi }}</x-table-cell>
                           <x-table-cell>{{ $d->sks_total }}</x-table-cell>
                           <x-table-cell>
-                            @if ($d->status_aktif)
-                                <span class="badge badge-active" style="min-width:max-content">Aktif</span>
-                            @else
-                                <span class="badge badge-inactive !border-none" style="min-width:max-content">Tidak Aktif</span>
-                            @endif
+                            <x-container :variant="'content-wrapper'" :class="'!px-0 !w-max'">
+                              @if ($d->status_aktif === 'active')
+                                <x-badge class="bg-[#D0DE68]">Aktif</x-badge>
+                              @else
+                                <x-badge class="bg-[#FAFBEE] text-[#98A725] leading-5 border-[1px] border-[#D0DE68]">Tidak Aktif</x-badge>
+                              @endif
+                            </x-container>
                           </x-table-cell>
                           <x-table-cell>
-                            <div class="center">
-                              <a href="{{route('curriculum.list.view', ['id' => $d->id])}}" type="button" class="btn-icon btn-view-periode-academic"
-                                  data-periode-akademik="" title="Lihat">
-                                  <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
-                                  <span>Lihat</span>
-                            </a>
-                              <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                                  href="{{route('curriculum.list.edit', ['id' => $d->id])}}"
-                                  style="text-decoration: none; color: inherit;">
-                                  <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                                  <span style="color: #E62129">Ubah</span>
-                              </a>
-                              <button type="button" class="btn-icon btn-delete" data-id="{{$d->id}}" title="Hapus">
-                                  <img src="{{ asset('assets/icon-delete-gray-600.svg') }}" alt="Hapus">
-                                  <span class="text-[#8C8C8C]">Hapus</span>
-                              </button>
-                            </div>
+                            <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center w-max">
+                              <x-button.base :icon="asset('assets/icon-search.svg')" class=" scale-75" :href="route('curriculum.list.view', ['id' => $d->id])">Lihat</x-button.base>
+                              <x-button.base :icon="asset('assets/icon-edit.svg')" :href="route('curriculum.list.edit', ['id' => $d->id])" class="text-[#E62129] scale-75">Ubah</x-button.base>
+                              <x-button.base 
+                                :icon="asset('assets/icon-delete-gray-600.svg')" 
+                                class="text-[#8C8C8C] scale-75"
+                                onclick="
+                                  document.getElementById('modalKonfirmasiHapus').classList.add('flex')
+                                  document.getElementById('modalKonfirmasiHapus').classList.remove('hidden')
+                                "
+                              >
+                                Hapus
+                              </x-button.base>
+                            </x-container>
                           </x-table-cell>
                       </x-table-row>
                   @empty
                       <x-table-row>
-                          <x-table-cell colspan="6" class="text-center py-4">
-                              Tidak ada data ditemukan
-                          </x-table-cell>
+                        <x-table-cell colspan="6" class="text-center py-4">
+                          Tidak ada data ditemukan
+                        </x-table-cell>
                       </x-table-row>
                   @endforelse
-              </x-table-body>
+              </tbody>
           </x-table>
-        </div>
+        </x-container>
+        <x-container :variant="'content-wrapper'" class="flex items-end justify-end !px-0">
+          <x-button.primary :href="route('curriculum.list.create', ['program_studi' => $id_prodi])">Tambah Kurikulum</x-button.primary>
+        </x-container>
       </x-container>
-      <div class="right">
-          <a href="{{route('curriculum.list.create', ['program_studi' => $id_prodi])}}" class="button button-outline">Tambah Kurikulum</a>
-      </div>
-    </div>
-    @include('partials.modal', [
-      'modalId' => 'modalKonfirmasiHapus',
-      'modalTitle' => 'Hapus Daftar kurikulum',
-      'modalIcon' => asset('assets/icon-delete-gray-800.svg'),
-      'modalMessage' => 'Apakah Anda yakin ingin menghapus kurikulum ini?',
-      'triggerButton' => 'btn-delete',
-      'cancelButtonLabel' => 'Batal',
-      'actionButtonLabel' => 'Hapus'
-    ]);
+    </x-container>
+  </x-container>
+  <x-modal.container-pure-js id="modalKonfirmasiHapus">
+    <x-slot name="header">
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Hapus Daftar kurikulum</x-typography>
+        <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
+      </x-container>
+    </x-slot>
+    <x-slot name="body">Apakah Anda yakin ingin menghapus kurikulum ini?</x-slot>
+    <x-slot name="footer">
+      <x-button.secondary 
+        onclick="
+          this.parentElement.parentElement.parentElement.removeAttribute('data-id')
+          this.parentElement.parentElement.parentElement.classList.add('hidden');
+          this.parentElement.parentElement.parentElement.classList.remove('flex');
+        "
+      >
+        Batal
+      </x-button.secondary>
+      <x-button.primary 
+        onclick="
+          const id = this.parentElement.parentElement.parentElement.getAttribute('data-id');
+          onClickDeleteCurriculum(this, '{{ route('curriculum.list') }}', ''.replace(':id', id))
+        "
+      >
+        Hapus
+      </x-button.primary>
+    </x-slot>
+  </x-modal.container-pure-js>
   </div>
 @endsection
