@@ -15,7 +15,7 @@
 @section('content')
   <x-container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Kurikulum</x-typography>
-    <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0">
+    <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0 !px-0">
       <x-tab 
         :tabItems="[
           (object)[

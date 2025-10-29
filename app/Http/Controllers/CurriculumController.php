@@ -275,85 +275,77 @@ class CurriculumController extends Controller
     $response = getCurl($url, null, getHeaders());
     $data = $response->data;
 
-    $dataDetail = [
-      'nama_kurikulum' => 'Ilmu Komputer',
-      'kode_matakuliah' => '10004',
-      'matakuliah' => 'Agama Katolik dan Etika',
-      'sks' => 2,
-      'semester' => 1
-    ];
-
-    $data = [
-      [
-        'id' => 1,
-        'kode' => 'CPL-A',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+    $cpls = [
+      (object)[
+        'id_cpl' => 1,
+        'kode_cpl' => 'CPL-A',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 2,
-        'kode' => 'CPL-B',
-        'capaian' => 'Memiliki kemampuan untuk memahami pertimbangan etis, budaya akademik, dan bertanggung jawab secara profesional',
+      (object)[
+        'id_cpl' => 2,
+        'kode_cpl' => 'CPL-B',
+        'deskripsi_cpl' => 'Memiliki kemampuan untuk memahami pertimbangan etis, budaya akademik, dan bertanggung jawab secara profesional',
         'is_select' => false
       ],
-      [
-        'id' => 3,
-        'kode' => 'CPL-C',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 3,
+        'kode_cpl' => 'CPL-C',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+        'is_select' => true
+      ],
+      (object)[
+        'id_cpl' => 4,
+        'kode_cpl' => 'CPL-D',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 4,
-        'kode' => 'CPL-D',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 5,
+        'kode_cpl' => 'CPL-E',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+        'is_select' => true
+      ],
+      (object)[
+        'id_cpl' => 6,
+        'kode_cpl' => 'CPL-F',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 5,
-        'kode' => 'CPL-E',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 7,
+        'kode_cpl' => 'CPL-G',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 6,
-        'kode' => 'CPL-F',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 8,
+        'kode_cpl' => 'CPL-H',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 7,
-        'kode' => 'CPL-G',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 9,
+        'kode_cpl' => 'CPL-I',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 8,
-        'kode' => 'CPL-H',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 10,
+        'kode_cpl' => 'CPL-J',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 9,
-        'kode' => 'CPL-I',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
+      (object)[
+        'id_cpl' => 11,
+        'kode_cpl' => 'CPL-K',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+        'is_select' => true
       ],
-      [
-        'id' => 10,
-        'kode' => 'CPL-J',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      [
-        'id' => 11,
-        'kode' => 'CPL-K',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      [
-        'id' => 12,
-        'kode' => 'CPL-L',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 12,
+        'kode_cpl' => 'CPL-L',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
     ];

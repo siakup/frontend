@@ -240,8 +240,8 @@
           <x-button.secondary 
             id="btnCekKembali"
             onclick="
-              documemt.getElementById('modalKonfirmasiSimpan').classList.add('hidden')
-              documemt.getElementById('modalKonfirmasiSimpan').classList.remove('flex')
+              document.getElementById('modalKonfirmasiSimpan').classList.add('hidden')
+              document.getElementById('modalKonfirmasiSimpan').classList.remove('flex')
             "
           >
             Cek Kembali
