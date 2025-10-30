@@ -598,6 +598,7 @@ class CurriculumController extends Controller
 
   public function uploadStoreCurriculumEquivalence(Request $request)
   {
+    dd($request->all());
     $validator = Validator::make($request->all(), [
       'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
     ]);
@@ -655,7 +656,7 @@ class CurriculumController extends Controller
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-    $id_program = $request->input('program_perkuliahan');
+    $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->name);
 
     $params = compact('id_program');
     $url = CurriculumService::getInstance()->getMandatoryCourses();
@@ -683,6 +684,23 @@ class CurriculumController extends Controller
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
     $id_program = $request->input('program_perkuliahan');
+
+    $params = compact('id_program');
+    $url = CurriculumService::getInstance()->getMandatoryCourses();
+    $response = getCurl($url, $params, getHeaders());
+
+    if (!isset($response->data)) {
+      if ($request->ajax()) {
+        return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
+      }
+      $data = [];
+    } else {
+      $data = $response->data;
+    }
+
+    if ($request->ajax()) {
+      return $this->successResponse($data, 'Berhasil Mendapatkan Data');
+    }
 
 
     return view('curriculums.structure.optional', get_defined_vars());

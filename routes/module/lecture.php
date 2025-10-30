@@ -50,6 +50,11 @@ use App\Http\Controllers\CplMapping;
             '/equivalence/edit/{id}',
             [CurriculumController::class, 'editCurriculumEquivalence']
         )->name('curriculum.equivalence.edit');
+        Route::get(
+            '/equivalence/upload',
+            [CurriculumController::class, 'uploadCurriculumEquivalence']
+        )->name('curriculum.equivalence.upload');
+        Route::post('/equivalence/upload-result', [CurriculumController::class, 'uploadResultCurriculumEquivalence'])->name('curriculum.equivalence.upload-result');
 
     });
 

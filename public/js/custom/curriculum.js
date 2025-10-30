@@ -122,3 +122,33 @@ function onClickSelectAll(e, inputName = 'input[name="cpl[]"]') {
     value.checked = e.target.checked
   });
 }
+
+function resetDetail(showDetailClickable) {
+  showDetailClickable.map(detail => {
+    const image = detail.parentElement.querySelector('.detail-clickable img');
+    if(detail.classList.contains('grid')) {
+      detail.classList.remove('grid');
+      detail.classList.add('hidden');
+      image.classList.remove('rotate-180');
+    }
+  });
+}
+
+function onClickCourseMenu(e) {
+  const clickableEl = e.target.closest('.detail-clickable');
+  const image = clickableEl.querySelector('img');
+  const sibling = clickableEl.parentElement.querySelector('.detail-show');
+  const showDetailClickable = document.querySelectorAll('.detail-show');
+
+  resetDetail(Array.from(showDetailClickable).filter(detail => detail !== sibling));
+
+  if (sibling.classList.contains('hidden')) {
+    sibling.classList.remove('hidden');
+    sibling.classList.add('grid');
+    image.classList.add('rotate-180');
+  } else {
+    sibling.classList.remove('grid');
+    sibling.classList.add('hidden');
+    image.classList.remove('rotate-180');
+  }
+}

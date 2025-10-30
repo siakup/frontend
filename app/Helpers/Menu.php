@@ -235,7 +235,33 @@ class Menu
               'name' => 'Ekuivalensi Kurikulum',
               'url' => '/curriculums/equivalence',
               'parent' => 'curriculum.equivalence',
-              'isExpandable' => false,
+              'isExpandable' => true,
+              'children' => [
+                'create-curriculum-equivalence' => [
+                  'name' => 'Tambah Ekuivalensi',
+                  'url' => '/curriculums/equivalence/add/*/*',
+                  'parent' => 'curriculum.equivalence.create',
+                  'isExpandable' => false
+                ],
+                'edit-curriculum-equivalence' => [
+                  'name' => 'Ubah Ekuivalensi',
+                  'url' => '/curriculums/equivalence/edit/*',
+                  'parent' => 'curriculum.equivalence.edit',
+                  'isExpandable' => false
+                ],
+                'upload-curriculum-equivalence' => [
+                  'name' => 'Unggah Ekuivalensi',
+                  'url' => '/curriculums/equivalence/upload',
+                  'parent' => 'curriculum.equivalence.upload',
+                  'isExpandable' => false,
+                ],
+                'upload-result-curriculum-equivalence' => [
+                  'name' => 'Unggah Ekuivalensi',
+                  'url' => '/curriculums/equivalence/upload-result',
+                  'parent' => 'curriculum.equivalence.upload-result',
+                  'isExpandable' => false,
+                ],
+              ]
             ],
             'college-schedule' => [
                 'name' => 'Jadwal Kuliah',
