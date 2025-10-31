@@ -26,14 +26,16 @@
             <x-form.dropdown 
               :buttonId="'jenisMataKuliah'"
               :dropdownId="'listJenisMataKuliah'"
-              :label="'Pilih Mata Kuliah'"
+              :label="$jenis_mata_kuliah !== '' ? $jenis_mata_kuliah : 'Pilih Mata Kuliah'"
               :imgSrc="asset('assets/base/icon-arrow-down.svg')"
               :isIconCanRotate="true"
               :dropdownItem="
-                [
-                  'Mata Kuliah Dasar Umum' => 'Mata Kuliah Dasar Umum',
-                  'Mata Kuliah Program Studi' => 'Mata Kuliah Program Studi',
-                ]
+                array_merge(
+                  ...array_map(
+                    function($jenis) { return [$jenis => $jenis];  }, 
+                    $jenis_mata_kuliah_list
+                  )
+                )
               "
               :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black w-full flex items-center justify-between flex-1'"
               :dropdownContainerClass="'w-full'"

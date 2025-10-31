@@ -4,7 +4,6 @@ use App\Http\Controllers\CourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LectureController;
 use App\Http\Controllers\CurriculumController;
-use App\Http\Controllers\StudyController;
 use App\Http\Controllers\CplMapping;
 
  Route::group(['middleware' => ['auth']], function () {
@@ -31,12 +30,12 @@ use App\Http\Controllers\CplMapping;
         Route::get('/list/create/{program_studi}', [CurriculumController::class, 'createCurriculumList'])->name('curriculum.list.create');
         Route::post('/list/create', [CurriculumController::class, 'storeCurriculumList'])->name('curriculum.list.store');
         Route::group(['prefix' => '/list/edit'], function () {
-        Route::get('/{id}', [CurriculumController::class, 'editCurriculumList'])->name('curriculum.list.edit');
-        Route::post('/{id}', [CurriculumController::class, 'updateCurriculumList'])->name('curriculum.list.update');
-        Route::get('/{id}/show-courses', [CurriculumController::class, 'showCurriculumStudyList'])->name('curriculum.list.edit.show-study');
-        Route::get('/{id}/assign-course', [CurriculumController::class, 'assignCurriculumCourse'])->name('curriculum.list.edit.assign-study');
-        Route::post('/{id}/assign-course', [CurriculumController::class, 'updateAssignCurriculumCourse'])->name('curriculum.list.edit.update-assign-study');
-        Route::get('/{id}/view-courses/{course_id}', [CurriculumController::class, 'editCurriculumStudyList'])->name('curriculum.list.edit.edit-study');
+          Route::get('/{id}', [CurriculumController::class, 'editCurriculumList'])->name('curriculum.list.edit');
+          Route::post('/{id}', [CurriculumController::class, 'updateCurriculumList'])->name('curriculum.list.update');
+          Route::get('/{id}/show-courses', [CurriculumController::class, 'showCurriculumStudyList'])->name('curriculum.list.edit.show-study');
+          Route::get('/{id}/assign-course', [CurriculumController::class, 'assignCurriculumCourse'])->name('curriculum.list.edit.assign-study');
+          Route::post('/{id}/assign-course', [CurriculumController::class, 'updateAssignCurriculumCourse'])->name('curriculum.list.edit.update-assign-study');
+          Route::get('/{id}/view-courses/{course_id}', [CurriculumController::class, 'editCurriculumStudyList'])->name('curriculum.list.edit.edit-study');
         });
         Route::get('/structure/required', [CurriculumController::class, 'requiredCurriculumStructure'])->name('curriculum.required-structure');
         Route::get('/structure/optional', [CurriculumController::class, 'optionalCurriculumStructure'])->name('curriculum.optional-structure');
