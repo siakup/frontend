@@ -199,98 +199,74 @@
 @endsection
 
 @section('content')
-    <div class="px-5 flex flex-col gap-5 box-border" x-data="mataKuliahForm">
-        <x-typography variant="heading-h6" bold class="">
-            Edit Ekuivalensi
-        </x-typography>
-        <x-button.back href="{{ route('curriculum.equivalence') }}">
-            Ekuivalensi Kurikulum
-        </x-button.back>
+    <x-container :variant="'content-wrapper'" class="px-5 flex flex-col gap-5 box-border" x-data="mataKuliahForm">
+      <x-typography :variant="'body-large-semibold'">Edit Ekuivalensi</x-typography>
+      <x-button.back href="{{ route('curriculum.equivalence') }}">Ekuivalensi Kurikulum</x-button.back>
         <x-container class="flex flex-col gap-5">
-            <x-typography variant="heading-h6" bold class="">
-                Edit Ekuivalensi
-            </x-typography>
+          <x-typography :variant="'body-medium-bold'">Edit Ekuivalensi</x-typography>
 
-            <!-- Informasi Ekuivalensi -->
-            <div class="border-[#D9D9D9] border rounded-xl">
-                <div class="flex">
-                    <div class="rounded-tl-xl border-[#D9D9D9] border-r py-2 px-5 bg-[#E8E8E8] w-1/5">
-                        <x-typography class="text-nowrap">ID Ekuivalensi</x-typography>
-                    </div>
-                    <div class="rounded-tr-xl py-2 px-5 bg-[#E8E8E8] w-4/5">
-                        <x-typography variant="body-small-bold">#{{ $id }}</x-typography>
-                    </div>
-                </div>
-                <div class="flex border-t border-t-[#D9D9D9]">
-                    <div class="border-[#D9D9D9] border-r py-2 px-5 bg-[#E8E8E8] w-1/5">
-                        <x-typography class="text-nowrap">Program Studi</x-typography>
-                    </div>
-                    <div class="py-2 px-5 bg-[#E8E8E8] w-4/5">
-                        <x-typography variant="body-small-bold">{{ $prodi }}</x-typography>
-                    </div>
-                </div>
-                <div class="flex border-t border-t-[#D9D9D9] ">
-                    <div class="rounded-bl-xl border-[#D9D9D9] border-r py-2 px-5 bg-[#F5F5F5] w-1/5">
-                        <x-typography class="text-nowrap">Program Perkuliahan</x-typography>
-                    </div>
-                    <div class="rounded-br-xl py-2 px-5 bg-[#F5F5F5] w-4/5">
-                        <x-typography variant="body-small-bold">{{ $programPerkuliahan }}</x-typography>
-                    </div>
-                </div>
-            </div>
+          <!-- Informasi Ekuivalensi -->
+            <x-container :class="'!px-0 !py-0 overflow-hidden'">
+              <table class="w-full">
+                <tbody>
+                  <x-table-row class="text-[#262626]">
+                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">ID Ekuivalensi</x-table-cell>
+                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">#{{ $id }}</x-table-cell>
+                  </x-table-row>
+                  <x-table-row class="text-[#262626]">
+                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Program Studi</x-table-cell>
+                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]">{{ $programPerkuliahan }}</x-table-cell>
+                  </x-table-row>
+                  <x-table-row class="text-[#262626]">
+                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Program Perkuliahan</x-table-cell>
+                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">{{ $prodi }}</x-table-cell>
+                  </x-table-row>
+                </tbody>
+              </table>
+            </x-container>
 
             <!-- Mata Kuliah Kurikulum Lama -->
-            <div class="grid grid-cols-12 gap-5 items-center">
-                <div class="col-span-2">
-                    <x-typography class="font-semibold">
-                        Mata Kuliah Kurikulum Lama
-                    </x-typography>
-                </div>
-                <div class="col-span-10 flex flex-col gap-2">
+            <x-container :variant="'content-wrapper'" class="grid grid-cols-12 gap-5 items-center !px-0">
+                <x-typography :variant="'body-small-semibold'" class="col-span-2">Mata Kuliah Kurikulum Lama</x-typography>
+                <x-container :variant="'content-wrapper'" class="col-span-10 flex flex-col !gap-2 !px-0">
                     <input type="text" x-show="selectedOldCourses.length === 0" disabled placeholder="MK Kurikulum Lama"
                         class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-500" />
 
                     <template x-for="course in selectedOldCourses" :key="course.id">
-                        <div class="flex items-center justify-between bg-white border border-[#BFBFBF]  rounded px-3 py-2">
+                        <x-container class="flex items-center justify-between !px-3 !py-2">
                             <x-typography x-text="course.kode + ' - ' + course.nama_id"></x-typography>
                             <button type="button" class="cursor-pointer" x-on:click="removeCourse('old', course.id)">
                                 <img src="{{ asset('assets/icon-cleardata.svg') }}" alt="icon remove">
                             </button>
-                        </div>
+                        </x-container>
                     </template>
-                </div>
-            </div>
-
+                </x-container>
+            </x-container>
             <x-button.primary label="Tambah Mata Kuliah" class="self-end"
                 x-on:click="modalTarget = 'old'; $dispatch('open-modal', {id: 'modal-tambah-matakuliah'})" />
 
             <!-- Mata Kuliah Kurikulum Baru -->
-            <div class="grid grid-cols-12 gap-5 items-center">
-                <div class="col-span-2">
-                    <x-typography class="font-semibold">
-                        Mata Kuliah Kurikulum Baru
-                    </x-typography>
-                </div>
-                <div class="col-span-10 flex flex-col gap-2">
+            <x-container :variant="'content-wrapper'" class="grid grid-cols-12 !gap-5 items-center !px-0">
+                <x-typography :variant="'body-small-semibold'" class="col-span-2">Mata Kuliah Kurikulum Baru</x-typography>
+                <x-container :variant="'content-wrapper'" class="col-span-10 flex flex-col !gap-2 !px-0">
                     <input type="text" x-show="selectedNewCourses.length === 0" disabled placeholder="MK Kurikulum Baru"
                         class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-500" />
 
                     <template x-for="course in selectedNewCourses" :key="course.id">
-                        <div
-                            class="flex items-center justify-between bg-white border border-[#BFBFBF] rounded-lg px-3 py-2">
+                        <x-container
+                            class="flex items-center justify-between !px-3 !py-2">
                             <x-typography x-text="course.kode + ' - ' + course.nama_id"></x-typography>
                             <button type="button" class="cursor-pointer" x-on:click="removeCourse('new', course.id)">
                                 <img src="{{ asset('assets/icon-cleardata.svg') }}" alt="icon remove">
                             </button>
-                        </div>
+                        </x-container>
                     </template>
-                </div>
-            </div>
-
+                </x-container>
+            </x-container>
             <x-button.primary label="Tambah Mata Kuliah" class="self-end"
                 x-on:click="modalTarget = 'new'; $dispatch('open-modal', {id: 'modal-tambah-matakuliah'})" />
 
-            <div class="flex gap-5 justify-end mt-5">
+            <x-container :variant="'content-wrapper'" class="flex flex-row gap-5 justify-end !px-0 mt-5">
                 <x-button.secondary label="Batal"
                     x-on:click="window.location.href='{{ route('curriculum.equivalence') }}'" />
                 <x-button.primary label="Update"
@@ -299,7 +275,7 @@
                     console.log('Selected Old:', JSON.parse(JSON.stringify(selectedOldCourses)));
                     console.log('Selected New:', JSON.parse(JSON.stringify(selectedNewCourses)));
                 " />
-            </div>
+            </x-container>
         </x-container>
 
         {{-- MODAL TAMBAH Mata Kuliah --}}
@@ -310,124 +286,112 @@
             }"
             x-on:close-modal.window="if ($event.detail.id === 'modal-tambah-matakuliah') { show = false; }">
             <x-slot name="header">
-                <div class="w-full relative">
+                <x-container :variant="'content-wrapper'" class="!px-0 relative">
                     <x-typography variant="heading-h5" class="w-full inline-block text-center text-gray-800">
                         Daftar Mata Kuliah
                     </x-typography>
-                    <button x-on:click.stop="close()"
-                        class="text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0 cursor-pointer">
-                        <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}"
-                            class="w-[32px] h-[32px] cursor-pointer" />
+                    <button x-on:click.stop="close()" class="text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0 cursor-pointer">
+                        <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="w-[32px] h-[32px] cursor-pointer" />
                     </button>
-                </div>
+                </x-container>
             </x-slot>
 
-            <div class="p-4 text-gray-800 flex flex-col gap-5">
+            <x-container :variant="'content-wrapper'" class="!p-4 text-gray-800 flex flex-col !gap-5">
                 <!-- Konten modal -->
-                <div class="grid grid-cols-12 gap-5 items-center">
-                    <div class="col-span-2">
-                        <x-typography variant="body-small-regular" class="font-semibold">
-                            Jenis Mata Kuliah
-                        </x-typography>
-                    </div>
-                    <div class="col-span-10">
+                <x-container :variant="'content-wrapper'" class="!px-0 grid grid-cols-12 !gap-5 items-center">
+                    <x-typography :variant="'body-small-semibold'" class="col-span-2">Jenis Mata Kuliah</x-typography>
+                    <x-container :variant="'content-wrapper'" class="!px-0 col-span-10">
                         <x-form.input name="jenis_matakuliah" type="select" placeholder="Pilih Jenis Mata Kuliah"
                             :options="[
                                 '' => 'Pilih Jenis Mata Kuliah',
                                 'du' => 'Mata Kuliah Dasar Umum',
                                 'ps' => 'Mata Kuliah Program Studi',
-                            ]" />
-                    </div>
-                </div>
+                            ]" 
+                        />
+                    </x-container>
+                </x-container>
 
-                <div class="grid grid-cols-12 gap-5 items-center">
-                    <div class="col-span-2">
-                        <x-typography variant="body-small-regular" class="font-semibold">
-                            Mata Kuliah
-                        </x-typography>
-                    </div>
-                    <div class="col-span-10">
+                <x-container :variant="'content-wrapper'" class="!px-0 grid grid-cols-12 gap-5 items-center">
+                    <x-typography :variant="'body-small-semibold'" class="col-span-2">Mata Kuliah</x-typography>
+                    <x-container :variant="'content-wrapper'" class="col-span-10 !px-0">
                         <x-form.input name="matakuliah" type="text" placeholder="Ketik Mata Kuliah" />
-                    </div>
-                </div>
+                    </x-container>
+                </x-container>
 
-                <div class="w-full flex justify-end gap-5">
+                <x-container :variant="'content-wrapper'" class="flex flex-row justify-end !gap-5 !px-0">
                     <x-button.secondary label="Batal" x-on:click="" />
                     <x-button.primary label="Cari" x-on:click="" />
-                </div>
+                </x-container>
 
-                <div>
-                    <x-table>
-                        <x-table-head>
+                <x-table>
+                    <x-table-head>
+                        <x-table-row>
+                            <x-table-header></x-table-header>
+                            <x-table-header>Kode Mata Kuliah</x-table-header>
+                            <x-table-header>Nama</x-table-header>
+                            <x-table-header>Jumlah SKS</x-table-header>
+                            <x-table-header>Program Studi</x-table-header>
+                            <x-table-header>Jenis Mata Kuliah</x-table-header>
+                        </x-table-row>
+                    </x-table-head>
+
+                    <x-table-body>
+                        <template x-if="isLoading">
                             <x-table-row>
-                                <x-table-header></x-table-header>
-                                <x-table-header>Kode Mata Kuliah</x-table-header>
-                                <x-table-header>Nama</x-table-header>
-                                <x-table-header>Jumlah SKS</x-table-header>
-                                <x-table-header>Program Studi</x-table-header>
-                                <x-table-header>Jenis Mata Kuliah</x-table-header>
+                                <x-table-cell colspan="7" class="text-center py-4">
+                                    Memuat data...
+                                </x-table-cell>
                             </x-table-row>
-                        </x-table-head>
+                        </template>
 
-                        <x-table-body>
-                            <template x-if="isLoading">
+                        <template x-if="errorMessage">
+                            <x-table-row>
+                                <x-table-cell colspan="7" class="text-center py-4 text-red-500"
+                                    x-text="errorMessage">
+                                </x-table-cell>
+                            </x-table-row>
+                        </template>
+
+                        <template x-if="!isLoading && courses.length > 0">
+                            <template x-for="(item, index) in courses" :key="item.id">
                                 <x-table-row>
-                                    <x-table-cell colspan="7" class="text-center py-4">
-                                        Memuat data...
+                                    <x-table-cell>
+                                        <input type="checkbox" name="selected[]"
+                                            class="form-checkbox h-5 w-5 text-blue-600" :value="JSON.stringify(item)">
                                     </x-table-cell>
+                                    <x-table-cell x-text="item.kode"></x-table-cell>
+                                    <x-table-cell x-text="item.nama_id"></x-table-cell>
+                                    <x-table-cell x-text="item.sks"></x-table-cell>
+                                    <x-table-cell x-text="item.semester"></x-table-cell>
+                                    <x-table-cell x-text="item.jenis"></x-table-cell>
                                 </x-table-row>
                             </template>
+                        </template>
 
-                            <template x-if="errorMessage">
-                                <x-table-row>
-                                    <x-table-cell colspan="7" class="text-center py-4 text-red-500"
-                                        x-text="errorMessage">
-                                    </x-table-cell>
-                                </x-table-row>
-                            </template>
-
-                            <template x-if="!isLoading && courses.length > 0">
-                                <template x-for="(item, index) in courses" :key="item.id">
-                                    <x-table-row>
-                                        <x-table-cell>
-                                            <input type="checkbox" name="selected[]"
-                                                class="form-checkbox h-5 w-5 text-blue-600" :value="JSON.stringify(item)">
-                                        </x-table-cell>
-                                        <x-table-cell x-text="item.kode"></x-table-cell>
-                                        <x-table-cell x-text="item.nama_id"></x-table-cell>
-                                        <x-table-cell x-text="item.sks"></x-table-cell>
-                                        <x-table-cell x-text="item.semester"></x-table-cell>
-                                        <x-table-cell x-text="item.jenis"></x-table-cell>
-                                    </x-table-row>
-                                </template>
-                            </template>
-
-                            <template x-if="!isLoading && courses.length === 0">
-                                <x-table-row>
-                                    <x-table-cell colspan="7" class="text-center py-4">
-                                        Tidak ada data mata kuliah
-                                    </x-table-cell>
-                                </x-table-row>
-                            </template>
-                        </x-table-body>
-                    </x-table>
-                </div>
-            </div>
+                        <template x-if="!isLoading && courses.length === 0">
+                            <x-table-row>
+                                <x-table-cell colspan="7" class="text-center py-4">
+                                    Tidak ada data mata kuliah
+                                </x-table-cell>
+                            </x-table-row>
+                        </template>
+                    </x-table-body>
+                </x-table>
+            </x-container>
 
             <x-slot name="footer">
-                <div class="flex justify-between gap-4 w-full">
+                <x-container :variant="'content-wrapper'" class="!px-0 flex justify-between !gap-4 w-full">
                     {{-- TODO: Pagination --}}
                     <x-button.primary label="Simpan" x-on:click="saveSelectedCourses()" />
-                </div>
+                </x-container>
             </x-slot>
         </x-modal.container>
 
         <!-- Modal Konfirmasi Update -->
         <div class="" @on-submit.window="await submitForm()">
-            <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-                cancelText="Cek Kembali">
-                <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+            <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang" cancelText="Cek Kembali">
+                <x-typography :variant="'body-small-regular'" :class="'text-center flex items-center w-full justify-center'">Apakah Anda yakin informasi yang ditambahkan sudah benar?</x-typography>
             </x-modal.confirmation>
         </div>
-    </div>
+    </x-container>
 @endsection

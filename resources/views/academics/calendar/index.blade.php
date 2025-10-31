@@ -7,9 +7,10 @@
 @endsection
 
 @section('content')
-  <x-title-page :title="'Kalender Akademik - Universitas Pertamina'" />
-  <x-white-box :class="''">
-    <x-title-page :title="'Tahun Akademik 2025 - 2026'" />
+<x-container :variant="'content-wrapper'">
+  <x-typography :variant="'body-large-semibold'">Kalender Akademik - Universitas Pertamina</x-typography>
+  <x-container :class="'!gap-3 flex flex-col'">
+    <x-typography :variant="'body-medium-bold'">Tahun Akademik 2025 - 2026</x-typography>
     <x-table :variant="'old'">
       <x-table-head :variant="'old'">
         <x-table-row :variant="'old'">
@@ -43,15 +44,13 @@
                     {{ formatDateTime($d->tanggal_akhir) }}
                   </x-table-cell>
                   <x-table-cell :variant="'old'">
-                      <div class="flex items-center justify-center gap-6">
-                        <x-button.base
-                          :icon="asset('assets/icon-search.svg')"
-                          :href="route('calendar.show', ['id' => $d->id])"
-                          class="text-[#262626] scale-75"
-                        >
-                          Lihat
-                        </x-button.base>
-                      </div>
+                    <x-button.base
+                      :icon="asset('assets/icon-search.svg')"
+                      :href="route('calendar.show', ['id' => $d->id])"
+                      class="text-[#262626] scale-75"
+                    >
+                      Lihat
+                    </x-button.base>
                   </x-table-cell>
                   <x-table-cell :variant="'old'">
                       @if (new DateTime() >= new DateTime($d->tanggal_mulai) && new DateTime() <= new DateTime($d->tanggal_akhir))
@@ -62,8 +61,9 @@
           @endforeach
       </tbody>
     </x-table>
-    <div class="flex items-end justify-end p-4">
+    <div class="flex items-end justify-end">
       <x-button.primary :href="route('calendar.generate')">Generate Riwayat Akademik</x-button.primary>
     </div>
-  </x-white-box>
+  </x-container>
+</x-container>
 @endsection

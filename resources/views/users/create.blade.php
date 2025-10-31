@@ -8,20 +8,12 @@
 @endsection
 
 @section('content')
-
-  <x-title-page :title="'Pengguna Baru'" />
-
-  <x-button.back 
-    :href="route('users.index')" 
-    :class="'ml-4'"
-  >
-    Manajemen Pengguna
-  </x-button.back>
-
-  <x-white-box :class="''">
-    <x-title-page :title="'Pengguna Baru'" />
-    <div class="flex flex-col gap-4 py-2.5 px-5">
-      <x-form.input-container class="min-w-[120px]" id="nip-search">
+  <x-container :variant="'content-wrapper'">
+    <x-typography :variant="'body-large-semibold'">Pengguna Baru</x-typography>
+    <x-button.back :href="route('users.index')">Manajemen Pengguna</x-button.back>
+    <x-container :class="'flex flex-col gap-4'">
+      <x-typography :variant="'body-medium-bold'">Pengguna Baru</x-typography>
+      <x-form.input-container class="min-w-[120px]" for="nip-search">
         <x-slot name="label">NIP</x-slot>
         <x-slot name="input">
           <div class="w-full flex-1">
@@ -38,70 +30,81 @@
           </div>
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container class="min-w-[120px]" id="nama_lengkap">
+      <x-form.input-container class="min-w-[120px]" for="nama_lengkap">
         <x-slot name="label">Nama Lengkap</x-slot>
         <x-slot name="input">
           <input type="text" id="nama_lengkap" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" placeholder="Auto Generate" readonly />
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container class="min-w-[120px]" id="username">
+      <x-form.input-container class="min-w-[120px]" for="username">
         <x-slot name="label">Username</x-slot>
         <x-slot name="input">
           <input type="text" id="username" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" placeholder="Auto Generate" readonly />
         </x-slot>
       </x-form.input-container>
-      <x-form.input-container class="min-w-[120px]" id="email">
+      <x-form.input-container class="min-w-[120px]" for="email">
         <x-slot name="label">Email</x-slot>
         <x-slot name="input">
           <input type="text" id="email" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" placeholder="Auto Generate" readonly />
         </x-slot>
       </x-form.input-container>
       <x-form.toggle :id="'user-status'" />
-    </div>
-    <div class="flex items-center justify-end w-full px-8 py-4">
-      <x-button.primary 
-        onclick="
-          document.getElementById('modalTambahPeran').classList.add('flex');
-          document.getElementById('modalTambahPeran').classList.remove('hidden');
-        " 
-        disabled
-        :class="''"
-        id="btnShowModal"
-      >
-        Tambah Peran
-      </x-button.primary>
-    </div>
-  </x-white-box>
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-end !px-0'">
+        <x-button.primary 
+          onclick="
+            document.getElementById('modalTambahPeran').classList.add('flex');
+            document.getElementById('modalTambahPeran').classList.remove('hidden');
+          " 
+          disabled
+          :class="''"
+          id="btnShowModal"
+        >
+          Tambah Peran
+        </x-button.primary>
+      </x-container>
+    </x-container>
 
-  <x-white-box :class="'mx-4'">
-    <x-title-page :title="'Daftar Peran'" />
-    <x-table id="list-role" class="table" :variant="'old'">
-      <x-table-head :variant="'old'">
-        <x-table-row :variant="'old'">
-          <x-table-header :variant="'old'">Nama Peran</x-table-header>
-          <x-table-header :variant="'old'">Institusi</x-table-header>
-          <x-table-header :variant="'old'">Dibuat Pada</x-table-header>
-          <x-table-header :variant="'old'">Aksi</x-table-header>
-        </x-table-row>
-      </x-table-head>
-      <tbody>
-        <x-table-row :variant="'old'">
-          <x-table-cell :variant="'old'"></x-table-cell>
-          <x-table-cell :variant="'old'"></x-table-cell>
-          <x-table-cell :variant="'old'"></x-table-cell>
-          <x-table-cell :variant="'old'"></x-table-cell>
-        </x-table-row>
-      </tbody>
-    </x-table>
-    <div class="gap-2 mt-4.5 justify-end items-center pb-4 px-4 hidden" id="daftarPeranActions">
-      <x-button.secondary :href="route('users.index')">Batal</x-button.secondary>
-      <x-button.primary onclick="document.getElementById('modalKonfirmasiSimpan').style.display = 'flex';">Simpan</x-button.primary>
-    </div>
-  </x-white-box>
+    <x-container :class="'flex flex-col gap-4'">
+      <x-typography :variant="'body-medium-bold'">Daftar Peran</x-typography>
+      <x-table id="list-role" class="table" :variant="'old'">
+        <x-table-head :variant="'old'">
+          <x-table-row :variant="'old'">
+            <x-table-header :variant="'old'">Nama Peran</x-table-header>
+            <x-table-header :variant="'old'">Institusi</x-table-header>
+            <x-table-header :variant="'old'">Dibuat Pada</x-table-header>
+            <x-table-header :variant="'old'">Aksi</x-table-header>
+          </x-table-row>
+        </x-table-head>
+        <tbody>
+          <x-table-row :variant="'old'">
+            <x-table-cell :variant="'old'"></x-table-cell>
+            <x-table-cell :variant="'old'"></x-table-cell>
+            <x-table-cell :variant="'old'"></x-table-cell>
+            <x-table-cell :variant="'old'"></x-table-cell>
+          </x-table-row>
+        </tbody>
+      </x-table>
+      <x-container :variant="'content-wrapper'" :class="'hidden flex-row justify-end gap-4 !px-0'" id="daftarPeranActions">
+        <x-button.secondary :href="route('users.index')">Batal</x-button.secondary>
+        <x-button.primary 
+          onclick="
+            document.getElementById('modalKonfirmasiSimpan').classList.add('flex');
+            document.getElementById('modalKonfirmasiSimpan').classList.remove('hidden');
+          "
+
+        >
+          Simpan
+        </x-button.primary>
+      </x-container>
+    </x-container>
+  </x-container>
 
   <x-modal.container-pure-js id="modalTambahPeran">
     <x-slot name="header">
-      <span class="text-lg-bd">Tambah Peran Pengguna</span>
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tambah Peran Pengguna</x-typography>
+        <x-icon :iconUrl="asset('assets/base/icon-caution.svg')" :class="'w-8 h-8'" />
+      </x-container>
     </x-slot name="header">
     <x-slot name="body">
       <x-form.input-container class="min-w-[120px]" id="">
@@ -148,7 +151,10 @@
 
   <x-modal.container-pure-js id="modalKonfirmasiSimpan">
     <x-slot name="header">
-      <span class="text-lg-bd">Tunggu Sebentar</span>
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
+        <x-icon :iconUrl="asset('assets/base/icon-caution.svg')" :class="'w-8 h-8'" />
+      </x-container>
     </x-slot>
     <x-slot name="body">
       <div>Apakah anda yakin informasi anda sudah benar?</div>

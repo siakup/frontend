@@ -1,4 +1,3 @@
-
 function handleCreateData(route) {
   document.getElementById('modalKonfirmasiSimpan').style.display = 'none';
   const data = collectData();
@@ -305,25 +304,25 @@ function collectData() {
 
   const peran = [];
   document.querySelectorAll('#list-role tbody tr').forEach(tr => {
-      const tds = tr.querySelectorAll('td');
-      if (tds.length >= 4 && tds[0].textContent.trim() && tds[1].textContent.trim()) {
-        peran.push({
-          role_id: tr.getAttribute('data-role-id'),
-          institusi_id: tr.getAttribute('data-institusi-id'),
-          role: tds[0].textContent.trim(),
-          institusi: tds[1].textContent.trim(),
-          created_at: tds[2].textContent.trim()
-        });
-      }
+    const tds = tr.querySelectorAll('td');
+    if (tds.length >= 4 && tds[0].textContent.trim() && tds[1].textContent.trim()) {
+      peran.push({
+        role_id: tr.getAttribute('data-role-id'),
+        institusi_id: tr.getAttribute('data-institusi-id'),
+        role: tds[0].textContent.trim(),
+        institusi: tds[1].textContent.trim(),
+        created_at: tds[2].textContent.trim()
+      });
+    }
   });
 
   const data = {
-      nip,
-      nama_lengkap,
-      username,
-      email,
-      status,
-      peran
+    nip,
+    nama_lengkap,
+    username,
+    email,
+    status,
+    peran
   };
 
   return data;
@@ -351,16 +350,16 @@ function handleResetUserPassButtonClick(element, route) {
   const nomorInduk = element.getAttribute('data-nomor-induk');
   if (nomorInduk) {
     $.ajax({
-        url: route, 
-        method: 'GET',
-        data: { nomor_induk: nomorInduk }, 
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        success: function(html) {
-          $('#userDetailModalContainer').html(html);
-          $('#modalResetPassword').removeClass('hidden').addClass('flex');
-        }
+      url: route, 
+      method: 'GET',
+      data: { nomor_induk: nomorInduk }, 
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      success: function(html) {
+        $('#userDetailModalContainer').html(html);
+        $('#modalResetPassword').removeClass('hidden').addClass('flex');
+      }
     });
   }
 }
@@ -370,19 +369,19 @@ function handleReset(routeRedirected) {
   const userId = document.getElementById('user_id').value;
 
   $.ajax({
-      url: "/users/" + userId + "/update-password",
-      type: 'POST',
-      data: {},
-      contentType: 'application/json',
-      headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-          'X-Requested-With': 'XMLHttpRequest'
-      },
-      success: function(response) {
-          window.location.href = routeRedirected+"?success=" + encodeURIComponent(response.message);
-      },
-      error: function(xhr) {
-          errorToast(errorMessage);
-      }
+    url: "/users/" + userId + "/update-password",
+    type: 'POST',
+    data: {},
+    contentType: 'application/json',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+      'X-Requested-With': 'XMLHttpRequest'
+    },
+    success: function(response) {
+      window.location.href = routeRedirected+"?success=" + encodeURIComponent(response.message);
+    },
+    error: function(xhr) {
+      errorToast(errorMessage);
+    }
   });
 }

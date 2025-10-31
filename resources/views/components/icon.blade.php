@@ -2,6 +2,7 @@
     'iconUrl' => '',
     'iconAlt' => '',
     'class' => '',
+    'id' => ''
 ])
 
-<img src="{{ $iconUrl }}" alt="{{ $iconAlt }}" class="{{ $class }}" loading="lazy" />
+<img id="{{ $id }}" src="{{ $iconUrl }}" alt="{{ $iconAlt }}" class="{{ $class }}" loading="lazy" />

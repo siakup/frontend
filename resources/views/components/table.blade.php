@@ -11,7 +11,7 @@
         'table-class' => 'min-w-full border-separate border-spacing-0'
       ],
       'old' => [
-        'div-class' => "max-h-[580px] rounded-xl m-4 bg-white border-[1px] border-solid border-[#D9D9D9] overflow-hidden",
+        'div-class' => "max-h-[580px] rounded-xl bg-white border-[1px] border-solid border-[#D9D9D9] overflow-hidden",
         'table-class' => "w-full border-collapse"
       ],
     ]

@@ -51,7 +51,7 @@ class CreateBulkCalendarAcademicRequest extends FormRequest
               'tanggal_awal' => $item['tanggal_mulai'] ?? null,
               'tanggal_akhir' => $item['tanggal_selesai'] ?? null,
               'status' => 'active',
-              'created_by' => '',
+              'created_by' => session('username'),
             ];
           })->toArray();
 

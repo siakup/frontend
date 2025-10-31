@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Endpoint\EventAcademicService;
 use App\Endpoint\PeriodAcademicService;
+use App\Http\Requests\CreateBulkEventAcademicRequest;
+use App\Http\Requests\StoreEventAcademicRequest;
+use App\Http\Requests\StorePeriodeAcademicRequest;
+use App\Http\Requests\UpdateEventAcademicRequest;
+use App\Http\Requests\UpdatePeriodeAcademicRequest;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Excel as ExcelFormat;
-
 
 use App\Traits\ApiResponse;
 
@@ -22,6 +26,7 @@ class AcademicController extends Controller
 
     public function indexPeriode(Request $request)
     {
+      try {
         $search = $request->input('search');
         $sort = $request->input('sort', 'created_at,desc');
         $limit = $request->input('limit', 10);
@@ -31,6 +36,10 @@ class AcademicController extends Controller
 
         $url = PeriodAcademicService::getInstance()->getListAllPeriode();
         $response = getCurl($url, $params, getHeaders());
+
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception($response);
+        }
         
         if ($request->ajax()) {
           return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
@@ -50,102 +59,215 @@ class AcademicController extends Controller
             'limit' => $limit,
             'namaSemester' => $namaSemester
         ]);
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal mengambil data Periode Akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data periode akademik');
+        }
+
+        return redirect()
+          ->route('home')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman periode akademik']);
+      }
     }
 
 
     public function periodeDetail(Request $request)
     {
+      try {
         $id = $request->input('id');
         $url = PeriodAcademicService::getInstance()->periodeUrl($id);
         $response = getCurl($url, null, getHeaders());
+        
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception(json_encode($response));
+        }
+
         $data = $response->data->periode;
+        if ($request->ajax()) {
+          return view('academics.periode._modal-view', get_defined_vars())->render();
+        } 
+        
+        throw new \Exception(json_encode([
+          'message' => 'Request tidak valid',
+          'system_error' => null
+        ]));
+
+        return redirect()->route('academics-periode.index');
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat modal detail periode akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
 
         if ($request->ajax()) {
-            return view('academics.periode._modal-view', get_defined_vars())->render();
+          return $this->errorResponse($decoded->message ?? 'Gagal memuat modal detail periode akademik');
         }
-        return redirect()->route('academics-periode.index');
+
+        return redirect()
+          ->route('academics-periode.index')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat modal detail periode akademik']);
+      }
     }
 
 
     public function createPeriode(Request $request)
     {
-        return view('academics.periode.create', get_defined_vars());
+      return view('academics.periode.create', get_defined_vars());
     }
 
-    public function periodeStore(Request $request)
+    public function periodeStore(StorePeriodeAcademicRequest $request)
     {
-        $validated = $request->validate([
-            'year'   => 'required',
-            'semester'   => 'required|string|in:ganjil,genap,pendek',
-            'status' => 'required|string|in:active,inactive',
-            'tahun_akademik' => 'required',
-            'tanggal_mulai' => 'required',
-            'tanggal_akhir' => 'required',
-            'deskripsi' => 'required'
-        ]);
-
-        $data = [
-            'tahun' => $validated['year'],
-            'semester' => $validated['semester'],
-            'tanggal_mulai' => $validated['tanggal_mulai'],
-            'tanggal_akhir' => $validated['tanggal_akhir'],
-            'deskripsi' => $validated['deskripsi'],
-            'status'     => $validated['status'],
-            'created_by' => session('username'),
-        ];
-
+      try {
         $url = PeriodAcademicService::getInstance()->store();
-        $response = postCurl($url, $data, getHeaders());
+        $response = postCurl($url, $request->all(), getHeaders());
+
+        if (!isset($response->success) && !$response->success) {
+          throw new \Exception(json_encode($response));
+        }
 
         if ($request->ajax()) {
-            if (isset($response->success) && $response->success) {
-                return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
-            }
-            return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
+          return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
         }
 
         return redirect()->route('academics-periode.index')->with('success', 'Berhasil disimpan');
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal menyimpan data periode akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if ($request->ajax()) {
+          return response()->json(['success' => false, 'message' => $decoded->message ?? 'Gagal menyimpan data'], 422);
+        }
+
+        return redirect()
+          ->back()
+          ->withErrors(['error' => $decoded->message ?? 'Gagal menyimpan data periode akademik']);
+      }
     }
 
-    public function periodeDelete($id)
+    public function periodeDelete(Request $request, $id)
     {
+      try {
         $url = PeriodAcademicService::getInstance()->periodUrl($id);
         $response = deleteCurl($url, getHeaders());
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception($response);
+        }
 
-        return $response;
+        if ($request->ajax()) {
+          return $response;
+        }
+
+        return redirect()->route('academics-periode.index')->with('success', 'Data periode akademik berhasil dihapus.');
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal menghapus data periode akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if ($request->ajax()) {
+          return response()->json(['success' => false, 'message' => $decoded->message ?? 'Gagal menghapus data periode akademik'], 422);
+        }
+
+        return redirect()
+          ->back()
+          ->withErrors(['error' => $decoded->message ?? 'Gagal menghapus data periode akademik']);
+      }
     }
 
     public function periodeEdit(Request $request, $id)
     {
+      try {
+        if($request->ajax) {
+          throw new \Exception(json_encode([
+            'message' => 'Request tidak valid',
+            'system_error' => null
+          ]));
+        }
+
         $url = PeriodAcademicService::getInstance()->periodeUrl($id);
         $response = getCurl($url, null, getHeaders());
+
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception($response);
+        }
 
         $data = json_decode(json_encode($response), true)['data']['periode'];
 
         return view('academics.periode.edit', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal mendapatkan detail data periode akademik untuk diubah', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if ($request->ajax()) {
+          return response()->json(['success' => false, 'message' => $decoded->message ?? 'Request tidak valid'], 422);
+        }
+
+        return redirect()
+          ->route('academics-periode.index')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal mendapatkan detail data periode akademik untuk diubah']);
+      }
     }
 
-    public function periodeUpdate(Request $request, $id)
+    public function periodeUpdate(UpdatePeriodeAcademicRequest $request, $id)
     {
-        $data = [
-            'tahun' => $request->tahun,
-            'semester' => $request->semester,
-            'tanggal_mulai' => Carbon::createFromFormat('d-m-Y, H:i', $request->tanggal_mulai)->format('Y-m-d H:i:s'),
-            'tanggal_akhir' => Carbon::createFromFormat('d-m-Y, H:i', $request->tanggal_akhir)->format('Y-m-d H:i:s'),
-            'deskripsi' => $request->deskripsi,
-            'status' => $request->status,
-            'update_at' => date('Y-m-d H:i:s'),
-            'updated_by' => session('username')
-        ];
-
+      try {
         $url = PeriodAcademicService::getInstance()->periodeUrl($id);
-        $response = putCurl($url, $data, getHeaders());
+        $response = putCurl($url, $request->all(), getHeaders());
 
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception(json_encode($response));
+        }
+
+        if($request->ajax()) {
+          return $this->successResponse($response->data ?? [], 'Periode berhasil diperbarui');
+        }
         return redirect()->route('academics-periode.index')->with('success', 'Periode berhasil diperbarui');
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal mengubah data periode akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if ($request->ajax()) {
+          return response()->json(['success' => false, 'message' => $decoded->message ?? 'Gagal mengubah data periode akademik'], 422);
+        }
+
+        return redirect()
+          ->back()
+          ->withErrors(['error' => $decoded->message ?? 'Gagal mengubah data periode akademik']);
+      }
     }
 
     public function indexEvent(Request $request)
     {
+      try {
         $search = $request->input('search');
         $sort = $request->input('sort', 'created_at,desc');
         $page = $request->input('page', 1);
@@ -162,71 +284,176 @@ class AcademicController extends Controller
         $response = getCurl($url, $params, getHeaders());
         $data = json_decode(json_encode($response), true);
 
-        if ($request->ajax()) {
-            if (!isset($response->data)) {
-                return $this->errorResponse($response->message);
-            }
-            return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+        if(!isset($response->success) || !$response->success) {
+          throw new Exception(json_encode($response));
         }
 
+        if ($request->ajax()) {
+          return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+        } 
+
         return view('academics.event.index', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        if($request->ajax()) {
+          Log::error('Gagal mendapatkan data event akademik', [
+            'url' => $url ?? null,
+            'request_data' => $request->all(),
+            'response' => $decoded,
+          ]);
+
+          return $this->errorResponse($decoded->message);
+        } else {
+          Log::error('Gagal memuat halaman event akademik', [
+            'url' => $url ?? null,
+            'request_data' => $request->all(),
+            'response' => $decoded,
+          ]);
+
+          return redirect()->route('home')->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman event akademik']);
+        }
+      }
     }
 
     public function eventDetail(Request $request)
     {
+      try {
         $id = $request->input('id');
         $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception(json_encode($response));
+        }
         $data = $response->data->event;
 
         if ($request->ajax()) {
-            return view('academics.event._modal-view', get_defined_vars())->render();
+          return view('academics.event._modal-view', get_defined_vars())->render();
         }
-        return redirect()->route('academics-event.index');
+
+        throw new \Exception(json_encode([
+          'message' => 'Request tidak valid',
+          'system_error' => null
+        ]));
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat detail event akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal memuat detail event akademik');
+        } else {
+          return redirect()->route('home')->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman detail event akademik: Request tidak valid']);
+        }
+      }
     }
 
-    public function eventEdit($id)
+    public function eventEdit(Request $request, $id)
     {
+      try {
         $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = getCurl($url, null, getHeaders());
+
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception(json_encode($response));
+        }
+
+        if($request->ajax()) {
+          throw new \Exception(json_encode([
+            'message' => 'Request tidak valid',
+            'system_error' => null
+          ]));
+        }
 
         $data = json_decode(json_encode($response), true)['data']['event'];
 
         return view('academics.event.edit', get_defined_vars());
-    }
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
 
-    public function eventUpdate(Request $request, $id)
-    {
-      dd($request->all());
-        $request->validate([
-            'nama_event' => 'required'
-        ], [
-            'nama_event.required' => "Mohon diisi Nama Event sebelum disimpan"
+        Log::error('Gagal memuat halaman edit event akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
         ]);
 
-        $data = [
-            'nama_event' => $request->nama_event,
-            'nilai_on' => $request->nilai_on ? true : false,
-            'irs_on' => $request->irs_on ? true : false,
-            'lulus_on' => $request->lulus_on ? true : false,
-            'registrasi_on' => $request->registrasi_on ? true : false,
-            'yudisium_on' => $request->yudisium_on ? true : false,
-            'survei_on' => $request->survei_on ? true : false,
-            'dosen_on' => $request->dosen_on ? true : false,
-            'status' => $request->status,
-            'updated_by' => session('username')
-        ];
-        $url = EventAcademicService::getInstance()->eventUrl($id);
-        $response = putCurl($url, $data, getHeaders());
-
-        return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
+        if(!$request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal memuat halaman edit event akademik');
+        } else {
+          return redirect()
+            ->back()
+            ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman edit event akademik: Request tidak valid']);
+        }
+      }
     }
 
-    public function eventDelete($id)
+    public function eventUpdate(UpdateEventAcademicRequest $request, $id)
     {
+      try {
+        $url = EventAcademicService::getInstance()->eventUrl($id);
+        $response = putCurl($url, $request->all(), getHeaders());
+
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception(json_encode($response));
+        }
+
+        if($request->ajax()) {
+          return $this->successResponse($response->data ?? [], 'Berhasil disimpan');
+        } 
+        return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman edit event akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal memuat halaman edit event akademik');
+        } else {
+          return redirect()
+            ->back()
+            ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman edit event akademik: Request tidak valid']);
+        }
+      }
+    }
+
+    public function eventDelete(Request $request, $id)
+    {
+      try {
         $url = EventAcademicService::getInstance()->eventUrl($id);
         $response = deleteCurl($url, getHeaders());
-        return $response;
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception(json_encode($response));
+        }
+
+        if($request->ajax()) {
+          return $response;
+        } 
+        return redirect()->route('academics-event.index')->with('success', 'Berhasil dihapus');
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal gagal menghapus data event akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal menghapus data event akademik');
+        } else {
+          return redirect()
+            ->back()
+            ->withErrors(['error' => $decoded->message ?? 'Gagal menghapus data event akademik: Request tidak valid']);
+        }
+      }
     }
 
     public function eventCreate(Request $request)
@@ -234,42 +461,36 @@ class AcademicController extends Controller
         return view('academics.event.create', get_defined_vars());
     }
 
-    public function eventStore(Request $request)
+    public function eventStore(StoreEventAcademicRequest $request)
     {
-        $validated = $request->validate([
-            'name'   => 'required|string|max:255',
-            'flag'   => 'array',
-            'status' => 'required|string|in:active,inactive',
-        ]);
-
-        $flags = [
-            'nilai_on'      => in_array('nilai_on', $request->flag ?? []),
-            'irs_on'        => in_array('irs_on', $request->flag ?? []),
-            'lulus_on'      => in_array('lulus_on', $request->flag ?? []),
-            'registrasi_on' => in_array('registrasi_on', $request->flag ?? []),
-            'yudisium_on'   => in_array('yudisium_on', $request->flag ?? []),
-            'survei_on'     => in_array('survei_on', $request->flag ?? []),
-            'dosen_on'      => in_array('dosen_on', $request->flag ?? []),
-        ];
-
-        $data = [
-            'nama_event' => $validated['name'],
-            'status'     => $validated['status'],
-            'flags'      => $flags,
-            'created_by' => session('username'),
-        ];
-
+      try {
         $url = EventAcademicService::getInstance()->baseEventURL();
-        $response = postCurl($url, $data, getHeaders());
+        $response = postCurl($url, $request->all(), getHeaders());
+
+        if(!isset($response->success) || !$response->success) {
+          throw new \Exception(json_encode($response));
+        }
 
         if ($request->ajax()) {
-            if (isset($response->success) && $response->success) {
-                return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
-            }
-            return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
+          return response()->json(['success' => true, 'message' => 'Berhasil disimpan']);
         }
 
         return redirect()->route('academics-event.index')->with('success', 'Berhasil disimpan');
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal menambahkan data event akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if($request->ajax()) {
+          return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
+        } else {
+          return redirect()->back()->withErrors(['error' => $decoded->message ?? 'Gagal menyimpan data event akademik']);
+        }
+      }
     }
 
     public function eventUpload(Request $request)
@@ -280,88 +501,160 @@ class AcademicController extends Controller
     
     public function eventDownloadTemplate(Request $request)
     {
+      try {
         $type = $request->query('type', 'xlsx');
         $allowed = ['xlsx', 'csv'];
 
         if (!in_array($type, $allowed)) {
-            return redirect()->back()->with('error', 'Format file tidak valid');
+          throw new \Exception(json_encode([
+            'message' => 'Format file tidak valid',
+            'system_error' => $request->all()
+          ]));
         }
 
         $data = [
-            ['nama', 'event nilai', 'event krs', 'event kelulusan', 'event registrasi', 'event yudisium', 'event survei', 'event dosen', 'status'],
-            ['Perkuliahan Semester Ganjil', 'n', 'n', 'n', 'n', 'n', 'n', 'y', 'active'],
-            ['Perkuliahan Semester Genap', 'n', 'n', 'n', 'n', 'n', 'n', 'y', 'active'],
-            ['Pengisian Survei', 'n', 'n', 'n', 'n', 'n', 'y', 'n', 'active'],
+          ['nama', 'event nilai', 'event irs', 'event kelulusan', 'event registrasi', 'event yudisium', 'event survei', 'event dosen', 'status'],
+          ['', 'y/n', 'y/n', 'y/n', 'y/n', 'y/n', 'y/n', 'y/n', 'active/inactive'],
         ];
 
         $filename = 'template-event-akademik.' . $type;
 
-        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+        if(!$request->ajax()) {
+          return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
             private $rows;
             public function __construct($rows)
             {
-                $this->rows = $rows;
+              $this->rows = $rows;
             }
             public function array(): array
             {
-                return array_slice($this->rows, 1);
+              return array_slice($this->rows, 1);
             }
             public function headings(): array
             {
-                return $this->rows[0];
+              return $this->rows[0];
             }
-        }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
+          }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
+        } 
+
+        throw new \Exception(json_encode([
+            'message' => 'Request tidak valid',
+            'system_error' => $request->all()
+        ]));
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal mengunduh data event akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded,
+        ]);
+
+        if($request->ajax()) {
+          return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal mengunduh template event akademik'], 422);
+        } else {
+          return redirect()->back()->withErrors(['error' => $decoded->message ?? 'Gagal mengunduh template event akademik']);
+        }
+      }
     }
 
     public function eventPreview(Request $request)
     {
-        if ($request->isMethod('get')) {
-            return redirect()->route('academics-event.upload');
-        }
+      try {
+        $file = $request->file('file');
+        
+        if (!$file) throw new \Exception("File belum diupload!");
+        if (!$file->isValid()) throw new \Exception("File upload tidak valid!");
+        if ($file->getSize() === 0) throw new \Exception("File yang diupload tidak terisi!");
 
-        $request->validate([
-            'file' => 'required|file|mimes:xlsx,csv,xls',
+        $allowedExtensions = ['xlsx', 'xls', 'csv'];
+        $extension = strtolower($file->getClientOriginalExtension());
+
+        if (!in_array($extension, $allowedExtensions)) throw new \Exception("Ekstensi file tidak valid. Harap upload file berformat: .xlsx, .xls, atau .csv");
+
+        $allowedMimes = [
+          'text/csv',
+          'text/plain',
+          'application/csv',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        ];
+
+        $mimeType = $file->getMimeType();
+        if (!in_array($mimeType, $allowedMimes)) throw new \Exception("Tipe file tidak valid ($mimeType). Harap upload file Excel atau CSV yang benar.");
+
+        $maxSize = 5 * 1024 * 1024; 
+        if ($file->getSize() > $maxSize) throw new \Exception("Ukuran file terlalu besar. Maksimal 5MB.");
+
+        $rows = \Maatwebsite\Excel\Facades\Excel::toArray([], $file);
+        $datas = $rows[0] ?? [];
+
+        if(empty($datas)) throw new \Exception("File yang diupload kosong!");
+        
+        $keyData = $datas[0];
+        $valueData = array_slice($datas, 1);
+
+        if(empty($valueData)) throw new \Exception("File yang diupload kosong!");
+
+        $datas = array_values(array_filter(
+          array_map(
+            function ($data) use($keyData) {
+              $findNull = current(array_filter($data, function ($d) { return $d == null; }));
+              if($findNull !== null) return array_combine($keyData, $data);
+              else return [];
+            }, 
+            $valueData
+          ),
+          fn($data) => !empty($data)
+        ));
+
+        if(count($datas) === 0) throw new \Exception("File yang diupload memiliki data yang tidak valid pada seluruh barisnya!");
+        return view('academics.event.preview', get_defined_vars());
+      } catch (\Exception $err) {
+        Log::error('Gagal membaca file kalender akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $err->getMessage() ?? 'Gagal membaca file', 
+          'exception' => $err,
         ]);
-
-        try {
-            $rows = \Maatwebsite\Excel\Facades\Excel::toArray([], $request->file('file'));
-            $data = $rows[0] ?? [];
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal memproses file: ' . $e->getMessage());
-        }
-
-        return view('academics.event.preview', compact('data'));
+        return redirect()
+          ->back()
+          ->withErrors(['error' => $err->getMessage() ?? 'Gagal membaca file'])
+          ->withInput();
+      }
     }
 
-    public function eventStoreUpload(Request $request)
+    public function eventStoreUpload(CreateBulkEventAcademicRequest $request)
     {
-        $data = $request->input('data', []);
-
-        $events = [];
-        foreach ($data as $row) {
-            if (count($row) < 9) {
-                continue;
-            }
-
-            $events[] = [
-                'nama_event' => $row[0],
-                'nilai_on' => strtolower($row[1]) === 'y',
-                'irs_on' => strtolower($row[2]) === 'y',
-                'lulus_on' => strtolower($row[3]) === 'y',
-                'registrasi_on' => strtolower($row[4]) === 'y',
-                'yudisium_on' => strtolower($row[5]) === 'y',
-                'survei_on' => strtolower($row[6]) === 'y',
-                'dosen_on' => strtolower($row[7]) === 'y',
-                'status' => strtolower($row[8]) === 'active' ? 'active' : 'inactive',
-                'created_by' => session('username'),
-            ];
-        }
-
+      try {
         $url = EventAcademicService::getInstance()->bulkStore();
-        $response = postCurl($url, ['events' => $events], getHeaders());
-        if (isset($response->success) && $response->success) {
-            return redirect()->route('academics-event.index')->with('success', 'Berhasil mengunggah event akademik');
+        $response = postCurl($url, ['events' => $request->data], getHeaders());
+        if (!isset($response->success) && !$response->success) {
+          throw new \Exception(json_encode($response));
         }
-        return redirect()->route('academics-event.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
+
+        if($request->ajax) {
+          return response()->json(['success' => true, 'message' => 'Berhasil menggunggah event akademik']);
+        }
+
+        return redirect()->route('academics-event.index')->with('success', 'Berhasil mengunggah event akademik');
+      } catch (\Exception $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal menyimpan multi data event akademik', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded
+        ]);
+
+        if($request->ajax()) {
+          return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal membaca file'], 422);
+        }
+
+        return redirect()
+          ->route('academics-event.index')
+          ->withErrors(['error' => $err->getMessage() ?? 'Gagal membaca file'])
+          ->withInput();
+      }
     }
 }

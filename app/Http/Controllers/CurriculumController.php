@@ -29,20 +29,18 @@ class CurriculumController extends Controller
         $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
         $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
         $programPerkuliahanList = $responseProgramPerkuliahanList->data ?? [];
-
-        $id_program = $request->input('program_perkuliahan');
+        $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->name);
 
         $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
         $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
         $programStudiList = $responseProgramStudiList->data ?? [];
 
-        // ✅ cek apakah ada program_studi dari request, kalau tidak ada fallback ke list pertama
         if ($request->filled('program_studi')) {
             $id_prodi = urldecode($request->input('program_studi'));
         } elseif (!empty($programStudiList)) {
             $id_prodi = $programStudiList[0]->id;
         } else {
-            $id_prodi = null; // atau kasih default lain
+            $id_prodi = null;
         }
 
         $params = [
@@ -78,7 +76,7 @@ class CurriculumController extends Controller
 
     public function storeCurriculumList(Request $request)
     {
-//        sprint 252, confirm to Mba Luluk
+      dd($request->all());
       return redirect()->route('curriculum.list.index')->with('success', 'Tambah Kurikulum Berhasil Disimpan');
     }
 
@@ -277,85 +275,77 @@ class CurriculumController extends Controller
     $response = getCurl($url, null, getHeaders());
     $data = $response->data;
 
-    $dataDetail = [
-      'nama_kurikulum' => 'Ilmu Komputer',
-      'kode_matakuliah' => '10004',
-      'matakuliah' => 'Agama Katolik dan Etika',
-      'sks' => 2,
-      'semester' => 1
-    ];
-
-    $data = [
-      [
-        'id' => 1,
-        'kode' => 'CPL-A',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+    $cpls = [
+      (object)[
+        'id_cpl' => 1,
+        'kode_cpl' => 'CPL-A',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 2,
-        'kode' => 'CPL-B',
-        'capaian' => 'Memiliki kemampuan untuk memahami pertimbangan etis, budaya akademik, dan bertanggung jawab secara profesional',
+      (object)[
+        'id_cpl' => 2,
+        'kode_cpl' => 'CPL-B',
+        'deskripsi_cpl' => 'Memiliki kemampuan untuk memahami pertimbangan etis, budaya akademik, dan bertanggung jawab secara profesional',
         'is_select' => false
       ],
-      [
-        'id' => 3,
-        'kode' => 'CPL-C',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 3,
+        'kode_cpl' => 'CPL-C',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+        'is_select' => true
+      ],
+      (object)[
+        'id_cpl' => 4,
+        'kode_cpl' => 'CPL-D',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 4,
-        'kode' => 'CPL-D',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 5,
+        'kode_cpl' => 'CPL-E',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+        'is_select' => true
+      ],
+      (object)[
+        'id_cpl' => 6,
+        'kode_cpl' => 'CPL-F',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 5,
-        'kode' => 'CPL-E',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 7,
+        'kode_cpl' => 'CPL-G',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 6,
-        'kode' => 'CPL-F',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 8,
+        'kode_cpl' => 'CPL-H',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 7,
-        'kode' => 'CPL-G',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 9,
+        'kode_cpl' => 'CPL-I',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 8,
-        'kode' => 'CPL-H',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 10,
+        'kode_cpl' => 'CPL-J',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
-      [
-        'id' => 9,
-        'kode' => 'CPL-I',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
+      (object)[
+        'id_cpl' => 11,
+        'kode_cpl' => 'CPL-K',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+        'is_select' => true
       ],
-      [
-        'id' => 10,
-        'kode' => 'CPL-J',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      [
-        'id' => 11,
-        'kode' => 'CPL-K',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      [
-        'id' => 12,
-        'kode' => 'CPL-L',
-        'capaian' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+      (object)[
+        'id_cpl' => 12,
+        'kode_cpl' => 'CPL-L',
+        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
         'is_select' => false
       ],
     ];
@@ -608,6 +598,7 @@ class CurriculumController extends Controller
 
   public function uploadStoreCurriculumEquivalence(Request $request)
   {
+    dd($request->all());
     $validator = Validator::make($request->all(), [
       'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
     ]);
@@ -665,7 +656,7 @@ class CurriculumController extends Controller
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-    $id_program = $request->input('program_perkuliahan');
+    $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->name);
 
     $params = compact('id_program');
     $url = CurriculumService::getInstance()->getMandatoryCourses();
@@ -693,6 +684,23 @@ class CurriculumController extends Controller
     $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
     $programPerkuliahanList = $responseProgramPerkuliahanList->data;
     $id_program = $request->input('program_perkuliahan');
+
+    $params = compact('id_program');
+    $url = CurriculumService::getInstance()->getMandatoryCourses();
+    $response = getCurl($url, $params, getHeaders());
+
+    if (!isset($response->data)) {
+      if ($request->ajax()) {
+        return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
+      }
+      $data = [];
+    } else {
+      $data = $response->data;
+    }
+
+    if ($request->ajax()) {
+      return $this->successResponse($data, 'Berhasil Mendapatkan Data');
+    }
 
 
     return view('curriculums.structure.optional', get_defined_vars());
