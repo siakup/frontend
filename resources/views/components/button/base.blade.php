@@ -27,7 +27,7 @@
     @endif
 
     {{-- Slot sebagai prioritas, fallback ke label --}} 
-    <x-typography variant="body-medium-regular">
+    <x-typography variant="caption-regular">
         {{ $slot->isNotEmpty() ? $slot : $label }}
     </x-typography>
 

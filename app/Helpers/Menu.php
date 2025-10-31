@@ -326,6 +326,15 @@ class Menu
                     ],
                 ]
             ],
+            'rps' => [
+                'name' => 'RPS (Rencana Pembelajaran Dosen)',
+                'url' => '/rps',
+                'parent' => 'rps.index',
+                'isExpandable' => false
+                // 'children' => [
+
+                // ]
+            ],
         ];
     }
 

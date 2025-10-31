@@ -229,3 +229,4 @@ require __DIR__.'/module/role.php';
 require __DIR__.'/module/student.php';
 require __DIR__.'/module/user.php';
 require __DIR__.'/module/tutelage.php';
+require __DIR__.'/module/rps.php';
