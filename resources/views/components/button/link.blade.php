@@ -1,3 +1,6 @@
+@props([
+  'variant' => 'body-small-regular'
+])
 <a {{$attributes->merge(['class' => 'text-[#0076BE]'])}}>
-  {{$slot}}
+  <x-typography :variant="$variant">{{$slot}}</x-typography>
 </a>

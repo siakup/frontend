@@ -1,83 +1,11 @@
-<script>
-  let editTanggalMulaiInput, editTanggalSelesaiInput;
-  
-  function onClickShowEditModal(element, listData) {
-    const modalEditEvent = document.getElementById('modalEditEvent');
-    const button = modalEditEvent.querySelector('#sortEvent');
-
-    const id = element.getAttribute('data-id');
-    const data = listData.find(list => list.id == id);
-    
-    modalEditEvent.querySelector('input[name="name_event"]').value = data.id_event;
-    modalEditEvent.querySelector('input[name="status"]').value = data.status;
-    modalEditEvent.querySelector('input[name="id_calendar"]').value = data.id;
-  
-    button.innerHTML = button.innerHTML.replace('Pilih Event', data.nama_event);
-    button.classList.add('text-black');
-    modalEditEvent.classList.add('flex');
-    modalEditEvent.classList.remove('hidden');
-
-    editTanggalMulaiInput = flatpickr("#tanggal-mulai", {
-        locale: 'id',
-        enableTime: true,
-        dateFormat: "d-m-Y, H:i",
-        time_24hr: true,
-        onChange: function (selectedDates) {
-            if (selectedDates.length > 0 && editTanggalSelesaiInput) {
-                editTanggalSelesaiInput.set('minDate', selectedDates[0]);
-            }
-        },
-        onReady: function (selectedDates, dateStr, instance) {
-            if (data?.tanggal_awal) {
-                instance.setDate(new Date(data.tanggal_awal), false); // false: jangan trigger onChange
-            }
-        }
-    });
-
-    editTanggalSelesaiInput = flatpickr("#tanggal-akhir", {
-        locale: 'id',
-        enableTime: true,
-        dateFormat: "d-m-Y, H:i",
-        time_24hr: true,
-        onChange: function (selectedDates) {
-            if (selectedDates.length > 0 && editTanggalMulaiInput) {
-                editTanggalMulaiInput.set('maxDate', selectedDates[0]);
-            }
-        },
-        onReady: function (selectedDates, dateStr, instance) {
-            if (data?.tanggal_akhir) {
-                instance.setDate(new Date(data.tanggal_akhir), false);
-            }
-        }
-    });
-
-    editTanggalSelesaiInput.set('minDate', new Date(data.tanggal_awal));
-    editTanggalMulaiInput.set('maxDate', new Date(data.tanggal_akhir));
-
-    updateSaveEditButtonState();
-  }
-
-  function updateSaveEditButtonState() {
-    const modalEditEvent = document.getElementById('modalEditEvent');
-
-    const eventNameFilled = modalEditEvent.querySelector('input[name="name_event"]').value.trim() !== '';
-    const startDateFilled = modalEditEvent.querySelector('input[name="tanggal_mulai"]').value !== '' && (editTanggalMulaiInput.selectedDates[0] < editTanggalSelesaiInput.selectedDates[0]);
-    const endDateFilled = modalEditEvent.querySelector('input[name="tanggal_selesai"]').value !== '' && (editTanggalSelesaiInput.selectedDates[0] > editTanggalMulaiInput.selectedDates[0]);
-
-    if (eventNameFilled && startDateFilled && endDateFilled) {
-        modalEditEvent.querySelector('#btnSimpan').disabled = false;
-    } else {
-        modalEditEvent.querySelector('#btnSimpan').disabled = true;
-    }
-  }
-</script>
+<script src="{{ asset('js/custom/calendar-academic.js')}}"></script>
 
 <form action="{{route('calendar.update', ['id' => $id])}}" method="POST">
   @csrf
   @method('PUT')
   <x-modal.container-pure-js id="modalEditEvent">
     <x-slot name="header">
-      <span class="text-lg-bd">Ubah Event Akademik</span>
+      <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Ubah Kalender Event Akademik</x-typography>
     </x-slot>
     <x-slot name="body">
       <x-form.input-container class="min-w-[120px]">
@@ -90,7 +18,8 @@
             :imgSrc="asset('assets/base/icon-arrow-down.svg')"
             :isIconCanRotate="true"
             :dropdownItem="array_column($eventAkademik, 'id', 'nama_event')"
-            :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9]'"
+            :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black w-full flex items-center justify-between flex-1'"
+            :dropdownContainerClass="'w-full'"
             :isUsedForInputField="true"
             :inputFieldName="'name_event'"
           />
@@ -102,13 +31,13 @@
       <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Tanggal Mulai</x-slot>
         <x-slot name="input">
-          <x-form.calendar id="tanggal-mulai" name="tanggal_mulai" oninput="updateSaveEditButtonState()" />
+          <x-form.calendar id="tanggal-mulai" name="tanggal_mulai" oninput="updateSaveButtonState(document.getElementById('modalEditEvent'), editTanggalMulaiInput, editTanggalSelesaiInput)" />
         </x-slot>
       </x-form.input-container>
       <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Tanggal Selesai</x-slot>
         <x-slot name="input">
-          <x-form.calendar id="tanggal-akhir" name="tanggal_selesai" oninput="updateSaveEditButtonState()" />
+          <x-form.calendar id="tanggal-akhir" name="tanggal_selesai" oninput="updateSaveButtonState(document.getElementById('modalEditEvent'), editTanggalMulaiInput, editTanggalSelesaiInput)" />
         </x-slot>
       </x-form.input-container>
     </x-slot>
@@ -137,12 +66,12 @@
   </x-modal.container-pure-js>
   <x-modal.container-pure-js id="modalKonfirmasiEdit">
     <x-slot name="header">
-      <span class="text-lg-bd">Tunggu Sebentar</span>
-      <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="ikon peringatan">
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
+        <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
+      </x-container>
     </x-slot>
-    <x-slot name="body">
-      <div>Apakah Anda yakin informasi yang ditambah sudah benar?</div>
-    </x-slot>
+    <x-slot name="body">Apakah Anda yakin informasi yang ditambah sudah benar?</x-slot>
     <x-slot name="footer">
       <x-button.secondary 
         onclick="

@@ -182,6 +182,135 @@ class TutelageController extends Controller
         return view('tutelage.student-list.detail-krs', get_defined_vars());
     }
 
+    public function showTranskripKurikulum(Request $request, $id)
+    {
+        $transkrip = [
+            'nim' => '105221015',
+            'nip_wali' => '116130',
+            'nama' => 'Fauzan Akmal Mukhlas',
+            'dosen_wali' => 'Ade Irawan Ph.D',
+            'sks' => '118/118',
+            'fakultas' => 'Fakultas Sains dan Ilmu Komputer',
+            'program' => 'Sarjana',
+            'prodi'=> 'Ilmu Komputer',
+            'ipk' => '3.20',
+        ];
+
+        $historis = [
+            [
+            'tahun' => 2021,
+            'semester' => '3',
+            'jenis' => 'Ganjil',
+            'matkul' => [
+                [
+                    'kode'=>'10008',
+                    'nama'=>'Inovasi dan Kewirausahaan',
+                    'sks'=> 2,
+                    'nilai'=>'A-',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52201',
+                    'nama'=>'Studi Literatur Penulisan Ilmiah',
+                    'sks'=>2,
+                    'nilai'=>'A-',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52202',
+                    'nama'=>'Probabilitas dan Statistika',
+                    'sks'=> 3,
+                    'nilai'=>'C',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52203',
+                    'nama'=>'Aljabar Linear dan Aplikasinya',
+                    'sks'=> 3,
+                    'nilai'=>'B',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52204',
+                    'nama'=>'Algoritma dan Struktur Data',
+                    'sks'=> 3,
+                    'nilai'=>'B',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52205',
+                    'nama'=> 'Praktikum Algoritma dan Struktur Data',
+                    'sks'=> 1,
+                    'nilai'=>'B',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52206',
+                    'nama'=>'Basis Data',
+                    'sks'=> 3,
+                    'nilai'=>'B+',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52207',
+                    'nama'=>'Praktikum Basis Data',
+                    'sks'=> 1,
+                    'nilai'=>'A',
+                    'status'=>'Lulus'
+                ],
+            ],
+            'sks_total' => 18,
+            'ips' => 3.09,
+            ],
+            [
+                'tahun' => 2021,
+                'semester' => '4',
+                'jenis' => 'Genap',
+                'matkul' => [
+                    [
+                        'kode'=>'52208',
+                        'nama'=>'Kecerdasan Artifisial',
+                        'sks'=> 2,
+                        'nilai'=>'B',
+                        'status'=>'Lulus'
+                    ],
+                    [
+                        'kode'=>'52209',
+                        'nama'=>'Metode Numerik',
+                        'sks'=> 3,
+                        'nilai'=>'C',
+                        'status'=>'Lulus'
+                    ],
+                    [
+                        'kode'=>'52210',
+                        'nama'=>'Rekayasa Perangkat Lunak',
+                        'sks'=> 3,
+                        'nilai'=>'B+',
+                        'status'=>'Lulus'
+                    ],
+                    [
+                        'kode'=>'52211',
+                        'nama'=>'Komputasi Pararel dan Terdistribusi',
+                        'sks'=> 3,
+                        'nilai'=>'B',
+                        'status'=>'Lulus'
+                    ],
+                    [
+                        'kode'=>'52212',
+                        'nama'=>'Jaringan Komputer',
+                        'sks'=> 2,
+                        'nilai'=>'B-',
+                        'status'=>'Lulus'
+                    ],
+
+                ],
+                'sks_total' => 13,
+                'ips' => 3.09,
+            ]
+        ];
+
+        return view('tutelage.student-list.detail-transkrip-kurikulum', get_defined_vars());
+    }
 
     public function addCourse(Request $request, $id)
     {

@@ -1,23 +1,23 @@
 <x-modal.container-pure-js id="modalPeriodeAkademik">
   <x-slot name="header">
-    <span class="text-lg-bd">Lihat Periode Akademik</span>
-    <button 
-      type="button" 
-      class="absolute top-4 right-5 bg-none border-none text-[2rem] text-[#888] cursor-pointer z-10 transition-all duration-200 hover:text-[#E74C3C]"
-      onclick="
-        document.getElementById('modalPeriodeAkademik').classList.add('hidden');
-        document.getElementById('modalPeriodeAkademik').classList.remove('flex');
-      ">
-        &times;
-    </button>
+    <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Lihat Periode Akademik</x-typography>
+      <button 
+        type="button" 
+        class="text-[#888] cursor-pointer transition-all duration-200 hover:text-[#E74C3C] flex items-center" 
+        onclick="
+          document.getElementById('modalPeriodeAkademik').classList.add('hidden');
+          document.getElementById('modalPeriodeAkademik').classList.remove('flex');
+        "
+      >
+        <x-typography :variant="'heading-h3'" :class="'!font-medium'">&times;</x-typography>
+      </button>
+    </x-container>
   </x-slot>
   <x-slot name="body">
-    <div class="expandable-section" id="section-detail">
-      <div class="text-left">
-          <span class="text-md-bd">Periode Akademik</span>
-      </div>
-
-      <div class="expandable-content flex flex-col" id="content-detail">
+    <x-container :variant="'content-wrapper'" :class="'!p-0 !gap-0 !m-0'" id="section-detail">
+      <x-typography :variant="'body-medium-bold'" :class="'w-full flex items-start text-left'">Periode Akademik</x-typography>
+      <x-container :variant="'content-wrapper'" :class="'!p-0'" id="content-detail">
         <x-form.input-container id="year" class="min-w-[175px]">
           <x-slot name="label">Tahun</x-slot>
           <x-slot name="input">
@@ -87,8 +87,8 @@
           :value="$data->status === 'active'" 
           :variant="'readonly'"
         />
-      </div>
-    </div>
+      </x-container>
+    </x-container>
   </x-slot>
   <x-slot name="footer"></x-slot>
 </x-modal.container-pure-js>

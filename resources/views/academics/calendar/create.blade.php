@@ -1,57 +1,14 @@
+<script src="{{asset('custom/js/calendar-academic.js')}}"></script>
 <script>
-  let tanggalMulaiInput, tanggalSelesaiInput;
   document.addEventListener('DOMContentLoaded', () => {
-    tanggalSelesaiInput = flatpickr("#create-tanggal-akhir", {
-        locale: 'id',
-        enableTime: true,
-        dateFormat: "d-m-Y, H:i",
-        time_24hr: true,
-        onChange: (selectedDates) => {
-            if (selectedDates.length > 0 && tanggalMulaiInput) {
-                tanggalMulaiInput.set('maxDate', selectedDates[0]);
-            } else if (tanggalMulaiInput) {
-                tanggalMulaiInput.set('maxDate', null);
-            }
-        },
-    });
-  
-    tanggalMulaiInput = flatpickr("#create-tanggal-mulai", {
-        locale: 'id',
-        enableTime: true,
-        dateFormat: "d-m-Y, H:i",
-        time_24hr: true,
-        onChange: (selectedDates) => {
-            if (selectedDates.length > 0 && tanggalSelesaiInput) {
-                tanggalSelesaiInput.set('minDate', selectedDates[0]);
-            } else if (tanggalSelesaiInput) {
-                tanggalSelesaiInput.set('minDate', null);
-            }
-        },
-    });
-  })
-
-  function updateSaveButtonState() {
-    const eventName = document.querySelector('input[name="name_event"]');
-    const tanggalMulai = document.querySelector('input[name="tanggal_mulai"]');
-    const tanggalSelesai = document.querySelector('input[name="tanggal_selesai"]');
-    const btnSave = document.getElementById('btnSimpan');
-
-    const eventNameFilled = eventName.value.trim() !== '';
-    const startDateFilled = tanggalMulai.value !== '' && (tanggalMulaiInput.selectedDates[0] < tanggalSelesaiInput.selectedDates[0]);
-    const endDateFilled = tanggalSelesai.value !== '' && (tanggalSelesaiInput.selectedDates[0] > tanggalMulaiInput.selectedDates[0]);
-
-    if (eventNameFilled && startDateFilled && endDateFilled) {
-        btnSave.disabled = false;
-    } else {
-        btnSave.disabled = true;
-    }
-  }
+    initCalendar();
+  });
 </script>
 <form action="{{ route('calendar.store', ['id' => $id]) }}" method="POST">
   @csrf
   <x-modal.container-pure-js id="modalAddEvent">
     <x-slot name="header">
-      <span class="text-lg-bd">Tambah Event Akademik</span>
+      <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tambah Kalender Event Akademik</x-typography>
     </x-slot>
     <x-slot name="body">
       <x-form.input-container class="min-w-[120px]">
@@ -64,10 +21,11 @@
             :imgSrc="asset('assets/base/icon-arrow-down.svg')"
             :isIconCanRotate="true"
             :dropdownItem="array_column($eventAkademik, 'id', 'nama_event')"
-            :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black'"
+            :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black w-full flex items-center justify-between flex-1'"
+            :dropdownContainerClass="'w-full'"
             :isUsedForInputField="true"
             :inputFieldName="'name_event'"
-            onclick="updateSaveButtonState()"
+            onclick="updateSaveButtonState(document.getElementById('modalAddEvent'), tanggalMulaiInput, tanggalSelesaiInput)"
           />
           <input type="hidden" value="" name="name_event">
           <input type="hidden" value="{{$id_program}}" name="id_program">
@@ -77,13 +35,13 @@
       <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Tanggal Mulai</x-slot>
         <x-slot name="input">
-          <x-form.calendar id="create-tanggal-mulai" name="tanggal_mulai" oninput="updateSaveButtonState()" />
+          <x-form.calendar id="create-tanggal-mulai" name="tanggal_mulai" oninput="updateSaveButtonState(document.getElementById('modalAddEvent'), tanggalMulaiInput, tanggalSelesaiInput)" />
         </x-slot>
       </x-form.input-container>
       <x-form.input-container class="min-w-[120px]">
         <x-slot name="label">Tanggal Selesai</x-slot>
         <x-slot name="input">
-          <x-form.calendar id="create-tanggal-akhir" name="tanggal_selesai" oninput="updateSaveButtonState()" />
+          <x-form.calendar id="create-tanggal-akhir" name="tanggal_selesai" oninput="updateSaveButtonState(document.getElementById('modalAddEvent'), tanggalMulaiInput, tanggalSelesaiInput)" />
         </x-slot>
       </x-form.input-container>
     </x-slot>
@@ -112,12 +70,12 @@
   </x-modal.container-pure-js>
   <x-modal.container-pure-js id="modalKonfirmasiSimpan-addEvent">
     <x-slot name="header">
-      <span class="text-lg-bd">Tunggul Sebentar</span>
-      <img src="{{asset('assets/base/icon-caution.svg')}}" alt="ikon peringatan" />
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
+        <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
+      </x-container>
     </x-slot>
-    <x-slot name="body">
-      Apakah Anda yakin informasi yang ditambah sudah benar?
-    </x-slot>
+    <x-slot name="body">Apakah Anda yakin informasi yang ditambah sudah benar?</x-slot>
     <x-slot name="footer">
       <x-button.secondary 
         onclick="

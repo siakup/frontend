@@ -8,6 +8,6 @@
     </a>
     <a href="{{ route('tutelage-group.student-list.detail-transkrip-resmi', ['id' => $id]) }}" class="item @if (Route::currentRouteName() === 'tutelage-group.student-list.detail-transkrip-resmi') active @endif">Transk. Resmi</a>
     <a href="{{ route('tutelage-group.student-list.detail-transkrip-historis', ['id' => $id]) }}" class="item @if (Route::currentRouteName() === 'tutelage-group.student-list.detail-transkrip-historis') active @endif">Transk. Historis</a>
-    <a href="{{ route('curriculum.equivalence') }}" class="item @if (Route::currentRouteName() === 'curriculum.equivalence') active @endif">Transk. Kurikulum</a>
+    <a href="{{ route('tutelage-group.student-list.detail-transkrip-kurikulum', ['id' => $id]) }}" class="item @if (Route::currentRouteName() === 'tutelage-group.student-list.detail-transkrip-kurikulum') active @endif">Transk. Kurikulum</a>
     <a href="{{ route('curriculum.equivalence') }}" class="item @if (Route::currentRouteName() === 'curriculum.equivalence') active @endif">Transk. PEM</a>
 </div>

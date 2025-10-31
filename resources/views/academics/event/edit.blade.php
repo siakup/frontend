@@ -10,15 +10,16 @@
 <form action="{{route('academics-event.update', ['id' => $id])}}" method="POST">
   @csrf
   @method('PUT')
-  <x-title-page :title="'Ubah Event Akademik'" />
-  <x-button.back class="ml-4" :href="route('academics-event.index')">Event Akademik</x-button.back> 
-  <x-white-box :class="''">
-    <x-title-page :title="'Ubah Event Akademik'" />
-    <div class="px-5 pt-2.5 pb-0 flex flex-col gap-4">
+<x-container :variant="'content-wrapper'">
+  <x-typography :variant="'body-large-semibold'">Ubah Event Akademik</x-typography>
+  <x-button.back :href="route('academics-event.index')">Event Akademik</x-button.back> 
+  <x-container :class="'!gap-5 flex flex-col'">
+    <x-typography :variant="'body-medium-bold'">Ubah Event Akademik</x-typography>
+    <x-container :variant="'content-wrapper'" :class="'flex flex-col gap-8 !px-0'">
       <x-form.input-container class="min-w-[150px]" id="name-container">
         <x-slot name="label">Nama Event</x-slot>
         <x-slot name="input">
-          <div class="flex flex-col w-full">
+          <x-container :variant="'content-wrapper'" class="flex flex-col w-full !px-0">
               <input 
                 type="text" 
                 id="name" 
@@ -31,13 +32,13 @@
               @error('nama_event')
                 <span>{{ $message }}</span>
               @enderror
-          </div>
+          </x-container>
         </x-slot>
       </x-form.input-container>
       <x-form.input-container class="min-w-[150px]" id="flag">
         <x-slot name="label">Flag</x-slot>
         <x-slot name="input">
-          <div class="flex gap-8 justify-items-start py-3">
+          <x-container :variant="'content-wrapper'" class="flex flex-row gap-8 justify-items-start !p-0">
             <x-form.checklist :id="'nilai'" :value="'true'" :label="'Nilai'" :name="'nilai_on'" :checked="$data['nilai_on']" />
             <x-form.checklist :id="'irs'" :value="'true'" :label="'IRS'" :name="'irs_on'" :checked="$data['irs_on']" />
             <x-form.checklist :id="'lulus'" :value="'true'" :label="'Lulus'" :name="'lulus_on'" :checked="$data['lulus_on']" />
@@ -45,12 +46,12 @@
             <x-form.checklist :id="'yudisium'" :value="'true'" :label="'Yudisium'" :name="'yudisium_on'" :checked="$data['yudisium_on']" />
             <x-form.checklist :id="'survei'" :value="'true'" :label="'Survei'" :name="'survei_on'" :checked="$data['survei_on']" />
             <x-form.checklist :id="'dosen'" :value="'true'" :label="'Dosen'" :name="'dosen_on'" :checked="$data['dosen_on']" />
-          </div>
+          </x-container>
         </x-slot>
       </x-form.input-container>
       <x-form.toggle :id="'statusValue'" :value="$data['status'] === 'active'" />
-    </div>
-    <div class="flex gap-5 justify-end m-5">
+    </x-container>
+    <x-container :variant="'content-wrapper'" class="flex flex-row gap-5 !p-0 justify-end">
       <x-button.secondary :href="route('academics-event.index')">Batal</x-button.secondary>
       <x-button.primary 
         onclick="
@@ -60,17 +61,17 @@
       >
         Simpan
       </x-button.primary>
-    </div>
-  </x-white-box>
+    </x-container>
+  </x-container>
 
   <x-modal.container-pure-js id="modalKonfirmasiSimpan">
     <x-slot name="header">
-      <span class="text-lg-bd">Tunggu Sebentar</span>
-      <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="ikon peringatan">
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
+        <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
+      </x-container>
     </x-slot>
-    <x-slot name="body">
-      Apakah Anda yakin informasi yang diubah sudah benar?
-    </x-slot>
+    <x-slot name="body">Apakah Anda yakin informasi yang diubah sudah benar?</x-slot>
     <x-slot name="footer">
       <x-button.secondary
         onclick="
@@ -87,5 +88,6 @@
       </x-button.primary>
     </x-slot>
   </x-modal.container-pure-js>
+</x-container>
 </form>
 @endsection
