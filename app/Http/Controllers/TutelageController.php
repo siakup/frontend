@@ -312,6 +312,78 @@ class TutelageController extends Controller
         return view('tutelage.student-list.detail-transkrip-kurikulum', get_defined_vars());
     }
 
+    public function showTranskripPem(Request $request, $id){
+        $student = [
+            'nim' => '105221015',
+            'nama' => 'Fauzan Akmal Mukhlas',
+            'prodi' => 'Ilmu Komputer',
+            'tahun_masuk' => 2021,
+            'total_pem' => 1750
+        ];
+
+        $pem = [
+            [
+                'organisasi' => 'Unit Kegiatan Mahasiswa (UKM)',
+                'kegiatan' => [
+                    [
+                        'semester' => '2021 - 2',
+                        'nama' => 'Catur dan Bridge',
+                        'jabatan' => 'Anggota',
+                        'status' => 'Disetujui',
+                        'nilai' => 150,
+                    ],
+                    [
+                        'semester' => '2021 - 2',
+                        'nama' => 'Kewirausahaan',
+                        'jabatan' => 'Anggota',
+                        'status' => 'Disetujui',
+                        'nilai' => 150,
+                    ],
+                    [
+                        'semester' => '2023 - 1',
+                        'nama' => 'Catur dan Bridge',
+                        'jabatan' => 'Anggota',
+                        'status' => 'Disetujui',
+                        'nilai' => 150,
+                    ]
+                ]
+            ],
+            [
+                'organisasi' => 'Himpunan Mahasiswa Program Studi (HMPS)',
+                'kegiatan' => [
+                    [
+                        'semester' => '2022 - 2',
+                        'nama' => 'Himpunan Mahasiswa Ilmu Komputer',
+                        'jabatan' => 'Anggota',
+                        'status' => 'Disetujui',
+                        'nilai' => 150,
+                    ],
+                    [
+                        'semester' => '2022 - 3',
+                        'nama' => 'Himpunan Mahasiswa Ilmu Komputer',
+                        'jabatan' => 'Anggota',
+                        'status' => 'Disetujui',
+                        'nilai' => null,
+                    ],
+                    [
+                        'semester' => '2022 - 1',
+                        'nama' => 'Himpunan Mahasiswa Ilmu Komputer',
+                        'jabatan' => 'Anggota',
+                        'status' => 'Disetujui',
+                        'nilai' => null,
+                    ]
+                ]
+                
+            ],
+            [
+                'organisasi' => 'Badan Eksekutif Mahasiswa (BEM) dan BEM Fakultas (BEMF)',
+                'kegiatan' => []
+            ],
+        ];
+
+        return view('tutelage.student-list.detail-transkrip-pem', get_defined_vars());
+    }
+
     public function addCourse(Request $request, $id)
     {
         // Dummy data Program Studi

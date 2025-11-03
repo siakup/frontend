@@ -18,52 +18,54 @@
   <div class="academics-slicing-content content-card p-[10px]">
 
     {{-- Header --}}
-    <div class="px-6 py-4 font-semibold text-lg">
+    <x-typography variant="heading-h5" class="px-6 py-3">
       Transkrip Nilai Sesuai Posisi Kurikulum Mahasiswa
-    </div>
+    </x-typography>
 
-    {{-- Info Mahasiswa --}}
-    <div class="m-4 px-6 py-4 rounded-lg border border-[#D9D9D9] bg-[#FAFAFA] 
-        grid grid-cols-4 gap-y-3 text-sm text-[#262626]">
+    
+    <div class="px-6 py-2">
+      {{-- Info Mahasiswa --}}
+      <x-container variant="content-wrapper" class="py-4 rounded-lg border border-[#D9D9D9] bg-[#FAFAFA] 
+        grid grid-cols-4 gap-y-3 gap-x-1 ">
 
-        <div class="font-normal">Nomor Induk Mahasiswa</div>
-        <div class="font-bold">{{ $transkrip['nim']}}</div>
-        <div class="font-normal">NIP Wali</div>
-        <div class="font-bold">{{ $transkrip['nip_wali']}}</div>
+        <x-typography variant="body-small-regular">Nomor Induk Mahasiswa</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['nim']}}</x-typography>
+        <x-typography variant="body-small-regular">NIP Wali</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['nip_wali']}}</x-typography>
 
-        <div class="font-normal">Nama Mahasiswa</div>
-        <div class="font-bold">{{ $transkrip['nama']}}</div>
-        <div class="font-normal">Dosen Wali</div>
-        <div class="font-bold">{{ $transkrip['dosen_wali']}}</div>
+        <x-typography variant="body-small-regular">Nama Mahasiswa</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['nama']}}</x-typography>
+        <x-typography variant="body-small-regular">Dosen Wali</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['dosen_wali']}}</x-typography>
 
-        <div class="font-normal">SKS Tempuh/Lulus</div>
-        <div class="font-bold">{{ $transkrip['sks'] }}</div>
-        <div class="font-normal">Fakultas</div>
-        <div class="font-bold">{{ $transkrip['fakultas'] }}</div>
+        <x-typography variant="body-small-regular">SKS Tempuh/Lulus</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['sks'] }}</x-typography>
+        <x-typography variant="body-small-regular">Fakultas</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['fakultas'] }}</x-typography>
 
-        <div class="font-normal">Program</div>
-        <div class="font-bold">{{ $transkrip['program'] }}</div>
-        <div class="font-normal">Program Studi</div>
-        <div class="font-bold">{{ $transkrip['prodi']}}</div>
+        <x-typography variant="body-small-regular">Program</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['program'] }}</x-typography>
+        <x-typography variant="body-small-regular">Program Studi</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['prodi']}}</x-typography>
 
-        <div class="font-normal">IPK</div>
-        <div class="font-bold">{{ $transkrip['ipk']}}</div>
-    </div>
+        <x-typography variant="body-small-regular">IPK</x-typography>
+        <x-typography variant="body-small-bold">{{ $transkrip['ipk']}}</x-typography>
+      </x-container>
 
-    {{-- Legend --}}
-    <div class="m-4 px-6 py-4 text-sm rounded-lg border border-[#D9D9D9] bg-[#FAFAFA]">
-      <div class="font-bold mb-3">Keterangan Highlight Status :</div>
+      {{-- Legend --}}
+      <x-container variant="content-wrapper" class="mt-4 py-3 rounded-lg border border-[#D9D9D9] bg-[#FAFAFA]">
+        <x-typography variant="caption-bold">Keterangan Highlight Status :</x-typography>
         <div class="flex items-center grid grid-cols-2 gap-y-3">
             <div class="flex items-center gap-2">
-                <span class="px-2 py-1 text-xs bg-[#FBE8E6] text-[#EB474D] border border-[#EB474D] rounded font-bold">Tidak Lulus</span>
-                <span>: Menunjukkan mata kuliah dengan nilai <span class="font-bold">tidak lulus</span></span>
+                <x-badge class="bg-[#FBE8E6] text-[#EB474D] border border-[#EB474D] font-bold">Tidak Lulus</x-badge>
+                <x-typography variant="caption-regular">: Menunjukkan mata kuliah dengan nilai <x-typography variant="caption-bold">tidak lulus</x-typography></x-typography>
             </div>
-
             <div class="flex items-center gap-2">
-                <span class="px-2 py-1 text-xs bg-[#FEF3C0] border border-[#FDD835] rounded font-bold">Lulus</span>
-                <span>: Menunjukkan mata kuliah dengan nilai <span class="font-bold">lulus</span></span>
+                <x-badge class="bg-[#FEF3C0] border border-[#FDD835] font-bold">Lulus</x-badge>
+                <x-typography variant="caption-regular">: Menunjukkan mata kuliah dengan nilai <x-typography variant="caption-bold">lulus</x-typography></x-typography>
             </div>
         </div>
+      </x-container>
     </div>
 
     {{-- Loop per semester --}}
@@ -95,9 +97,9 @@
                 <x-table-cell>{{ $row['nilai'] }}</x-table-cell>
                 <x-table-cell>
                   @if($row['status']==='Lulus')
-                      <span class="px-2 py-1 text-xs bg-[#FEF3C0] border border-[#FDD835] rounded font-bold">Lulus</span>
+                      <x-badge class="inline-flex bg-[#FEF3C0] border border-[#FDD835] font-bold">Lulus</x-badge>
                   @else
-                      <span class="px-2 py-1 text-xs bg-[#FBE8E6] text-[#EB474D] border border-[#EB474D] rounded font-bold">Tidak Lulus</span>
+                      <x-badge class="inline-flex bg-[#FBE8E6] text-[#EB474D] border border-[#EB474D] font-bold">Tidak Lulus</x-badge>
                   @endif
                 </x-table-cell>
               </x-table-row>
@@ -106,13 +108,9 @@
             {{-- Baris total yang men-span semua kolom --}}
             <x-table-row>
               <x-table-cell colspan="6" class="text-left border-b-0">
-                <div class="text-sm">
-                  <div>
-                    SKS Total = {{ $semesterData['sks_total'] }} 
-                  </div>
-                  <div>
-                    IPS = {{ $semesterData['ips'] }}
-                  </div>
+                <div class="flex flex-col space-y-1">
+                  <x-typography> SKS Total = {{ $semesterData['sks_total'] }}</x-typography>
+                  <x-typography>IPS = {{ $semesterData['ips'] }}</x-typography>
                 </div>
               </x-table-cell>
             </x-table-row>
@@ -124,13 +122,15 @@
 
   </div>
 
-  {{-- Tombol --}}
-  <div class="m-4 px-6 py-4 text-sm rounded-[12px] bg-white">
-    <button onclick="window.print()" 
-        class="ml-3 h-12 px-15 rounded-lg bg-[#E62129] text-white font-medium hover:opacity-90">
+  {{-- Tombol Cetak--}}
+  <div class="p-3">
+    <x-container variant="content">
+      <x-button.primary wireClick="printPem" href="javascript:window.print()">
         Cetak
-    </button>
+      </x-button.primary>
+    </x-container>
   </div>
+
 
   {{-- Pagination --}}
   @include('partials.pagination', [
