@@ -3,22 +3,13 @@ namespace App\Http\Controllers;
 
 use App\Endpoint\CurriculumService;
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
-
-
 use App\Traits\ApiResponse;
 use App\Endpoint\EventCalendarService;
-use App\Endpoint\UserService;
 use Exception;
 use Maatwebsite\Excel\Excel as ExcelFormat;
 use Maatwebsite\Excel\Facades\Excel;
-use Svg\Tag\Rect;
 
 class CurriculumController extends Controller
 {
@@ -26,13 +17,24 @@ class CurriculumController extends Controller
 
     public function curriculumList(Request $request)
     {
-        $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-        $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-        $programPerkuliahanList = $responseProgramPerkuliahanList->data ?? [];
-        $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->name);
+      try {
+        $programPerkuliahanList = config('static-data.program_perkuliahan');
+        if(!$programPerkuliahanList || count($programPerkuliahanList) == 0) {
+          throw new \Exception(json_encode([
+            'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+            'system_error' => 'Konfigurasi program perkuliahan tidak ditemukan!',
+          ]));
+        }
+        $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]['name']);
 
         $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
         $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+        if(!isset($responseProgramStudiList->data) || !isset($responseProgramStudiList->success) || !$responseProgramStudiList->success || count($responseProgramStudiList->data) == 0) {
+          throw new \Exception(json_encode([
+            'message'=>'Program studi belum ditambahkan!',
+            'system_error' => $responseProgramStudiList,
+          ]));
+        }
         $programStudiList = $responseProgramStudiList->data ?? [];
 
         if ($request->filled('program_studi')) {
@@ -50,36 +52,104 @@ class CurriculumController extends Controller
 
         $url = CurriculumService::getInstance()->listCurriculum();
         $response = getCurl($url, $params, getHeaders());
+        if(!isset($response->success) || !$response->success) {
+          throw new Exception(json_encode([
+            'message' => $response->message ?? 'Gagal mendapatkan data daftar kurikulum',
+            'system_error' => $response
+          ]));
+        }
         $data = $response->data ?? [];
 
+        if($request->ajax()) {
+          return $this->successResponse($data, 'Berhasil Mendapatkan Data');
+        }
+        
         return view('curriculums.list.index', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman daftar kurikulum', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+        }
+
+        return redirect()
+          ->route('home')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal mengambil data daftar kurikulum']);
+      }
     }
 
   public function createCurriculumList(Request $request, $program_studi)
   {
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
-    $id_prodi = $program_studi;
+    try {
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      if(!isset($responseProgramStudiList->data) || !isset($responseProgramStudiList->success) || !$responseProgramStudiList->success || count($responseProgramStudiList->data) == 0) {
+        throw new \Exception(json_encode([
+          'message' => 'Program Studi belum ditambahkan',
+          'system_error' => $responseProgramStudiList
+        ]));
+      }
+      $programStudiList = $responseProgramStudiList->data;
+      $id_prodi = $program_studi;
+  
+      $programPerkuliahanList = config('static-data.program_perkuliahan');
+      if(!$programPerkuliahanList || count($programPerkuliahanList) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi program perkuliahan tidak ditemukan!',
+        ]));
+      }
+      $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]['name']);
+  
+      $jenis_mata_kuliah = config('static-data.jenis_mata_kuliah');
+      if(!$jenis_mata_kuliah || count($jenis_mata_kuliah) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi jenis mata kuliah tidak ditemukan!',
+        ]));
+      }
+      
+      if($request->ajax()) {
+        throw new \Exception(json_encode([
+          'message' => 'Request tidak valid',
+          'system_error' => 'Request yang diberikan dengan cara yang tidak valid'
+        ]));
+      }
+  
+      return view('curriculums.list.create', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
 
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-    $id_program = $request->input('program_perkuliahan');
+      Log::error('Gagal memuat halaman create daftar kurikulum', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
 
-    $urlJenisPerkuliahan = CurriculumService::getInstance()->getJenisMataKuliah();
-    $responseJenisPerkuliahan = getCurl($urlJenisPerkuliahan, null, getHeaders());
-    $jenis_mata_kuliah = $responseJenisPerkuliahan->data;
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
 
-    return view('curriculums.list.create', get_defined_vars());
+      return redirect()
+        ->route('curriculum.list')
+        ->withErrors(['error' => $decoded->message ?? 'Gagal mengambil data daftar kurikulum']);
+    }
   }
 
-    public function storeCurriculumList(Request $request)
-    {
-      dd($request->all());
-      return redirect()->route('curriculum.list.index')->with('success', 'Tambah Kurikulum Berhasil Disimpan');
-    }
+  // ToDo: Refactor dengan pemberian try and catch serta validasi menggunakan request untuk request yang dikirim
+  public function storeCurriculumList(Request $request)
+  {
+    dd($request->all());
+    return redirect()->route('curriculum.list.index')->with('success', 'Tambah Kurikulum Berhasil Disimpan');
+  }
 
+  // ToDo: Refactor dengan pemberian try and catch serta validasi menggunakan request untuk request yang dikirim
   public function updateCurriculumList(Request $request, $id)
   {
     $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
@@ -116,134 +186,258 @@ class CurriculumController extends Controller
 
   public function editCurriculumList(Request $request, $id)
   {
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
+    try {
+      if($request->ajax()) {
+        throw new \Exception(json_encode([
+          'message' => 'Request tidak valid',
+          'system_error' => 'Request yang dilakukan tidak valid'
+        ]));
+      }
 
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      if(!isset($responseProgramStudiList->data) || !isset($responseProgramStudiList->success) || !$responseProgramStudiList->success || count($responseProgramStudiList->data) == 0) {
+        throw new \Exception(json_encode([
+          'message' => 'Program Studi belum ditambahkan',
+          'system_error' => $responseProgramStudiList
+        ]));
+      }
+      $programStudiList = $responseProgramStudiList->data;
+  
+      $programPerkuliahanList = config('static-data.program_perkuliahan');
+      if(!$programPerkuliahanList || count($programPerkuliahanList) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi program perkuliahan tidak ditemukan!',
+        ]));
+      }
 
-    $urlJenisPerkuliahan = CurriculumService::getInstance()->getJenisMataKuliah();
-    $responseJenisPerkuliahan = getCurl($urlJenisPerkuliahan, null, getHeaders());
-    $jenis_mata_kuliah = $responseJenisPerkuliahan->data;
+      $jenis_mata_kuliah = config('static-data.jenis_mata_kuliah');
+      if(!$jenis_mata_kuliah || count($jenis_mata_kuliah) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi jenis mata kuliah tidak ditemukan!',
+        ]));
+      }
 
-    $url = CurriculumService::getInstance()->getCurriculum($id);
-    $response = getCurl($url, null, getHeaders());
-    $data = $response->data;
+      $url = CurriculumService::getInstance()->getCurriculum($id);
+      $response = getCurl($url, null, getHeaders());
+      if(!isset($response->success) || !$response->success) {
+        throw new \Exception(json_encode([
+          'message' => $response->message ?? 'Gagal mendapatkan data kurikulum',
+          'system_error' => $response
+        ]));
+      }
+      $data = $response->data;
 
-    $assignCourseData = [
-      [
-        'id' => 1,
-        'kode_mata_kuliah' => 'UP0011',
-        'nama' => 'Agama dan Etika',
-        'sks' => 2,
-        'program_studi' => 'Komunikasi',
-        'jenis_mata_kuliah' => 'Mata Kuliah Dasar Umum'
-      ],
-      [
-        'id' => 2,
-        'kode_mata_kuliah' => '10004',
-        'nama' => 'Agama Katolik dan Etika',
-        'sks' => 2,
-        'program_studi' => 'Komunikasi',
-        'jenis_mata_kuliah' => 'Mata Kuliah Dasar Umum'
-      ],
-      [
-        'id' => 3,
-        'kode_mata_kuliah' => '52204',
-        'nama' => 'Aljabar Linear dan Aplikasinya',
-        'sks' => 3,
-        'program_studi' => 'Ilmu Komputer',
-        'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      ],
-      [
-        'id' => 4,
-        'kode_mata_kuliah' => '52294',
-        'nama' => 'Algoritma dan Struktur Data',
-        'sks' => 3,
-        'program_studi' => 'Ilmu Komputer',
-        'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      ],
-      [
-        'id' => 5,
-        'kode_mata_kuliah' => '10101',
-        'nama' => 'Bahasa Indonesia',
-        'sks' => 2,
-        'program_studi' => 'Komunikasi',
-        'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      ],
-      [
-        'id' => 6,
-        'kode_mata_kuliah' => '21033',
-        'nama' => 'Aplikasi dan Teknologi EBT',
-        'sks' => 3,
-        'program_studi' => 'Ilmu Komputer',
-        'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      ],
-      [
-        'id' => 7,
-        'kode_mata_kuliah' => 'UP1103',
-        'nama' => 'Bahasa Inggris I ',
-        'sks' => 2,
-        'program_studi' => 'Komunikasi',
-        'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      ],
-      [
-        'id' => 8,
-        'kode_mata_kuliah' => 'UP1203',
-        'nama' => 'Bahasa Inggris II',
-        'sks' => 2,
-        'program_studi' => 'Komunikasi',
-        'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
-      ]
-    ];
+      $assignCourseData = [
+        [
+          'id' => 1,
+          'kode_mata_kuliah' => 'UP0011',
+          'nama' => 'Agama dan Etika',
+          'sks' => 2,
+          'program_studi' => 'Komunikasi',
+          'jenis_mata_kuliah' => 'Mata Kuliah Dasar Umum'
+        ],
+        [
+          'id' => 2,
+          'kode_mata_kuliah' => '10004',
+          'nama' => 'Agama Katolik dan Etika',
+          'sks' => 2,
+          'program_studi' => 'Komunikasi',
+          'jenis_mata_kuliah' => 'Mata Kuliah Dasar Umum'
+        ],
+        [
+          'id' => 3,
+          'kode_mata_kuliah' => '52204',
+          'nama' => 'Aljabar Linear dan Aplikasinya',
+          'sks' => 3,
+          'program_studi' => 'Ilmu Komputer',
+          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
+        ],
+        [
+          'id' => 4,
+          'kode_mata_kuliah' => '52294',
+          'nama' => 'Algoritma dan Struktur Data',
+          'sks' => 3,
+          'program_studi' => 'Ilmu Komputer',
+          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
+        ],
+        [
+          'id' => 5,
+          'kode_mata_kuliah' => '10101',
+          'nama' => 'Bahasa Indonesia',
+          'sks' => 2,
+          'program_studi' => 'Komunikasi',
+          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
+        ],
+        [
+          'id' => 6,
+          'kode_mata_kuliah' => '21033',
+          'nama' => 'Aplikasi dan Teknologi EBT',
+          'sks' => 3,
+          'program_studi' => 'Ilmu Komputer',
+          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
+        ],
+        [
+          'id' => 7,
+          'kode_mata_kuliah' => 'UP1103',
+          'nama' => 'Bahasa Inggris I ',
+          'sks' => 2,
+          'program_studi' => 'Komunikasi',
+          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
+        ],
+        [
+          'id' => 8,
+          'kode_mata_kuliah' => 'UP1203',
+          'nama' => 'Bahasa Inggris II',
+          'sks' => 2,
+          'program_studi' => 'Komunikasi',
+          'jenis_mata_kuliah' => 'Mata Kuliah Program Studi'
+        ]
+      ];
 
-    return view('curriculums.list.edit', get_defined_vars());
+      return view('curriculums.list.edit', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
+
+      Log::error('Gagal memuat halaman edit daftar kurikulum', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
+
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
+
+      return redirect()
+        ->route('curriculum.list')
+        ->withErrors(['error' => $decoded->message ?? 'Gagal mengambil data daftar kurikulum']);
+    }
   }
 
   public function viewCurriculumList(Request $request, $id)
   {
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
-    $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
+    try {
+      if($request->ajax) {
+        throw new \Exception(json_encode([
+          'message' => 'Request tidak valid',
+          'system_error' => 'request dilakukan dengan tidak valid'
+        ]));
+      }
 
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      if(!isset($responseProgramStudiList->data) || !isset($responseProgramStudiList->success) || !$responseProgramStudiList->success || count($responseProgramStudiList->data) == 0) {
+        throw new \Exception(json_encode([
+          'message' => 'Program Studi belum ditambahkan',
+          'system_error' => $responseProgramStudiList
+        ]));
+      }
+      $programStudiList = $responseProgramStudiList->data;
+      $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
+  
+      $programPerkuliahanList = config('static-data.program_perkuliahan');
+      if(!$programPerkuliahanList || count($programPerkuliahanList) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi program perkuliahan tidak ditemukan!',
+        ]));
+      }
+      $id_program = $request->input('program_perkuliahan');
+  
+      $jenis_mata_kuliah = config('static-data.jenis_mata_kuliah');
+      if(!$jenis_mata_kuliah || count($jenis_mata_kuliah) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi jenis mata kuliah tidak ditemukan!',
+        ]));
+      }
+  
+      $url = CurriculumService::getInstance()->getCurriculum($id);
+      $response = getCurl($url, null, getHeaders());
+      if(!isset($response->success) || !$response->success) {
+        throw new \Exception(json_encode([
+          'message' => 'Gagal mengambil data detail kurikulum',
+          'system_error' => $response
+        ]));
+      }
+      $data = $response->data;
+  
+      return view('curriculums.list.view', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
 
-    $id_program = $request->input('program_perkuliahan');
+      Log::error('Gagal memuat lihat detail kurikulum', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
 
-    $urlJenisPerkuliahan = CurriculumService::getInstance()->getJenisMataKuliah();
-    $responseJenisPerkuliahan = getCurl($urlJenisPerkuliahan, null, getHeaders());
-    $jenis_mata_kuliah = $responseJenisPerkuliahan->data;
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
 
-    $url = CurriculumService::getInstance()->getCurriculum($id);
-    $response = getCurl($url, null, getHeaders());
-    $data = $response->data;
-
-    return view('curriculums.list.view', get_defined_vars());
+      return redirect()
+        ->route('curriculum.list')
+        ->withErrors(['error' => $decoded->message ?? 'Gagal mengambil data detail kurikulum']);
+    }
   }
 
   public function showCurriculumStudyList(Request $request, $id)
   {
-    $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
-    $nama_mata_kuliah = $request->input('nama', '');
+    try {
+      $jenis_mata_kuliah_list = config('static-data.jenis_mata_kuliah');
+      if(!$jenis_mata_kuliah_list || count($jenis_mata_kuliah_list) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi jenis mata kuliah tidak ditemukan!',
+        ]));
+      }
+      $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
+      $nama_mata_kuliah = $request->input('nama', '');
+  
+      $params = [
+        'jenis_mata_kuliah' => $jenis_mata_kuliah,
+        'search' => $nama_mata_kuliah
+      ];
+  
+      $url = CurriculumService::getInstance()->assignedCourse($id);
+      $response = getCurl($url, $params, getHeaders());
+      if(!isset($response->success) || !$response->success) {
+        throw new \Exception(json_encode([
+          'message' => $response->message ?? 'Gagal mendapatkan daftar mata kuliah yang ditetapkan',
+          'system_error' => $response
+        ]));
+      }
+      $data = $response->data;
+      
+      if($request->ajax()) {
+        return $response;
+      }
 
+      return view('curriculums.list.show-course', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
 
-    $params = [
-      'jenis_mata_kuliah' => $jenis_mata_kuliah,
-      'search' => $nama_mata_kuliah
-    ];
+      Log::error('Gagal memuat lihat daftar mata kuliah tetapkan', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
 
-    $url = CurriculumService::getInstance()->assignedCourse($id);
-    $response = getCurl($url, $params, getHeaders());
-    $data = $response->data;
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
 
-    return view('curriculums.list.show-course', get_defined_vars());
+      return redirect()
+        ->route('curriculum.list.edit', ['id' => $id])
+        ->withErrors(['error' => $decoded->message ?? 'Gagal mengambil daftar mata kuliah yang ditetapkan']);
+    }
   }
 
+  // ToDo: Tambahkan Algoritma request update, Validasi di Request, dan Exception Error Handling
   public function updateAssignCurriculumCourse(Request $request, $id)
   {
     return redirect()->route('curriculum.list.edit', ['id' => $id])->with('success', 'Mata Kuliah Berhasil ditetapkan');
@@ -251,107 +445,178 @@ class CurriculumController extends Controller
 
   public function assignCurriculumCourse(Request $request, $id)
   {
-    $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
-    $nama_mata_kuliah = $request->input('nama');
+    try {
+      $jenis_mata_kuliah_list = config('static-data.jenis_mata_kuliah');
+      if(!$jenis_mata_kuliah_list || count($jenis_mata_kuliah_list) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi jenis mata kuliah tidak ditemukan!',
+        ]));
+      }
+      $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
+      $nama_mata_kuliah = $request->input('nama', '');
 
-    $url = CurriculumService::getInstance()->listCourseCurriculums($id);
-    $response = getCurl($url, null, getHeaders());
-    $data = $response->data;
+      $params = [
+        'jenis_mata_kuliah' => $jenis_mata_kuliah,
+        'search' => $nama_mata_kuliah
+      ];
 
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
+      $url = CurriculumService::getInstance()->listCourseCurriculums($id);
+      $response = getCurl($url, $params, getHeaders());
+      if(!isset($response->success) || !$response->success) {
+        throw new \Exception(json_encode([
+          'message' => $response->message ?? 'Gagal mendapatkan daftar mata kuliah',
+          'system_error' => $response
+        ]));
+      }
+      $data = $response->data;
 
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      if(!isset($responseProgramStudiList->data) || !isset($responseProgramStudiList->success) || !$responseProgramStudiList->success || count($responseProgramStudiList->data) == 0) {
+        throw new \Exception(json_encode([
+          'message' => 'Program Studi belum ditambahkan',
+          'system_error' => $responseProgramStudiList
+        ]));
+      }
+      $programStudiList = $responseProgramStudiList->data;
 
-    return view('curriculums.list.assign-course', get_defined_vars());
+      return view('curriculums.list.assign-course', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
+
+      Log::error('Gagal memuat halaman tetapkan mata kuliah', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
+
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
+
+      return redirect()
+        ->route('curriculum.list.edit', ['id' => $id])
+        ->withErrors(['error' => $decoded->message ?? 'Gagal mengambil daftar mata kuliah.']);
+    }
   }
 
   public function editCurriculumStudyList(Request $request, $id, $course_id)
   {
-    $url = CurriculumService::getInstance()->detailCourseCurriculums($course_id);
-    $response = getCurl($url, null, getHeaders());
-    $data = $response->data;
+    try {
+      $url = CurriculumService::getInstance()->detailCourseCurriculums($course_id);
+      $response = getCurl($url, null, getHeaders());
+      if(!isset($response->status) || $response->status !== 'success') {
+        throw new \Exception(json_encode([
+          'message' => $response->message ?? "Gagal mendapatkan detail mata kuliah kurikulum",
+          'system_error' => $response
+        ]));
+      }
+      $data = $response->data;
 
-    $cpls = [
-      (object)[
-        'id_cpl' => 1,
-        'kode_cpl' => 'CPL-A',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      (object)[
-        'id_cpl' => 2,
-        'kode_cpl' => 'CPL-B',
-        'deskripsi_cpl' => 'Memiliki kemampuan untuk memahami pertimbangan etis, budaya akademik, dan bertanggung jawab secara profesional',
-        'is_select' => false
-      ],
-      (object)[
-        'id_cpl' => 3,
-        'kode_cpl' => 'CPL-C',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => true
-      ],
-      (object)[
-        'id_cpl' => 4,
-        'kode_cpl' => 'CPL-D',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      (object)[
-        'id_cpl' => 5,
-        'kode_cpl' => 'CPL-E',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => true
-      ],
-      (object)[
-        'id_cpl' => 6,
-        'kode_cpl' => 'CPL-F',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      (object)[
-        'id_cpl' => 7,
-        'kode_cpl' => 'CPL-G',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      (object)[
-        'id_cpl' => 8,
-        'kode_cpl' => 'CPL-H',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      (object)[
-        'id_cpl' => 9,
-        'kode_cpl' => 'CPL-I',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      (object)[
-        'id_cpl' => 10,
-        'kode_cpl' => 'CPL-J',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-      (object)[
-        'id_cpl' => 11,
-        'kode_cpl' => 'CPL-K',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => true
-      ],
-      (object)[
-        'id_cpl' => 12,
-        'kode_cpl' => 'CPL-L',
-        'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
-        'is_select' => false
-      ],
-    ];
-    return view('curriculums.list.edit-course', get_defined_vars());
+      $cpls = [
+        (object)[
+          'id_cpl' => 1,
+          'kode_cpl' => 'CPL-A',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        (object)[
+          'id_cpl' => 2,
+          'kode_cpl' => 'CPL-B',
+          'deskripsi_cpl' => 'Memiliki kemampuan untuk memahami pertimbangan etis, budaya akademik, dan bertanggung jawab secara profesional',
+          'is_select' => false
+        ],
+        (object)[
+          'id_cpl' => 3,
+          'kode_cpl' => 'CPL-C',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => true
+        ],
+        (object)[
+          'id_cpl' => 4,
+          'kode_cpl' => 'CPL-D',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        (object)[
+          'id_cpl' => 5,
+          'kode_cpl' => 'CPL-E',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => true
+        ],
+        (object)[
+          'id_cpl' => 6,
+          'kode_cpl' => 'CPL-F',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        (object)[
+          'id_cpl' => 7,
+          'kode_cpl' => 'CPL-G',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        (object)[
+          'id_cpl' => 8,
+          'kode_cpl' => 'CPL-H',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        (object)[
+          'id_cpl' => 9,
+          'kode_cpl' => 'CPL-I',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        (object)[
+          'id_cpl' => 10,
+          'kode_cpl' => 'CPL-J',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+        (object)[
+          'id_cpl' => 11,
+          'kode_cpl' => 'CPL-K',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => true
+        ],
+        (object)[
+          'id_cpl' => 12,
+          'kode_cpl' => 'CPL-L',
+          'deskripsi_cpl' => 'Memiliki Karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+          'is_select' => false
+        ],
+      ];
+
+      if($request->ajax()) {
+        return [
+          'course_detail' => $response,
+          'cpls' => $cpls
+        ];
+      }
+
+      return view('curriculums.list.edit-course', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
+
+      Log::error('Gagal memuat halaman edit mata kuliah yang ditetapkan', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
+
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
+
+      return redirect()
+        ->route('curriculum.list.edit.show-study', ['id' => $id])
+        ->withErrors(['error' => $decoded->message ?? 'Gagal mengambil data mata kuliah.']);
+    }
   }
 
+  // ToDo: Tambahkan Exception Error Handling, Algoritma Request Update Mata Kuliah Kurikulum, dan Validasi Request
   public function updateCurriculumStudyList(Request $request, $id, $course_id)
   {
     return redirect()->route('curriculum.list.edit.show-study', ['id' => $id])->with('success', 'Berhasil diubah');
@@ -359,172 +624,256 @@ class CurriculumController extends Controller
 
   public function curriculumEquivalence(Request $request)
   {
-    $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
-    $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = $responseProgramStudiList->data;
-    $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
+    try {
+      $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
+      $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
+      if(!isset($responseProgramStudiList->data) || !isset($responseProgramStudiList->success) || !$responseProgramStudiList->success || count($responseProgramStudiList->data) == 0) {
+        throw new \Exception(json_encode([
+          'message' => 'Program Studi belum ditambahkan',
+          'system_error' => $responseProgramStudiList
+        ]));
+      }
+      $programStudiList = $responseProgramStudiList->data;
+      $id_prodi = $request->input('program_studi', $programStudiList[0]->id);
+  
+      $programPerkuliahanList = config('static-data.program_perkuliahan');
+      if(!$programPerkuliahanList || count($programPerkuliahanList) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi program perkuliahan tidak ditemukan!',
+        ]));
+      }
+      $id_program = $request->input('program_perkuliahan');
 
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-    $id_program = urldecode($request->input('program_perkuliahan'));
+      $data = [ 
+        [
+          'kode_lama' => 'CH1101',
+          'matkul_kurikulum_lama' => 'Kimia Dasar I',
+          'sks_lama' => 3,
+          'kode_baru' => null,
+          'matkul_kurikulum_baru' => null,
+          'sks_baru' => null,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CH1202',
+          'matkul_kurikulum_lama' => 'Kimia Dasar II',
+          'sks_lama' => 3,
+          'kode_baru' => null,
+          'matkul_kurikulum_baru' => null,
+          'sks_baru' => null,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CO0011',
+          'matkul_kurikulum_lama' => 'Persiapan Memasuki Dunia Kerja dan Etika Profesi',
+          'sks_lama' => 2,
+          'kode_baru' => 52042,
+          'matkul_kurikulum_baru' => 'Persiapan Memasuki Dunia Kerja dan Etika Profesi',
+          'sks_baru' => 2,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CS0012',
+          'matkul_kurikulum_lama' => 'Pengantar Teknologi Informasi dan Algoritma',
+          'sks_lama' => 2,
+          'kode_baru' => 52102,
+          'matkul_kurikulum_baru' => 'Berpikir Komputasi',
+          'sks_baru' => 2,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CS0032',
+          'matkul_kurikulum_lama' => 'Pemrograman Perangkat Bergerak',
+          'sks_lama' => 3,
+          'kode_baru' => 52310,
+          'matkul_kurikulum_baru' => 'Pemrograman Perangkat Bergerak',
+          'sks_baru' => 3,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CS0035',
+          'matkul_kurikulum_lama' => 'Penggalian Data',
+          'sks_lama' => 3,
+          'kode_baru' => 52305,
+          'matkul_kurikulum_baru' => 'Pengantar Sains Data',
+          'sks_baru' => 3,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CS0037',
+          'matkul_kurikulum_lama' => 'Mesin Pembelajaran',
+          'sks_lama' => 3,
+          'kode_baru' => 52312,
+          'matkul_kurikulum_baru' => 'Praktikum Pembelajaran Mesin',
+          'sks_baru' => 1,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CS0035',
+          'matkul_kurikulum_lama' => 'Mesin Pembelajaran',
+          'sks_lama' => 3,
+          'kode_baru' => 52311,
+          'matkul_kurikulum_baru' => 'Pembelajaran Mesin',
+          'sks_baru' => 3,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CS0041',
+          'matkul_kurikulum_lama' => 'Perencanaan Sumber Daya Perusahaan',
+          'sks_lama' => 3,
+          'kode_baru' => 10008,
+          'matkul_kurikulum_baru' => 'Inovasi dan Kewirausahaan',
+          'sks_baru' => 2,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+        [
+          'kode_lama' => 'CS0043',
+          'matkul_kurikulum_lama' => 'Teknologi E-Bussiness dan Industri Kreatif TIK',
+          'sks_lama' => 3,
+          'kode_baru' => 10008,
+          'matkul_kurikulum_baru' => 'Inovasi dan Kewirausahaan',
+          'sks_baru' => 2,
+          'program_studi' => 'Ilmu Komputer',
+        ],
+      ];
+      return view('curriculums.equivalence.index', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
 
-    $data = [
-      [
-        'kode_lama' => 'CH1101',
-        'matkul_kurikulum_lama' => 'Kimia Dasar I',
-        'sks_lama' => 3,
-        'kode_baru' => null,
-        'matkul_kurikulum_baru' => null,
-        'sks_baru' => null,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CH1202',
-        'matkul_kurikulum_lama' => 'Kimia Dasar II',
-        'sks_lama' => 3,
-        'kode_baru' => null,
-        'matkul_kurikulum_baru' => null,
-        'sks_baru' => null,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CO0011',
-        'matkul_kurikulum_lama' => 'Persiapan Memasuki Dunia Kerja dan Etika Profesi',
-        'sks_lama' => 2,
-        'kode_baru' => 52042,
-        'matkul_kurikulum_baru' => 'Persiapan Memasuki Dunia Kerja dan Etika Profesi',
-        'sks_baru' => 2,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CS0012',
-        'matkul_kurikulum_lama' => 'Pengantar Teknologi Informasi dan Algoritma',
-        'sks_lama' => 2,
-        'kode_baru' => 52102,
-        'matkul_kurikulum_baru' => 'Berpikir Komputasi',
-        'sks_baru' => 2,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CS0032',
-        'matkul_kurikulum_lama' => 'Pemrograman Perangkat Bergerak',
-        'sks_lama' => 3,
-        'kode_baru' => 52310,
-        'matkul_kurikulum_baru' => 'Pemrograman Perangkat Bergerak',
-        'sks_baru' => 3,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CS0035',
-        'matkul_kurikulum_lama' => 'Penggalian Data',
-        'sks_lama' => 3,
-        'kode_baru' => 52305,
-        'matkul_kurikulum_baru' => 'Pengantar Sains Data',
-        'sks_baru' => 3,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CS0037',
-        'matkul_kurikulum_lama' => 'Mesin Pembelajaran',
-        'sks_lama' => 3,
-        'kode_baru' => 52312,
-        'matkul_kurikulum_baru' => 'Praktikum Pembelajaran Mesin',
-        'sks_baru' => 1,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CS0035',
-        'matkul_kurikulum_lama' => 'Mesin Pembelajaran',
-        'sks_lama' => 3,
-        'kode_baru' => 52311,
-        'matkul_kurikulum_baru' => 'Pembelajaran Mesin',
-        'sks_baru' => 3,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CS0041',
-        'matkul_kurikulum_lama' => 'Perencanaan Sumber Daya Perusahaan',
-        'sks_lama' => 3,
-        'kode_baru' => 10008,
-        'matkul_kurikulum_baru' => 'Inovasi dan Kewirausahaan',
-        'sks_baru' => 2,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-      [
-        'kode_lama' => 'CS0043',
-        'matkul_kurikulum_lama' => 'Teknologi E-Bussiness dan Industri Kreatif TIK',
-        'sks_lama' => 3,
-        'kode_baru' => 10008,
-        'matkul_kurikulum_baru' => 'Inovasi dan Kewirausahaan',
-        'sks_baru' => 2,
-        'program_studi' => 'Ilmu Komputer',
-      ],
-    ];
-    return view('curriculums.equivalence.index', get_defined_vars());
+      Log::error('Gagal memuat halaman ekuivalensi mata kuliah', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
+
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
+
+      return redirect()
+        ->route('home')
+        ->withErrors(['error' => $decoded->message ?? 'Gagal mengambil daftar ekuivalensi mata kuliah.']);
+    }
   }
 
   public function createCurriculumEquivalence(Request $request, $prodi, $programPerkuliahan)
   {
+    try {
+      if($request->ajax()) {
+        throw new \Exception(json_encode([
+          'message' => 'Request tidak valid',
+          'system_error' => 'Request yang dilakukan tidak valid'
+        ]));
+      }
+
       $jenisMataKuliah = config('static-data.jenis_mata_kuliah');
-    return view('curriculums.equivalence.create', get_defined_vars());
+      if(!$jenisMataKuliah || count($jenisMataKuliah) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi jenis mata kuliah tidak ditemukan!',
+        ]));
+      }
+      $jenis_mata_kuliah = $request->input('jenis_mata_kuliah', '');
+
+      return view('curriculums.equivalence.create', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
+
+      Log::error('Gagal memuat halaman tambah ekuivalensi mata kuliah', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
+
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
+
+      return redirect()
+        ->route('curriculum.equivalence')
+        ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman tambah ekuivalensi mata kuliah.']);
+    }
   }
 
   public function editCurriculumEquivalence(Request $request, $id)
   {
-    $prodi = 'Teknik Kimia';
-    $programPerkuliahan = 'Reguler';
+    try {
+      if($request->ajax()) {
+        throw new \Exception(json_encode([
+          'message' => 'Request tidak valid',
+          'system_error' => 'Request yang dilakukan tidak valid'
+        ]));
+      }
+      $prodi = 'Teknik Kimia';
+      $programPerkuliahan = 'Reguler';
+  
+      $selectedOldCourses = [
+        [
+          'id' => 1,
+          'kode' => 'TK101',
+          'nama_id' => 'Dasar Teknik Kimia',
+          'nama_en' => 'Basic Chemical Engineering',
+          'sks' => 3,
+          'semester' => 1,
+          'jenis' => 'Wajib'
+        ],
+        [
+          'id' => 2,
+          'kode' => 'TK102',
+          'nama_id' => 'Termodinamika',
+          'nama_en' => 'Thermodynamics',
+          'sks' => 3,
+          'semester' => 2,
+          'jenis' => 'Wajib'
+        ]
+      ];
+  
+      $selectedNewCourses = [
+        [
+          'id' => 3,
+          'kode' => 'TKK201',
+          'nama_id' => 'Kimia Dasar Terapan',
+          'nama_en' => 'Applied Basic Chemistry',
+          'sks' => 3,
+          'semester' => 1,
+          'jenis' => 'Wajib'
+        ],
+        [
+          'id' => 4,
+          'kode' => 'TKK202',
+          'nama_id' => 'Termodinamika Lanjut',
+          'nama_en' => 'Advanced Thermodynamics',
+          'sks' => 3,
+          'semester' => 2,
+          'jenis' => 'Wajib'
+        ]
+      ];
+  
+      return view('curriculums.equivalence.edit', [
+        'prodi' => $prodi,
+        'programPerkuliahan' => $programPerkuliahan,
+        'id' => $id,
+        'selectedOldCourses' => $selectedOldCourses,
+        'selectedNewCourses' => $selectedNewCourses
+      ]);
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
 
-    // Data dummy untuk mata kuliah yang sudah dipilih
-    $selectedOldCourses = [
-      [
-        'id' => 1,
-        'kode' => 'TK101',
-        'nama_id' => 'Dasar Teknik Kimia',
-        'nama_en' => 'Basic Chemical Engineering',
-        'sks' => 3,
-        'semester' => 1,
-        'jenis' => 'Wajib'
-      ],
-      [
-        'id' => 2,
-        'kode' => 'TK102',
-        'nama_id' => 'Termodinamika',
-        'nama_en' => 'Thermodynamics',
-        'sks' => 3,
-        'semester' => 2,
-        'jenis' => 'Wajib'
-      ]
-    ];
+      Log::error('Gagal memuat halaman edit ekuivalensi mata kuliah', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
 
-    $selectedNewCourses = [
-      [
-        'id' => 3,
-        'kode' => 'TKK201',
-        'nama_id' => 'Kimia Dasar Terapan',
-        'nama_en' => 'Applied Basic Chemistry',
-        'sks' => 3,
-        'semester' => 1,
-        'jenis' => 'Wajib'
-      ],
-      [
-        'id' => 4,
-        'kode' => 'TKK202',
-        'nama_id' => 'Termodinamika Lanjut',
-        'nama_en' => 'Advanced Thermodynamics',
-        'sks' => 3,
-        'semester' => 2,
-        'jenis' => 'Wajib'
-      ]
-    ];
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
 
-    return view('curriculums.equivalence.edit', [
-      'prodi' => $prodi,
-      'programPerkuliahan' => $programPerkuliahan,
-      'id' => $id,
-      'selectedOldCourses' => $selectedOldCourses,
-      'selectedNewCourses' => $selectedNewCourses
-    ]);
+      return redirect()
+        ->route('curriculum.equivalence')
+        ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman edit ekuivalensi mata kuliah.']);
+    }
   }
 
   public function uploadCurriculumEquivalence(Request $request)
@@ -534,71 +883,133 @@ class CurriculumController extends Controller
 
   public function uploadResultCurriculumEquivalence(Request $request)
   {
-    $validator = Validator::make($request->all(), [
-      'file' => 'required|file|mimes:csv,xlsx|max:5120'
-    ]);
+    try {
+      $file = $request->file('file');
 
-    if ($validator->fails()) {
-      return back()->withErrors($validator);
-    }
-
-    $file = $request->file('file');
-    $file_data = [];
-    $errors = [];
-
-    // Convert file ke array of object/array
-    $file_data = convertFileDataExcelToObject($file);
-
-    // Sesuaikan dengan struktur data CSV yang baru
-    $file_data = array_map(function ($value) {
-      return [
-        'Kode MK Lama' => $value['kode_mk_lama'] ?? null,
-        'Kode MK Baru' => $value['kode_mk_baru'] ?? null,
+      
+      if (!$file) throw new \Exception("File belum diupload!");
+      if (!$file->isValid()) throw new \Exception("File upload tidak valid!");
+      if ($file->getSize() === 0) throw new \Exception("File yang diupload tidak terisi!");
+      
+      $allowedExtensions = ['xlsx', 'xls', 'csv'];
+      $extension = strtolower($file->getClientOriginalExtension());
+      
+      if (!in_array($extension, $allowedExtensions)) throw new \Exception("Ekstensi file tidak valid. Harap upload file berformat: .xlsx, .xls, atau .csv");
+      
+      $allowedMimes = [
+        'text/csv',
+        'text/plain',
+        'application/csv',
+        'application/vnd.ms-excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
       ];
-    }, $file_data);
+      
+      $mimeType = $file->getMimeType();
+      if (!in_array($mimeType, $allowedMimes)) throw new \Exception("Tipe file tidak valid ($mimeType). Harap upload file Excel atau CSV yang benar.");
+      
+      $maxSize = 5 * 1024 * 1024; 
+      if ($file->getSize() > $maxSize) throw new \Exception("Ukuran file terlalu besar. Maksimal 5MB.");
+      
+      $rows = \Maatwebsite\Excel\Facades\Excel::toArray([], $file);
+      $datas = $rows[0] ?? [];
+      
+      if(empty($datas)) throw new \Exception("File yang diupload kosong!");
+      
+      $keyData = $datas[0];
+      $valueData = array_slice($datas, 1);
+      
+      if(empty($valueData)) throw new \Exception("File yang diupload kosong!");
+      
+      $datas = array_values(array_filter(
+        array_map(
+          function ($data) use($keyData) {
+            $findNull = current(array_filter($data, function ($d) { return $d == null; }));
+            if($findNull !== null) return array_combine($keyData, $data);
+            else return [];
+          }, 
+          $valueData
+        ),
+        fn($data) => !empty($data)
+      ));
+      
+      if(count($datas) === 0) throw new \Exception("File yang diupload memiliki data yang tidak valid pada seluruh barisnya!");
 
-    return view('curriculums.equivalence.upload-result', get_defined_vars());
+      return view('curriculums.equivalence.upload-result', get_defined_vars());
+    } catch (\Exception $err) {
+      Log::error('Gagal membaca file ekuivalensi mata kuliah', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $err->getMessage() ?? 'Gagal membaca file', 
+        'exception' => $err,
+      ]);
+      return redirect()
+        ->back()
+        ->withErrors(['error' => $err->getMessage() ?? 'Gagal membaca file'])
+        ->withInput();
+    }
   }
 
 
   public function cplDownloadTemplateCurriculumEquivalence(Request $request)
   {
-    $type = $request->query('type', 'xlsx');
-    $allowed = ['xlsx', 'csv'];
+    try {
+      $type = $request->query('type', 'xlsx');
+      $allowed = ['xlsx', 'csv'];
 
-    if (!in_array($type, $allowed)) {
-      return redirect()->back()->with('error', 'Format file tidak valid');
+      if (!in_array($type, $allowed)) {
+        throw new \Exception(json_encode([
+          'message' => 'Format file tidak valid, pastikan menggunakan xlsx atau csv',
+          'system_error' => 'Format file tidak valid: '.$type
+        ]));
+      }
+
+      $data = [
+        ['Kode MK Lama', 'Kode MK Baru'],
+        ['MK001', 'MK002'],
+        ['MK003', 'MK004'],
+        ['MK005', 'MK006'],
+      ];
+
+      $filename = 'template-ekuivalensi.' . $type;
+
+      return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+        private $rows;
+        public function __construct($rows)
+        {
+          $this->rows = $rows;
+        }
+        public function array(): array
+        {
+          return array_slice($this->rows, 1);
+        }
+        public function headings(): array
+        {
+          return $this->rows[0];
+        }
+      }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
+
+      Log::error('Gagal mengunduh template ekuivalensi mata kuliah', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
+
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
+
+      return redirect()
+        ->back()
+        ->withErrors(['error' => $decoded->message ?? 'Gagal mengunduh template ekuivalensi mata kuliah.']);
     }
-
-    $data = [
-      ['Kode MK Lama', 'Kode MK Baru'],
-      ['MK001', 'MK002'],
-      ['MK003', 'MK004'],
-      ['MK005', 'MK006'],
-    ];
-
-    $filename = 'template-ekuivalensi.' . $type;
-
-    return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
-      private $rows;
-      public function __construct($rows)
-      {
-        $this->rows = $rows;
-      }
-      public function array(): array
-      {
-        return array_slice($this->rows, 1);
-      }
-      public function headings(): array
-      {
-        return $this->rows[0];
-      }
-    }, $filename, $type === 'csv' ? ExcelFormat::CSV : ExcelFormat::XLSX);
   }
 
+  // ToDo: Tambahkan validasi melalui request, perbaiki algoritma penyimpanan file, dan Exception Error Handling
   public function uploadStoreCurriculumEquivalence(Request $request)
   {
-    dd($request->all());
+    dd($request->all);
     $validator = Validator::make($request->all(), [
       'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb
     ]);
@@ -653,87 +1064,96 @@ class CurriculumController extends Controller
 
   public function requiredCurriculumStructure(Request $request)
   {
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-    $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]->name);
-
-    $params = compact('id_program');
-    $url = CurriculumService::getInstance()->getMandatoryCourses();
-    $response = getCurl($url, $params, getHeaders());
-
-    if (!isset($response->data)) {
-      if ($request->ajax()) {
-        return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
+    try {
+      $programPerkuliahanList = config('static-data.program_perkuliahan');
+      if(!$programPerkuliahanList || count($programPerkuliahanList) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi program perkuliahan tidak ditemukan!',
+        ]));
       }
-      $data = [];
-    } else {
+      $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]['name']);
+      
+      $params = compact('id_program');
+      $url = CurriculumService::getInstance()->getMandatoryCourses();
+      $response = getCurl($url, $params, getHeaders());
+      if(!isset($response->success) || !$response->success) {
+        throw new \Exception(json_encode([
+          'message' => $response->message ?? 'Gagal mendapatkan data mata kuliah wajib',
+          'system_error' => $response
+        ]));
+      }
+  
       $data = $response->data;
-    }
+      if ($request->ajax()) {
+        return $this->successResponse($data, 'Berhasil Mendapatkan Data');
+      }
 
-    if ($request->ajax()) {
-      return $this->successResponse($data, 'Berhasil Mendapatkan Data');
-    }
+      return view('curriculums.structure.required', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
 
-    return view('curriculums.structure.required', get_defined_vars());
+      Log::error('Gagal memuat halaman struktur kurikulum wajib', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
+
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
+
+      return redirect()
+        ->route('home')
+        ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman struktur kurikulum wajib.']);
+    }
   }
 
   public function optionalCurriculumStructure(Request $request)
   {
-    $urlProgramPerkuliahan = EventCalendarService::getInstance()->getListUniversityProgram();
-    $responseProgramPerkuliahanList = getCurl($urlProgramPerkuliahan, null, getHeaders());
-    $programPerkuliahanList = $responseProgramPerkuliahanList->data;
-    $id_program = $request->input('program_perkuliahan');
-
-    $params = compact('id_program');
-    $url = CurriculumService::getInstance()->getMandatoryCourses();
-    $response = getCurl($url, $params, getHeaders());
-
-    if (!isset($response->data)) {
-      if ($request->ajax()) {
-        return $this->errorResponse($response->message ?? 'Gagal Mengambil Data');
+    try {
+      $programPerkuliahanList = config('static-data.program_perkuliahan');
+      if(!$programPerkuliahanList || count($programPerkuliahanList) == 0) {
+        throw new \Exception(json_encode([
+          'message'=>'Kesalahan sistem, tunggu beberapa saat lagi!',
+          'system_error' => 'Konfigurasi program perkuliahan tidak ditemukan!',
+        ]));
       }
-      $data = [];
-    } else {
+      $id_program = $request->input('program_perkuliahan', $programPerkuliahanList[0]['name']);
+  
+      $params = compact('id_program');
+      $url = CurriculumService::getInstance()->getMandatoryCourses();
+      $response = getCurl($url, $params, getHeaders());
+      if(!isset($response->success) || !$response->success) {
+        throw new \Exception(json_encode([
+          'message' => $response->message ?? 'Gagal mendapatkan data mata kuliah optional',
+          'system_error' => $response
+        ]));
+      }
+  
       $data = $response->data;
+      if ($request->ajax()) {
+        return $this->successResponse($data, 'Berhasil Mendapatkan Data');
+      }
+
+      return view('curriculums.structure.optional', get_defined_vars());
+    } catch (\Throwable $err) {
+      $decoded = json_decode($err->getMessage());
+
+      Log::error('Gagal memuat halaman struktur kurikulum wajib', [
+        'url' => $url ?? null,
+        'request_data' => $request->all(),
+        'response' => $decoded->system_error,
+      ]);
+
+      if ($request->ajax()) {
+        return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+      }
+
+      return redirect()
+        ->route('home')
+        ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman struktur kurikulum optional.']);
     }
-
-    if ($request->ajax()) {
-      return $this->successResponse($data, 'Berhasil Mendapatkan Data');
-    }
-
-
-    return view('curriculums.structure.optional', get_defined_vars());
-  }
-
-  public function index(Request $request)
-  {
-    return view('study.index', get_defined_vars());
-  }
-
-  public function create(Request $request)
-  {
-    return view('study.create', get_defined_vars());
-  }
-
-  public function edit(Request $request, $id)
-  {
-    return view('study.edit', get_defined_vars());
-  }
-
-  public function view(Request $request, $id)
-  {
-    return view('study.view', get_defined_vars());
-  }
-
-  public function store(Request $request, $id)
-  {
-    return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Berhasil disimpan');
-  }
-
-  public function send(Request $request, $id)
-  {
-    return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
   }
 
   public function updateAssignCourse(Request $request, $id)
@@ -763,10 +1183,5 @@ class CurriculumController extends Controller
       return response()->json(['success' => false, 'message' => $response->message ?? 'Gagal menyimpan data'], 422);
     }
     return redirect()->back()->with('success', 'Berhasil disimpan');
-  }
-
-  public function delete(Request $request, $id)
-  {
-    return redirect()->back();
   }
 }
