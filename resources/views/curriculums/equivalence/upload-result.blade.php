@@ -23,7 +23,7 @@
           </x-table-row>
         </x-table-head>
         <tbody>
-          @foreach($file_data as $data)
+          @foreach($datas as $data)
             <x-table-row>
                 <x-table-cell>{{$data['Kode MK Lama']}}</x-table-cell>
                 <x-table-cell>{{$data['Kode MK Baru']}}</x-table-cell>
@@ -46,7 +46,7 @@
   </x-container>
   <form action="{{route('curriculum.equivalence.save-upload')}}" method="POST">
     @csrf
-    @foreach($file_data as $index => $course)
+    @foreach($datas as $index => $course)
       <input type="hidden" name="data[{{$index}}][kode_mk_lama]" value="{{$course['Kode MK Lama']}}">
       <input type="hidden" name="data[{{$index}}][kode_mk_baru]" value="{{$course['Kode MK Baru']}}">
     @endforeach

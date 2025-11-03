@@ -50,7 +50,7 @@
                   array_filter(
                     $programPerkuliahanList, 
                     function($item) use($id_program) { 
-                      return $item->name == urldecode($id_program); 
+                      return $item['name'] == urldecode($id_program); 
                     }
                   )
                 ) > 0 
@@ -58,10 +58,10 @@
                       array_filter(
                         $programPerkuliahanList, 
                         function($item) use($id_program) { 
-                          return $item->name == urldecode($id_program); 
+                          return $item['name'] == urldecode($id_program); 
                         }
                       )
-                    )[0]->name
+                    )[0]['name']
                   : ''
               "
               :imgSrc="asset('assets/active/icon-arrow-down.svg')"
