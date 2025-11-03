@@ -29,13 +29,12 @@ class ScheduleController extends Controller
   {
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
-    $programStudiList = collect($responseProgramStudiList->data)->pluck('id', 'nama')->toArray();
+    $programStudiList = $responseProgramStudiList->data;
 
     $programPerkuliahanList = config('static-data.program_perkuliahan');
-    $programPerkuliahanList = collect($programPerkuliahanList)->pluck('code', 'name')->toArray();
 
     $params  = [
-      'program_perkuliahan' => (int) $req->query('program_perkuliahan'),
+      'program_perkuliahan' => $req->query('program_perkuliahan'),
       'program_studi' => (int) $req->query('program_studi'),
       'q'                   => $req->query('q', ''),
       'sort'                => $req->query('sort', 'created_at,desc'),
@@ -45,45 +44,14 @@ class ScheduleController extends Controller
 
     $urlSchedule = ScheduleService::getInstance()->getSchedule();
     $responseSchedule = getCurl($urlSchedule, $params, getHeaders());
-    $data = $responseSchedule->data ?? [];
-    $rows = collect($data)->map(function ($item) {
-      return [
-        'id' => $item->id_kelas,
-        'semester' => $item->id_periode_akademik,
-        'mata_kuliah' => $item->id_mata_kuliah,
-        'nama_kelas' => $item->nama_jadwal,
-        'kapasitas' => $item->jumlah_peserta,
-        'jadwal' => collect($item->classSchedule)->map(function ($jadwal) {
-          return [
-            'hari' => $jadwal->hari,
-            'waktu' => $jadwal->mulai_kelas . '–' . $jadwal->selesai_kelas,
-            'ruang' => $jadwal->nama_ruangan,
-          ];
-        })->toArray(),
-        'pengajar' => collect($item->classLecturer)->pluck('nama_pengajar')->join(', '),
-      ];
-    });
+    $dataSchedule = $responseSchedule->data;
 
-    $slice = collect($rows)->forPage($params['page'], $params['per_page'])->values();
-    $items = new LengthAwarePaginator($slice, count($rows), $params['per_page'], $params['page'], [
-      'path' => url()->current()
-    ]);
-
-    return view('academics.schedule.prodi_schedule.index', [
-      'items' => $items,
-      'programPerkuliahanList' => $programPerkuliahanList,
-      'programStudiList'       => $programStudiList,
-      'id_program'             => $params['program_perkuliahan'],
-      'id_prodi'               => $params['program_studi'],
-      'q'                      => $params['q'],
-      'sort'                   => $params['sort'],
-    ]);
+    return view('academics.schedule.prodi_schedule.index', get_defined_vars());
   }
 
   public function create(Request $request)
   {
     $programPerkuliahanList = config('static-data.program_perkuliahan');
-    $programPerkuliahanList = collect($programPerkuliahanList)->pluck('code', 'name')->toArray();
 
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
     $responseProgramStudiList = getCurl($urlProgramStudi, null, getHeaders());
