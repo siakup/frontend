@@ -349,6 +349,20 @@
     gap: 0px;
 }
 
+.cpl-head { 
+    height:80px;
+    border-radius: 14px 14px 0 0 ;
+    display:flex; justify-content:space-between; 
+    align-items:center; 
+    padding:10px 12px; 
+    font-weight:700;
+    width: 100%;
+}
+
+.grad-peach {  
+    background:linear-gradient(90deg,#FFECED,#FFFFFF); 
+}
+
 /* .item-title {
     color: var(--Text-Primary, #333333);
     font-size: 14px;

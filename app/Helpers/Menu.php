@@ -364,7 +364,12 @@ class Menu
                         'parent' => 'rps',
                         'isExpandable' => true,
                         'children' => [
-
+                          'buat-cpl' => [
+                            'name' => 'Capaian Pembelajaran Lulusan',
+                            'url' => '/rps/capaian-pembelajaran/*',
+                            'parent' => 'rps.capaian-pembelajaran.index',
+                            'isExpandable' => false,
+                          ]
                         ]
                   ]
                 ]

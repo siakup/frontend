@@ -8,6 +8,7 @@ use App\Http\Controllers\RpsController;
         Route::get('/', [RpsController::class, 'index'])->name('rps.index');
         Route::get('/deskripsi-umum', [RpsController::class, 'buatRpsDeskripsiUmum'])->name('rps.deskripsi-umum');
         Route::get('/capaian-pembelajaran', [RpsController::class, 'buatCapaianPembelajaran'])->name('rps.capaian-pembelajaran');
+        Route::get('/capaian-pembelajaran/create', [RpsController::class, 'buatCapaianPembelajaranLulusan'])->name('rps.capaian-pembelajaran.create');
         Route::get('/komponen-penilaian', [RpsController::class, 'buatKomponenPenilaian'])->name('rps.komponen-penilaian');
     });
 // });

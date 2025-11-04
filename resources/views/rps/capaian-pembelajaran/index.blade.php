@@ -42,7 +42,7 @@
             </x-table-body>
         </x-table>
         <div class="flex justify-end">
-            <x-button.primary>Tambah CPL</x-button.primary>
+            <x-button.primary :href="route('rps.capaian-pembelajaran.create')">Tambah CPL</x-button.primary>
         </div>
 
         {{-- Capaian Pembelajaran Mata Kuliah --}}
@@ -89,5 +89,5 @@
         ">
         </div>
     </x-modal.confirmation>
-    @include('rps.modal.create-cpmk')
+    @include('rps.capaian-pembelajaran._modal-create-cpmk')
 @endsection

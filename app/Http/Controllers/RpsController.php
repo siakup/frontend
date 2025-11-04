@@ -129,7 +129,7 @@ class RpsController extends Controller
         ];
 
 
-        return view('rps.deskripsi-umum', get_defined_vars());
+        return view('rps.deskripsi-umum.index', get_defined_vars());
     }
 
     public function buatCapaianPembelajaran(){
@@ -175,7 +175,62 @@ class RpsController extends Controller
 
         ];
 
-        return view('rps.capaian-pembelajaran', get_defined_vars());
+        return view('rps.capaian-pembelajaran.index', get_defined_vars());
+    }
+
+    public function buatCapaianPembelajaranLulusan () {
+        $cplList = [
+            [
+                'kode' => 'CPL-A',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ],
+            [
+                'kode' => 'CPL-B',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ],
+            [
+                'kode' => 'CPL-C',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ],
+            [
+                'kode' => 'CPL-D',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ], 
+            [
+                'kode' => 'CPL-E',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ], 
+            [
+                'kode' => 'CPL-F',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ], 
+            [
+                'kode' => 'CPL-G',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ], 
+            [
+                'kode' => 'CPL-H',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ], 
+            [
+                'kode' => 'CPL-I',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ],
+            [
+                'kode' => 'CPL-J',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ], 
+            [
+                'kode' => 'CPL-K',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ], 
+            [
+                'kode' => 'CPL-L',
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+            ]              
+        ];
+
+        return view('rps.capaian-pembelajaran.create-cpl', get_defined_vars());
     }
 
     /**
