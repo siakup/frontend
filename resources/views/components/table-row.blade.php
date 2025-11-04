@@ -3,7 +3,7 @@
 @php
   $variants = [
     'default' => [
-      'other-class' => "bg-white",
+      'other-class' => '',
       'odd' => $odd ? 'bg-[#f5f5f5]' : 'bg-white',
       'last' => $last ? 'border-b-0' : ''
     ],

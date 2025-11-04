@@ -8,10 +8,59 @@
 
 
 @section('content')
-    <x-title-page :title="'Buat RPS (Rencana Pembelajaran Dosen)'" />
-
-    <x-white-box :class="''">
-        <div class="p-4">
+    <div class="page-header pl-5">
+        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>
+    </div>
+    <x-container variant="content" class="ml-3">
+            <x-form.input-container class="w-[200px] ml-2">
+                <x-slot name="label">Periode</x-slot>
+                <x-slot name="input">
+                    <x-form.dropdown
+                        variant="gray"
+                        buttonId="dropdownPeriodeButton"
+                        dropdownId="dropdownPeriodeList"
+                        label="-Pilih Periode Akademik-"
+                        :dropdownItem="$periodeList"
+                        buttonStyleClass="text-sm min-w-[900px]"
+                        optionStyleClass="min-w-[250px]"
+                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :isIconCanRotate="true"
+                    />
+                </x-slot>
+            </x-form.input-container>
+            <x-form.input-container class="w-[200px] ml-2">
+                <x-slot name="label">Program Studi</x-slot>
+                <x-slot name="input">
+                    <x-form.dropdown
+                        variant="gray"
+                        buttonId="dropdownProdiButton"
+                        dropdownId="dropdownProdiList"
+                        label="-Pilih Program Studi-"
+                        :dropdownItem="$prodiList"
+                        buttonStyleClass="text-sm min-w-[900px]"
+                        optionStyleClass="min-w-[250px]"
+                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :isIconCanRotate="true"
+                    />
+                </x-slot>
+            </x-form.input-container>
+            <x-form.input-container class="w-[200px] ml-2">
+                <x-slot name="label">Mata Kuliah</x-slot>
+                <x-slot name="input">
+                    <x-form.dropdown
+                        variant="gray"
+                        buttonId="dropdownMatkulButton"
+                        dropdownId="dropdownMatkulList"
+                        label="-Pilih Mata Kuliah-"
+                        :dropdownItem="$matkulList"
+                        buttonStyleClass="text-sm min-w-[735px]"
+                        optionStyleClass="min-w-[250px]"
+                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :isIconCanRotate="true"
+                    />
+                    <x-button.primary>Cari</x-button.primary>
+                </x-slot>
+            </x-form.input-container>
             <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg m-4 py-4">
                 <div class="flex gap-4">
                     <div class="mt-10">
@@ -51,7 +100,7 @@
                         </x-table-cell>
                         <x-table-cell>
                             @if($rps['status']==='Finalized')
-                            <x-badge class="inline-flex bg-[#D0DE68]">Finalized</x-badge>
+                                <x-badge class="inline-flex bg-[#D0DE68]">Finalized</x-badge>
                             @endif
                         </x-table-cell>
                         <x-table-cell>{{ $rps['tanggal_upload'] }}</x-table-cell>
@@ -60,6 +109,7 @@
                                 <x-button.base 
                                     :icon="asset('assets/base/icon-copy-16.svg')"
                                     iconPosition="left"
+                                    variant="caption-regular"
                                 >
                                     Salin
                                 </x-button.base>
@@ -67,6 +117,7 @@
                                     :icon="asset('assets/icon-edit.svg')"
                                     iconPosition="left"
                                     class="text-[#E62129]"
+                                    variant="caption-regular"
                                 >
                                     Ubah
                                 </x-button.base>
@@ -82,14 +133,16 @@
                 <x-button.secondary iconPosition="right" icon="{{asset('assets/icon-upload-red-500.svg')}}">
                     Unggah RPS
                 </x-button.secondary>
-                <x-button.primary>Tambah RPS</x-button.primary>
+                <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
             </div>
-        </div>
-    </x-white-box>
-    @include('partials.pagination', [
-        'currentPage' => 1,
-        'lastPage' => 10,
-        'limit' => 3,
-        'routes' => '',
-    ])
+    </x-container>
+    <div class="ml-10">
+        @include('partials.pagination', [
+                'currentPage' => 1,
+                'lastPage' => 10,
+                'limit' => 3,
+                'routes' => '',
+            ])
+    </div>
+    
 @endsection

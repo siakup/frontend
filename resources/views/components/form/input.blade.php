@@ -6,6 +6,7 @@
     'value' => '', // default value
     'iconUrl' => null, // HTML string atau view component untuk icon
     'disabled' => false, // prop untuk disable
+    'placeholder' => '',
 ])
 
 <div {{ $attributes->class(['flex flex-col gap-1']) }}>
@@ -77,6 +78,7 @@
                 type="{{ $type }}"
                 name="{{ $name }}"
                 id="{{ $name }}"
+                placeholder="{{ $placeholder }}"
                 value="{{ old($name, $value) }}"
                 {{ $attributes->except('class')->merge([
                     'class' => \Illuminate\Support\Arr::toCssClasses([
@@ -92,7 +94,7 @@
                         'px-[12px]',
                         'text-gray-800',
                         'pr-10' => $iconUrl,
-                        'bg-[#f5f5f5] text-gray-600 cursor-not-allowed' => $disabled,
+                        'bg-[#f5f5f5] !text-gray-600 cursor-not-allowed' => $disabled,
                     ]),
                     'disabled' => $disabled ? true : null,
                 ]) }}

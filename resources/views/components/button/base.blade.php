@@ -6,6 +6,7 @@
     'class' => '',
     'wireClick' => null,
     'href' => null,
+    'sizeText' => 'body-small-regular'
 ])
 
 <button 
@@ -27,7 +28,7 @@
     @endif
 
     {{-- Slot sebagai prioritas, fallback ke label --}} 
-    <x-typography variant="caption-regular">
+    <x-typography variant="{{ $sizeText }}">
         {{ $slot->isNotEmpty() ? $slot : $label }}
     </x-typography>
 

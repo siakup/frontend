@@ -356,10 +356,18 @@ class Menu
                 'name' => 'RPS (Rencana Pembelajaran Dosen)',
                 'url' => '/rps',
                 'parent' => 'rps.index',
-                'isExpandable' => false
-                // 'children' => [
+                'isExpandable' => true,
+                'children' => [
+                  'buat-rps' => [
+                        'name' => 'Buat RPS (Rencana Pembelajaran Dosen)',
+                        'url' => '/rps/*',
+                        'parent' => 'rps',
+                        'isExpandable' => true,
+                        'children' => [
 
-                // ]
+                        ]
+                  ]
+                ]
             ],
         ];
     }

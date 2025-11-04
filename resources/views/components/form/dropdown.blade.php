@@ -1,4 +1,5 @@
 @props([
+  'variant' => 'red',
   'buttonId',
   'dropdownId',
   'label',
@@ -16,9 +17,20 @@
   'inputValue' => ''
 ])
 
+@php
+  $variants = [
+    'red' => 'flex items-center gap-2 py-2 px-4 bg-transparent border-[1px] border-[#E62129] cursor-pointer text-[#E62129] transition-all duration-200 rounded-lg hover:bg-[#FBE8E6]',
+    'gray' => 'flex items-center justify-between py-2 px-4 w-auto cursor-pointer border-[1px] border-[#BFBFBF] bg-[#FFFFFF] transition-all duration-200 rounded-lg'
+  ];
+
+  $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];
+  $selectedClass = "{$selectedVariant} {$buttonStyleClass} ";
+
+@endphp
+
 <div class="relative {{ $dropdownContainerClass }}">
     <button 
-      class="flex items-center gap-2 py-2 px-4 bg-transparent border-[1px] border-[#E62129] cursor-pointer text-[#E62129] transition-all duration-200 rounded-lg hover:bg-[#FBE8E6] {{ $buttonStyleClass }}"
+      class="{{ $selectedClass }}"
       id="{{$buttonId}}"
       onclick="onShowOrHideOption(this, '{{ $isIconCanRotate }}')"
       type="button"
@@ -27,8 +39,11 @@
         <img src="{{ $imgSrc }}" alt="Filter" class="transition-all duration-200">
     </button>
     <div 
-      id="{{ $dropdownId }}" 
-      class="absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md hidden flex-col items-start max-h-[200px] overflow-y-auto w-max z-10 {{ $optionStyleClass }}" 
+      class="
+      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md hidden flex-col items-start max-h-[200px] overflow-y-auto z-10
+      {{ $variant === 'gray' ? 'min-w-[240px] right-0' : 'w-max right-0' }}
+      {{ $optionStyleClass }}
+    " 
     >
       @foreach($dropdownItem as $key => $value)
         @php
