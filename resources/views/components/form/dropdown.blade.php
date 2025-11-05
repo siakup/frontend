@@ -28,15 +28,39 @@
 
 @endphp
 
-<div class="relative {{ $dropdownContainerClass }}">
+<div 
+  class="relative {{ $dropdownContainerClass }}" 
+  x-data="{ 
+    open: false, 
+    value: '{{ $inputValue }}',
+    label: '{{ $label }}',
+    toggle() { this.open = ! this.open },
+    setFalse() { this.open = false },
+    onSelectedOption() {
+      if({{ json_encode($isOptionRedirectableToURLQueryParameter) }}) {
+        const params = new URLSearchParams(window.location.search);
+        params.set({{ json_encode($queryParameter) }}, encodeURIComponent(this.value));
+        window.location.href = {{ json_encode($url) }} + '?' + params.toString();
+      }
+    }
+  }"
+  x-modelable="value"
+  x-model="{{$attributes->get('x-model')}}"
+  x-on:click.outside="setFalse"
+>
     <button 
       class="{{ $selectedClass }}"
       id="{{$buttonId}}"
-      onclick="onShowOrHideOption(this, '{{ $isIconCanRotate }}')"
+      x-on:click="toggle"
       type="button"
     >
-        {{$label}}
-        <img src="{{ $imgSrc }}" alt="Filter" class="transition-all duration-200">
+        <x-typography :variant="'body-small-regular'" x-text="label"></x-typography>
+        <img 
+          src="{{ $imgSrc }}" 
+          alt="Filter" 
+          class="transition-all duration-200"
+          :class="{ '-rotate-180': open && {{ json_encode($isIconCanRotate) }} }"
+        >
     </button>
     <div 
       class="
@@ -44,91 +68,30 @@
       {{ $variant === 'gray' ? 'min-w-[240px] right-0' : 'w-max right-0' }}
       {{ $optionStyleClass }}
     " 
+      id="{{ $dropdownId }}" 
+      class="absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex flex-col items-start max-h-[200px] overflow-y-auto w-max z-10 {{ $optionStyleClass }}" 
+      x-show.important="open"
+      x-transition
+      x-data="{
+        options: {{ json_encode($dropdownItem) }}
+      }"
     >
-      @foreach($dropdownItem as $key => $value)
-        @php
-          $encodedVariabelIsOptionRedirectableToURLQueryParameter = json_encode($isOptionRedirectableToURLQueryParameter);
-          $encodedVariabelIsUsedForInputField = json_encode($isUsedForInputField);
-          $extraOnClick = $attributes->get('onclick');
-          $defaultOnClick = "
-            onSelectedOption(
-              this, 
-              $encodedVariabelIsOptionRedirectableToURLQueryParameter , 
-              '$url', 
-              '$queryParameter',
-              $encodedVariabelIsUsedForInputField,
-              '$inputFieldName'
-            );";
-          $onClick = $defaultOnClick . ($extraOnClick ? "$extraOnClick;" : '');
-        @endphp
+      <template x-for="(option, key) in options">
         <div 
           class="item px-3 py-2 cursor-pointer hover:bg-[#DDD] transition-[background] duration-200 flex justify-between items-center text-sm w-full" 
-          onclick="{{$onClick}}"
-          data-sort="{{$value}}"
+          x-on:click="
+            value = option; 
+            label = key;
+            onSelectedOption();
+            {{ $attributes->has('onclick') ? str_replace('"', '\"', $attributes->get('onclick')) : '' }};
+            setFalse();
+          "
+          x-text="key"
         >
-          {{$key}}
         </div>
-      @endforeach
+      </template>
     </div>
     @if($isUsedForInputField)
-      <input type="hidden" name="{{$inputFieldName}}" value="{{ $inputValue }}">
+      <input type="hidden" name="{{$inputFieldName}}" x-model="value">
     @endif
-</div>
-
-<script>
-  function onShowOrHideOption(element, isIconCanRotate) {
-    const option = element.nextElementSibling;
-    option.classList.toggle('hidden');
-    option.classList.toggle('flex');
-    if(isIconCanRotate) {
-      const img = element.querySelector('img');
-      img.classList.toggle('rotate-180');
-    }
-  }
-
-  function onSelectedOption(element, isOptionRedirectableToURLQueryParameter, url, queryParameter, isUsedForInputField, inputFieldName) {
-    const sortDropdown = element.parentElement;
-    const button = sortDropdown.previousElementSibling;
-    button.innerHTML = button.innerHTML.replace(button.innerHTML.split("<")[0], element.innerHTML);
-
-    sortDropdown.querySelectorAll('.item').forEach(i => {
-      i.classList.remove('bg-[#E62129]');
-      i.classList.remove('text-white');
-    });
-
-    const sortKey = element.getAttribute('data-sort');
-
-    element.classList.add('bg-[#E62129]');
-    element.classList.add('text-white');
-
-    sortDropdown.classList.add('hidden');
-    sortDropdown.classList.remove('flex');
-
-    if(isOptionRedirectableToURLQueryParameter) {
-      redirectToURLQueryParameter(sortKey, url, queryParameter);
-    }
-
-    if(isUsedForInputField) {
-      const input = document.querySelector(`input[name="${inputFieldName}"]`);
-      input.value = sortKey;
-    }
-  }
-
-  function redirectToURLQueryParameter(value, url, queryParameter) {
-    const params = new URLSearchParams(window.location.search);
-    params.set(queryParameter, encodeURIComponent(value));
-    window.location.href = url + "?" + params.toString();
-  }
-
-  document.addEventListener('click', function(e) {
-      const toggleBtn = document.getElementById('{{ $buttonId }}');
-      const dropdown = document.getElementById('{{ $dropdownId }}');
-      const isIconCanRotate = @json(boolval($isIconCanRotate));
-
-      if (!toggleBtn.contains(e.target) && !dropdown.contains(e.target)) {
-          dropdown.classList.remove('flex');
-          dropdown.classList.add('hidden');
-          if(isIconCanRotate) toggleBtn.querySelector('img').classList.remove('rotate-180');
-      }
-  });
-</script>
+</div>  
