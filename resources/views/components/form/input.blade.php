@@ -7,6 +7,7 @@
     'iconUrl' => null, // HTML string atau view component untuk icon
     'disabled' => false, // prop untuk disable
     'placeholder' => '',
+    'inputClass' => '',
 ])
 
 <div {{ $attributes->class(['flex flex-col gap-1']) }}>
@@ -95,6 +96,7 @@
                         'text-gray-800',
                         'pr-10' => $iconUrl,
                         'bg-[#f5f5f5] !text-gray-600 cursor-not-allowed' => $disabled,
+                        $inputClass,
                     ]),
                     'disabled' => $disabled ? true : null,
                 ]) }}

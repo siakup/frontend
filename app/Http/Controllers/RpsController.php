@@ -233,6 +233,38 @@ class RpsController extends Controller
         return view('rps.capaian-pembelajaran.create-cpl', get_defined_vars());
     }
 
+    public function buatKomponenPenilaian () {
+        $cpmkList = ['CPMK-1','CPMK-2','CPMK-3','CPMK-4','CPMK-5','CPMK-6','CPMK-7','CPMK-8','CPMK-9','CPMK-10'];
+
+        $komponenList = [
+            [
+                'nama' => 'TUGAS',
+                'bobot' => '30.00%',
+                'cpmk' => [false, true, true, true, false, true, true, true, false, true]
+            ],
+            [
+                'nama' => 'UTS',
+                'bobot' => '30.00%',
+                'cpmk' => [true, false, true, true, false, false, true, true, false, true]     
+            ],
+            [
+                'nama' => 'UAS',
+                'bobot' => '30.00%',
+                'cpmk' => [true, false, true, true, false, false, true, true, false, true]
+            ],
+        ];
+
+        $komponenPenilaian = [
+            'Tugas' => '1',
+            'Kuis' => '2',
+            'UTS' => '3',
+            'UAS' => '4',
+            'Praktikum' => '5',
+        ];
+
+        return view('rps.komponen-penilaian.index', get_defined_vars());
+    }
+
     /**
      * Show the form for creating a new resource.
      */
