@@ -1,94 +1,139 @@
 @props([
-    'currentPage' => 1,
-    'totalPages' => 1,
-    'perPageInput' => 10,
     'defaultPerPageOptions' => [10, 25, 50, 100],
-    'onPerPageChange' => '',
-    'onPageChange' => '',
-    'onPrevious' => '',
-    'onNext' => '',
-    'totalItems' => null,
+    'storeName' => '',
+    'storeKey' => '',
+    'responseKeyData' => '',
+    'responseKeyPaginationData' => 'pagination',
+    'requestRoute' => '',
 ])
-
-<div class="flex flex-col md:flex-row items-center justify-between gap-10 w-full">
-    <!-- Per Page Selector -->
-    <div class="flex items-center gap-3">
-        <span class="text-sm text-gray-600">Tampilkan</span>
-        <div class="relative group">
-            <select class="w-24 border bg-white border-[#bfbfbf] rounded-lg px-3 py-1 text-sm text-center"
-                    onchange="{{ $onPerPageChange }}">
-                @foreach ($defaultPerPageOptions as $option)
-                    <option value="{{ $option }}" {{ $perPageInput == $option ? 'selected' : '' }}>
-                        {{ $option }}
-                    </option>
-                @endforeach
-            </select>
-        </div>
-        <span class="text-sm text-gray-600">Per Halaman</span>
-    </div>
-
-    <!-- Pagination Info and Controls -->
-    <div class="flex flex-col sm:flex-row items-center gap-5">
-        <!-- Text Hasil -->
-        <div class="text-sm text-gray-600">
-            @if ($totalItems)
-                <span>Menampilkan halaman {{ $currentPage }} dari {{ $totalPages }} (Total: {{ $totalItems }} data)</span>
-            @else
-                <span>Halaman {{ $currentPage }} dari {{ $totalPages }}</span>
-            @endif
-        </div>
-
-        <!-- Pagination Controls -->
-        <div class="flex items-center gap-1">
-            <!-- Previous Button -->
-            <x-button.secondary x-show="currentPage > 1" onclick="{{ $onPrevious }}" label="Sebelumnya"
-                                iconPosition="left" icon="{{ asset('assets/icon-arrow-left-red.svg') }}" class="!py-1 !px-3" />
-
-            <!-- Page Numbers -->
-            @php
-                echo '<button onclick="' .
-                    str_replace('{page}', 1, $onPageChange) .
-                    '" class="py-1 px-4 rounded-lg text-sm cursor-pointer ' .
-                    ($currentPage == 1 ? 'bg-[#FBDADB] text-[#E62129]' : 'text-[#8C8C8C]') .
-                    '">1</button>';
-
-                if ($currentPage > 3 && $totalPages > 5) {
-                    echo '<span class="px-2 text-[#8C8C8C] text-sm">...</span>';
+  <div
+    x-data="{{ $attributes->get('x-data') }}"
+    x-effect="{{ $attributes->get('x-effect') }}"
+  >
+    <template x-if="pagination !== null">
+      <div 
+        x-data="{
+          key: '',
+          storeName: @js($storeName),
+          storeKey: @js($storeKey),
+          responseKeyData: @js($responseKeyData),
+          responseKeyPaginationData: @js($responseKeyPaginationData),
+          defaultPerPageOptions: @js($defaultPerPageOptions),
+          startPage: Math.max(2, pagination.currentPage - 1),
+          endPage: Math.min(pagination.last - 1, pagination.currentPage + 1),
+          async onChangePage(page, limit) {
+            await requestGetData(
+              '{{ $requestRoute }}', {
+                page: page,
+                limit: limit,
+                display: 'false'
+              }, (response) => {
+                if ($store[this.storeName][this.storeKey]) {
+                  $store[this.storeName][this.storeKey] = response.data[this.responseKeyData];
+                  $store[this.storeName].paginationData = response.data[this.responseKeyPaginationData];
                 }
-
-                $startPage = max(2, $currentPage - 1);
-                $endPage = min($totalPages - 1, $currentPage + 1);
-
-                for ($i = $startPage; $i <= $endPage; $i++) {
-                    if ($i > 1 && $i < $totalPages) {
-                        echo '<button onclick="' .
-                            str_replace('{page}', $i, $onPageChange) .
-                            '" class="py-1 px-4 rounded-lg text-sm ' .
-                            ($currentPage == $i ? 'bg-[#FBDADB] text-[#E62129]' : 'text-[#8C8C8C]') .
-                            '">' .
-                            $i .
-                            '</button>';
-                    }
+            });
+          },
+          async onChangeLimit(limit) {
+            await requestGetData(
+              '{{ $requestRoute }}', {
+                limit: limit,
+                display: 'false'
+              }, (response) => {
+                if ($store[this.storeName][this.storeKey]) {
+                  $store[this.storeName][this.storeKey] = response.data[this.responseKeyData];
+                  $store[this.storeName].paginationData = response.data[this.responseKeyPaginationData];
                 }
-
-                if ($currentPage < $totalPages - 2 && $totalPages > 5) {
-                    echo '<span class="px-2 text-[#8C8C8C] text-sm">...</span>';
-                }
-
-                if ($totalPages > 1) {
-                    echo '<button onclick="' .
-                        str_replace('{page}', $totalPages, $onPageChange) .
-                        '" class="py-1 px-4 rounded-lg text-sm ' .
-                        ($currentPage == $totalPages ? 'bg-[#FBDADB] text-[#E62129]' : 'text-[#8C8C8C]') .
-                        '">' .
-                        $totalPages .
-                        '</button>';
-                }
-            @endphp
-
-                <!-- Next Button -->
-            <x-button.secondary x-show="currentPage < totalPages" onclick="{{ $onNext }}" label="Selanjutnya"
-                                iconPosition="right" icon="{{ asset('assets/icon-arrow-right-red.svg') }}" class="!py-1 !px-3" />
-        </div>
-    </div>
-</div>
+            });
+          },
+        }"
+        class="flex flex-col md:flex-row items-center justify-between gap-10 w-full"
+      >
+          <div class="flex items-center gap-3">
+              <span class="text-sm text-gray-600">Tampilkan</span>
+              <div class="relative group">
+                  <select 
+                    class="w-24 border bg-white border-[#bfbfbf] rounded-lg px-3 py-1 text-sm text-center" 
+                    x-model="pagination.limit"
+                    x-on:change="onChangeLimit($event.target.value)"
+                  >
+                    <template x-for="option in defaultPerPageOptions">
+                      <option x-bind:value="Number(option)" x-text="Number(option)"></option>
+                    </template>
+                  </select>
+              </div>
+              <span class="text-sm text-gray-600">Per Halaman</span>
+          </div>
+          <div class="flex flex-col sm:flex-row items-center gap-5">
+              <div class="text-sm text-gray-600">
+                  <template x-if="pagination.totalItems">
+                      <span x-text="'Menampilkan halaman '+pagination.currentPage+' dari '+pagination.last+'(Total: '+pagination.totalItems+' data)'"></span>
+                  </template>
+                  <template x-if="!pagination.totalItems">
+                    <span x-text="'Halaman '+pagination.currentPage+' dari '+pagination.last"></span>
+                  </template>
+              </div>
+              <div class="flex items-center gap-1">
+                  <x-button.secondary 
+                    x-show="pagination.currentPage > 1" 
+                    x-on:click="onChangePage(pagination.currentPage - 1, pagination.limit)" 
+                    label="Sebelumnya"
+                    iconPosition="left" 
+                    icon="{{ asset('assets/icon-arrow-left-red.svg') }}" 
+                    class="!py-1 !px-3" 
+                  />
+                  <x-button.base
+                    class="py-1 px-4 rounded-lg text-sm cursor-pointer"
+                    x-on:click="onChangePage(1, pagination.limit)"
+                    x-bind:class="{
+                      'bg-[#FBDADB]': pagination.currentPage == 1,
+                      'text-[#E62129]': pagination.currentPage == 1,
+                      'text-[#8C8C8C]': pagination.currentPage != 1,
+                    }"
+                  >
+                    1
+                  </x-button.base>
+                  <template x-if="pagination.currentPage > 3 && pagination.last > 5">
+                    <span class="px-2 text-[#8C8C8C] text-sm">...</span>
+                  </template>
+                  <template x-for="i in endPage - startPage">
+                    <template x-if="i > 1 && i < pagination.last">
+                      <x-button.base
+                        x-on:click="onChangePage(i, pagination.limit)"
+                        x-bind:class="{
+                          'bg-[#FBDADB]': pagination.currentPage == i,
+                          'text-[#E62129]': pagination.currentPage == i,
+                          'text-[#8C8C8C]': pagination.currentPage != i,
+                        }"
+                        x-text="i"
+                      ></x-button.base>
+                    </template>
+                  </template>
+                  <template x-if="pagination.currentPage < pagination.last - 2 && last > 5">
+                    <span class="px-2 text-[#8C8C8C] text-sm">...</span>
+                  </template>
+                  <template x-if="pagination.last > 1">
+                    <x-button.base 
+                      class="py-1 px-4 rounded-lg text-sm"
+                      x-on:click="onChangePage(pagination.last, pagination.limit)"
+                      x-bind:class="{
+                        'bg-[#FBDADB]': pagination.currentPage == pagination.last,
+                        'text-[#E62129]': pagination.currentPage == pagination.last,
+                        'text-[#8C8C8C]': pagination.currentPage != pagination.last,
+                      }"
+                      x-text="pagination.last"
+                    ></x-button.base>
+                  </template>
+                  <x-button.secondary 
+                    x-show="pagination.currentPage < pagination.totalPages" 
+                    x-on:click="onChangePage(pagination.currentPage + 1, pagination.limit)" 
+                    label="Selanjutnya"
+                    iconPosition="right" 
+                    icon="{{ asset('assets/icon-arrow-right-red.svg') }}" 
+                    class="!py-1 !px-3" 
+                  />
+              </div>
+          </div>
+      </div>
+    </template>
+  </div>
