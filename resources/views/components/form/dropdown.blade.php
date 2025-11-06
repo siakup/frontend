@@ -4,7 +4,7 @@
   'dropdownId' => '',
   'label',
   'imgSrc',
-  'dropdownItem',
+  'dropdownItem' => null,
   'buttonStyleClass' => '',
   'dropdownContainerClass' => '',
   'optionStyleClass' => '',
@@ -45,7 +45,7 @@
     }
   }"
   x-modelable="value"
-  x-model="{{$attributes->get('x-model')}}"
+  x-model="{{$attributes->whereStartsWith('x-model')->first()}}"
   x-on:click.outside="setFalse"
 >
     <button 
@@ -69,25 +69,32 @@
       {{ $optionStyleClass }}
     " 
       id="{{ $dropdownId }}" 
+      @if($attributes->has('x-data') && $attributes->has('x-init'))
+        x-data="{{ $attributes->get('x-data') }}"
+        x-init="{{ $attributes->get('x-init') }}"
+      @else
+        x-data="{
+          options: {{ json_encode($dropdownItem) }},
+        }"
+      @endif
       x-show.important="open"
       x-transition
-      x-data="{
-        options: {{ json_encode($dropdownItem) }}
-      }"
     >
-      <template x-for="(option, key) in options">
-        <div 
-          class="item px-3 py-2 cursor-pointer hover:bg-[#DDD] transition-[background] duration-200 flex justify-between items-center text-sm w-full" 
-          x-on:click="
-            value = option; 
-            label = key;
-            onSelectedOption();
-            {{ $attributes->has('onclick') ? str_replace('"', '\"', $attributes->get('onclick')) : '' }};
-            setFalse();
-          "
-          x-text="key"
-        >
-        </div>
+      <template x-if="options !== null">
+        <template x-for="(option, key) in options">
+          <div 
+            class="item px-3 py-2 cursor-pointer hover:bg-[#DDD] transition-[background] duration-200 flex justify-between items-center text-sm w-full" 
+            x-on:click="
+              value = option; 
+              label = key;
+              onSelectedOption();
+              {{ $attributes->has('onclick') ? str_replace('"', '\"', $attributes->get('onclick')) : '' }};
+              setFalse();
+            "
+            x-text="key"
+          >
+          </div>
+        </template>
       </template>
     </div>
     @if($isUsedForInputField)

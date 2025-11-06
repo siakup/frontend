@@ -84,10 +84,8 @@
       showRemoveIcon: {{ $showRemoveIcon ? 'true' : 'false' }},
       value: @js($value ?? '')
     }"
-    @if($attributes->has('x-model'))
-      x-modelable="value"
-      x-model="{{ $attributes->get('x-model') }}"
-    @endif
+    x-modelable="value"
+    x-model="{{$attributes->whereStartsWith('x-model')->first()}}"
   >
     <input 
       x-on:input="if('{{ $type }}' === 'number') { value = $event.target.value.replace(/[^0-9]/g, ''); } else { value = $event.target.value } removeButton = value !== '';" 

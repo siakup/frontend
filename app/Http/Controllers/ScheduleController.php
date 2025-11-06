@@ -19,12 +19,15 @@ use App\Endpoint\EventCalendarService;
 use App\Endpoint\PeriodAcademicService;
 use App\Endpoint\ScheduleService;
 use App\Endpoint\UserService;
+use App\Traits\ApiResponse;
 use Illuminate\Console\Scheduling\Event;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Log\Logger;
 
 class ScheduleController extends Controller
 {
+  use ApiResponse;
+
   public function index(Request $req)
   {
     $urlProgramStudi = EventCalendarService::getInstance()->getListStudyProgram();
@@ -70,70 +73,61 @@ class ScheduleController extends Controller
 
   public function dosen(Request $request)
   {
-    $limit  = $request->input('limit', 10);
-    $page   = $request->input('page', 1);
-    $search = strtolower(trim($request->input('search', '')));
+    $limit = $request->input('limit', 5);
+    $page = $request->input('page', 1);
+    $search = $request->input('search', '');
+    $display = $request->input('display', 'true');
+    $params = compact('limit', 'page', 'search');
 
-    $urlDosen  = UserService::getInstance()->getListLecturer();
-    $response  = getCurl($urlDosen, ['limit' => $limit, 'page' => $page, 'search' => $search], getHeaders());
-
-    $pengajar = array_map(function ($item) {
-      return (object) $item;
-    }, json_decode(json_encode($response->data->data), true));
-
-
-    $pengajar = array_chunk($pengajar, $limit);
-    $lastPage = count($pengajar);
-    $pengajar = count($pengajar) > 0 ? $pengajar[$page - 1] : [];
+    $url = ScheduleService::getInstance()->getLectureList();
+    $response = getCurl($url, $params, getHeaders());
+    $pengajar = $response->data->data;
+    $pagination = [
+      'currentPage' => $response->data->current_page,
+      'from' => $response->data->from,
+      'last' => $response->data->last_page,
+      'limit' => $limit
+    ];
 
     if ($request->ajax()) {
-      return view('academics.schedule.prodi_schedule._lecture-view', get_defined_vars())->render();
+      if($display == 'true') {
+        return view('academics.schedule.prodi_schedule._lecture-view', get_defined_vars())->render();
+      } else {
+        return $this->successResponse(['pengajar' => $pengajar, 'pagination' => $pagination] ?? [], 'Daftar Dosen berhasil didapatkan');
+      }
     }
     return redirect()->route('academics.schedule.prodi_schedule.create');
   }
 
   public function mataKuliah(Request $request, $periode)
   {
-    $limit  = $request->input('limit', 5);
-    $page   = $request->input('page', 1);
+    $limit = $request->input('limit', 5);
+    $page = $request->input('page', 1);
     $search = $request->input('search', '');
-
+    $display = $request->input('display', 'true');
     $params = compact('limit', 'page', 'search');
 
     $url = ScheduleService::getInstance()->getCourseList($periode);
     $response = getCurl($url, $params, getHeaders());
-
-    $mata_kuliah_list = [];
-
-    $pagination = null;
-    $lastPage   = 1;
-    $currentPage = 1;
-
-    if ($response && ($response->success ?? false)) {
-      $mata_kuliah_list = collect($response->data ?? [])->map(function ($item) {
-        return (object)[
-          'id'               => $item->id ?? null,
-          'kode_matakuliah'  => $item->kode ?? null,
-          'nama_matakuliah'  => $item->nama_id ?? null,
-          'jenis_matakuliah' => $item->id_jenis ?? null,
-          'sks'              => $item->sks ?? null,
-          'kurikulum'       => $item->semester ? 'Semester ' . $item->semester : null,
-        ];
-      });
-      $pagination  = $response->pagination ?? null;
-      $lastPage    = $pagination->last_page ?? 1;
-      $currentPage = $pagination->current_page ?? 1;
-    }
+    dd($response);
+    $mata_kuliah_list = $response->data->data;
 
     $urlPeriode = PeriodAcademicService::getInstance()->periodeUrl($periode);
     $responsePeriode = getCurl($urlPeriode, null, getHeaders());
-    $periodeData = $responsePeriode->data->periode ?? null;
+    $periodeData = $responsePeriode->data->periode;
+
+    $lastPage = $response->data->last_page;
+
 
     if ($request->ajax()) {
-      return view(
-        'academics.schedule.prodi_schedule._course-view',
-        get_defined_vars()
-      )->render();
+      if($display == 'true') {
+        return view(
+          'academics.schedule.prodi_schedule._course-view',
+          get_defined_vars()
+        )->render();
+      } else {
+        // return $this->successResponse(['pengajar' => $pengajar, 'pagination' => $pagination] ?? [], 'Daftar Dosen berhasil didapatkan');
+      }
     }
 
     return redirect()->route('academics.schedule.prodi_schedule-schedule.create');
@@ -141,10 +135,9 @@ class ScheduleController extends Controller
 
   public function jadwalKelas(Request $request)
   {
-    $ruangans = [];
-
     return view('academics.schedule.prodi_schedule._create-schedule', get_defined_vars())->render();
   }
+
   public function availableRooms(Request $request)
   {
     $validated = $request->validate([
