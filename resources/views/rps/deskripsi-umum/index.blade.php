@@ -2,7 +2,7 @@
 
 @section('title', 'RPS (Rencana Pembelajaran Dosen)')
 
-<script src="{{ asset('js/controllers/RpsDeskripsiUmum.js') }}" defer></script>
+<script src="{{ asset('js/controllers/rpsDeskripsiUmum.js') }}" defer></script>
 
 @section('content')
     <div class="page-header pl-5">
@@ -113,7 +113,6 @@
                     cols="50"
                     x-model="deskripsi_singkat_mk"
                 />
-                <span x-text="prodi"></span>
             </x-slot>
         </x-form.input-container>
         <x-form.input-container class="!text-wrap w-[200px]">

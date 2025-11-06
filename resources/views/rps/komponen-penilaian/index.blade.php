@@ -60,7 +60,7 @@
             <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-komponen-penilaian'})">Tambah Komponen</x-button.primary>
         </div>
         <div class="flex mt-5 justify-end gap-2">
-            <x-button.secondary x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Batal</x-button.secondary>
+            <x-button.secondary x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Kembali</x-button.secondary>
             <x-button.primary x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
         </div>
     </div>

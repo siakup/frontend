@@ -132,7 +132,7 @@ class RpsController extends Controller
         return view('rps.deskripsi-umum.index', get_defined_vars());
     }
 
-    public function buatCapaianPembelajaran(){
+    public function showCapaianPembelajaran(){
         $cplList = [
             [
                 'cpl' => 'CPL-G',
