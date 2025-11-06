@@ -2,9 +2,7 @@
 
 @section('title', 'RPS (Rencana Pembelajaran Dosen)')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Buat RPS (Rencana Pembelajaran Dosen)</div>
-@endsection
+<script src="{{ asset('js/controllers/RpsDeskripsiUmum.js') }}" defer></script>
 
 @section('content')
     <div class="page-header pl-5">
@@ -20,7 +18,12 @@
 
     @include('rps.layout.navbar-rps')
 
-    <div x-data class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
+    <div 
+        x-data="deskripsiUmum()" 
+        
+        class="academics-slicing-content content-card p-5 flex flex-col gap-5" 
+        style="border-radius: 0 12px 12px 12px !important;"
+    >
         <x-typography variant="body-medium-bold">Informasi RPS</x-typography>
         <x-form.input-container class="w-[200px]">
             <x-slot name="label">Periode</x-slot>
@@ -35,6 +38,7 @@
                     optionStyleClass="min-w-[250px]"
                     :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
                     :isIconCanRotate="true"
+                    x-model="periode"
                 />
             </x-slot>
         </x-form.input-container>
@@ -51,6 +55,7 @@
                     optionStyleClass="min-w-[250px]"
                     :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
                     :isIconCanRotate="true"
+                    x-model="prodi"
                 />
             </x-slot>
         </x-form.input-container>
@@ -67,6 +72,7 @@
                     optionStyleClass="min-w-[250px]"
                     :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
                     :isIconCanRotate="true"
+                    x-model="mata_kuliah"
                 />
             </x-slot>
         </x-form.input-container>
@@ -74,25 +80,25 @@
             <x-form.input-container class="w-[200px]">
                 <x-slot name="label">Bobot (SKS)</x-slot>
                 <x-slot name="input">
-                    <x-form.input :disabled="true" class="w-[320px]" name="bobot" :value="4"></x-form.input>
+                    <x-form.input disabled inputClass="!w-[320px] !mx-0" type="number" name="bobot" x-model="bobot"></x-form.input>
                 </x-slot>
             </x-form.input-container>
             <x-form.input-container class="w-[200px]">
                 <x-slot name="label">Semester</x-slot>
                 <x-slot name="input">
-                    <x-form.input disabled class="w-[320px]" name="semester" :value="7"></x-form.input>
+                    <x-form.input disabled inputClass="!w-[320px] !mx-0" name="semester" x-model="semester"></x-form.input>
                 </x-slot>
             </x-form.input-container>
             <x-form.input-container class="w-[200px]">
                 <x-slot name="label">Rumpun MK</x-slot>
                 <x-slot name="input">
-                    <x-form.input :disabled="true" class="w-[320px]" name="rumpun_mk" :value="'Mata Kuliah Prodi'"></x-form.input>
+                    <x-form.input disabled inputClass="!w-[320px] !mx-0" name="rumpun_mk" :value="'Mata Kuliah Prodi'" x-model="rumpun_mk"></x-form.input>
                 </x-slot>
             </x-form.input-container>
             <x-form.input-container class="w-[200px]">
                 <x-slot name="label">Level Program</x-slot>
                 <x-slot name="input">
-                    <x-form.input disabled class="w-[320px]" name="level_program" :value="'Sarjana'"></x-form.input>
+                    <x-form.input disabled inputClass="!w-[320px] !mx-0" name="level_program" :value="'Sarjana'" x-model="level_program"></x-form.input>
                 </x-slot>
             </x-form.input-container>
         </div>
@@ -105,7 +111,9 @@
                     :maxChar="100"
                     rows="5"
                     cols="50"
+                    x-model="deskripsi_singkat_mk"
                 />
+                <span x-text="prodi"></span>
             </x-slot>
         </x-form.input-container>
         <x-form.input-container class="!text-wrap w-[200px]">
@@ -116,6 +124,7 @@
                     id="materi_pembelajaran"
                     :maxChar="100"
                     rows="5"
+                    x-model="materi_pembelajaran"
                 />
             </x-slot>
         </x-form.input-container>
@@ -126,6 +135,7 @@
                     placeholder="Tulis Deskripsi"
                     id="pustaka"
                     :maxChar="1000"
+                    x-model="pustaka"
                 />
             </x-slot>
         </x-form.input-container>
@@ -133,9 +143,9 @@
             <x-slot name="label">Metode Pembelajaran</x-slot>
             <x-slot name="input">
                 <div class="flex gap-20">
-                    <x-form.checklist class="!w-fit bg-white" :id="'kuliah'" :value="'kuliah_on'" label="Kuliah (K)" :name="'kuliah'"/>
-                    <x-form.checklist class="!w-fit" :id="'diskusilatihan'" :value="'diskusi_on'" label="Diskusi & Latihan (DL)" :name="'diskusilatihan'"/>
-                    <x-form.checklist class="!w-fit" :id="'tugas'" :value="'tugas_on'" label="Tugas (T)" :name="'tugas'"/>
+                    <x-form.checklist x-model="kuliah" class="!w-fit bg-white" :id="'kuliah'" :value="'kuliah_on'" label="Kuliah (K)" :name="'kuliah'"/>
+                    <x-form.checklist x-model="diskusi_latihan" class="!w-fit" :id="'diskusilatihan'" :value="'diskusi_on'" label="Diskusi & Latihan (DL)" :name="'diskusilatihan'"/>
+                    <x-form.checklist x-model="tugas" class="!w-fit" :id="'tugas'" :value="'tugas_on'" label="Tugas (T)" :name="'tugas'"/>
                 </div>
             </x-slot>
         </x-form.input-container>
@@ -143,17 +153,19 @@
             <x-slot name="label">Media Pembelajaran</x-slot>
             <x-slot name="input">
                 <div class="grid grid-cols-[auto_1fr] gap-3">
-                    <x-form.checklist class="!w-fit bg-white" :id="'perangkat_lunak'" :value="'perangkat_lunak_on'" label="Perangkat Lunak" :name="'perangkat_lunak'"/>
+                    <x-form.checklist x-model="perangkat_lunak" class="!w-fit bg-white" :id="'perangkat_lunak'" :value="'perangkat_lunak_on'" label="Perangkat Lunak" :name="'perangkat_lunak'"/>
                     <x-form.textarea
                         placeholder="Tulis Deskripsi"
                         id="isian_perangkat_lunak"
+                        x-model="isian_perangkat_lunak"
                         :maxChar="100"
                         rows="3"
                     />
-                    <x-form.checklist class="!w-fit" :id="'perangkat_keras'" :value="'perangkat_keras_on'" label="Perangkat Keras" :name="'perangkat_keras_on'"/>
+                    <x-form.checklist x-model="perangkat_keras" class="!w-fit" :id="'perangkat_keras'" :value="'perangkat_keras_on'" label="Perangkat Keras" :name="'perangkat_keras_on'"/>
                     <x-form.textarea
                         placeholder="Tulis Deskripsi"
                         id="isian_perangkat_keras"
+                        x-model="isian_perangkat_keras"
                         :maxChar="100"
                         rows="3"
                     />
@@ -166,23 +178,40 @@
                 <x-typography variant="body-medium-regular">Tim pengajar bisa lebih dari satu</x-typography>
             </div>
         </x-container>
-        <x-form.input-container class="w-[200px]">
+        <x-form.input-container class="w-[200px]" labelClass="self-start">
             <x-slot name="label">Tim Pengajaran</x-slot>
+
             <x-slot name="input">
-                <x-form.dropdown
-                    variant="gray"
-                    buttonId="dropdownTimPengajaranButton"
-                    dropdownId="dropdownTimPengajaranList"
-                    label="-Tim Pengajar-"
-                    :dropdownItem="$timPengajarList"
-                    buttonStyleClass="text-sm min-w-[670px] h-[40px]"
-                    optionStyleClass="min-w-[250px]"
-                    :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
-                    :isIconCanRotate="true"
-                />
-                <x-button.primary :icon="asset('assets/icon-perwalian-white-20.svg')">Tambah Pengajar</x-button.primary>
+                <div class="flex gap-2"> {{-- row utama: label + dropdown stack --}}
+                    
+                    {{-- Dropdown stack --}}
+                    <div class="flex flex-col gap-2">
+                        <template x-for="(pengajar, index) in pengajarList" :key="index">
+                            <x-form.dropdown
+                                variant="gray"
+                                label="-Tim Pengajar-"
+                                :dropdownItem="$timPengajarList"
+                                buttonStyleClass="text-sm min-w-[670px] h-[40px]"
+                                optionStyleClass="min-w-[250px]"
+                                :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                                :isIconCanRotate="true"
+                                x-model="pengajarList[index].value"
+                            />
+                        </template>
+                    </div>
+
+                    {{-- Button tambah pengajar tetap sejajar dropdown pertama --}}
+                    <div class="self-start"> 
+                        <x-button.primary 
+                            x-on:click="addPengajar()" 
+                            :icon="asset('assets/icon-perwalian-white-20.svg')">
+                            Tambah Pengajar
+                        </x-button.primary>
+                    </div>
+                </div>
             </x-slot>
         </x-form.input-container>
+
         <x-form.input-container class="w-[200px]">
             <x-slot name="label">Mata Kuliah Syarat</x-slot>
             <x-slot name="input">
@@ -196,12 +225,13 @@
                     optionStyleClass="min-w-[250px]"
                     :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
                     :isIconCanRotate="true"
+                    x-model="mata_kuliah_syarat"
                 />
             </x-slot>
         </x-form.input-container>
         <div class="flex mt-5 justify-end gap-2">
-            <x-button.secondary>Batal</x-button.secondary>
-            <x-button.primary x-data x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
+            <x-button.secondary x-bind:disabled="isDisabled">Batal</x-button.secondary>
+            <x-button.primary  x-bind:disabled="isDisabled" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
         </div>
     </div>
 

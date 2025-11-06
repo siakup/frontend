@@ -5,10 +5,11 @@
     'label' => '', // opsional
     'value' => '', // default value
     'iconUrl' => null, // HTML string atau view component untuk icon
-    'placeholder' => '',
-    'inputClass' => '',
     'disabled' => false, // prop untuk disable,
     'showRemoveIcon' => false,
+    'placeholder' => '',
+    'inputClass' => '',
+
 ])
 
 {{-- <div {{ $attributes->class(['flex flex-col gap-1']) }}>
@@ -77,26 +78,27 @@
 {{-- Input default --}}
 @else
   <div
-    class="p-4 sm:p-5 border-[1px] border-[#D9D9D9] w-full box-border mx-auto !px-3 rounded-lg leading-5 h-10 flex items-center {{ $attributes->has('readonly') || $attributes->has('disabled') ? '!bg-[#F5F5F5]' : 'bg-white' }}"
+    class="p-4 sm:p-5 border-[1px] border-[#D9D9D9] text-sm w-full box-border mx-auto !px-3 rounded-lg leading-5 h-10 flex items-center {{ $disabled ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white' }} {{ $inputClass }}"
     x-data="{
       removeButton: false,
       showRemoveIcon: {{ $showRemoveIcon ? 'true' : 'false' }},
       value: @js($value ?? '')
     }"
-    x-modelable="value"
-    x-model="{{$attributes->get('x-model')}}"
+    @if($attributes->has('x-model'))
+      x-modelable="value"
+      x-model="{{ $attributes->get('x-model') }}"
+    @endif
   >
     <input 
       x-on:input="if('{{ $type }}' === 'number') { value = $event.target.value.replace(/[^0-9]/g, ''); } else { value = $event.target.value } removeButton = value !== '';" 
       placeholder="{{ $placeholder }}"  
       name="{{ $name }}" 
-      type="text" 
+      type="{{ $type }}" 
       id="{{ $name }}" 
-      {{-- class="!border-transparent focus:outline-none w-full read-only:bg-[#F5F5F5]"  --}}
+      class="!border-transparent focus:outline-none w-full read-only:bg-[#F5F5F5]" 
       x-model="value"
-      {{ $attributes->merge([
-      'class' => "!border-transparent focus:outline-none w-full read-only:bg-[#F5F5F5] $inputClass"
-    ])->except(['placeholder', 'name', 'type', 'id']) }}
+      {{ $disabled ? 'disabled' : '' }}
+      {{$attributes->except(['placeholder', 'name', 'type', 'id', 'class'])}}
     >
     @if($iconUrl)
       <img 

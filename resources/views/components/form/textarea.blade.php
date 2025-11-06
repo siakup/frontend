@@ -38,11 +38,18 @@
   }
 </script>
 
-<div class="flex flex-col gap-0.5 flex-1">
+<div 
+  class="flex flex-col gap-0.5 flex-1"
+>
   <textarea 
     cols="110" 
     rows="{{ $rows }}" 
-    class="w-full pe-10 box-border text-sm ps-3 pt-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 focus:outline-none focus:border-[1px] focus:border-[#D9D9D9]" style="display: auto;" name="deskripsi" value=""
+    {{ $attributes->merge([
+      'class' => 'w-full pe-10 box-border ps-3 text-sm pt-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 focus:outline-none focus:border-[1px] focus:border-[#D9D9D9]'
+    ]) }}
+    style="display: auto;" 
+    name="deskripsi" 
+    value=""
     placeholder="{{ $placeholder }}" 
     id="{{ $id }}"
     oninput="onInputTextArea(this, {{ $maxChar }});{{ $extraOnClick }}"

@@ -9,7 +9,7 @@
         </div>
     </x-slot>
     <x-container class="!rounded-lg">
-        <x-form.input-container class="w-[200px]">
+        <x-form.input-container labelClass="w-[200px]">
             <x-slot name="label">Kode</x-slot>
             <x-slot  name="input">
                 <x-form.input
@@ -19,7 +19,7 @@
                 />
             </x-slot>
         </x-form.input-container>
-        <x-form.input-container class="w-[200px]">
+        <x-form.input-container labelClass="w-[167px]">
             <x-slot name="label">Deskripsi</x-slot>
             <x-slot  name="input">
                 <x-form.textarea

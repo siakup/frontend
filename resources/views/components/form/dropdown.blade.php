@@ -1,7 +1,7 @@
 @props([
   'variant' => 'red',
-  'buttonId',
-  'dropdownId',
+  'buttonId' => '',
+  'dropdownId' => '',
   'label',
   'imgSrc',
   'dropdownItem',
@@ -64,12 +64,11 @@
     </button>
     <div 
       class="
-      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md hidden flex-col items-start max-h-[200px] overflow-y-auto z-10
+      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex-col items-start max-h-[200px] overflow-y-auto z-10
       {{ $variant === 'gray' ? 'min-w-[240px] right-0' : 'w-max right-0' }}
       {{ $optionStyleClass }}
     " 
       id="{{ $dropdownId }}" 
-      class="absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex flex-col items-start max-h-[200px] overflow-y-auto w-max z-10 {{ $optionStyleClass }}" 
       x-show.important="open"
       x-transition
       x-data="{

@@ -60,8 +60,8 @@
             <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-komponen-penilaian'})">Tambah Komponen</x-button.primary>
         </div>
         <div class="flex mt-5 justify-end gap-2">
-            <x-button.secondary>Batal</x-button.secondary>
-            <x-button.primary x-data x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
+            <x-button.secondary x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Batal</x-button.secondary>
+            <x-button.primary x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
         </div>
     </div>
     @include('rps.komponen-penilaian._modal-create')
@@ -72,13 +72,35 @@
         confirmText="Ya, Simpan Sekarang"
         cancelText="Cek Kembali"
     >
-        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+        <p>Apakah Anda yakin ingin menyimpan <b>komponen penilaian</b>?</p>
 
-        <div
-            x-on:confirmed.window="
-            console.log('Data disimpan');
-            window.location.href = '/'; 
-        ">
-        </div>
+        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+            <div class="flex gap-4">
+                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
+                <div class="flex flex-col text-left">
+                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
+                    <x-typography variant="body-small-regular">Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman berikutnya.</x-typography>
+                </div>
+            </div>
+        </x-container>
+    </x-modal.confirmation>
+
+    <x-modal.confirmation 
+        id="back-confirmation" 
+        title="Tunggu Sebentar" 
+        confirmText="Ya, Kembali"
+        cancelText="Tidak"
+        redirectTo="{{ route('rps.capaian-pembelajaran') }}"
+    >
+        <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+
+        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+            <div class="flex gap-4">
+                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
+                <div class="flex flex-col text-left">
+                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
+                    <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.</p>
+            </div>
+        </x-container>
     </x-modal.confirmation>
 @endsection

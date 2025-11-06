@@ -33,9 +33,9 @@
                         name="kode"
                         placeholder="Contoh: 30.00"
                         type="number"
-                        inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !w-[796px] !h-[40px] !focus:ring-0 !focus:outline-none"
+                        inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !w-[796px] !focus:ring-0 !focus:outline-none"
                     />
-                    <div class="-ml-[2px] border border-[1px] border-[#BFBFBF] rounded-r-lg bg-[#E8E8E8] w-[40px] h-[40px] flex items-center justify-center text-[#8C8C8C] text-sm">
+                    <div class="-ml-[2px] border border-[1px] border-[#BFBFBF] rounded-r-lg bg-[#E8E8E8] w-[40px] h-[42px] flex items-center justify-center text-[#8C8C8C] text-sm">
                         %
                     </div>
                 </div>
