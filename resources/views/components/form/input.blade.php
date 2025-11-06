@@ -84,7 +84,7 @@
       value: @js($value ?? '')
     }"
     x-modelable="value"
-    x-model="{{$attributes->get('x-model')}}"
+    x-model="{{$attributes->whereStartsWith('x-model')->first()}}"
   >
     <input 
       x-on:input="if('{{ $type }}' === 'number') { value = $event.target.value.replace(/[^0-9]/g, ''); } else { value = $event.target.value } removeButton = value !== '';" 

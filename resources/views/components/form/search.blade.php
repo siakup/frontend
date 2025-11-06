@@ -2,18 +2,45 @@
     'name' => 'search',
     'value' => '',
     'placeholder' => 'Cari...',
+    'storeName' => '',
+    'storeKey' => '',
+    'requestRoute' => '',
+    'responseKeyData' => '',
+    'responseKeyPaginationData' => 'pagination'
 ])
-
-<div class="relative w-full">
+<script src="{{ asset('js/component-helpers/api.js')}}"></script>
+<div 
+  class="relative w-full"
+  x-data="{
+    key: '',
+    storeName: @js($storeName),
+    storeKey: @js($storeKey),
+    responseKeyData: @js($responseKeyData),
+    responseKeyPaginationData: @js($responseKeyPaginationData),
+    async onSearch() {
+      await requestGetData(
+        '{{ $requestRoute }}', {
+          search: this.key,
+          display: 'false'
+        }, (response) => {
+          if ($store[this.storeName][this.storeKey]) {
+            $store[this.storeName][this.storeKey] = response.data[this.responseKeyData];
+            $store[this.storeName].paginationData = response.data[this.responseKeyPaginationData];
+          }
+      });
+    }
+  }"
+  x-effect="onSearch()"
+>
     <input
         type="text"
         name="{{ $name }}"
-        value="{{ old($name, $value) }}"
+        value=""
         placeholder="{{ $placeholder }}"
         {{ $attributes->merge([
-            'class' => 'w-full pl-10 pr-4 py-2 rounded-xl border border-gray-300
-                        focus:ring-2 focus:ring-blue-500 focus:outline-none'
+            'class' => 'w-full pl-10 pr-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none'
         ]) }}
+        x-model="key"
     >
 
     {{-- Icon search --}}
