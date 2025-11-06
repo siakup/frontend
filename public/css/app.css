@@ -318,10 +318,49 @@
     border-bottom: 0px;
 }
 
+.navigation-rps-card {
+    display: flex;
+    margin-left: 16px;
+    margin-top: 16px;
+    position: relative;
+    bottom: -1px;
+    z-index: 2;
+}
+
+.navigation-rps-card .item {
+    padding: 10px 15px;
+    text-decoration: none;
+    font-size: 16px;
+    color: #8c8c8c;
+}
+
+.navigation-rps-card .item.active {
+    background-color: #ffffff;
+    border-radius: 10px 10px 0px 0px;
+    color: #e64325;
+    font-weight: bold;
+    border: solid 1px #f39194;
+    border-bottom: 0px;
+}
+
 .academics-layout {
     display: flex;
     flex-direction: column;
     gap: 0px;
+}
+
+.cpl-head { 
+    height:80px;
+    border-radius: 14px 14px 0 0 ;
+    display:flex; justify-content:space-between; 
+    align-items:center; 
+    padding:10px 12px; 
+    font-weight:700;
+    width: 100%;
+}
+
+.grad-peach {  
+    background:linear-gradient(90deg,#FFECED,#FFFFFF); 
 }
 
 /* .item-title {

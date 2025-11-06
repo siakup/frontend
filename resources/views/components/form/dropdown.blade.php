@@ -1,6 +1,7 @@
 @props([
-  'buttonId',
-  'dropdownId',
+  'variant' => 'red',
+  'buttonId' => '',
+  'dropdownId' => '',
   'label',
   'imgSrc',
   'dropdownItem' => null,
@@ -15,6 +16,17 @@
   'inputFieldName' => '',
   'inputValue' => ''
 ])
+
+@php
+  $variants = [
+    'red' => 'flex items-center gap-2 py-2 px-4 bg-transparent border-[1px] border-[#E62129] cursor-pointer text-[#E62129] transition-all duration-200 rounded-lg hover:bg-[#FBE8E6]',
+    'gray' => 'flex items-center justify-between py-2 px-4 w-auto cursor-pointer border-[1px] border-[#BFBFBF] bg-[#FFFFFF] transition-all duration-200 rounded-lg'
+  ];
+
+  $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];
+  $selectedClass = "{$selectedVariant} {$buttonStyleClass} ";
+
+@endphp
 
 <div 
   class="relative {{ $dropdownContainerClass }}" 
@@ -37,7 +49,7 @@
   x-on:click.outside="setFalse"
 >
     <button 
-      class="flex items-center gap-2 py-2 px-4 bg-transparent border-[1px] border-[#E62129] cursor-pointer text-[#E62129] transition-all duration-200 rounded-lg hover:bg-[#FBE8E6] {{ $buttonStyleClass }}"
+      class="{{ $selectedClass }}"
       id="{{$buttonId}}"
       x-on:click="toggle"
       type="button"
@@ -51,8 +63,12 @@
         >
     </button>
     <div 
+      class="
+      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex-col items-start max-h-[200px] overflow-y-auto z-10
+      {{ $variant === 'gray' ? 'min-w-[240px] right-0' : 'w-max right-0' }}
+      {{ $optionStyleClass }}
+    " 
       id="{{ $dropdownId }}" 
-      class="absolute top-[100%] left-0 right-0 w-full bg-white border-[1px] border-[#DDD] rounded-md flex flex-col items-start max-h-[200px] overflow-y-auto z-10 {{ $optionStyleClass }}" 
       @if($attributes->has('x-data') && $attributes->has('x-init'))
         x-data="{{ $attributes->get('x-data') }}"
         x-init="{{ $attributes->get('x-init') }}"

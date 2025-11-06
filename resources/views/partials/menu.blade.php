@@ -148,6 +148,14 @@
             :routeQuery="'tutelage-group*'"
             :variant="'parent'"
           />
+          <x-menu.item
+            :label="'RPS (Rencana Pembelajaran Dosen)'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-kurikulum.svg')"
+            :routeName="'rps.index'"
+            :routeQuery="'rps*'"
+            :variant="'parent'"
+          />
           {{-- <x-menu.item
             :label="'Penelitian'"
             :haveIcon="true"

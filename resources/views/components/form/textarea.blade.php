@@ -1,6 +1,7 @@
 @props([
   'placeholder',
   'id',
+  'rows' => "10",
   'value' => null,
   'maxChar' => null
 ])
@@ -37,19 +38,26 @@
   }
 </script>
 
-<div class="flex flex-col gap-0.5 flex-1">
+<div 
+  class="flex flex-col gap-0.5 flex-1"
+>
   <textarea 
     cols="110" 
-    rows="10" 
-    class="w-full pe-10 box-border ps-3 pt-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 focus:outline-none focus:border-[1px] focus:border-[#D9D9D9]" style="display: auto;" name="deskripsi" value=""
+    rows="{{ $rows }}" 
+    {{ $attributes->merge([
+      'class' => 'w-full pe-10 box-border ps-3 text-sm pt-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 focus:outline-none focus:border-[1px] focus:border-[#D9D9D9]'
+    ]) }}
+    style="display: auto;" 
+    name="deskripsi" 
+    value=""
     placeholder="{{ $placeholder }}" 
     id="{{ $id }}"
     oninput="onInputTextArea(this, {{ $maxChar }});{{ $extraOnClick }}"
   >@if($value !== null){{ $value }}@endif</textarea>
   @if($maxChar !== null)
     <div class="flex flex-col gap-1">
-      <span class="text-xs text-[#8C8C8C]">Maksimal {{ $maxChar }} Karakter</span>
-      <span class="text-xs text-[#8C8C8C]" id="Length-display">{{ $value ? strlen($value) : 0 }}/{{ $maxChar }}</span>
+      {{-- <span class="text-xs text-[#8C8C8C]">Maksimal {{ $maxChar }} Karakter</span> --}}
+      <span class="text-xs text-[#8C8C8C] flex justify-end" id="Length-display">{{ $value ? strlen($value) : 0 }}/{{ $maxChar }}</span>
     </div>
   @endif
 </div>

@@ -35,8 +35,8 @@
   style="display: none; z-index: 9999" 
   x-show="show" 
   x-cloak
-  x-modelable="close"
-  x-model="{{$attributes->get('x-model')}}"
+  {{-- x-modelable="close"
+  x-model="{{$attributes->get('x-model')}}" --}}
 >
     <!-- Overlay -->
     <div x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
