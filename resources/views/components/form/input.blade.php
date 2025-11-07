@@ -78,7 +78,7 @@
 {{-- Input default --}}
 @else
   <div
-    class="p-4 sm:p-5 border-[1px] border-[#D9D9D9] text-sm w-full box-border mx-auto !px-3 rounded-lg leading-5 h-10 flex items-center {{ $disabled ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white' }} {{ $inputClass }}"
+    class="p-4 sm:p-5 border-[1px] border-[#D9D9D9] text-sm w-full box-border mx-auto !px-3 rounded-lg leading-5 h-10 flex items-center read-only:bg-[#F5F5F5] {{ $disabled ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white' }} {{ $inputClass }}"
     x-data="{
       removeButton: false,
       showRemoveIcon: {{ $showRemoveIcon ? 'true' : 'false' }},

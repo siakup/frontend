@@ -65,8 +65,8 @@
     </button>
     <div 
       class="
-      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex-col items-start max-h-[200px] overflow-y-auto z-10
-      {{ $variant === 'gray' ? 'min-w-[240px] right-0' : 'w-max right-0' }}
+      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex-col items-start max-h-[200px] overflow-y-auto z-10 w-full right-0 left-0
+      {{ $variant === 'gray' ? 'min-w-[240px]' : '' }}
       {{ $optionStyleClass }}
     " 
       id="{{ $dropdownId }}" 
