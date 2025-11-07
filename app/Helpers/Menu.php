@@ -352,6 +352,28 @@ class Menu
                     ],
                 ]
             ],
+            'rps' => [
+                'name' => 'RPS (Rencana Pembelajaran Dosen)',
+                'url' => '/rps',
+                'parent' => 'rps.index',
+                'isExpandable' => true,
+                'children' => [
+                  'buat-rps' => [
+                        'name' => 'Buat RPS (Rencana Pembelajaran Dosen)',
+                        'url' => '/rps/*',
+                        'parent' => 'rps',
+                        'isExpandable' => true,
+                        'children' => [
+                          'buat-cpl' => [
+                            'name' => 'Capaian Pembelajaran Lulusan',
+                            'url' => '/rps/capaian-pembelajaran/*',
+                            'parent' => 'rps.capaian-pembelajaran.index',
+                            'isExpandable' => false,
+                          ]
+                        ]
+                  ]
+                ]
+            ],
         ];
     }
 

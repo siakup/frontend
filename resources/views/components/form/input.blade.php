@@ -8,6 +8,7 @@
     'disabled' => false, // prop untuk disable,
     'showRemoveIcon' => false,
     'placeholder' => '',
+    'inputClass' => '',
 
 ])
 
@@ -77,7 +78,7 @@
 {{-- Input default --}}
 @else
   <div
-    class="p-4 sm:p-5 border-[1px] border-[#D9D9D9] w-full box-border mx-auto !px-3 rounded-lg leading-5 h-10 flex items-center {{ $attributes->has('readonly') || $attributes->has('disabled') ? '!bg-[#F5F5F5]' : 'bg-white' }}"
+    class="p-4 sm:p-5 border-[1px] border-[#D9D9D9] text-sm w-full box-border mx-auto !px-3 rounded-lg leading-5 h-10 flex items-center {{ $disabled ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white' }} {{ $inputClass }}"
     x-data="{
       removeButton: false,
       showRemoveIcon: {{ $showRemoveIcon ? 'true' : 'false' }},
@@ -90,10 +91,11 @@
       x-on:input="if('{{ $type }}' === 'number') { value = $event.target.value.replace(/[^0-9]/g, ''); } else { value = $event.target.value } removeButton = value !== '';" 
       placeholder="{{ $placeholder }}"  
       name="{{ $name }}" 
-      type="text" 
+      type="{{ $type }}" 
       id="{{ $name }}" 
       class="!border-transparent focus:outline-none w-full read-only:bg-[#F5F5F5]" 
       x-model="value"
+      {{ $disabled ? 'disabled' : '' }}
       {{$attributes->except(['placeholder', 'name', 'type', 'id', 'class'])}}
     >
     @if($iconUrl)

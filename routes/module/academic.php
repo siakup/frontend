@@ -8,7 +8,7 @@ use App\Http\Controllers\StudyController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\AutoAssignController;
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'academics'], function () {
         //periode akademik
         Route::get('/periode', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
@@ -201,4 +201,4 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/peserta-disetujui', [AutoAssignController::class, 'autoAssignApprovedMember'])->name('approved-member');
         Route::post('/submit', [AutoAssignController::class, 'autoAssignSubmit'])->name('submit');
     });
-});
+// });

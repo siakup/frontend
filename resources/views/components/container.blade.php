@@ -12,7 +12,7 @@
         'content' => 'p-4 sm:p-5 bg-white rounded-3xl border-[1px] border-[#D9D9D9]', // konten utama
         'wide' => 'max-w-screen-xl px-4', // layar penuh
         'narrow' => 'max-w-lg px-4', // konten kecil
-        'content-grey' => 'p-4 sm:p-5 bg-[#D9D9D9] rounded-3xl h-[68px]', // konten abu-abu
+        'content-grey' => 'p-4 sm:p-5 bg-[#D9D9D9] rounded-3xl min-h-[68px]', // konten abu-abu
     ];
 
     $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];

@@ -94,7 +94,7 @@
           }}"
         >
       @endif
-      <span>{{ $label }}</span>
+      <span class="text-left">{{ $label }}</span>
     </div>
     @if($slot->isNotEmpty())
       <img src="{{ asset('assets/base/icon-arrow-down.svg') }}" alt="Expand" class="w-4 h-4 ml-2 {{
