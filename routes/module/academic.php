@@ -143,7 +143,7 @@ Route::group(['middleware' => ['auth']], function () {
 
         // SHOW
         Route::get(
-            '/academics/schedule/prodi-schedule/{id}',
+            '/{id}',
             [\App\Http\Controllers\ScheduleController::class, 'show']
         )->name('academics.schedule.prodi-schedule.show');
 

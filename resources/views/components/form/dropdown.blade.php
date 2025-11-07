@@ -24,13 +24,14 @@
     label: '{{ $label }}',
     toggle() { this.open = ! this.open },
     setFalse() { this.open = false },
+    options: {{ json_encode($dropdownItem) }},
     onSelectedOption() {
       if({{ json_encode($isOptionRedirectableToURLQueryParameter) }}) {
         const params = new URLSearchParams(window.location.search);
         params.set({{ json_encode($queryParameter) }}, encodeURIComponent(this.value));
         window.location.href = {{ json_encode($url) }} + '?' + params.toString();
       }
-    }
+    },
   }"
   x-modelable="value"
   x-model="{{$attributes->whereStartsWith('x-model')->first()}}"
@@ -42,7 +43,7 @@
       x-on:click="toggle"
       type="button"
     >
-        <x-typography :variant="'body-small-regular'" x-text="label"></x-typography>
+        <x-typography :variant="'body-small-regular'" x-text="value == '' ? label : Object.entries(options).filter(([key, val]) => val == value).map(([key]) => key)[0]"></x-typography>
         <img 
           src="{{ $imgSrc }}" 
           alt="Filter" 
@@ -53,16 +54,11 @@
     <div 
       id="{{ $dropdownId }}" 
       class="absolute top-[100%] left-0 right-0 w-full bg-white border-[1px] border-[#DDD] rounded-md flex flex-col items-start max-h-[200px] overflow-y-auto z-10 {{ $optionStyleClass }}" 
-      @if($attributes->has('x-data') && $attributes->has('x-init'))
-        x-data="{{ $attributes->get('x-data') }}"
-        x-init="{{ $attributes->get('x-init') }}"
-      @else
-        x-data="{
-          options: {{ json_encode($dropdownItem) }},
-        }"
-      @endif
       x-show.important="open"
       x-transition
+      @if($attributes->has('x-init'))
+        x-init="{{ $attributes->get('x-init') }}"
+      @endif
     >
       <template x-if="options !== null">
         <template x-for="(option, key) in options">

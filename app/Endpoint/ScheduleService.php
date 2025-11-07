@@ -57,7 +57,7 @@ class ScheduleService
 
   public function getSchedule()
   {
-    return $this->lectureUrl() . '/';
+    return $this->lectureUrl();
   }
 
   public function createInstitutionSchedule()

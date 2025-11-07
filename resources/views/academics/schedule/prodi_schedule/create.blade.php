@@ -18,8 +18,31 @@
   import ProdiSchedule from "{{ asset('js/controllers/prodiSchedule.js') }}";
 
   document.addEventListener('alpine:init', () => {
+    Alpine.store('createPage', {
+      program_perkuliahan: '',
+      program_studi: '',
+      periode: '',
+      course: {
+        id_matakuliah: '',
+        nama_matakuliah_id: '',
+        sks: '',
+        id_jenis: '',
+        id_kurikulum: '',
+        kode_matakuliah: '',
+      },
+      nama_kelas: '',
+      nama_singkat: '',
+      kapasitas_peserta: '',
+      kelas_mbkm: false,
+      tanggal_mulai: '',
+      tanggal_akhir: '',
+      scheduleList: [],
+      lectureList: [],
+    });
+
     Alpine.data('createProdiScheduleComponents', ProdiSchedule.createProdiScheduleComponents);
     Alpine.data('lectureViewComponents', ProdiSchedule.lectureViewComponents);
+    Alpine.data('courseViewComponents', ProdiSchedule.courseViewComponents);
     Alpine.data('createScheduleListComponents', ProdiSchedule.createScheduleListComponents);
   });
 </script>
@@ -50,7 +73,7 @@
                   :isUsedForInputField="true"
                   :inputFieldName="'program_perkuliahan'"
                   onclick=""
-                  x-model="program_perkuliahan"
+                  x-model="$store.createPage.program_perkuliahan"
                 />
               </x-slot>
             </x-form.input-container>
@@ -69,7 +92,7 @@
                   :isUsedForInputField="true"
                   :inputFieldName="'program_studi'"
                   onclick=""
-                  x-model="program_studi"
+                  x-model="$store.createPage.program_studi"
                 />
               </x-slot>
             </x-form.input-container>
@@ -95,7 +118,7 @@
               :isUsedForInputField="true"
               :inputFieldName="'periode'"
               onclick=""
-              x-model="periode"
+              x-model="$store.createPage.periode"
             />
           </x-slot>
         </x-form.input-container>
@@ -107,19 +130,25 @@
                 :placeholder="'Pilih Mata Kuliah'" 
                 :name="'nama_matakuliah'" 
                 readonly
-                x-model="nama_matakuliah"
+                x-model="$store.createPage.course.nama_matakuliah_id"
               />
-              <input placeholder="Pilih Mata Kuliah" name="matakuliah[jenis_matakuliah]" type="hidden">
-              <input placeholder="Pilih Mata Kuliah" name="matakuliah[sks]" type="hidden">
-              <input placeholder="Pilih Mata Kuliah" name="matakuliah[kurikulum]" type="hidden">
-              <input placeholder="Pilih Mata Kuliah" name="matakuliah[kode_matakuliah]" type="hidden">
-              <input placeholder="Pilih Mata Kuliah" name="matakuliah[id]" type="hidden">
+              <input placeholder="Pilih Mata Kuliah" name="matakuliah[jenis_matakuliah]" x-model="$store.createPage.course.id_jenis" type="hidden">
+              <input placeholder="Pilih Mata Kuliah" name="matakuliah[sks]" x-model="$store.createPage.course.sks" type="hidden">
+              <input placeholder="Pilih Mata Kuliah" name="matakuliah[kurikulum]" x-model="$store.createPage.course.id_kurikulum" type="hidden">
+              <input placeholder="Pilih Mata Kuliah" name="matakuliah[kode_matakuliah]" x-model="$store.createPage.course.kode_matakuliah" type="hidden">
+              <input placeholder="Pilih Mata Kuliah" name="matakuliah[id]" x-model="$store.createPage.course.id_matakuliah" type="hidden">
             </x-slot>
           </x-form.input-container>
           <x-button.primary 
-            x-bind:disabled="program_perkuliahan == '' || program_studi == '' || periode == ''" 
+            x-bind:disabled="$store.createPage.program_perkuliahan == '' || $store.createPage.program_studi == '' || $store.createPage.periode == ''" 
             :icon="asset('assets/icon-mata-kuliah-white.svg')"
-            x-on:click="showModal('{{ route('academics.schedule.prodi-schedule.add-course', ['periode' => '__periode__']) }}'.replace('__periode__', periode), '#list-course', '#modalListCourse')"
+            x-on:click="showModal(
+              '{{ route('academics.schedule.prodi-schedule.add-course', ['periode' => '__periode__', 'program_perkuliahan' => '__program_perkuliahan__', 'program_studi' => '__program_studi__']) }}'
+                .replace('__periode__', $store.createPage.periode).replace('__program_perkuliahan__', $store.createPage.program_perkuliahan)
+                .replace('__program_studi__', $store.createPage.program_studi), 
+              '#list-course', 
+              '#modalListCourse'
+            )"
           >
             Pilih Mata Kuliah
           </x-button.primary>
@@ -132,7 +161,7 @@
               :iconUrl="asset('assets/icon-remove-text-input.svg')" 
               :showRemoveIcon="true" 
               :placeholder="'Masukan Nama Kelas. Contoh: Makroekonomi-EC2'"
-              x-model="nama_kelas"
+              x-model="$store.createPage.nama_kelas"
             />
           </x-slot>
         </x-form.input-container>
@@ -144,7 +173,7 @@
               :iconUrl="asset('assets/icon-remove-text-input.svg')" 
               :showRemoveIcon="true" 
               :placeholder="'Masukan Nama Singkat. Contoh: EC2'"
-              x-model="nama_singkat"
+              x-model="$store.createPage.nama_singkat"
             />
           </x-slot>
         </x-form.input-container>
@@ -158,7 +187,7 @@
                 :iconUrl="asset('assets/icon-remove-text-input.svg')" 
                 :showRemoveIcon="true" 
                 :placeholder="'Masukkan Kapasitas. Contoh: 50'"
-                x-model="kapasitas_peserta"
+                x-model="$store.createPage.kapasitas_peserta"
               />
             </x-slot>
           </x-form.input-container>
@@ -180,7 +209,7 @@
                 :isUsedForInputField="true"
                 :inputFieldName="'kelas_mbkm'"
                 onclick=""
-                x-model="kelas_mbkm"
+                x-model="$store.createPage.kelas_mbkm"
               />
             </x-slot>
           </x-form.input-container>
@@ -189,13 +218,13 @@
           <x-form.input-container class="min-w-[170px]" id="tanggal_mulai">
             <x-slot name="label">Tanggal Mulai</x-slot>
             <x-slot name="input">
-              <x-form.calendar id="tanggal-mulai" name="tanggal_mulai" x-model="tanggal_mulai" oninput="" />
+              <x-form.calendar id="tanggal-mulai" name="tanggal_mulai" x-model="$store.createPage.tanggal_mulai" oninput="" />
             </x-slot>
           </x-form.input-container>
           <x-form.input-container class="min-w-[170px]" id="tanggal_selesai">
             <x-slot name="label">Tanggal Berakhir</x-slot>
             <x-slot name="input">
-              <x-form.calendar id="tanggal-akhir" name="tanggal_akhir" x-model="tanggal_akhir" oninput="" />
+              <x-form.calendar id="tanggal-akhir" name="tanggal_akhir" x-model="$store.createPage.tanggal_akhir" oninput="" />
             </x-slot>
           </x-form.input-container>
         </x-container>
@@ -215,7 +244,7 @@
               </x-table-row>
           </x-table-head>
           <x-table-body>
-            <template x-for="(lecture, index) in lectureList">
+            <template x-for="(lecture, index) in $store.createPage.lectureList">
               <x-table-row>
                 <x-table-cell x-text="lecture.nama"></x-table-cell>
                 <x-table-cell>
@@ -235,7 +264,7 @@
                     :isUsedForInputField="true"
                     :inputFieldName="'lectureList[][status_pengajar]'"
                     onclick=""
-                    x-model="lectureList[index].status_pengajar"
+                    x-model="$store.createPage.lectureList[index].status_pengajar"
                   />
                 </x-table-cell>
                 <x-table-cell>
@@ -268,7 +297,7 @@
               </x-table-row>
           </x-table-head>
           <x-table-body>
-            <template x-for="(schedule, index) in scheduleList">
+            <template x-for="(schedule, index) in $store.createPage.scheduleList">
               <x-table-row>
                 <x-table-cell x-text="schedule.hari"></x-table-cell>
                 <x-table-cell x-text="schedule.jam_mulai"></x-table-cell>
