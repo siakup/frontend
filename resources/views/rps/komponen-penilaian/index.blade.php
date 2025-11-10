@@ -6,17 +6,10 @@
     <div class="page-header pl-5">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>
     </div>
-    <x-button.base
-        :icon="asset('assets/icon-less-than-red-20.svg')"
-        :href="route('rps.index')"
-        class="ml-5 mb-3 text-[#E62129]"
-    >
-        Buat RPS (Rencana Pembelajaran Dosen)
-    </x-button.base>
-
+    <x-button.back class="ml-2 mb-4" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
     @include('rps.layout.navbar-rps')
 
-    <div x-data class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
+    <div x-data="{ komponenList: @js($komponenList ?? []) }" class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
         <x-typography variant="body-medium-bold">Komponen Penilaian</x-typography>
 
         @if($komponenList)
@@ -60,8 +53,8 @@
             <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-komponen-penilaian'})">Tambah Komponen</x-button.primary>
         </div>
         <div class="flex mt-5 justify-end gap-2">
-            <x-button.secondary x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Kembali</x-button.secondary>
-            <x-button.primary x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
+            <x-button.secondary x-bind:disabled="!komponenList || komponenList.length === 0" x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Kembali</x-button.secondary>
+            <x-button.primary x-bind:disabled="!komponenList || komponenList.length === 0" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
         </div>
     </div>
     @include('rps.komponen-penilaian._modal-create')

@@ -369,7 +369,14 @@ class Menu
                             'url' => '/rps/capaian-pembelajaran/*',
                             'parent' => 'rps.capaian-pembelajaran.index',
                             'isExpandable' => false,
+                          ],
+                          'buat-rencana-perkuliahan' => [
+                            'name' => 'Tambah Rencana Perkuliahan',
+                            'url' => '/rps/rencana-perkuliahan/*',
+                            'parent' => 'rps.rencana-perkuliahan.index',
+                            'isExpandable' => false,
                           ]
+                    
                         ]
                   ]
                 ]

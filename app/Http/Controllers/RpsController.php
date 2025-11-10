@@ -265,6 +265,108 @@ class RpsController extends Controller
         return view('rps.komponen-penilaian.index', get_defined_vars());
     }
 
+    public function showRencanaPerkuliahan() {
+
+        $rencanaPerkuliahan = [
+            [
+                'minggu' => 1,
+                'cpmk' => 'CPMK-1',
+                'sub_cpmk' => '1. Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi steam power plant, seperti: menentukan laju alir steam, daya pompa/turbin, laju alir panas pada boiler/condenser).
+                                2. Mahasiswa dapat menentukan efisiensi termal steam power plant yang beroperasi dengan siklus Rankine (ideal maupun aktual)',
+                'rencana' => '1. Rencana Pembelajaran Studi
+                            2. Steam power plant
+                                a. Review siklus Carnot
+                                b. Siklus Rankine ideal (ideal vapor power cycle)
+                                c. Siklus Rankine aktual',
+                'waktu_kuliah' => 100,
+                'waktu_diskusi_latihan' => 50,
+                'waktu_praktikum' => 180,
+                'waktu_mandiri' => 180,
+                'metode_penilaian' => 'Tugas 1, UTS'
+            ],
+            [
+                'minggu' => 2,
+                'cpmk' => 'CPMK-1',
+                'sub_cpmk' => '1. Mahasiswa memahami perbedaan antara siklus refrigerasi dan power plant
+                                2. Mahasiswa memahami siklus vapor compression ideal',
+                'rencana' => '2. Steam power plant
+                                a. Meningkatkan efisiensi siklus Ranking
+                                2. Refrigerasi
+                                a. Refrigerasi ideal: Carnot refrigerator & vapor compression cycle',
+                'waktu_kuliah' => 100,
+                'waktu_diskusi_latihan' => 50,
+                'waktu_praktikum' => 180,
+                'waktu_mandiri' => 180,
+                'metode_penilaian' => 'Tugas 2, UTS'
+            ],
+            [
+                'minggu' => 3,
+                'cpmk' => 'CPMK-1',
+                'sub_cpmk' => 'Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi performa refrigerasi vapor compression cycle, seperti: menentukan laju alir refrigeran, daya kompresor, laju alir panas pada condenser/evaporator)',
+                'rencana' => 'Refrigerasi
+                                3.2. Efektivitas refrigerator (coefficient of performance)
+                                3.3. Actual vapor compression cycle
+                                3.4. Pemilihan refrigeran (pengayaan)',
+                'waktu_kuliah' => 100,
+                'waktu_diskusi_latihan' => 50,
+                'waktu_praktikum' => 180,
+                'waktu_mandiri' => 180,
+                'metode_penilaian' => 'Tugas 3, UTS'
+            ],
+            [
+                'minggu' => 4,
+                'cpmk' => 'CPMK-1',
+                'sub_cpmk' => 'Mahasiswa memahami prinsip pencairan gas berdasarkan diagram fasa',
+                'rencana' => 'Liquefaction
+                                4.1. Pengertian & diagram fasa
+                                4.2. Linde liquefaction',
+                'waktu_kuliah' => 100,
+                'waktu_diskusi_latihan' => 50,
+                'waktu_praktikum' => 180,
+                'waktu_mandiri' => 180,
+                'metode_penilaian' => 'UTS'
+            ]
+        ];
+
+        $rencanaPerkuliahan = collect($rencanaPerkuliahan)->map(function ($item) {
+            $item['total_waktu'] = collect($item)->only([
+                'waktu_kuliah', 'waktu_diskusi_latihan', 'waktu_praktikum', 'waktu_mandiri'
+            ])->sum();
+            return $item;
+        });
+
+        // Hitung total per jenis waktu
+        $waktuTotal = [
+            'kuliah' => $rencanaPerkuliahan->sum('waktu_kuliah'),
+            'diskusi_latihan' => $rencanaPerkuliahan->sum('waktu_diskusi_latihan'),
+            'praktikum' => $rencanaPerkuliahan->sum('waktu_praktikum'),
+            'mandiri' => $rencanaPerkuliahan->sum('waktu_mandiri'),
+        ];
+
+        // Hitung total keseluruhan
+        $waktuTotal['total'] = array_sum($waktuTotal);
+        $waktuStandarNasional = 140;
+        $sks = 3;
+
+        return view('rps.rencana-perkuliahan.index', get_defined_vars());
+    }
+
+    public function buatRencanaPerkuliahan() {
+        $cpmkList = [
+            [
+                'label' => 'CPMK-1', 'value' => 1
+            ],
+            [
+                'label' => 'CPMK-2', 'value' => 2
+            ],
+            [
+                'label' => 'CPMK-3', 'value' => 3
+            ],
+        ];
+
+        return view('rps.rencana-perkuliahan.create', get_defined_vars());
+    }
+
     /**
      * Show the form for creating a new resource.
      */
