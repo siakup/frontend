@@ -367,6 +367,27 @@ class RpsController extends Controller
         return view('rps.rencana-perkuliahan.create', get_defined_vars());
     }
 
+    public function showMatriksPenilaianKognitif() {
+        $matriksList = [
+            [
+                'nilai' => '40 < X <= 60',
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman konsep dan teknik pemecahan masalah, tapi masih ada gap dalam penjelasan atau alasannya.'
+            ],
+            [
+                'nilai' => '60 < X <= 80',
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman sebagian dari konsep atau mahasiswa telah memulai jawaban dengan benar namun salah pada bagian penyelesaian masalah.'
+            ],
+            [
+                'nilai' => '80 < X <= 100',
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman tentang bagaimana memecahkan masalah dan hasilnya benar. Kesalahan kecil dapat diterima sepanjang tidak mengindikasıkan kesalahpahaman konsep.'
+            ],            
+
+        ];
+
+
+        return view('rps.matriks-penilaian-kognitif.index', get_defined_vars());
+    }
+
     /**
      * Show the form for creating a new resource.
      */

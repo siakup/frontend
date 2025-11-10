@@ -12,6 +12,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/komponen-penilaian', [RpsController::class, 'buatKomponenPenilaian'])->name('rps.komponen-penilaian');
         Route::get('/rencana-perkuliahan', [RpsController::class, 'showRencanaPerkuliahan'])->name('rps.rencana-perkuliahan');
         Route::get('/rencana-perkuliahan/create', [RpsController::class, 'buatRencanaPerkuliahan'])->name('rps.rencana-perkuliahan.create');
-        Route::get('/matriks-penilaian-kognitif', [RpsController::class, 'showRencanaPerkuliahan'])->name('rps.matriks-penilaian-kognitif');
+        Route::get('/matriks-penilaian-kognitif', [RpsController::class, 'showMatriksPenilaianKognitif'])->name('rps.matriks-penilaian-kognitif');
+        Route::get('/evaluasi-pemetaan-capaian', [RpsController::class, 'showRencanaPerkuliahan'])->name('rps.evaluasi-pemetaan-capaian');
     });
 });

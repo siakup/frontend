@@ -5,6 +5,8 @@
     'confirmText' => 'Confirm',
     'cancelText' => 'Cancel',
     'iconUrl' => asset('assets/icon-caution.svg'),
+    'redirectCancel' => null,
+    'redirectSave' => null,
 ])
 
 <x-modal.container :id="$id" :show="$show">
@@ -28,10 +30,10 @@
     <!-- Footer -->
     <x-slot name="footer">
         <div class="flex justify-center gap-4 w-full">
-            <x-button.secondary :label="$cancelText" class="w-full" x-on:click.stop="
+            <x-button.secondary :label="$cancelText" class="w-full" :href="$redirectCancel" x-on:click.stop="
                 $dispatch('close-modal', { id: '{{ $id }}' })
             " />
-            <x-button.primary :label="$confirmText" class="w-full"
+            <x-button.primary :label="$confirmText" class="w-full" :href="$redirectSave"
                 x-on:click.stop="
                     $dispatch('close-modal', { id: '{{ $id }}' });
                     $dispatch('on-submit');
