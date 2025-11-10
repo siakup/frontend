@@ -17,7 +17,7 @@
     storeKey: @js($storeKey),
     responseKeyData: @js($responseKeyData),
     responseKeyPaginationData: @js($responseKeyPaginationData),
-    async onSearch() {
+    {{-- async onSearch() {
       await requestGetData(
         '{{ $requestRoute }}', {
           search: this.key,
@@ -28,9 +28,11 @@
             $store[this.storeName].paginationData = response.data[this.responseKeyPaginationData];
           }
       });
-    }
+    } --}}
   }"
-  x-effect="onSearch()"
+  x-modelable="key"
+  x-model="{{$attributes->whereStartsWith('x-model')->first()}}"
+  {{-- x-effect="onSearch()" --}}
 >
     <input
         type="text"

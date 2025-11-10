@@ -76,7 +76,6 @@
               :isUsedForInputField="true"
               :inputFieldName="'ruangan'"
               x-model="ruangan"
-              x-data="{ options: null }"
               x-init="$watch('listRuangan', value => options = {...listRuangan})"
             />
           </x-slot>

@@ -6,8 +6,42 @@
   <div class="breadcrumb-item">Beranda</div>
 @endsection
 
+<script type="module">
+  import ProdiSchedule from "{{ asset('js/controllers/prodiSchedule.js') }}";
+  document.addEventListener('alpine:init', () => {
+    Alpine.store('listPage', { 
+      schedules: @js($dataSchedule),
+      paginationData: @js($pagination),
+      program_perkuliahan: @js($program_perkuliahan),
+      program_studi: @js($program_studi),
+      sort: @js($sort),
+      search: @js($search)
+    });
+
+    // Alpine.store('viewPage', {
+    //   program_perkuliahan: '',
+    //   program_studi: '',
+    //   periode: '',
+    //   course: {},
+    //   nama_kelas: '',
+    //   nama_singkat: '',
+    //   kapasitas_peserta: null,
+    //   kelas_mbkm: '',
+    //   tanggal_mulai: '',
+    //   tanggal_akhir: '',
+    //   scheduleList: [],
+    //   lectureList: [],
+    // });
+
+    Alpine.data('listProdiScheduleComponents', ProdiSchedule.listProdiScheduleComponents);
+    // Alpine.data('viewProdiScheduleComponents', ProdiSchedule.viewProdiScheduleComponents);
+  });
+</script>
+
 @section('content')
-  <x-container :variant="'content-wrapper'">
+  <x-container
+    x-data="listProdiScheduleComponents({{ json_encode(route('academics.schedule.prodi-schedule.index')) }})"
+    :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Jadwal Kuliah</x-typography>
     <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
       <x-tab 
@@ -32,31 +66,12 @@
             <x-form.dropdown 
               :buttonId="'sortButtonCampus'"
               :dropdownId="'sortCampus'"
-              :label="
-                count(
-                  array_filter(
-                    $programPerkuliahanList, 
-                    function($item) use($params) { 
-                      return $item['name'] == urldecode($params['program_perkuliahan']); 
-                    }
-                  )
-                ) > 0 
-                  ? array_values(
-                      array_filter(
-                        $programPerkuliahanList, 
-                        function($item) use($params) { 
-                          return $item['name'] == urldecode($params['program_perkuliahan']); 
-                        }
-                      )
-                    )[0]['name']
-                  : 'Semua'
-              "
+              :label="'Pilih Program Perkuliahan'"
               :imgSrc="asset('assets/active/icon-arrow-down.svg')"
               :isIconCanRotate="true"
-              :isOptionRedirectableToURLQueryParameter="true"
-              :queryParameter="'program_perkuliahan'"
-              :url="route('academics.schedule.prodi-schedule.index')"
-              :dropdownItem="array_column($programPerkuliahanList, 'name', 'name')"
+              :isUsedForInputField="true"
+              :dropdownItem="array_merge(['Pilih Program Perkuliahan' => ''], array_column($programPerkuliahanList, 'name', 'name'))"
+              x-model="$store.listPage.program_perkuliahan"
             />
           </x-container>
           <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
@@ -64,74 +79,35 @@
             <x-form.dropdown 
               :buttonId="'sortButtonStudyProgram'"
               :dropdownId="'sortStudyProgram'"
-              :label="
-              count(
-                array_filter(
-                  $programStudiList, 
-                  function($item) use($params) { 
-                    return $item->id === $params['program_studi']; 
-                  }
-                )
-              ) > 0 
-                ? array_values(
-                  array_filter(
-                    $programStudiList, 
-                    function($item) use($params) { 
-                      return $item->id === $params['program_studi']; 
-                    }
-                  )
-                )[0]->nama 
-                : 'Semua'
-              "
+              :label="'Pilih Program Studi'"
               :imgSrc="asset('assets/active/icon-arrow-down.svg')"
               :isIconCanRotate="true"
-              :isOptionRedirectableToURLQueryParameter="true"
-              :queryParameter="'program_studi'"
-              :url="route('academics.schedule.prodi-schedule.index')"
-              :dropdownItem="array_column($programStudiList, 'id', 'nama')"
+              :isUsedForInputField="true"
+              :dropdownItem="array_merge(['Pilih Program Studi' => ''],array_column($programStudiList, 'id', 'nama'))"
+              x-model="$store.listPage.program_studi"
             />
           </x-container>
         </x-container>
         <x-container :class="'flex flex-row items-center justify-between'">
-          <div class="w-64">
-            {{-- ToDo: Sesuaikan route backend dan fieldkey nya --}}
-            <x-form.search-v2 
-              class="w-64"
-              :routes="route('users.index')"
-              :fieldKey="'username'"
-              :placeholder="'Username / Nama / Status'"
-              :search="$params['q']"
+          <div class="w-1/3">
+            <x-form.search
+              :value="$search"
+              :placeholder="'Ketik Mata Kuliah/Kode Mata Kuliah/Nama Kelas'"
+              :storeName="'listPage'"
+              :storeKey="'schedules'"
+              :requestRoute="route('academics.schedule.prodi-schedule.index')"
+              :responseKeyData="'schedules'"
+              x-model="$store.listPage.search"
             />
           </div>
           <x-form.dropdown 
               :buttonId="'sortFilterButton'"
               :dropdownId="'sortFilterDropdown'"
-              :label="
-                empty($_GET) 
-                  ? 'Urutkan' 
-                  : ($params['sort'] === 'active' 
-                      ? 'Aktif' 
-                      : ($params['sort'] === 'inactive' 
-                          ? 'Tidak Aktif' 
-                          : ($params['sort'] === 'nama,asc' 
-                              ? 'A-Z' 
-                              : ($params['sort'] === 'nama,desc' 
-                                  ? 'Z-A' 
-                                  : ($params['sort'] === 'created_at,desc' 
-                                      ? 'Terbaru' 
-                                      : 'Terlama'
-                                    )
-                                ) 
-                            )
-                        )
-                    )
-              "
+              :label="'Urutkan'"
               :imgSrc="asset('assets/icon-filter.svg')"
               :isIconCanRotate="false"
-              :isOptionRedirectableToURLQueryParameter="true"
-              :queryParameter="'sort'"
-              :url="route('academics.schedule.prodi-schedule.index')"
               :dropdownItem="[
+                'Urutkan' => '',
                 'Semester 1' => 'semester_1',
                 'Semester 2' => 'semester_2',
                 'Semester 3' => 'semester_3',
@@ -145,6 +121,7 @@
                 'Terbaru' => 'created_at,desc',
                 'Terlama' => 'created_at,asc'
               ]"
+              x-model="$store.listPage.sort"
             />
         </x-container>
         <x-table>
@@ -159,31 +136,31 @@
                 <x-table-header>Aksi</x-table-header>
             </x-table-row>
           </x-table-head>
-          <tbody x-data="{ schedules: {{ json_encode($dataSchedule) }} }">
-            <template x-if="schedules.length > 0">  
-              <template x-for="schedule in schedules" :key="schedule.id_kelas">
+          <tbody>
+            <template x-if="$store.listPage.schedules.length > 0">  
+              <template x-for="schedule in $store.listPage.schedules">
                 <x-table-row>
-                    <x-table-cell x-text="schedule.id_periode_akademik ?? '-'"></x-table-cell>
+                    <x-table-cell x-text="schedule.periode ?? '-'"></x-table-cell>
                     <x-table-cell>
-                      <x-typography :variant="'body-small-regular'" x-text="schedule.id_mata_kuliah ?? '-'"></x-typography>
+                      <x-typography :variant="'body-small-regular'" x-text="schedule.nama_matakuliah.nama_matakuliah_id ?? '-'"></x-typography>
                     </x-table-cell>
-                    <x-table-cell x-text="schedule.nama_jadwal ?? '-'"></x-table-cell>
-                    <x-table-cell x-text="schedule.jumlah_peserta ?? '-'"></x-table-cell>
+                    <x-table-cell x-text="schedule.nama_kelas ?? '-'"></x-table-cell>
+                    <x-table-cell x-text="schedule.kapasitas_peserta ?? '-'"></x-table-cell>
                     <x-table-cell>
                       <ul class="list-disc text-left w-max">
-                        <template x-for="jadwal in schedule.classSchedule ?? []" :key="jadwal.id ?? Math.random()">
+                        <template x-for="jadwal in schedule.scheduleList ?? []" :key="jadwal.id ?? Math.random()">
                           <li class="text-left">
                               <x-typography :variant="'body-small-regular'" x-text="jadwal.hari ?? '-'"></x-typography>,
-                              <x-typography :variant="'body-small-regular'" x-text="jadwal.mulai_kelas + '-' + jadwal.selesai_kelas"></x-typography>
+                              <x-typography :variant="'body-small-regular'" x-text="jadwal.jam_mulai + '-' + jadwal.jam_akhir"></x-typography>
                               <br>
-                              <x-typography :variant="'body-small-regular'" class="text-gray-500" x-text="'['+(jadwal.nama_ruangan ?? '-')+']'"></x-typography>
+                              <x-typography :variant="'body-small-bold'" x-text="'['+(jadwal.ruangan ?? '-')+']'"></x-typography>
                           </li>
                         </template>
                       </ul>
                     </x-table-cell>
                     <x-table-cell>
-                      <template x-for="(pengajar, index) in schedule.nama_pengajar ?? []" :key="index">
-                        <x-typography :variant="'body-small-regular'" x-text="pengajar + (index !== (schedule.nama_pengajar.length - 1) ? ', ' : '')"></x-typography>
+                      <template x-for="(pengajar, index) in schedule.lectureList ?? []" :key="index">
+                        <x-typography :variant="'body-small-regular'" x-text="pengajar.nama + (index !== (schedule.lectureList.length - 1) ? ', ' : '')"></x-typography>
                       </template>
                     </x-table-cell>
                     <x-table-cell>
@@ -191,7 +168,7 @@
                           <x-button.base
                             :icon="asset('assets/icon-search.svg')"
                             class="scale-75"
-                            x-on:click="openViewModal('{{ route('academics.schedule.prodi-schedule.show', ['id', ':id']) }}'.replace(':id', schedule.id_kelas))" 
+                            x-on:click="idSelectedProdiSchedule = schedule.id_kelas; showView()" 
                           >
                             Lihat
                           </x-button.base>
@@ -205,7 +182,7 @@
                           <x-button.base
                             :icon="asset('assets/icon-delete-gray-600.svg')"
                             class="text-[#8C8C8C] scale-75"
-                            x-on:click=""
+                            x-on:click="idSelectedProdiSchedule = schedule.id_kelas; modalConfirmationDeleteOpen = true;"
                           >
                             Hapus
                           </x-button.base>
@@ -214,7 +191,7 @@
                 </x-table-row>
               </template>
             </template>
-            <template x-if="schedules.length == 0">
+            <template x-if="$store.listPage.schedules.length == 0">
               @include('academics.periode.error-filter')
             </template>
           </tbody>
@@ -232,16 +209,41 @@
       </x-container>
     </x-container>
 
-    @include('partials.pagination', [
-        'currentPage' => 1,
-        'lastPage' => 10,
-        'limit' => 3,
-        'routes' => '',
-    ])
-    {{-- @if (isset($data['data']))
-    @endif --}}
+    <x-pagination 
+      x-data="{ 
+        pagination: null,
+        requestData: null
+      }"
+      x-effect="(() => {
+        pagination = $store.listPage.paginationData;
+        requestData = {
+          program_perkuliahan: $store.listPage.program_perkuliahan,
+          program_studi: $store.listPage.program_studi,
+          sort: $store.listPage.sort,
+          search: $store.listPage.search
+        }
+      })"
+      :storeName="'listPage'"
+      :storeKey="'schedules'"
+      :requestRoute="route('academics.schedule.prodi-schedule.index')"
+      :responseKeyData="'schedules'"
+      :defaultPerPageOptions="[5, 10, 15, 20, 25]"
+    />
+
+    <x-modal.container-pure-js x-bind:class="{'hidden': !modalConfirmationDeleteOpen, 'flex': modalConfirmationDeleteOpen}">
+      <x-slot name="header">
+        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
+          <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
+        </x-container>
+      </x-slot>
+      <x-slot name="body">Apakah Anda yakin ingin menghapus jadwal program studi ini?</x-slot>
+      <x-slot name="footer">
+        <x-button.secondary x-on:click="idSelectedProdiSchedule = null; modalConfirmationDeleteOpen = false">Batal</x-button.secondary>
+        <x-button.primary x-on:click="">Hapus</x-button.primary>
+      </x-slot>
+    </x-modal.container-pure-js>
   </x-container>
 
-  @include('academics.schedule.prodi_schedule.delete')
-  @include('academics.schedule.prodi_schedule.view')
+  <div id="view-prodi-schedule"></div>
 @endsection
