@@ -101,35 +101,43 @@
             :variant="'parent'"
           />
           <x-menu.item
-            :label="'Jadwal Kuliah'"
+            :label="'Persiapan Perkuliahan'"
             :haveIcon="true"
-            :icon="asset('assets/base/icon-calendar.svg')"
-            :routeName="'academics.schedule.prodi-schedule.index'"
-            :routeQuery="'persiapan-perkuliahan/jadwal-kuliah*'"
+            :icon="asset('assets/base/icon-admin.svg')"
+            :routeName="''"
             :variant="'parent'"
-          />
-          <x-menu.item
-            :label="'Auto Assign Peserta Kelas'"
-            :haveIcon="true"
-            :icon="asset('assets/base/icon-prodi.svg')"
-            :routeName="'academics.auto-assign.index'"
-            :routeQuery="'persiapan-perkuliahan/auto-assign*'"
-            :variant="'parent'"
-          />
+            :routeChild="['lecture-preparation*']"
+          >
+            <x-menu.container 
+              :variant="'submenu'"
+              :routeChild="['lecture-preparation*']"
+            >
+              <x-menu.item
+                :label="'Jadwal Kuliah'"
+                :routeName="'academics.schedule.prodi-schedule.index'"
+                :routeQuery="'lecture-preparation/schedule*'"
+                :variant="'child'"
+              />
+              <x-menu.item
+                :label="'Auto Assign Peserta Kelas'"
+                :routeName="'academics.auto-assign.index'"
+                :routeQuery="'lecture-preparation/auto-assign*'"
+                :variant="'child'"
+              />
+              <x-menu.item
+                :label="'Pemetaan CPL'"
+                :routeName="'cpl-mapping.index'"
+                :routeQuery="'lecture-preparation/cpl-mapping*'"
+                :variant="'child'"
+              />
+            </x-menu.container>
+          </x-menu.item>
           <x-menu.item
             :label="'Mata Kuliah'"
             :haveIcon="true"
             :icon="asset('assets/base/icon-mata-kuliah.svg')"
             :routeName="'study.index'"
-            :routeQuery="'mata-kuliah*'"
-            :variant="'parent'"
-          />
-          <x-menu.item
-            :label="'Pemetaan CPL'"
-            :haveIcon="true"
-            :icon="asset('assets/base/icon-prodi.svg')"
-            :routeName="'cpl-mapping.index'"
-            :routeQuery="'pemetaan-cpl*'"
+            :routeQuery="'courses*'"
             :variant="'parent'"
           />
           {{-- <x-menu.item

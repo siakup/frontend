@@ -18,23 +18,7 @@
       search: @js($search)
     });
 
-    // Alpine.store('viewPage', {
-    //   program_perkuliahan: '',
-    //   program_studi: '',
-    //   periode: '',
-    //   course: {},
-    //   nama_kelas: '',
-    //   nama_singkat: '',
-    //   kapasitas_peserta: null,
-    //   kelas_mbkm: '',
-    //   tanggal_mulai: '',
-    //   tanggal_akhir: '',
-    //   scheduleList: [],
-    //   lectureList: [],
-    // });
-
     Alpine.data('listProdiScheduleComponents', ProdiSchedule.listProdiScheduleComponents);
-    // Alpine.data('viewProdiScheduleComponents', ProdiSchedule.viewProdiScheduleComponents);
   });
 </script>
 
@@ -58,7 +42,7 @@
           ],
         ]"
       />
-      <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1pborder-t-[#F39194] relative !z-0'">
+      <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
         <x-typography variant="body-medium-bold">Jadwal Kuliah Program Studi</x-typography>
         <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-3'">
           <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
@@ -208,28 +192,28 @@
         </x-container>
       </x-container>
     </x-container>
-
-    <x-pagination 
-      x-data="{ 
-        pagination: null,
-        requestData: null
-      }"
-      x-effect="(() => {
-        pagination = $store.listPage.paginationData;
-        requestData = {
-          program_perkuliahan: $store.listPage.program_perkuliahan,
-          program_studi: $store.listPage.program_studi,
-          sort: $store.listPage.sort,
-          search: $store.listPage.search
-        }
-      })"
-      :storeName="'listPage'"
-      :storeKey="'schedules'"
-      :requestRoute="route('academics.schedule.prodi-schedule.index')"
-      :responseKeyData="'schedules'"
-      :defaultPerPageOptions="[5, 10, 15, 20, 25]"
-    />
-
+    <template x-if="$store.listPage.schedules != 0">
+      <x-pagination 
+        x-data="{ 
+          pagination: null,
+          requestData: null
+        }"
+        x-effect="(() => {
+          pagination = $store.listPage.paginationData;
+          requestData = {
+            program_perkuliahan: $store.listPage.program_perkuliahan,
+            program_studi: $store.listPage.program_studi,
+            sort: $store.listPage.sort,
+            search: $store.listPage.search
+          }
+        })"
+        :storeName="'listPage'"
+        :storeKey="'schedules'"
+        :requestRoute="route('academics.schedule.prodi-schedule.index')"
+        :responseKeyData="'schedules'"
+        :defaultPerPageOptions="[5, 10, 15, 20, 25]"
+      />
+    </template>
     <x-modal.container-pure-js x-bind:class="{'hidden': !modalConfirmationDeleteOpen, 'flex': modalConfirmationDeleteOpen}">
       <x-slot name="header">
         <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">

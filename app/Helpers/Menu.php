@@ -133,31 +133,31 @@ class Menu
             ],
             'study' => [
               'name' => 'Mata Kuliah',
-              'url' => '/mata-kuliah',
+              'url' => '/courses',
               'parent' => 'study.index',
               'isExpandable' => true,
               'children' => [
                 'upload-study' => [
                   'name' => 'Upload Mata Kuliah',
-                  'url' => '/mata-kuliah/upload',
+                  'url' => '/courses/upload',
                   'parent' => 'study.upload',
                   'isExpandable' => false
                 ],
                 'study-add' => [
                   'name' => 'Tambah Mata Kuliah',
-                  'url' => '/mata-kuliah/tambah',
+                  'url' => '/courses/create',
                   'parent' => 'study.create',
                   'isExpandable' => false
                 ],
                 'study-view' => [
                   'name' => 'Lihat Mata Kuliah',
-                  'url' => '/mata-kuliah/view/*',
+                  'url' => '/courses/view/*',
                   'parent' => 'study.view',
                   'isExpandable' => false
                 ],
                 'study-edit' => [
                   'name' => 'Edit Mata Kuliah',
-                  'url' => '/mata-kuliah/edit/*',
+                  'url' => '/courses/edit/*',
                   'parent' => 'study.edit',
                   'isExpandable' => false
                 ],
@@ -263,55 +263,77 @@ class Menu
                 ],
               ]
             ],
-            'college-schedule' => [
-                'name' => 'Jadwal Kuliah',
-                'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi',
-                'parent' => 'academics.schedule.index',
-                'isExpandable' => true,
-                'children' => [
-                    'create-prodi-schedule' => [
-                        'name' => 'Tambah Jadwal Kuliah Program Studi',
-                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/tambah',
-                        'parent' => 'academics.schedule.prodi-schedule.create',
-                        'isExpandable' => false,
-                    ],
-                    'edit-prodi-schedule' => [
-                        'name' => 'Ubah Jadwal Kuliah Program Studi',
-                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/ubah/*',
-                        'parent' => 'academics.schedule.prodi-schedule.edit',
-                        'isExpandable' => false,
-                    ],
-                    'import-fet1' => [
-                        'name' => 'Impor File FET',
-                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/import/fet1',
-                        'parent' => 'academics.schedule.prodi-schedule.import-fet1',
-                        'isExpandable' => false,
-                    ],
-                    'delete-prodi-schedule' => [
-                        'name' => 'Hapus Jadwal Kuliah Program Studi',
-                        'url' => '/persiapan-perkuliahan/jadwal-kuliah/program-studi/*',
-                        'parent' => 'academics.schedule.prodi-schedule.delete',
-                        'isExpandable' => false,
-                    ],
-                ]
-            ],
-            'parent-institution-schedule' => [
-              'name' => 'Jadwal Kuliah',
-              'url' => 'persiapan-perkuliahan/jadwal-kuliah/parent-institution',
-              'parent' => 'academics.schedule.parent-institution-schedule.index',
-              'isExpandable' => false,
+            'lecture-preparation' => [
+              'name' => 'Persiapan Perkuliahan',
+              'url' => '/lecture-preparation',
+              'parent' => '',
+              'isExpandable' => true,
               'children' => [
-                'create-parent-institution' => [
-                  'name' => 'Tambah Jadwal Kuliah Institusi Parent',
-                  'url' => '/persiapan-perkuliahan/jadwal-kuliah/parent-institution/create',
-                  'parent' => 'academics.schedule.parent-institution-schedule.create',
-                  'isExpandable' => false
+                'college-schedule' => [
+                    'name' => 'Jadwal Kuliah',
+                    'url' => '/lecture-preparation/schedule/program-studi',
+                    'parent' => 'academics.schedule.index',
+                    'isExpandable' => true,
+                    'children' => [
+                        'create-prodi-schedule' => [
+                            'name' => 'Tambah Jadwal Kuliah Program Studi',
+                            'url' => '/lecture-preparation/schedule/program-studi/create',
+                            'parent' => 'academics.schedule.prodi-schedule.create',
+                            'isExpandable' => false,
+                        ],
+                        'edit-prodi-schedule' => [
+                            'name' => 'Ubah Jadwal Kuliah Program Studi',
+                            'url' => '/lecture-preparation/schedule/program-studi/edit/*',
+                            'parent' => 'academics.schedule.prodi-schedule.edit',
+                            'isExpandable' => false,
+                        ],
+                        'import-fet1' => [
+                            'name' => 'Impor File FET',
+                            'url' => '/lecture-preparation/schedule/program-studi/upload/page',
+                            'parent' => 'academics.schedule.prodi-schedule.import-fet1',
+                            'isExpandable' => false,
+                            'children' => [
+                              'preview' => [
+                                  'name' => 'Preview File FET',
+                                  'url' => '/lecture-preparation/schedule/program-studi/upload/preview',
+                                  'parent' => 'academics.schedule.prodi-schedule.import-fet1',
+                                  'isExpandable' => false,
+                              ],
+                            ]
+                        ],
+                    ]
                 ],
-                'edit-parent-institution' => [
-                  'name' => 'Ubah Jadwal Kuliah Institusi Parent',
-                  'url' => '/persiapan-perkuliahan/jadwal-kuliah/parent-institution/edit/*',
-                  'parent' => 'academics.schedule.parent-institution-schedule.edit',
-                  'isExpandable' => false
+                'parent-institution-schedule' => [
+                  'name' => 'Jadwal Kuliah',
+                  'url' => 'lecture-preparation/schedule/parent-institution',
+                  'parent' => 'academics.schedule.parent-institution-schedule.index',
+                  'isExpandable' => false,
+                  'children' => [
+                    'create-parent-institution' => [
+                      'name' => 'Tambah Jadwal Kuliah Institusi Parent',
+                      'url' => '/lecture-preparation/schedule/parent-institution/create',
+                      'parent' => 'academics.schedule.parent-institution-schedule.create',
+                      'isExpandable' => false
+                    ],
+                    'edit-parent-institution' => [
+                      'name' => 'Ubah Jadwal Kuliah Institusi Parent',
+                      'url' => '/lecture-preparation/schedule/parent-institution/edit/*',
+                      'parent' => 'academics.schedule.parent-institution-schedule.edit',
+                      'isExpandable' => false
+                    ],
+                    'upload-parent-institution' => [
+                      'name' => 'Upload Jadwal Kuliah Institusi Parent',
+                      'url' => '/lecture-preparation/schedule/parent-institution/upload/page',
+                      'parent' => 'academics.schedule.parent-institution-schedule.upload',
+                      'isExpandable' => true,
+                      ],
+                      'preview-upload-parent-institution' => [
+                        'name' => 'Upload Jadwal Kuliah Institusi Parent',
+                        'url' => '/lecture-preparation/schedule/parent-institution/upload/preview',
+                        'parent' => 'academics.schedule.parent-institution-schedule.upload-result',
+                        'isExpandable' => false
+                      ],
+                  ]
                 ]
               ]
             ],
