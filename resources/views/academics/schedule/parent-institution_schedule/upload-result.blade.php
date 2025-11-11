@@ -1,174 +1,96 @@
 @extends('layouts.main')
 
-@section('title', 'Jadwal Kuliah Institusi Parent')
+@section('title', 'Preview Upload File FET')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item active">Jadwal Kuliah Institusi Parent</div>
+    <div class="breadcrumb-item active">Preview Upload File FET</div>
 @endsection
 
-@section('css')
-    <style>
-        .right {
-            gap: 20px;
-        }
-        .title {
-            display: flex;
-            align-items: center;
-            justify-items: center;
-        }
-        .modal-custom-content {
-            max-width: 600px;
-            z-index: 2;
-            align-items: center;
-            gap: 16px;
-            align-self: auto;
-            top: 100px;
-        }
-        @media (max-width: 900px) {
-            .modal-custom-content {
-                width: 90vw;
-                min-width: unset;
-                max-width: 98vw;
-                padding: 16px;
-            }
-            .modal-custom-title {
-                font-size: 18px;
-            }
-        }
-        .modal-custom {
-            align-items: start;
-        }
-        .modal-custom-footer.create-form {
-            align-self: end;
-            gap: 20px;
-            padding: 20px;
-        }
-        .modal-custom-footer {
-            gap: 20px;
-            padding: 20px;
-        }
-        .modal-custom-body {
-            align-self: start;
-        }
-    </style>
-@endsection
+<script type="module">
+  import ParentInstitutionSchedule from "{{ asset('js/controllers/parentInstitutionSchedule.js') }}";
 
-@section('javascript')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.addEventListener('click', function(e) {
-                const addBtn = e.target.closest('.btn-add-course');
-                if (addBtn) {
-                    document.getElementById('modalKonfirmasiUpload').style.display = 'flex';
-                }
-            });
-
-            document.getElementById('btnCekKembaliSebelumHapus').addEventListener('click', function() {
-                document.getElementById('modalKonfirmasiUpload').removeAttribute('data-id');
-                document.getElementById('modalKonfirmasiUpload').style.display = 'none';
-            });
-        });
-    </script>
-@endsection
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('previewUploadParentInstitutionScheduleComponents', ParentInstitutionSchedule.previewUploadParentInstitutionScheduleComponents);
+  });
+</script>
 
 @section('content')
-    <div class="px-5 flex flex-col gap-5">
-        <x-typography variant="heading-h6" bold>
-            Unggah Jadwal Kuliah Institusi Parent
-        </x-typography>
-
-        <div class="flex flex-col gap-5">
-            <x-container variant="content" class="flex flex-col gap-5">
-                <x-typography variant="heading-h6" class="mb-2 title">
-                    Impor Jadwal Kuliah Institusi Parent
-                    <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="caution-icon"
-                         style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
-                </x-typography>
-
-                <div class="flex flex-col gap-5">
-                    <x-table>
-                        <x-table-head>
-                            <x-table-row>
-                                <x-table-header>Activity Id</x-table-header>
-                                <x-table-header>Day</x-table-header>
-                                <x-table-header>Hour</x-table-header>
-                                <x-table-header>Students Sets</x-table-header>
-                                <x-table-header>Subject</x-table-header>
-                                <x-table-header>Teachers</x-table-header>
-                                <x-table-header>Activity Tags</x-table-header>
-                                <x-table-header>Room</x-table-header>
-                                <x-table-header>Comments</x-table-header>
-                            </x-table-row>
-                        </x-table-head>
-
-                        <x-table-body>
-                            @forelse ($file_data as $row)
-                                <x-table-row>
-                                    <x-table-cell>{{ $row['activity_id'] ?? '' }}</x-table-cell>
-                                    <x-table-cell>{{ $row['day'] ?? '' }}</x-table-cell>
-                                    <x-table-cell>{{ $row['hour'] ?? '' }}</x-table-cell>
-                                    <x-table-cell>{{ $row['students_sets'] ?? '' }}</x-table-cell>
-                                    <x-table-cell>{{ $row['subject'] ?? '' }}</x-table-cell>
-                                    <x-table-cell>{{ $row['teachers'] ?? '' }}</x-table-cell>
-                                    <x-table-cell>{{ $row['activity_tags'] ?? '' }}</x-table-cell>
-                                    <x-table-cell>{{ $row['room'] ?? '' }}</x-table-cell>
-                                    <x-table-cell>{{ $row['comments'] ?? '' }}</x-table-cell>
-                                </x-table-row>
-                            @empty
-                                <x-table-row>
-                                    <x-table-cell colspan="9" class="text-center py-4">
-                                        Tidak ada data ditemukan
-                                    </x-table-cell>
-                                </x-table-row>
-                            @endforelse
-                        </x-table-body>
-                    </x-table>
-                </div>
-            </x-container>
-
-            <x-container variant="content" class="flex flex-col gap-5">
-                <div class="right">
-                    <x-button.secondary label="Batal" />
-                    <x-button.primary label="Simpan" />
-                </div>
-            </x-container>
-
-            <form action="{{ route('academics.schedule.parent-institution-schedule.upload-store') }}" method="POST">
-                @csrf
-                @foreach ($file_data as $index => $row)
-                    <input type="hidden" name="data[{{ $index }}][Activity Id]" value="{{ $row['Activity Id'] ?? '' }}">
-                    <input type="hidden" name="data[{{ $index }}][Day]" value="{{ $row['Day'] ?? '' }}">
-                    <input type="hidden" name="data[{{ $index }}][Hour]" value="{{ $row['Hour'] ?? '' }}">
-                    <input type="hidden" name="data[{{ $index }}][Students Sets]" value="{{ $row['Students Sets'] ?? '' }}">
-                    <input type="hidden" name="data[{{ $index }}][Subject]" value="{{ $row['Subject'] ?? '' }}">
-                    <input type="hidden" name="data[{{ $index }}][Teachers]" value="{{ $row['Teachers'] ?? '' }}">
-                    <input type="hidden" name="data[{{ $index }}][Activity Tags]" value="{{ $row['Activity Tags'] ?? '' }}">
-                    <input type="hidden" name="data[{{ $index }}][Room]" value="{{ $row['Room'] ?? '' }}">
-                    <input type="hidden" name="data[{{ $index }}][Comments]" value="{{ $row['Comments'] ?? '' }}">
-                @endforeach
-
-                <div id="modalKonfirmasiUpload" class="modal-custom" style="display:none;">
-                    <div class="modal-custom-backdrop"></div>
-                    <div class="modal-custom-content">
-                        <div class="modal-custom-header">
-                            <span class="text-lg-bd">Tunggu Sebentar</span>
-                            <img src="{{ asset('assets/icon-caution.svg') }}" alt="icon-caution">
-                        </div>
-                        <div class="modal-custom-body">
-                            <div>Apakah anda yakin untuk menyimpan data jadwal dari (csv/xlsx)?</div>
-                        </div>
-                        <div class="modal-custom-footer">
-                            <button type="button" class="button button-clean" id="btnCekKembaliSebelumHapus">
-                                Cek Kembali
-                            </button>
-                            <button type="submit" class="button button-outline" id="btnSimpan">
-                                Ya, Simpan
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-        </div>
-    </div>
+<div 
+  x-data="previewUploadParentInstitutionScheduleComponents(@js($datas))"
+>
+  <x-container :variant="'content-wrapper'">
+    <x-typography :variant="'body-large-semibold'">Unggah FET</x-typography>
+    <x-button.back :href="route('academics.schedule.parent-institution-schedule.upload')">Unggah FET</x-button.back>
+    <x-container :class="'flex flex-col items-stretch relative !z-0 gap-4'">
+      <x-container :variant="'content-wrapper'" class="flex flex-row items-center !px-0">
+        <x-typography :variant="'body-medium-bold'">Impor File FET</x-typography>
+        <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-auto h-[1.5em]'" />
+      </x-container>
+      <x-table>
+        <x-table-head>
+          <x-table-row>
+            <x-table-header class="cursor-pointer">Semester</x-table-header>
+            <x-table-header class="cursor-pointer">Mata Kuliah</x-table-header>
+            <x-table-header class="cursor-pointer">Nama Kelas</x-table-header>
+            <x-table-header class="cursor-pointer">Kapasitas</x-table-header>
+            <x-table-header class="cursor-pointer">Jadwal</x-table-header>
+            <x-table-header class="cursor-pointer">Pengajar</x-table-header>
+          </x-table-row>
+        </x-table-head>
+        <x-table-body>
+          <template x-if="datas && datas.length > 0">
+            <template x-for="data in datas">
+              <x-table-row>
+                <x-table-cell x-text="data.semester"></x-table-cell>
+                <x-table-cell x-text="data.nama_matakuliah_id"></x-table-cell>
+                <x-table-cell x-text="data.nama_kelas"></x-table-cell>
+                <x-table-cell x-text="data.kapasitas"></x-table-cell>
+                <x-table-cell>
+                  <ul class="list-disc px-10">
+                    <template x-if="data.scheduleList && data.scheduleList.length > 0">
+                      <template x-for="schedule in data.scheduleList">
+                        <li x-text="schedule.hari+' ('+schedule.jam_mulai+' - '+schedule.jam_selesai+') [Ruang '+schedule.ruangan+']'"></li>
+                      </template>
+                    </template>
+                  </ul>
+                </x-table-cell>
+                <x-table-cell>
+                  <ul class="list-disc px-10">
+                    <template x-if="data.lectureList && data.lectureList.length > 0">
+                      <template x-for="lecture in data.lectureList">
+                        <li x-text="lecture"></li>
+                      </template>
+                    </template>
+                  </ul>
+                </x-table-cell>
+              </x-table-row>
+            </template>
+          </template>
+          <template x-if="!datas || datas.length == 0">
+            <x-table-row>
+              <x-table-cell colspan="3" class="text-center py-4">Tidak ada data ditemukan</x-table-cell>
+            </x-table-row>
+          </template>
+        </x-table-body>
+      </x-table>
+    </x-container>
+    <x-container class="flex gap-5 justify-end m-5">
+      <x-button.secondary x-on:click="isModalConfirmationOpen = true">Batal</x-button.secondary>
+      <x-button.primary x-on:click="sendValidateData">Simpan FET</x-button.primary>
+    </x-container>
+  </x-container>
+  <x-modal.container-pure-js x-bind:class="{'hidden': !isModalConfirmationOpen, 'flex': isModalConfirmationOpen}">
+    <x-slot name="header">
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Batalkan impor data (csv/xlsx)?</x-typography>
+        <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
+      </x-container>
+    </x-slot>
+    <x-slot name="body">Apakah Anda yakin ingin membatalkan unggah jadwal perkuliahan ini?</x-slot>
+    <x-slot name="footer">
+      <x-button.secondary x-on:click="isModalConfirmationOpen = false">Kembali</x-button.secondary>
+      <x-button.primary :href="route('academics.schedule.parent-institution-schedule.upload')">Batalkan</x-button.primary>
+    </x-slot>
+  </x-modal.container-pure-js>
+</div>
 @endsection

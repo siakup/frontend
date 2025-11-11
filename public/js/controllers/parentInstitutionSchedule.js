@@ -1,5 +1,5 @@
-class ProdiSchedule {
-  listProdiScheduleComponents(route) {
+class ParentInstitutionSchedule {
+  listParentInstitutionScheduleComponents(route) {
     return {
       route: route,
       modalConfirmationDeleteOpen: false,
@@ -28,8 +28,8 @@ class ProdiSchedule {
       showView() {
         requestDisplayTemplate(
           this.route+'/'+this.idSelectedProdiSchedule,
-          "#view-prodi-schedule",
-          "#modalViewProdi"
+          "#view-parent-institution-schedule",
+          "#modalViewParentInstitution"
         );
       },
 
@@ -40,7 +40,7 @@ class ProdiSchedule {
             display: 'false'
           }, (response) => {
             if (this.$store.listPage) {
-              this.$store.listPage.schedules = response.data.schedules;
+              this.$store.listPage.data = Object.values(response.data.schedules);
               this.$store.listPage.paginationData = response.data.pagination;
             }
         });
@@ -48,7 +48,7 @@ class ProdiSchedule {
     }
   }
 
-  previewUploadProdiScheduleComponents(datas) {
+  previewUploadParentInstitutionScheduleComponents(datas) {
     return {
       isModalConfirmationOpen: false,
       datas: datas,
@@ -58,7 +58,7 @@ class ProdiSchedule {
     }
   }
 
-  uploadProdiScheduleComponents() {
+  uploadParentInstitutionScheduleComponents() {
     return {
       init() {},
       checkValidity() {
@@ -68,7 +68,7 @@ class ProdiSchedule {
     }
   }
 
-  createProdiScheduleComponents() {
+  createParentInstitutionSchedule() {
     return {
       createConfirmationModalOpen: false,
 
@@ -111,7 +111,7 @@ class ProdiSchedule {
     }
   }
 
-  editProdiScheduleComponents() {
+  editParentInstitutionScheduleComponents() {
     return {
       editConfirmationModalOpen: false,
 
@@ -147,7 +147,7 @@ class ProdiSchedule {
         this.$store.editPage.lectureList = newLecture
       },
 
-      onUpdateProdiSchedule() {
+      onUpdateParentInstitutionSchedule() {
         console.log(this.$store.editPage.program_perkuliahan, this.$store.editPage.program_studi, this.$store.editPage.periode, this.$store.editPage.course, this.$store.editPage.nama_kelas, this.$store.editPage.nama_singkat, this.$store.editPage.kapasitas_peserta, this.$store.editPage.kelas_mbkm, this.$store.editPage.tanggal_mulai, this.$store.editPage.tanggal_akhir, this.$store.editPage.scheduleList, this.$store.editPage.lectureList);
       }
   
@@ -278,4 +278,4 @@ class ProdiSchedule {
   }
 }
 
-export default new ProdiSchedule();
+export default new ParentInstitutionSchedule();

@@ -1,6 +1,6 @@
 @props([
   'cancelConfirmationModalButtonId',
-  'name' => 'file'
+  'name' => 'file',
 ])
 
 <script type="module">
