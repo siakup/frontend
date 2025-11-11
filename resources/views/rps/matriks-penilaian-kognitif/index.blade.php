@@ -98,7 +98,7 @@
         title="Tunggu Sebentar" 
         confirmText="Ya, Kembali"
         cancelText="Tidak"
-       :redirectSave="route('rps.rencana-perkuliahan')"
+       :redirectConfirm="route('rps.rencana-perkuliahan')"
     >
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
 

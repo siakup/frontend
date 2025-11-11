@@ -191,8 +191,9 @@
     <x-modal.confirmation 
         id="batal-confirmation" 
         title="Tunggu Sebentar" 
-        confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali"
+        confirmText="Ya, Batalkan"
+        cancelText="Tidak, Kembali"
+        :redirectConfirm="route('rps.rencana-perkuliahan')"
     >
         <p>Apakah Anda yakin ingin membatalkan pembuatan rencana perkuliahan ini?</p>
     </x-modal.confirmation>

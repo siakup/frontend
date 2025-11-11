@@ -67,12 +67,14 @@
             <x-button.primary x-data x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
         </div>
     </div>
+    @include('rps.capaian-pembelajaran._modal-create-cpmk')
 
     <x-modal.confirmation 
         id="save-confirmation" 
         title="Tunggu Sebentar" 
         confirmText="Ya, Simpan Sekarang"
         cancelText="Cek Kembali"
+        :redirectConfirm="route('rps.komponen-penilaian')"
     >
         <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
 
@@ -83,5 +85,5 @@
         ">
         </div>
     </x-modal.confirmation>
-    @include('rps.capaian-pembelajaran._modal-create-cpmk')
+    
 @endsection

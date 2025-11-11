@@ -111,6 +111,7 @@
         title="Tunggu Sebentar" 
         confirmText="Ya, Simpan Sekarang"
         cancelText="Cek Kembali"
+        :redirectConfirm="route('rps.matriks-penilaian-kognitif')"
     >
         <p>Apakah Anda yakin ingin menyimpan <b>rencana perkuliahan</b>?</p>
 
@@ -130,7 +131,7 @@
         title="Tunggu Sebentar" 
         confirmText="Ya, Kembali"
         cancelText="Tidak"
-        redirectTo="{{ route('rps.capaian-pembelajaran') }}"
+        :redirectConfirm="route('rps.komponen-penilaian')"
     >
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
 
