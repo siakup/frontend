@@ -1,5 +1,5 @@
 @props([
-  'placeholder',
+  'placeholder' => 'Tulis Deskripsi',
   'id',
   'rows' => "10",
   'value' => null,
