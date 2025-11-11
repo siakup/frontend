@@ -31,13 +31,11 @@
                         <x-table-cell>{{ $komponen['bobot'] }}</x-table-cell>
                         @foreach($komponen['cpmk'] as $nilaiCpmk)
                             <x-table-cell>
-                                @if($nilaiCpmk === true)
-                                    <div class="flex justify-center items-center">
-                                        @if ($nilaiCpmk)
-                                            <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px]" />
-                                        @endif
-                                    </div>
-                                @endif
+                                <div class="flex justify-center items-center">
+                                    @if ($nilaiCpmk)
+                                        <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px]" />
+                                    @endif
+                                </div>
                             </x-table-cell>
                         @endforeach
                     </x-table-row>

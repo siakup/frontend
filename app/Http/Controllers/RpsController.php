@@ -388,6 +388,117 @@ class RpsController extends Controller
         return view('rps.matriks-penilaian-kognitif.index', get_defined_vars());
     }
 
+    public function showEvaluasiPemetaan() {
+        // $evaluasiList = [
+        //     [
+        //         'cpmk' => 'CPMK-1',
+        //         'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
+        //         'pemetaan' => [
+        //             [
+        //                 'cpl' => 'CPL-G',
+        //                 'rincian' => [
+        //                     'tugas' => true,
+        //                     'uts' => true,
+        //                     'uas' => true,
+        //                 ]
+        //             ],
+        //             [
+        //                 'cpl' => 'CPL-H',
+        //                 'rincian' => [
+        //                     'tugas' => true,
+        //                     'uts' => false,
+        //                     'uas' => true,
+        //                 ]
+        //             ],
+        //         ]
+        //     ],
+        //     [
+        //         'cpmk' => 'CPMK-2',
+        //         'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
+        //         'pemetaan' => [
+        //             [
+        //                 'cpl' => 'CPL-G',
+        //                 'rincian' => [
+        //                     'tugas' => true,
+        //                     'uts' => true,
+        //                     'uas' => true,
+        //                 ]
+        //             ],
+        //             [
+        //                 'cpl' => 'CPL-H',
+        //                 'rincian' => [
+        //                     'tugas' => true,
+        //                     'uts' => false,
+        //                     'uas' => true,
+        //                 ]
+        //             ],
+        //         ]
+        //     ],
+        //     [
+        //         'cpmk' => 'CPMK-3',
+        //         'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
+        //         'pemetaan' => [
+        //             [
+        //                 'cpl' => 'CPL-G',
+        //                 'rincian' => [
+        //                     'tugas' => true,
+        //                     'uts' => false,
+        //                     'uas' => true,
+        //                 ]
+        //             ],
+        //             [
+        //                 'cpl' => 'CPL-H',
+        //                 'rincian' => [
+        //                     'tugas' => true,
+        //                     'uts' => true,
+        //                     'uas' => true,
+        //                 ]
+        //             ],
+        //         ]      
+        //     ]
+        // ];
+
+        $evaluasiList = [
+            'CPL-G' => [
+
+            ]
+        ];
+
+        // $isPemetaan = !empty($evaluasiList[0]['pemetaan']);
+        // $groupedEvaluasi = [];
+
+        // if($isPemetaan) {
+        //     foreach ($evaluasiList as $eval) {
+        //         foreach ($eval['pemetaan'] as $map) {
+        //             $cpl = $map['cpl'];
+        //             $groupedEvaluasi[$cpl][] = [
+        //                 'cpmk' => $eval['cpmk'],
+        //                 'deskripsi' => $eval['deskripsi'],
+        //                 'rincian' => $map['rincian'],
+        //             ];
+        //         }
+        //     }
+
+        // }
+        
+
+        // $dataCpl = array_keys($groupedEvaluasi);
+
+        
+
+        $cplList = [
+            'CPL-H' => '1',
+            'CPL-I' => '2',
+            'CPL-J' => '3',
+            'CPL-K' => '4',
+            'CPL-L' => '5',
+            'CPL-M' => '6',
+        ];
+
+
+        return view('rps.evaluasi-pemetaan-capaian.index', get_defined_vars());
+    }
+
     /**
      * Show the form for creating a new resource.
      */
