@@ -108,7 +108,7 @@
               :isIconCanRotate="true"
               :dropdownItem="array_column(array_map(function ($item) {
                 $data = [
-                  'nama' => $item->tahun . ' - ' . $item->semester,
+                  'nama' => $item->tahun . ' - ' . ($item->semester == 1 ? 'Ganjil' : ($item->semester == 2 ? 'Genap' : 'Pendek')),
                   'id' => $item->id
                 ];
                 return $data;

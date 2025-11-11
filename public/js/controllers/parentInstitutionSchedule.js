@@ -35,7 +35,7 @@ class ParentInstitutionSchedule {
 
       async fetchData(sortData) {
         await requestGetData(
-          route, {
+          this.route, {
             ...sortData,
             display: 'false'
           }, (response) => {

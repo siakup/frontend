@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
-
+use App\Endpoint\PeriodAcademicService;
 use App\Traits\ApiResponse;
 
 use Exception;
@@ -18,47 +18,76 @@ class TutelageController extends Controller
 
     public function listStudent(Request $request)
     {
-        // ambil current page & per page
-        $currentPage = $request->input('page', 1);
-        $perPage     = $request->input('per_page', 10);
-
-        // dummy total data
-        $totalItems = 53; // misal 53 mahasiswa
-        $totalPages = (int) ceil($totalItems / $perPage);
-
-        // generate dummy mahasiswa sesuai page
+      try {
+        $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+        $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+        if(!isset($responsePeriode->data) || !isset($responsePeriode->success) || !$responsePeriode->success || count($responsePeriode->data) == 0) {
+          throw new \Exception(json_encode([
+            'message'=>'Periode belum ditambahkan!',
+            'system_error' => $responsePeriode,
+          ]));
+        }
+        $periodeList = $responsePeriode->data ?? [];
+        
+        $limit = $request->input('limit', 10);
+        $page = $request->input('page', 1);
+        $periode = $request->input('periode', $periodeList[0]->id);
+        $year = $request->input('year', date('Y'));
+        $filter = $request->input('filter', '');
+        $sort = $request->input('sort', '');
+  
         $students = [];
-        $startId = ($currentPage - 1) * $perPage + 1;
-        $endId   = min($startId + $perPage - 1, $totalItems);
+  
+        for ($i = 1; $i <= 10; $i++) {
+          $students[] = [
+            'id' => $i,
+            'nim' => "10522{$i}",
+            'angkatan' => 2021,
+            'nama' => "Mahasiswa {$i}",
+            'ips' => rand(200, 400) / 100,
+            'ipk' => rand(200, 400) / 100,
+            'sks_lulus' => rand(60, 130),
+            'sks_lulus_wajib' => rand(40, 120),
+            'nilai_pem' => rand(100, 1500),
+            'status_akademik' => $i % 2 === 0 ? 'Aktif' : 'Kosong',
+            'status_persetujuan' => [
+              ['nilai' => rand(1, 4), 'status' => 'disetujui'],
+              ['nilai' => rand(0, 2), 'status' => 'ditolak'],
+              ['nilai' => rand(0, 2), 'status' => 'menunggu'],
+              ['nilai' => rand(0, 2), 'status' => 'hapus'],
+            ],
+          ];
+        }
+  
+        $pagination = [
+          'currentPage' => 1,
+          'from' => 1,
+          'last' => 1,
+          'limit' => $limit
+        ];
+  
+        if ($request->ajax()) {
+          return $this->successResponse(['students' => $students, 'pagination' => $pagination] ?? [], 'Daftar Mahasiswa berhasil didapatkan');
+        }
+  
+        return view('tutelage.student-list.index', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
 
-        for ($i = $startId; $i <= $endId; $i++) {
-            $students[] = [
-                'id' => $i,
-                'nim' => "10522{$i}",
-                'angkatan' => 2021,
-                'nama' => "Mahasiswa {$i}",
-                'ips' => rand(200, 400) / 100,
-                'ipk' => rand(200, 400) / 100,
-                'sks_lulus' => rand(60, 130),
-                'sks_lulus_wajib' => rand(40, 120),
-                'nilai_pem' => rand(100, 1500),
-                'status_akademik' => $i % 2 === 0 ? 'Aktif' : 'Kosong',
-                'status_persetujuan' => [
-                    ['nilai' => rand(1, 4), 'status' => 'disetujui'],
-                    ['nilai' => rand(0, 2), 'status' => 'ditolak'],
-                ],
-            ];
+        Log::error('Gagal memuat halaman perwalian daftar mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
         }
 
-        return view('tutelage.student-list.index', [
-            'students' => $students,
-            'pagination' => [
-                'current_page' => $currentPage,
-                'per_page'     => $perPage,
-                'total_items'  => $totalItems,
-                'total_pages'  => $totalPages,
-            ],
-        ]);
+        return redirect()
+          ->route('home')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman perwalian daftar mahasiswa']);
+      }
     }
 
 
