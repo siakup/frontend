@@ -7,446 +7,231 @@
     <div class="breadcrumb-item active">Jadwal Kuliah</div>
 @endsection
 
-@section('css')
-    <style>
-        .card-header.option-list {
-            justify-content: flex-start;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+<script type="module">
+  import ParentInstitutionSchedule from "{{ asset('js/controllers/parentInstitutionSchedule.js') }}";
+  document.addEventListener('alpine:init', () => {
+    Alpine.store('listPage', { 
+      data: @js($data),
+      paginationData: @js($pagination),
+      peran: @js($peran),
+      program_studi: @js($program_studi),
+      sort: @js($sort),
+      search: @js($search)
+    });
 
-        .sub-title {
-            padding: 10px 20px !important;
-        }
-
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .button-clean {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 12px;
-            border: 1px solid #E5E7EB;
-            border-radius: 8px;
-            background: #fff;
-        }
-
-        .sort-dropdown {
-            position: absolute;
-            z-index: 30;
-            display: none;
-            min-width: 220px;
-            background: #fff;
-            border: 1px solid #E5E7EB;
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
-        }
-
-        .sort-dropdown .dropdown-item {
-            padding: 10px 14px;
-            cursor: pointer;
-        }
-
-        .sort-dropdown .dropdown-item:hover {
-            background: #F8FAFC;
-        }
-
-        .CampusWrap, .StudyWrap {
-            position: relative;
-        }
-
-        .sort-dropdown.campus {
-            top: 48px;
-            left: 0;
-        }
-
-        .sort-dropdown.study {
-            top: 48px;
-            left: 0;
-        }
-
-        .searchbox {
-            position: relative;
-        }
-
-        .searchbox input {
-            padding-left: 36px;
-        }
-
-        .searchbox img {
-            position: absolute;
-            left: 10px;
-            top: 10px;
-        }
-
-        .action-right {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .btn-icon {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 12px;
-            text-decoration: none;
-        }
-
-        .btn-view {
-            color: #262626;
-        }
-
-        .btn-edit {
-            color: #E62129;
-        }
-
-        .btn-delete {
-            color: #8C8C8C;
-        }
-
-        .footerbar {
-            display: flex;
-            gap: 12px;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-    </style>
-@endsection
+    Alpine.data('listParentInstitutionScheduleComponents', ParentInstitutionSchedule.listParentInstitutionScheduleComponents);
+  });
+</script>
 
 @include('partials.success-notification-modal', ['route' => route('academics.schedule.parent-institution-schedule.index')])
 
-@section('javascript')
-    <script>
-        function onClickShowSchedule(e) {
-            const id = e.getAttribute('data-id');
-            $.ajax({
-                url: "{{ route('academics.schedule.parent-institution-schedule.view', ['id' => 'id']) }}".replace("'id'", id),
-                method: 'GET',
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                success: function (html) {
-                    $('#view-schedule').html(html);
-                    $('#modalViewParentInstitutionSchedule').show();
-                },
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const campusBtn = document.querySelector('#sortButtonCampus');
-            const campusDrop = document.querySelector('#sortDropdownCampus');
-            const studyBtn = document.querySelector('#sortButtonStudy');
-            const studyDrop = document.querySelector('#sortDropdownStudy');
-
-            // toggle dropdowns
-            campusBtn?.addEventListener('click', function (e) {
-                e.stopPropagation();
-                campusDrop.style.display = campusDrop.style.display === 'block' ? 'none' : 'block';
-                studyDrop.style.display = 'none';
-                toggleArrow(this);
-            });
-            studyBtn?.addEventListener('click', function (e) {
-                e.stopPropagation();
-                studyDrop.style.display = studyDrop.style.display === 'block' ? 'none' : 'block';
-                campusDrop.style.display = 'none';
-                toggleArrow(this);
-            });
-
-            //search
-            document.getElementById('searchInput').addEventListener('keypress', function (e) {
-                if (e.key === 'Enter') {
-                    this.form.submit();
-                }
-            });
-
-            // choose items
-            campusDrop?.querySelectorAll('.dropdown-item').forEach(el => {
-                el.addEventListener('click', function () {
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('program_perkuliahan', this.dataset.sort);
-                    url.searchParams.set('page', 1);
-                    window.location.href = url.toString();
-                });
-            });
-            studyDrop?.querySelectorAll('.dropdown-item').forEach(el => {
-                el.addEventListener('click', function () {
-                    const url = new URL(window.location.href);
-                    url.searchParams.set('program_studi', this.dataset.sort);
-                    url.searchParams.set('page', 1);
-                    window.location.href = url.toString();
-                });
-            });
-
-            // close on outside click
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.CampusWrap')) {
-                    campusDrop.style.display = 'none';
-                    resetArrow(campusBtn);
-                }
-                if (!e.target.closest('.StudyWrap')) {
-                    studyDrop.style.display = 'none';
-                    resetArrow(studyBtn);
-                }
-            });
-
-            // search
-            document.querySelector('#btnSearch')?.addEventListener('click', function () {
-                const q = document.querySelector('#q').value || '';
-                const url = new URL(window.location.href);
-                if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
-                url.searchParams.set('page', 1);
-                window.location.href = url.toString();
-            });
-
-            // sort popover (dummy — tinggal kirim query sort)
-            document.querySelector('#btnSort')?.addEventListener('click', function () {
-                const url = new URL(window.location.href);
-                // contoh: sort=matkul_asc
-                url.searchParams.set('sort', 'matkul_asc');
-                window.location.href = url.toString();
-            });
-
-            function toggleArrow(btn) {
-                const img = btn.querySelector('img');
-                if (!img) return;
-                img.src = img.src.includes('icon-arrow-up.svg')
-                    ? "{{ asset('assets/active/icon-arrow-down.svg') }}"
-                    : "{{ asset('assets/active/icon-arrow-up.svg') }}";
-            }
-
-            function resetArrow(btn) {
-                const img = btn?.querySelector('img');
-                if (img) img.src = "{{ asset('assets/active/icon-arrow-down.svg') }}";
-            }
-        });
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('parentInstitutionSchedule', () => ({
-                async deleteParentInstitutionSchedule(id) {
-                    try {
-                        // const response = await fetch(`/api/ekuivalensi/${id}`, {
-                        //     method: 'DELETE'
-                        // });
-                        // if (!response.ok) throw new Error("Gagal hapus");
-
-                        console.log('🔥 Berhasil menghapus data dengan id:', id);
-
-                        // akses komponen blade & trigger
-                        this.$store.flashMessage.trigger();
-
-                    } catch (err) {
-                        console.error(err);
-                        this.$store.flashMessage.type = 'error';
-                        this.$store.flashMessage.message = 'Gagal menghapus data';
-                        this.$store.flashMessage.trigger();
-                    }
-                }
-            }))
-        })
-
-    </script>
-@endsection
 
 @section('content')
-    <div class="page-header">
-        <div class="page-title-text">Jadwal Kuliah</div>
-    </div>
-
-    <div class="academics-layout" x-data="parentInstitutionSchedule">
-        @include('academics.schedule.prodi_schedule.navbar-jadwal-prodi')
-        <div class="academics-slicing-content content-card p-[20px]">
-            <x-typography variant="heading-h6" class="mb-2 p-[20px]">
-                Jadwal Kuliah Institusi Parent
-            </x-typography>
-            <div class="card-header option-list">
-                <div class="card-header">
-                    <div class="page-title-text sub-title">Peran</div>
-                    @include('partials.dropdown-filter', [
-                        'buttonId' => 'sortButtonRole',
-                        'dropdownId' => 'sortRole',
-                        'dropdownItem' => call_user_func_array('array_merge', array_map(function ($peran) {
-                          return [$peran->nama => $peran->id];
-                        }, $peranList)),
-                        'label' =>  current(array_filter($peranList, function ($list) use($peran) {
-                          return $list->id == $peran;
-                        }))->nama,
-                        'url' => route('academics.schedule.parent-institution-schedule.index'),
-                        'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
-                        'dropdownClass' => '!top-[21%] !left-[11.4%]',
-                        'isIconCanRotate' => true,
-                        'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg'),
-                        'queryParameter' => 'role'
-                    ])
-                </div>
-
-                <div class="card-header">
-                    <div class="page-title-text sub-title">Program Studi</div>
-                    @include('partials.dropdown-filter', [
-                        'buttonId' => 'sortButtonStudy',
-                        'dropdownId' => 'sortStudy',
-                        'dropdownItem' => call_user_func_array('array_merge', array_map(function ($programStudi) {
-                          return [$programStudi->nama => $programStudi->id];
-                        }, $programStudiList)),
-                        'label' =>  current(array_filter($programStudiList, function ($list) use($program_studi) {
-                          return $list->id == $program_studi;
-                        }))->nama,
-                        'url' => route('academics.schedule.parent-institution-schedule.index'),
-                        'imgSrc' => asset('assets/active/icon-arrow-down.svg'),
-                        'dropdownClass' => '!top-[21%] !left-[41.7%]',
-                        'isIconCanRotate' => true,
-                        'imgInvertSrc' => asset('assets/active/icon-arrow-up.svg'),
-                        'queryParameter' => 'study_program'
-                    ])
-                </div>
+  <x-container
+    x-data="listParentInstitutionScheduleComponents({{ json_encode(route('academics.schedule.parent-institution-schedule.index')) }})"
+    :variant="'content-wrapper'"
+  >
+    <x-typography :variant="'body-large-semibold'">Jadwal Kuliah</x-typography>
+    <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
+      <x-tab 
+        :tabItems="[
+          (object)[
+            'routeName' => 'academics.schedule.prodi-schedule.index',
+            'routeQuery' => 'academics.schedule.prodi-schedule.index',
+            'title' => 'Jadwal Kuliah Program Studi'
+          ],
+          (object)[
+            'routeName' => 'academics.schedule.parent-institution-schedule.index',
+            'routeQuery' => 'academics.schedule.parent-institution-schedule.index',
+            'title' => 'Jadwal Kuliah Institusi Parent'
+          ],
+        ]"
+      />
+      <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
+          <x-typography variant="body-medium-bold">Jadwal Kuliah Institusi Parent</x-typography>
+          <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-3'">
+              <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+                  <x-typography :variant="'body-medium-bold'">Peran</x-typography>
+                  <x-form.dropdown 
+                    :buttonId="'sortRole'"
+                    :dropdownId="'roleList'"
+                    :label="'Pilih Peran'"
+                    :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+                    :isIconCanRotate="true"
+                    :isUsedForInputField="true"
+                    :dropdownItem="array_merge(['Pilih Peran' => ''], array_column($peranList, 'id', 'nama'))"
+                    x-model="$store.listPage.peran"
+                  />
+              </x-container>
+               <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+                <x-typography :variant="'body-medium-bold'">Program Studi</x-typography>
+                <x-form.dropdown 
+                  :buttonId="'sortButtonStudyProgram'"
+                  :dropdownId="'sortStudyProgram'"
+                  :label="'Pilih Program Studi'"
+                  :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+                  :isIconCanRotate="true"
+                  :isUsedForInputField="true"
+                  :dropdownItem="array_merge(['Pilih Program Studi' => ''],array_column($programStudiList, 'id', 'nama'))"
+                  x-model="$store.listPage.program_studi"
+                />
+              </x-container>
+          </x-container>
+          <x-container :class="'flex flex-row items-center justify-between'">
+            <div class="w-1/3">
+              <x-form.search
+                :value="$search"
+                :placeholder="'Ketik Mata Kuliah/Kode Mata Kuliah/Nama Kelas'"
+                :storeName="'listPage'"
+                :storeKey="'data'"
+                :requestRoute="route('academics.schedule.parent-institution-schedule.index')"
+                :responseKeyData="'schedules'"
+                x-model="$store.listPage.search"
+              />
             </div>
-            <x-container>
-                <div class="card-header">
-                    <form method="GET" action="{{ route('academics.schedule.parent-institution-schedule.index') }}">
-                        <div class="search-section">
-                            <div class="search-container" style="display: flex; align-items: center;">
-                                <input type="text" name="search" placeholder="Nama Pengajar / Nama Mata Kuliah / Hari"
-                                       class="search-filter" id="searchInput" autocomplete="off"
-                                       value="{{ request('search') }}" style="width: 400px;">
-
-                                <button type="submit"
-                                        style="background: none; border: none; padding: 0; margin-left: -35px; cursor: pointer;">
-                                    <img src="{{ asset('assets/search-left.svg') }}" alt="search"
-                                         style="width: 20px; height: 20px;">
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    @include('partials.dropdown-filter', [
-                      'buttonId' => 'sortButton',
-                      'dropdownId' => 'sortDropdown',
-                      'dropdownItem' => [
-                      'A-Z' => 'nama,asc',
-                      'Z-A' => 'nama,desc',
-                      'Terbaru' => 'created_at,desc',
-                      'Terlama' => 'created_at,asc'
-                      ],
-                      'label' => empty($_GET) ? 'Urutkan' : ($sort === 'active' ? 'Aktif' : ($sort === 'inactive' ? 'Tidak Aktif' : ($sort === 'nama,asc' ? 'A-Z' : ($sort === 'nama,desc' ? 'Z-A' : ($sort === 'created_at,desc' ? 'Terbaru' : 'Terlama'))))),
-                      'url' => route('academics.schedule.parent-institution-schedule.index'),
-                      'imgSrc' => asset('assets/icon-filter.svg'),
-                      'dropdownClass' => '!top-[34%] !right-[4.2%]',
-                      'isIconCanRotate' => false,
-                      'imgInvertSrc' => ''
-                    ])
-                </div>
-            </x-container>
-            <div class="flex flex-col gap-5 mt-5">
-                <x-table>
-                    <x-table-head>
-                        <x-table-row>
-                            <x-table-header>Mata Kuliah</x-table-header>
-                            <x-table-header>Nama Kelas</x-table-header>
-                            <x-table-header>Kapasitas</x-table-header>
-                            <x-table-header>Jadwal</x-table-header>
-                            <x-table-header>Pengajar</x-table-header>
-                            <x-table-header>Aksi</x-table-header>
-                        </x-table-row>
-                    </x-table-head>
-                    <x-table-body>
-                        @forelse ($data as $d)
-                            <x-table-row>
-                                <x-table-cell>{{ $d['mata_kuliah'] }}</x-table-cell>
-                                <x-table-cell>{{ $d['nama_kelas'] }}</x-table-cell>
-                                <x-table-cell>{{ $d['kapasitas'] }}</x-table-cell>
-                                <x-table-cell>
-                                    <ul class="list-disc text-left">
-                                        @foreach(($d['jadwal'] ?? []) as $jadwal)
-                                            <li class="mb-[5px]">
-                                                <div class="flex flex-col gap-[5px]">
-                                                    <span>{{$jadwal['hari']}} ({{$jadwal['jam_mulai']}} - {{$jadwal['jam_selesai']}})</span>
-                                                    <span class="font-bold">[Ruang {{$jadwal['ruangan']}}]</span>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </x-table-cell>
-                                <x-table-cell>
-                                    <div class="flex flex-col gap-[12px]">
-                                        @foreach(($d['pengajar'] ?? []) as $pengajar)
-                                            <span class="text-left">{{$pengajar}}</span>
-                                        @endforeach
-                                    </div>
-                                </x-table-cell>
-                                <x-table-cell x-data="{ showModalDeleteConfirmation: false }">
-                                    <div class="flex justify-center gap-1">
-                                        <button type="button" class="btn-icon btn-view-periode-academic"
-                                                data-id="{{$d['id']}}" title="Lihat"
-                                                onclick="onClickShowSchedule(this)">
-                                            <img src="{{ asset('assets/icon-search.svg') }}" alt="Lihat">
-                                            <span>Lihat</span>
-                                        </button>
-                                        <a class="btn-icon btn-edit-periode-academic" title="Ubah"
-                                           href="{{route('academics.schedule.parent-institution-schedule.edit', ['id' => $d['id']])}}"
-                                           style="text-decoration: none; color: inherit;">
-                                            <img src="{{ asset('assets/icon-edit.svg') }}" alt="Edit">
-                                            <span style="color: #E62129">Ubah</span>
-                                        </a>
-                                        <x-button.action type="delete" label="Hapus"
-                                                         x-on:click="$dispatch('open-modal', {id: 'delete-confirmation'})"/>
-                                    </div>
-                                </x-table-cell>
-                            </x-table-row>
-                        @empty
-                            @include('academics.periode.error-filter')
-                        @endforelse
-                    </x-table-body>
-                </x-table>
-            </div>
-            <div class="card-header">
-                <div class="right gap-5">
-                    <a href="{{route('academics.schedule.parent-institution-schedule.upload')}}" class="button-clean"
-                       id="">
-                        <span>Impor File FET</span>
-                        <img src="{{ asset('assets/icon-upload-red-500.svg') }}" alt="Filter">
-                    </a>
-                    <button
-                        onclick="window.location.href='{{ route('academics.schedule.parent-institution-schedule.create') }}'"
-                        class="button-outline btn-add-event">Tambah Jadwal Baru +
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        {{-- TODO: Id nya jan lupa nnti yak --}}
-        <div x-data @on-submit="deleteParentInstitutionSchedule(1)">
-            <x-modal.confirmation
-                id="delete-confirmation"
-                title="Hapus Jadwal"
-                confirmText="Ya, Hapus"
-                cancelText="Batal"
-                iconUrl="{{ asset('assets/icon-delete-gray-800.svg') }}"
+            <x-form.dropdown 
+                :buttonId="'sortFilterButton'"
+                :dropdownId="'sortFilterDropdown'"
+                :label="'Urutkan'"
+                :imgSrc="asset('assets/icon-filter.svg')"
+                :isIconCanRotate="false"
+                :dropdownItem="[
+                  'Urutkan' => '',
+                  'Semester 1' => 'semester_1',
+                  'Semester 2' => 'semester_2',
+                  'Semester 3' => 'semester_3',
+                  'Semester 4' => 'semester_4',
+                  'Semester 5' => 'semester_5',
+                  'Semester 6' => 'semester_6',
+                  'Semester 7' => 'semester_7',
+                  'Semester 8' => 'semester_8',
+                  'A-Z' => 'nama, asc',
+                  'Z-A' => 'nama, desc',
+                  'Terbaru' => 'created_at,desc',
+                  'Terlama' => 'created_at,asc'
+                ]"
+                x-model="$store.listPage.sort"
+              />
+          </x-container>
+          <x-table>
+              <x-table-head>
+                  <x-table-row>
+                      <x-table-header>Mata Kuliah</x-table-header>
+                      <x-table-header>Nama Kelas</x-table-header>
+                      <x-table-header>Kapasitas</x-table-header>
+                      <x-table-header>Jadwal</x-table-header>
+                      <x-table-header>Pengajar</x-table-header>
+                      <x-table-header>Aksi</x-table-header>
+                  </x-table-row>
+              </x-table-head>
+              <x-table-body>
+                <template x-if="$store.listPage.data.length > 0">  
+                  <template x-for="schedule in $store.listPage.data">
+                    <x-table-row>
+                        <x-table-cell x-text="schedule.mata_kuliah ?? '-'"></x-table-cell>
+                        <x-table-cell>
+                          <x-typography :variant="'body-small-regular'" x-text="schedule.nama_kelas"></x-typography>
+                        </x-table-cell>
+                        <x-table-cell x-text="schedule.kapasitas ?? '-'"></x-table-cell>
+                        <x-table-cell>
+                          <ul class="list-disc text-left w-max">
+                            <template x-for="jadwal in schedule.jadwal ?? []">
+                              <li class="text-left">
+                                  <x-typography :variant="'body-small-regular'" x-text="jadwal.hari ?? '-'"></x-typography>,
+                                  <x-typography :variant="'body-small-regular'" x-text="jadwal.jam_mulai + '-' + jadwal.jam_selesai"></x-typography>
+                                  <br>
+                                  <x-typography :variant="'body-small-bold'" x-text="'['+(jadwal.ruangan ?? '-')+']'"></x-typography>
+                              </li>
+                            </template>
+                          </ul>
+                        </x-table-cell>
+                        <x-table-cell>
+                          <template x-for="(pengajar, index) in schedule.pengajar ?? []" :key="index">
+                            <x-typography :variant="'body-small-regular'" x-text="pengajar + (index !== (schedule.pengajar.length - 1) ? ', ' : '')"></x-typography>
+                          </template>
+                        </x-table-cell>
+                        <x-table-cell>
+                            <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
+                              <x-button.base
+                                :icon="asset('assets/icon-search.svg')"
+                                class="scale-75"
+                                x-on:click="idSelectedProdiSchedule = schedule.id; showView()" 
+                              >
+                                Lihat
+                              </x-button.base>
+                              <x-button.base
+                                :icon="asset('assets/icon-edit.svg')"
+                                class="text-[#E62129] scale-75"
+                                x-on:click="window.location.href = '{{ route('academics.schedule.parent-institution-schedule.edit', ['id' => ':id']) }}'.replace(':id', schedule.id)"
+                              >
+                                Ubah
+                              </x-button.base>
+                              <x-button.base
+                                :icon="asset('assets/icon-delete-gray-600.svg')"
+                                class="text-[#8C8C8C] scale-75"
+                                x-on:click="idSelectedProdiSchedule = schedule.id; modalConfirmationDeleteOpen = true;"
+                              >
+                                Hapus
+                              </x-button.base>
+                            </x-container>
+                        </x-table-cell>
+                    </x-table-row>
+                  </template>
+                </template>
+                <template x-if="$store.listPage.data.length == 0">
+                  @include('academics.periode.error-filter')
+                </template>
+              </x-table-body>
+          </x-table>
+          <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-end !px-0'">
+            <x-button.secondary 
+              :icon="asset('assets/icon-upload-red-500.svg')"
+              :iconPosition="'right'"
+              :href="route('academics.schedule.parent-institution-schedule.upload')"
             >
-                <div class="w-full text-center">
-                    <x-typography>Apakah Anda yakin ingin menghapus Jadwal ini?</x-typography>
-                </div>
-            </x-modal.confirmation>
-        </div>
-
-
-        <x-flash-message type="success" message="Jadwal berhasil dihapus"
-                         redirect="{{ route('academics.schedule.parent-institution-schedule.index') }}" />
-
-    </div>
-    @include('partials.pagination', [
-        'currentPage' => 1,
-        'lastPage' => 10,
-        'limit' => 3,
-        'routes' => '',
-    ])
-    {{-- @if (isset($data['data']))
-    @endif --}}
-
-    <div id="view-schedule"></div>
+              Impor File FET
+            </x-button.secondary>
+            <x-button.primary :href="route('academics.schedule.parent-institution-schedule.create')">Tambah Jadwal Baru +</x-button.primary>
+          </x-container>
+      </x-container>
+    </x-container>
+    <template x-if="$store.listPage.data.length !== 0">
+      <x-pagination 
+        x-data="{ 
+          pagination: null,
+          requestData: null
+        }"
+        x-effect="(() => {
+          pagination = $store.listPage.paginationData;
+          requestData = {
+            program_perkuliahan: $store.listPage.program_perkuliahan,
+            program_studi: $store.listPage.program_studi,
+            sort: $store.listPage.sort,
+            search: $store.listPage.search
+          }
+        })"
+        :storeName="'listPage'"
+        :storeKey="'data'"
+        :requestRoute="route('academics.schedule.parent-institution-schedule.index')"
+        :responseKeyData="'schedules'"
+        :defaultPerPageOptions="[5, 10, 15, 20, 25]"
+      />
+    </template>
+    <x-modal.container-pure-js x-bind:class="{'hidden': !modalConfirmationDeleteOpen, 'flex': modalConfirmationDeleteOpen}">
+      <x-slot name="header">
+        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
+          <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
+        </x-container>
+      </x-slot>
+      <x-slot name="body">Apakah Anda yakin ingin menghapus jadwal ini?</x-slot>
+      <x-slot name="footer">
+        <x-button.secondary x-on:click="idSelectedProdiSchedule = null; modalConfirmationDeleteOpen = false">Batal</x-button.secondary>
+        <x-button.primary x-on:click="">Hapus</x-button.primary>
+      </x-slot>
+    </x-modal.container-pure-js>
+      {{-- @if (isset($data['data']))
+      @endif --}}
+  </x-container>
+  <div id="view-parent-institution-schedule"></div>
 @endsection

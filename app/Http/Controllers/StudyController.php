@@ -14,6 +14,7 @@ use App\Endpoint\CourseService;
 use App\Endpoint\EventCalendarService;
 use App\Endpoint\UserService;
 use App\Traits\ApiResponse;
+use App\Endpoint\ScheduleService;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Exception;
@@ -200,7 +201,7 @@ class StudyController extends Controller
     return view('study.upload-result', get_defined_vars());
   }
 
-  public function uploadStore(Request $request)
+  public function uploadStore(Request $request, $id)
   {
     $validator = Validator::make($request->all(), [
       'file' => 'required|file|mimes:csv,txt|max:5120', // max 5mb

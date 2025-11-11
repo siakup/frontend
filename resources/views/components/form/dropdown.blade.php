@@ -70,7 +70,7 @@
       {{ $optionStyleClass }}
     " 
       id="{{ $dropdownId }}" 
-      @if($attributes->has('x-data') && $attributes->has('x-init'))
+      @if($attributes->has('x-data') || $attributes->has('x-init'))
         x-data="{{ $attributes->get('x-data') }}"
         x-init="{{ $attributes->get('x-init') }}"
       @else
