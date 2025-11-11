@@ -1,5 +1,7 @@
 @props([
-  'variant' => 'default'
+  'variant' => 'default',
+  'colspan' => null,
+  'rowspan' => null,
 ])
 
 @php
@@ -13,8 +15,13 @@
 @endphp
 
 <th
-    {{ $attributes->class($variants[$variant]) }}
+    {{ $attributes
+        ->merge([
+            'colspan' => $colspan,
+            'rowspan' => $rowspan,
+        ])
+        ->class($variants[$variant])
+    }}
 >
     {{ $slot }}
 </th>
-

@@ -8,13 +8,7 @@
     <div class="page-header pl-5">
         <x-typography variant="heading-h6">Capaian Pembelajaran Lulusan</x-typography>
     </div>
-    <x-button.base
-        :icon="asset('assets/icon-less-than-red-20.svg')"
-        :href="route('rps.capaian-pembelajaran')"
-        class="ml-5 mb-3 text-[#E62129]"
-    >
-        Buat RPS (Rencana Pembelajaran Dosen)
-    </x-button.base>
+    <x-button.back class="ml-2 mb-4" href="{{ route('rps.capaian-pembelajaran') }}">Buat RPS (Rencana Pembelajaran Semester)</x-button.back>
 
     
     <div class="cpl-head border border-[#d9d9d9] ml-3 grad-peach">

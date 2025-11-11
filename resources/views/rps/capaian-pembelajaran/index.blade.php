@@ -10,13 +10,7 @@
     <div class="page-header pl-5">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>
     </div>
-    <x-button.base
-        :icon="asset('assets/icon-less-than-red-20.svg')"
-        :href="route('rps.index')"
-        class="ml-5 mb-3 text-[#E62129]"
-    >
-        Buat RPS (Rencana Pembelajaran Dosen)
-    </x-button.base>
+    <x-button.back class="ml-2 mb-4" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
 
     @include('rps.layout.navbar-rps')
     <div x-data class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
@@ -73,12 +67,14 @@
             <x-button.primary x-data x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
         </div>
     </div>
+    @include('rps.capaian-pembelajaran._modal-create-cpmk')
 
     <x-modal.confirmation 
         id="save-confirmation" 
         title="Tunggu Sebentar" 
         confirmText="Ya, Simpan Sekarang"
         cancelText="Cek Kembali"
+        :redirectConfirm="route('rps.komponen-penilaian')"
     >
         <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
 
@@ -89,5 +85,5 @@
         ">
         </div>
     </x-modal.confirmation>
-    @include('rps.capaian-pembelajaran._modal-create-cpmk')
+    
 @endsection

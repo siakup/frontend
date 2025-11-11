@@ -1,4 +1,4 @@
-@props(['variant' => 'default', 'position' => 'center'])
+@props(['variant' => 'default', 'position' => 'center', 'rowspan' => null, 'colspan' => null])
 @php
     $userClass = $attributes->get('class', '');
 
@@ -25,6 +25,12 @@
     ]
 @endphp
 
-<td {{ $attributes->merge(['class' => $variants[$variant]]) }}>
+<td {{ $attributes
+        ->merge([
+            'colspan' => $colspan,
+            'rowspan' => $rowspan,
+        ])
+        ->class($variants[$variant])
+    }}>
     {{ $slot }}
 </td>

@@ -1,7 +1,8 @@
 @props([
   'value' => '',
   'name',
-  'options'
+  'options',
+  'class' => '',
 ])
 
 @php
@@ -26,7 +27,7 @@
   }
 </script>
 
-<div class="flex flex-wrap gap-y-10 gap-x-8 w-full m-0 p-0 items-center box-border">
+<div class="flex flex-wrap gap-y-10 gap-x-8 w-full m-0 p-0 items-center box-border {{ $class }}">
   @foreach($options as $option)
     <div class="flex items-center gap-2">
       <input 
@@ -35,6 +36,7 @@
         class="accent-[#E62129] rounded-sm" 
         value="{{ $option['value'] }}" 
         name="{{ $name }}"
+        {{ $attributes->whereStartsWith('x-') }}
         onchange="onChangeRadioButtonValue(this); {{ $extraOnClick }}"
         @if($value == $option['value'])
           checked

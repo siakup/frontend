@@ -109,7 +109,7 @@
                                 <x-button.base 
                                     :icon="asset('assets/base/icon-copy-16.svg')"
                                     iconPosition="left"
-                                    variant="caption-regular"
+                                    sizeText="caption-regular"
                                 >
                                     Salin
                                 </x-button.base>
@@ -117,7 +117,7 @@
                                     :icon="asset('assets/icon-edit.svg')"
                                     iconPosition="left"
                                     class="text-[#E62129]"
-                                    variant="caption-regular"
+                                    sizeText="caption-regular"
                                 >
                                     Ubah
                                 </x-button.base>

@@ -6,5 +6,5 @@
   style="display: flex !important"
 >
     <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="left arrow" class="w-5 h-5">
-    <x-typography variant="body-medium-regular" class="text-red-500">{{ $slot }}</x-typography>
+    <x-typography variant="body-small-regular" class="text-red-500">{{ $slot }}</x-typography>
 </a>
