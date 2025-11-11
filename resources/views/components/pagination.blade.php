@@ -9,6 +9,7 @@
   <div
     x-data="{{ $attributes->get('x-data') }}"
     x-effect="{{ $attributes->get('x-effect') }}"
+    x-init="{{ $attributes->get('x-init') }}"
   >
     <template x-if="pagination !== null">
       <div 
@@ -26,7 +27,8 @@
               '{{ $requestRoute }}', {
                 page: page,
                 limit: limit,
-                display: 'false'
+                display: 'false',
+                ...requestData
               }, (response) => {
                 if ($store[this.storeName][this.storeKey]) {
                   $store[this.storeName][this.storeKey] = response.data[this.responseKeyData];
@@ -38,7 +40,8 @@
             await requestGetData(
               '{{ $requestRoute }}', {
                 limit: limit,
-                display: 'false'
+                display: 'false',
+                ...requestData
               }, (response) => {
                 if ($store[this.storeName][this.storeKey]) {
                   $store[this.storeName][this.storeKey] = response.data[this.responseKeyData];

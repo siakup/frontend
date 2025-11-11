@@ -1,397 +1,115 @@
 @extends('layouts.main')
 
-@section('title', 'Unggah Jadwal Kuliah Program Studi')
+@section('title', 'Upload Mata Kuliah')
 
 @section('breadcrumbs')
-    <div class="breadcrumb-item active">Unggah Jadwal Kuliah Program Studi</div>
+    <div class="breadcrumb-item active">Upload Mata Kuliah</div>
 @endsection
 
-@section('css')
-    <style>
-        .content-card {
-            display: flex;
-            padding: 20px 20px;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 10px;
-            flex-shrink: 0;
-            align-self: stretch;
-        }
-
-        .content-card .title {
-            display: flex;
-            align-items: center;
-            justify-items: center;
-        }
-
-        .content-inside-card {
-            margin: 0 auto 0 auto;
-            display: block;
-            padding: 20px;
-            align-items: center;
-            max-width: 96%;
-            width: 100%;
-            gap: 10px;
-            border-radius: 12px;
-            border: 1px solid var(--Surface-Border-Primary, #D9D9D9);
-            background: var(--Neutral-Gray-100, #FAFAFA);
-        }
-
-        .upload-flex-row {
-            display: flex;
-            flex-direction: row;
-            gap: 40px;
-            justify-content: space-between;
-        }
-
-        .upload-info-col {
-            flex: 0 0 35%;
-            min-width: 20%;
-            max-width: 35%;
-        }
-
-        .upload-area {
-            flex: 1 1 0;
-            min-width: 75%;
-            display: flex;
-            flex-direction: column;
-            /* align-items: stretch; */
-            position: relative;
-            align-items: flex-start;
-            width: 100%;
-
-        }
-
-        .upload-card {
-            border-radius: var(--radius-sm, 8px);
-            border: 2px dashed var(--Surface-Border-Primary, #D9D9D9);
-            background: var(--Neutral-Gray-50, #FFF);
-            padding: 32px 16px;
-            text-align: center;
-            width: 70%;
-            margin-bottom: 16px;
-            margin-right: 0;
-            margin-left: 0;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            flex-direction: column;
-        }
-
-        .upload-card .drop-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .upload-area-title {
-            font-weight: 500;
-            margin-bottom: 16px;
-            text-align: left;
-            width: 100%;
-            display: block;
-        }
-
-        .upload-card-and-buttons {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            width: 100%;
-            gap: 100px;
-        }
-
-        .upload-btn-group {
-            display: flex;
-            flex-direction: row;
-            margin-left: auto;
-            justify-content: flex-end;
-            margin-top: -7%;
-        }
-
-        @media (max-width: 70%) {
-            .upload-flex-row {
-                flex-direction: row;
-                gap: 16px;
-            }
-
-            .upload-area,
-            .upload-card {
-                max-width: 100%;
-                width: 100%;
-                align-items: stretch;
-            }
-        }
-
-        a {
-            color: var(--Blue-Honolulu-Blue-500, #0076BE);
-            font-size: 16px;
-            text-decoration: none;
-            margin-bottom: 4px;
-            display: block;
-        }
-
-        .button-clean {
-            cursor: pointer;
-            display: inline-block;
-            min-height: 20px;
-            width: 120px;
-        }
-
-        .button-outline {
-            width: 120px;
-        }
-
-        li {
-            color: var(--Red-Red-500, #E62129);
-        }
-
-        #btnUnggah:enabled img {
-            filter: brightness(0) invert(1);
-        }
-
-        .file-preview {
-            display: flex;
-            align-items: center;
-            /* gap: 12px; */
-            padding: 8px 12px;
-            border: 1px solid #dcdcdc;
-            border-radius: 8px;
-            background-color: #fff;
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-            max-width: 70%;
-        }
-
-        .file-name {
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .remove-file {
-            background: none;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: #888;
-        }
-
-        #filePreview:where(:not([style*="display: none"]))+.upload-btn-group {
-            width: 90%;
-        }
-
-        .eye-icon {
-            width: 1.5em;
-            height: 1em;
-            margin-left: 8px;
-            cursor: pointer;
-        }
-
-        .modal-custom-content {
-            max-width: 600px;
-            z-index: 2;
-            align-items: center;
-            align-self: auto;
-        }
-
-        .modal-custom-body {
-            padding: 12px 50px 12px 50px;
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .modal-custom {
-            align-items: start;
-        }
-
-        @media (max-width: 600px) {
-            .modal-custom-content {
-                width: 90vw;
-                min-width: unset;
-                max-width: 98vw;
-                padding: 16px;
-            }
-
-            .modal-custom-title {
-                font-size: 18px;
-            }
-        }
-    </style>
-@endsection
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const batalButton = document.getElementById("btnBatalUnggah");
-        const unggahButton = document.getElementById("btnUnggah");
-        const fileInput = document.querySelector("input[type='file'][name='file']");
-        const filePreview = document.getElementById("filePreview");
-        const fileNameSpan = document.getElementById("fileName");
-        const removeFileBtn = document.getElementById("removeFileBtn");
-        const modal = document.getElementById("modalKonfirmasiBatal");
-        const btnBatalkan = document.getElementById("btnBatalkan");
-
-        if (fileInput && unggahButton) {
-            const container = document.querySelector('.upload-card-and-buttons');
-            fileInput.addEventListener("change", function() {
-                if (fileInput.files.length) {
-                    unggahButton.disabled = false;
-                    batalButton.disabled = false;
-                    fileNameSpan.textContent = fileInput.files[0].name;
-
-                    const filenameInput = document.getElementById("filenameInput");
-                    filenameInput.value = fileInput.files[0]?.name || '';
-
-                    filePreview.style.display = "flex";
-                    container.style.gap = '20px';
-                    document.querySelector('.upload-card').style.display = 'none';
-                } else {
-                    unggahButton.disabled = true;
-                    filePreview.style.display = "none";
-                }
-            });
-
-            batalButton.addEventListener("click", function() {
-                if (fileInput.files.length) {
-                    modal.style.display = 'flex';
-                }
-            });
-        }
-
-        if (removeFileBtn) {
-            removeFileBtn.addEventListener("click", function() {
-                fileInput.value = "";
-                unggahButton.disabled = true;
-                batalButton.disabled = true;
-                filePreview.style.display = "none";
-                document.querySelector('.upload-card').style.display = 'block';
-            });
-        }
-
-        if (btnBatalkan) {
-            btnBatalkan.addEventListener("click", function() {
-                window.location.href = "{{ route('study.index') }}";
-            });
-        }
-
-        document.getElementById("btnKembali").addEventListener("click", function() {
-            modal.style.display = "none";
-        });
-    });
-</script>
-
+@include('partials.success-notification-modal', ['route' => route('academics.schedule.prodi-schedule.import-fet1')])
 @section('content')
-    <div class="page-header">
-        <div class="page-title-text">Unggah Jadwal Kuliah Program Studi</div>
-    </div>
-
-    <a href="{{ route('academics.schedule.prodi-schedule.index') }}" class="button-no-outline-left">
-        <img src="{{ asset('assets/active/icon-arrow-left.svg') }}" alt="Kembali"> Jadwal Kuliah Program Studi
-    </a>
-    <div class="content-card">
-        <div class="text-lg-bd title">
-            <span>Impor Pemetaan Jadwal Kuliah</span>
-            <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="caution-icon"
-                style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
+  <x-container :variant="'content-wrapper'">
+    <x-typography :variant="'body-large-semibold'">Unggah Jadwal Kuliah Program Studi</x-typography>
+    <x-button.back :href="route('academics.schedule.prodi-schedule.index')">Jadwal Kuliah Program Studi</x-button.back>
+    <x-container :class="'flex flex-col items-start gap-2.5 self-stretch'">
+      <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-start !px-0">
+        <x-typography :variant="'body-medium-bold'">Impor Pemetaan Jadwal Kuliah</x-typography>
+        <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-auto h-[1.5em]'" />
+      </x-container>
+      <x-container :variant="'content-wrapper'" class="flex flex-row gap-10 justify-between !px-0">
+          <x-container :variant="'content-wrapper'" class="basis-[35%] shrink-0 grow-0 min-w-1/5 max-w-[35%] flex flex-col !gap-1 !px-0">
+            <x-typography>Allowed Type: [.xlsx, .xls, .csv]</x-typography>  
+            <x-button.link href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'xlsx']) }}">Download Sample Data (.xlsx)</x-button.link>
+            <x-button.link href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'csv']) }}">Download Sample Data (.csv)</x-button.link>
+          </x-container>
+          <x-container :variant="'content-wrapper'" class="grow-1 shrink-1 basis-0 min-w-3/4 flex flex-col !gap-4 relative items-start w-full !px-0">
+            <x-typography :variant="'body-medium-regular'">Impor CSV Jadwal Kuliah File</x-typography>
+            <form action="{{ route('academics.schedule.prodi-schedule.upload-result') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
+              @csrf
+              <x-form.file :cancelConfirmationModalButtonId="'modalKonfirmasiBatal'" />
+            </form>
+          </x-container>
+      </x-container>
+      <x-container class="my-0 mx-auto flex flex-col p-5 !gap-2.5 bg-[#FAFAFA]">
+        <x-typography :variant="'body-small-regular'">
+          File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma "," atau file .xlsx<br>
+          Urutan kolom sebagai berikut:
+        </x-typography>
+        <ul>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Activity Id</x-typography>
+            <x-typography :variant="'body-small-regular'">: ID aktivitas *)</x-typography>
+          </li>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Day</x-typography>
+            <x-typography :variant="'body-small-regular'">: Hari Pelaksanaan (misal Senin, Selasa, Rabu) *)</x-typography>
+          </li>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Hour</x-typography>
+            <x-typography :variant="'body-small-regular'">: Jam kegiatan (misal 13:00-13:30)  *)</x-typography>
+          </li>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Students Sets</x-typography>
+            <x-typography :variant="'body-small-regular'">: Kelas atau kelompok mahasiswa *)</x-typography>
+          </li>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Subject</x-typography>
+            <x-typography :variant="'body-small-regular'">: Mata kuliah yang diajarkan *)</x-typography>
+          </li>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Teachers</x-typography>
+            <x-typography :variant="'body-small-regular'">: Nama dosen pengajar *)</x-typography>
+          </li>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Activity Tags</x-typography>
+            <x-typography :variant="'body-small-regular'">: Tipe aktivitas (misal GP, Lab) *)</x-typography>
+          </li>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Room</x-typography>
+            <x-typography :variant="'body-small-regular'">: Ruang kelas *)</x-typography>
+          </li>
+          <li class="text-[#E62129]">
+            <x-typography :variant="'body-small-bold'">Comments</x-typography>
+            <x-typography :variant="'body-small-regular'">: Catatan tambahan *)</x-typography>
+          </li>
+          
+          <li class="text-[#E62129]">
+            <br> 
+            <x-typography :variant="'body-small-regular'">*) data perlu diisi, jika tidak diisi salah satu kolom pada baris, data dianggap tidak valid dan data pada baris bersangkutan tidak akan tersimpan</x-typography>
+          </li>
+        </ul>
+         <div class="text-md-rg">
+            Activity Id;Day;Hour;Students Sets;Subject;Teachers;Activity Tags;Room;Comments<br>
+            1;Rabu;13:00-13:30;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;<br>
+            1;Rabu;13:30-14:00;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;<br>
+            1;Rabu;14:00-14:30;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;
         </div>
-        <div class="upload-flex-row">
-            <div class="upload-info-col">
-                <div class="text-md-rg">
-                    Allowed Type: [.xlsx, .xls, .csv]
-                </div>
-                <a href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'xlsx']) }}">Unduh Sample Data (.xlsx)</a>
-                <a href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'csv']) }}">Unduh Sample Data (.csv)</a>
-            </div>
-            <div class="upload-area">
-                <div class="upload-area-title">Impor CSV Jadwal Kuliah File</div>
-                <div class="upload-card-and-buttons">
-                    <form action="{{ route('academics.schedule.prodi-schedule.upload-result') }}" method="POST" enctype="multipart/form-data"
-                        style="display: contents;" id="uploadForm">
-                        @csrf
-                        <input type="hidden" name="filename" id="filenameInput">
-                        <div class="upload-card">
-                            <div class="text-md-bd drop-label">
-                                <img src="{{ asset('assets/icon-upload-gray-600.svg') }}" alt="upload"
-                                    style="height: 1.5em; width: auto; margin-bottom: 8px;"><br>
-                                Tarik & letakkan file di sini
-                            </div>
-                            <div style="margin-bottom: 12px;">Atau</div>
-                            <label class="button button-clean">
-                                Pilih File
-                                <input type="file" name="file" accept=".xlsx,.xls,.csv" style="display:none;">
-                            </label>
-                            <div class="text-sm-lg">
-                                .xsl & .csv | 5MB
-                            </div>
-                        </div>
-                        <div id="filePreview" class="file-preview" style="display: none;">
-                            <span class="file-icon"><img src="{{ asset('assets/icon-file-gray.svg') }}"
-                                    alt="File Icon"></span>
-                            <span id="fileName" class="file-name">file.csv</span>
-                            <span class="eye-icon"><img src="{{ asset('assets/icon-eye-gray.svg') }}" alt="Eye Icon"></span>
-                            <button type="button" id="removeFileBtn" class="remove-file"
-                                aria-label="Remove">&times;</button>
-                        </div>
-
-                        <div class="upload-btn-group">
-                            <button type="button" class="button button-clean" id="btnBatalUnggah" disabled>Batal</button>
-                            <button type="submit" class="button button-outline" id="btnUnggah" disabled>
-                                Unggah <span style="font-size:1.1em;"><img
-                                        src="{{ asset('assets/icon-upload-gray-600.svg') }}"></span>
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+        <div class="text-md-rg">
+            <span>Jumlah Data : 0</span><br>
+            <span>Jumlah Data Sukses: 0</span><br>
+            <span>Jumlah Data Gagal:</span>
         </div>
-
-        <div class="content-inside-card">
-            <div style="font-weight: 500; margin-bottom: 12px;">
-                File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma ";"<br>
-                Urutan kolom sebagai berikut:
-            </div>
-            <ul style="text-sm-rg-red">
-                <li>Activity Id: ID aktivitas</li>
-                <li>Day: Hari pelaksanaan (misal Senin, Selasa, Rabu)</li>
-                <li>Hour: Jam kegiatan (misal 13:00-13:30)</li>
-                <li>Students Sets: Kelas atau kelompok mahasiswa</li>
-                <li>Subject: Mata kuliah yang diajarkan</li>
-                <li>Teachers: Nama dosen pengajar</li>
-                <li>Activity Tags: Tipe aktivitas (misal GP, Lab)</li>
-                <li>Room: Ruang kelas</li>
-                <li>Comments: Catatan tambahan</li>
-            </ul>
-
-            <div class="text-md-rg" style="margin-top: 5%;">
-                Activity Id;Day;Hour;Students Sets;Subject;Teachers;Activity Tags;Room;Comments<br>
-                1;Rabu;13:00-13:30;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;<br>
-                1;Rabu;13:30-14:00;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;<br>
-                1;Rabu;14:00-14:30;GP2+GP2DD;10103#Bahasa Inggris II;Harumi Manik Ayu Yamin;GP;2602;
-            </div>
-
-            <div class="text-md-rg" style="margin-top: 5%;">
-                <span>Jumlah Data : 0</span><br>
-                <span>Jumlah Data Sukses: 0</span><br>
-                <span>Jumlah Data Gagal:</span>
-            </div>
-        </div>
-
-        <div id="modalKonfirmasiBatal" class="modal-custom" style="display:none;">
-            <div class="modal-custom-backdrop"></div>
-            <div class="modal-custom-content">
-                <div class="modal-custom-header">
-                    <span class="text-lg-bd">Tunggu Sebentar</span>
-                    <img src="{{ asset('assets/icon-caution.svg') }}" alt="icon-caution">
-                </div>
-                <div class="modal-custom-body">
-                    <div>Apakah Anda yakin ingin membatalkan unggah jadwal kuliah?</div>
-                </div>
-                <div class="modal-custom-footer">
-                    <button type="button" class="button button-clean" id="btnKembali">Kembali</button>
-                    <button type="button" class="button button-outline" id="btnBatalkan">Batalkan</button>
-                </div>
-            </div>
-        </div>
-    </div>
+      </x-container>
+    </x-container>
+  </x-container>
+  <x-modal.container-pure-js id="modalKonfirmasiBatal">
+    <x-slot name="header">
+      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
+        <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
+      </x-container>
+    </x-slot>
+    <x-slot name="body">Apakah Anda yakin ingin membatalkan unggah Jadwal Kuliah?</x-slot>
+    <x-slot name="footer">
+      <x-button.secondary
+        onclick="
+          document.getElementById('modalKonfirmasiBatal').classList.add('hidden');
+          document.getElementById('modalKonfirmasiBatal').classList.remove('flex');
+        "
+      >
+        Kembali
+      </x-button.secondary>
+      <x-button.primary :href="route('academics.schedule.prodi-schedule.index')">Batalkan</x-button.primary>
+    </x-slot>
+  </x-modal.container-pure-js>
 @endsection

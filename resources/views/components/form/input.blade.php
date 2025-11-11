@@ -80,10 +80,11 @@
   <div
     {{ $attributes->whereStartsWith('x-')->merge([
       'class' => "p-4 sm:p-5 border-[1px] border-[#D9D9D9] text-sm w-full box-border mx-auto !px-3 rounded-lg leading-5 h-10 flex items-center " .
-                 ($disabled ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white') . 
+                 (($disabled || $attributes->has('readonly') )? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white') . 
                  ' ' . $inputClass
     ]) }}
-    x-data = "{
+    class="p-4 sm:p-5 border-[1px] border-[#D9D9D9] text-sm w-full box-border mx-auto !px-3 rounded-lg leading-5 h-10 flex items-center {{ $disabled || $attributes->has('readonly') ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white' }} {{ $inputClass }}"
+    x-data="{
       removeButton: false,
       showRemoveIcon: {{ $showRemoveIcon ? 'true' : 'false' }},
       value: @js($value ?? '')
@@ -105,7 +106,7 @@
     @if($iconUrl)
       <img 
         class="cursor-pointer" 
-        :class="{'hidden': !removeButton || !showRemoveIcon}"
+        x-bind:class="{'hidden': !removeButton || !showRemoveIcon}"
         src="{{ $iconUrl }}" 
         alt="" 
         x-on:click="if(showRemoveIcon) { value = ''; removeButton=false; }"
