@@ -16,8 +16,8 @@
     </div>
 
     <div x-data="rencanaPerkuliahan()">
-        <x-container variant="content" class="ml-3 border !rounded-t-none" >
-            <x-form.input-container class="w-[255px]" containerClass="mb-5">
+        <x-container variant="content" class="ml-3 flex flex-col gap-3" borderRadius="rounded-b-3xl" >
+            <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">Minggu ke-</x-slot>
                 <x-slot name="input">
                     <x-form.input
@@ -27,7 +27,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container class="w-[260px]" containerClass="!mt-10 mb-10">
+            <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">CPMK</x-slot>
                 <x-slot name="input">
                     <x-form.checkbox
@@ -38,7 +38,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container class="w-[210px]">
+            <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">Sub CPMK</x-slot>
                 <x-slot name="input">
                     <x-form.textarea
@@ -50,7 +50,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container class="w-[210px]" containerClass="!mt-5">
+            <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">Konten Perkuliahan</x-slot>
                 <x-slot name="input">
                     <x-form.textarea
@@ -62,11 +62,11 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="!text-wrap w-[220px]" containerClass="!mt-5">
+            <x-form.input-container labelClass="w-[200px]" :labelWrap="true">
                 <x-slot name="label">Total Waktu Kegiatan Tatap Muka dan Terstruktur</x-slot>
                 <x-slot name="input">
-                    <div class="grid grid-cols-[auto_1fr] gap-x-7 gap-y-5">
-                        <x-form.checklist x-model="kuliah" class="!w-fit" id="kuliah_on" value="kuliah_on" label="Kuliah (K)" :name="'kuliah'"/>
+                    <div class="grid grid-cols-[1fr_3fr] gap-x-7 gap-y-5">
+                        <x-form.checklist x-model="kuliah" id="kuliah_on" value="kuliah_on" label="Kuliah (K)" :name="'kuliah'"/>
                         <div class="flex items-center">
                             <x-form.input
                                 x-model="jumlah_waktu_kuliah"
@@ -75,13 +75,13 @@
                                 name="jumlah_waktu_kuliah"
                                 placeholder="Contoh: 100"
                                 type="number"
-                                inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !w-[600px] !focus:ring-0 !focus:outline-none"
+                                inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !focus:ring-0 !focus:outline-none"
                             />
                             <div class="-ml-[2px] border border-[1px] border-[#BFBFBF] rounded-r-lg bg-[#E8E8E8] w-[63px] h-[42px] flex items-center justify-center text-[#8C8C8C] text-sm">
                                 Menit
                             </div>
                         </div>
-                        <x-form.checklist x-model="diskusi_latihan" class="!w-fit" id="diskusi_latihan_on" value="diskusi_latihan_on" label="Diskusi dan Latihan (DL)" :name="'diskusi_latihan'"/>
+                        <x-form.checklist x-model="diskusi_latihan" id="diskusi_latihan_on" value="diskusi_latihan_on" label="Diskusi dan Latihan (DL)" :name="'diskusi_latihan'"/>
                         <div class="flex items-center">
                             <x-form.input
                                 x-model="jumlah_waktu_diskusi"
@@ -90,13 +90,13 @@
                                 name="jumlah_waktu_diskusi"
                                 placeholder="Contoh: 100"
                                 type="number"
-                                inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !w-[600px] !focus:ring-0 !focus:outline-none"
+                                inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !focus:ring-0 !focus:outline-none"
                             />
                             <div class="-ml-[2px] border border-[1px] border-[#BFBFBF] rounded-r-lg bg-[#E8E8E8] w-[63px] h-[42px] flex items-center justify-center text-[#8C8C8C] text-sm">
                                 Menit
                             </div>
                         </div>
-                        <x-form.checklist x-model="tugas" class="!w-fit" id="tugas_on" value="tugas_on" label="Tugas (T)" :name="'tugas'"/>
+                        <x-form.checklist x-model="tugas" id="tugas_on" value="tugas_on" label="Tugas (T)" :name="'tugas'"/>
                         <div class="flex items-center">
                             <x-form.input
                                 x-model="jumlah_waktu_tugas"
@@ -105,7 +105,7 @@
                                 name="jumlah_waktu_tugas"
                                 placeholder="Contoh: 100"
                                 type="number"
-                                inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !w-[600px] !focus:ring-0 !focus:outline-none"
+                                inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !focus:ring-0 !focus:outline-none"
                             />
                             <div class="-ml-[2px] border border-[1px] border-[#BFBFBF] rounded-r-lg bg-[#E8E8E8] w-[63px] h-[42px] flex items-center justify-center text-[#8C8C8C] text-sm">
                                 Menit
@@ -114,7 +114,7 @@
                     </div>
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container class="w-[210px]" containerClass="!mt-5">
+            <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">Total Waktu Belajar Mandiri</x-slot>
                 <x-slot name="input">
                     <div class="flex items-center">
@@ -122,7 +122,7 @@
                             name="total_waktu_belajar_mandiri"
                             placeholder="Contoh: 100"
                             type="number"
-                            inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !w-[829px] !focus:ring-0 !focus:outline-none"
+                            inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !focus:ring-0 !focus:outline-none"
                             x-model="total_waktu_belajar_mandiri"
                         />
                         <div class="-ml-[2px] border border-[1px] border-[#BFBFBF] rounded-r-lg bg-[#E8E8E8] w-[63px] h-[42px] flex items-center justify-center text-[#8C8C8C] text-sm">
@@ -131,36 +131,36 @@
                     </div>                    
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container class="w-[220px]" containerClass="!mt-5">
+            <x-form.input-container labelClass="w-[200px]" :labelWrap="true">
                 <x-slot name="label">Metode Penilaian</x-slot>
                 <x-slot name="input">
-                    <div class="grid grid-cols-[auto_1fr] gap-x-7 gap-y-5">
-                        <x-form.checklist x-model="metode_tugas" class="!w-fit" id="metode_tugas" value="metode_tugas" label="Tugas" :name="'metode_tugas'"/>
+                    <div class="grid grid-cols-[1fr_3fr] gap-x-7 gap-y-5">
+                        <x-form.checklist x-model="metode_tugas" id="metode_tugas" value="metode_tugas" label="Tugas" :name="'metode_tugas'"/>
                         <x-form.input
                             x-bind:class="!metode_tugas ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white'"
                             x-bind:disabled="!metode_tugas"
                             x-model="isian_tugas"
                             name="isian_tugas"
                             placeholder="Masukkan Nama Penilaian. Contoh: Tugas 1"
-                            inputClass="!w-[783px] !border-[1px] !border-[#BFBFBF]"
+                            inputClass="!border-[1px] !border-[#BFBFBF]"
                         />
-                        <x-form.checklist x-model="metode_uts" class="!w-fit" id="metode_uts" value="metode_uts" label="UTS" :name="'metode_uts'"/>
+                        <x-form.checklist x-model="metode_uts" id="metode_uts" value="metode_uts" label="UTS" :name="'metode_uts'"/>
                         <x-form.input
                             x-bind:class="!metode_uts ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white'"
                             x-bind:disabled="!metode_uts"
                             x-model="isian_uts"
                             name="isian_uts"
                             placeholder="Masukkan Nama Penilaian. Contoh: Tugas 1"
-                            inputClass="!w-[783px] !border-[1px] !border-[#BFBFBF]"
+                            inputClass="!border-[1px] !border-[#BFBFBF]"
                         />
-                        <x-form.checklist x-model="metode_uas" class="!w-fit" id="metode_uas" value="metode_uas" label="UAS" :name="'metode_uas'"/>
+                        <x-form.checklist x-model="metode_uas" id="metode_uas" value="metode_uas" label="UAS" :name="'metode_uas'"/>
                         <x-form.input
                             x-bind:class="!metode_uas ? '!bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed' : 'bg-white'"
                             x-bind:disabled="!metode_uas"
                             x-model="isian_uas"
                             name="isian_uas"
                             placeholder="Masukkan Nama Penilaian. Contoh: Tugas 1"
-                            inputClass="!w-[783px] !border-[1px] !border-[#BFBFBF]"
+                            inputClass="!border-[1px] !border-[#BFBFBF]"
                         />
                     </div>
                 </x-slot>

@@ -8,68 +8,71 @@
     </div>
     <x-button.back class="ml-2" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
 
+    <div class="academics-layout">
     @include('rps.layout.navbar-rps')
 
-    <div x-data="{ matriksList: @js($matriksList ?? []) }" class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
-        <x-typography variant="body-medium-bold">Matriks Penilaian Kognitif</x-typography>
+        <div x-data="{ matriksList: @js($matriksList ?? []) }" class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
+            <x-typography variant="body-medium-bold">Matriks Penilaian Kognitif</x-typography>
 
-        @if($matriksList)
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header class="w-[150px]">Nilai</x-table-header>
-                        <x-table-header>Kualitas Jawaban</x-table-header>
-                        <x-table-header class="w-[202px]">Aksi</x-table-header>
-                    </x-table-row>
-                </x-table-head>
+            @if($matriksList)
+                <x-table>
+                    <x-table-head>
+                        <x-table-row>
+                            <x-table-header class="w-[150px]">Nilai</x-table-header>
+                            <x-table-header>Kualitas Jawaban</x-table-header>
+                            <x-table-header>Aksi</x-table-header>
+                        </x-table-row>
+                    </x-table-head>
 
-                <x-table-body>
-                    @foreach($matriksList as $index => $matriks)
-                    <x-table-row>
-                        <x-table-cell>{{ $matriks['nilai'] }}</x-table-cell>
-                        <x-table-cell position="left">{{ $matriks['jawaban'] }}</x-table-cell>
-                        <x-table-cell>
-                            <div class="flex flex-wrap gap-3">
-                                <x-button.base 
-                                    :icon="asset('assets/base/icon-edit-16.svg')"
-                                    iconPosition="left"
-                                    sizeText="caption-regular"
-                                    x-on:click="$dispatch('open-modal', {id: 'edit-matriks-penilaian'})"
-                                >
-                                    Ubah
-                                </x-button.base>
-                                <x-button.base 
-                                    :icon="asset('assets/active/icon-delete.svg')"
-                                    iconPosition="left"
-                                    sizeText="caption-regular"
-                                    class="text-[#E62129]"
-                                    x-on:click="$dispatch('open-modal', {id: 'delete-matriks-penilaian'})"
+                    <x-table-body>
+                        @foreach($matriksList as $index => $matriks)
+                        <x-table-row>
+                            <x-table-cell>{{ $matriks['nilai'] }}</x-table-cell>
+                            <x-table-cell position="left">{{ $matriks['jawaban'] }}</x-table-cell>
+                            <x-table-cell>
+                                <div class="flex flex-nowrap gap-3">
+                                    <x-button.base 
+                                        :icon="asset('assets/base/icon-edit-16.svg')"
+                                        iconPosition="left"
+                                        sizeText="caption-regular"
+                                        x-on:click="$dispatch('open-modal', {id: 'edit-matriks-penilaian'})"
+                                    >
+                                        Ubah
+                                    </x-button.base>
+                                    <x-button.base 
+                                        :icon="asset('assets/active/icon-delete.svg')"
+                                        iconPosition="left"
+                                        sizeText="caption-regular"
+                                        class="text-[#E62129]"
+                                        x-on:click="$dispatch('open-modal', {id: 'delete-matriks-penilaian'})"
 
-                                >
-                                    Hapus
-                                </x-button.base>
-                            </div>
-                        </x-table-cell>
-                    </x-table-row>
-                    @endforeach
-                </x-table-body>
-            </x-table>
-        @else
-            <x-container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
-                <x-typography variant="body-small-bold">Belum Ada Matriks Penilaian Kognitif, Silahkan Tambah Matriks Penilaian Terlebih Dahulu</x-typography>
-            </x-container>
-        @endif
+                                    >
+                                        Hapus
+                                    </x-button.base>
+                                </div>
+                            </x-table-cell>
+                        </x-table-row>
+                        @endforeach
+                    </x-table-body>
+                </x-table>
+            @else
+                <x-container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
+                    <x-typography variant="body-small-bold">Belum Ada Matriks Penilaian Kognitif, Silahkan Tambah Matriks Penilaian Terlebih Dahulu</x-typography>
+                </x-container>
+            @endif
 
-        <div class="flex justify-end">
-            <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-matriks-penilaian'})">Tambah Matriks Penilaian</x-button.primary>
+            <div class="flex justify-end">
+                <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-matriks-penilaian'})">Tambah Matriks Penilaian</x-button.primary>
+            </div>
+
+            <div class="flex mt-5 justify-end gap-2">
+                <x-button.secondary x-bind:disabled="!matriksList || matriksList.length === 0" x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Kembali</x-button.secondary>
+                <x-button.primary x-bind:disabled="!matriksList || matriksList.length === 0" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
+            </div>
+            
         </div>
-
-        <div class="flex mt-5 justify-end gap-2">
-            <x-button.secondary x-bind:disabled="!matriksList || matriksList.length === 0" x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Kembali</x-button.secondary>
-            <x-button.primary x-bind:disabled="!matriksList || matriksList.length === 0" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
-        </div>
-        
     </div>
+    
     @include('rps.matriks-penilaian-kognitif._modal-create')
     @include('rps.matriks-penilaian-kognitif._modal-edit')
     @include('rps.matriks-penilaian-kognitif._modal-delete')

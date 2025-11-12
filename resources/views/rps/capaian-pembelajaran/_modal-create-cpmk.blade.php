@@ -18,12 +18,11 @@
                     <x-form.input
                         name="kode"
                         placeholder="Tulis Kode"
-                        class="w-[850px]"
                         x-model="kode"
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[167px]">
+            <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">Deskripsi</x-slot>
                 <x-slot  name="input">
                     <x-form.textarea

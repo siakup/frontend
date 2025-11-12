@@ -1,7 +1,7 @@
 @props([
   'id',
   'value',
-  'label',  
+  'label' => null,  
   'name',
   'disabled' => false,
   'checked' => false
@@ -47,10 +47,13 @@
       checked
     @endif
   />
-  <label 
-    for="{{ $id }}" 
-    class="text-sm w-max {{ $checked ? 'text-[#262626]' : 'text-[#8C8C8C]'}}"
-  >
-    {{ $label }}
-  </label>
+  @if($label)
+    <label 
+      for="{{ $id }}" 
+      class="text-sm w-max {{ $checked ? 'text-[#262626]' : 'text-[#8C8C8C]'}}"
+    >
+      {{ $label }}
+    </label>
+  @endif
+  
 </div>

@@ -33,7 +33,7 @@
                             <x-table-cell>
                                 <div class="flex justify-center items-center">
                                     @if ($nilaiCpmk)
-                                        <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px]" />
+                                        <x-icon iconUrl="{{ asset('assets/base/icon-tick-20.svg') }}" />
                                     @endif
                                 </div>
                             </x-table-cell>

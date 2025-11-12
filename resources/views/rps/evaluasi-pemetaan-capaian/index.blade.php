@@ -1,4 +1,4 @@
-@extends('layouts.main')
+{{-- @extends('layouts.main')
 
 @section('title', 'RPS (Rencana Pembelajaran Dosen)')
 
@@ -124,4 +124,4 @@
             </div>
         </x-container>
     </x-modal.confirmation>
-@endsection
+@endsection --}}

@@ -1,4 +1,4 @@
-<script>
+{{-- <script>
 function createEvaluasi() {
     return {
         cpl: '',
@@ -37,7 +37,7 @@ function createEvaluasi() {
                 </x-slot>
             </x-form.input-container>
         </x-container>
-        {{-- <x-table>
+        <x-table>
             <x-table-head>
                 <x-table-row>
                     <x-table-header colspan="2" rowspan="2">Capaian Mata Kuliah (CPMK)</x-table-header>
@@ -87,7 +87,7 @@ function createEvaluasi() {
                 </x-table-row>   
                 @endforeach
             </x-table-body>
-        </x-table> --}}
+        </x-table>
         <x-slot name="footer" class="flex justify-end gap-3">
             <x-button.secondary x-bind:disabled="isDisabled" x-on:click="$dispatch('close-modal', { id: 'create-evaluasi-pemetaan' })">Batal</x-button.secondary>
             <x-button.primary 
@@ -101,4 +101,4 @@ function createEvaluasi() {
             </x-button.primary>
         </x-slot>
     </x-modal.container>
-</div>
+</div> --}}

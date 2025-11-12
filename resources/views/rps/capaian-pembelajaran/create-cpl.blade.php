@@ -44,7 +44,6 @@
                         <x-table-cell>
                             <x-form.checklist
                                 id="{{ $index }}"
-                                label=""
                                 name="select"
                                 x-model="selected"
                                 :value="$index"
