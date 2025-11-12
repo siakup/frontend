@@ -16,7 +16,7 @@
     </div>
 
     <div x-data="cpl({{ count($cplList) }}, @js($cplList))">
-        <x-container variant="content" class="ml-3 border !rounded-t-none" >
+        <x-container variant="content" class="ml-3" borderRadius="rounded-b-3xl" >
             <x-table>
                 <x-table-head>
                     <x-table-row>

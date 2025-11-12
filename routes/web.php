@@ -212,14 +212,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 //     return view('subjects.view', compact('currentPage', 'totalPages', 'perPage', 'subject', 'prasyaratMataKuliahList', 'addedPrasyarat'));
 // })->name('subject.view');
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
     Route::get('/', [HomeController::class, 'index']);
     Route::get('home', [HomeController::class, 'index'])->name('home');
 
     Route::get('/test-email', function () {
         return view('emails.new_user');
     });
-});
+// });
 
 require __DIR__.'/module/academic.php';
 require __DIR__.'/module/curriculum.php';

@@ -35,7 +35,7 @@ class RpsController extends Controller
             ],
             [
                 'mata_kuliah' => 'Ilmu Komputer',
-                'dosen' => 'Meredita Susanti',
+                'dosen' => 'Meredita Susanty',
                 'review_status' => 'Sedang Direview',
                 'status' => 'Finalized',
                 'tanggal_upload' => '2025-08-19, 11:42:15'
@@ -115,7 +115,7 @@ class RpsController extends Controller
 
         $timPengajarList = [
             'Catia Angli Curie, MS' => '1',
-            'Meredita Susanti' => '2',
+            'Meredita Susanty' => '2',
             'Abdul Hamid' => '3',
             'Hasan Hasbi' => '4',
             'Irwan Nasution' => '5',

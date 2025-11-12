@@ -20,7 +20,7 @@
 @php
   $variants = [
     'red' => 'flex items-center gap-2 py-2 px-4 bg-transparent border-[1px] border-[#E62129] cursor-pointer text-[#E62129] transition-all duration-200 rounded-lg hover:bg-[#FBE8E6]',
-    'gray' => 'flex items-center justify-between py-2 px-4 w-auto cursor-pointer border-[1px] border-[#BFBFBF] bg-[#FFFFFF] transition-all duration-200 rounded-lg'
+    'gray' => 'flex items-center text-sm justify-between py-2 px-4 w-full cursor-pointer border-[1px] border-[#BFBFBF] bg-[#FFFFFF] transition-all duration-200 rounded-lg'
   ];
 
   $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];
@@ -36,7 +36,7 @@
     label: '{{ $label }}',
     toggle() { this.open = ! this.open },
     setFalse() { this.open = false },
-    options: {{ json_encode($dropdownItem) }},
+    options: @js($dropdownItem),
     onSelectedOption() {
       if({{ json_encode($isOptionRedirectableToURLQueryParameter) }}) {
         const params = new URLSearchParams(window.location.search);
@@ -75,7 +75,7 @@
         x-init="{{ $attributes->get('x-init') }}"
       @else
         x-data="{
-          options: {{ json_encode($dropdownItem) }},
+          options: @js($dropdownItem),
         }"
       @endif
       x-show.important="open"
