@@ -7,211 +7,222 @@
     <div class="breadcrumb-item active">Kelompok Perwalian</div>
 @endsection
 
+<script src="{{ asset('js/component-helpers/api.js')}}"></script>
+<script type="module">
+  import PerwalianKRS from "{{ asset('js/controllers/perwalianKrs.js') }}";
+  document.addEventListener('alpine:init', () => {
+    Alpine.store('listPage', { 
+      periode: @js($periode),
+      year: @js($year),
+      sort: @js($sort),
+      filter: @js($filter),
+      datas: @js($students),
+      paginationData: @js($pagination)
+    });
+
+    Alpine.data('listPerwalianKRS', PerwalianKRS.listPerwalianKRS);
+  });
+</script>
+
 @section('content')
-    <div class="page-header pl-5">
-        <x-typography variant="heading-h6">Kelompok Perwalian - dosen</x-typography>
-    </div>
+  <x-container
+    :variant="'content-wrapper'"
+    x-data="listPerwalianKRS({{ json_encode(route('tutelage-group.list-student')) }})"
+  >
+    <x-typography variant="body-large-semibold">Kelompok Perwalian - dosen</x-typography>
+    <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
+      <x-tab 
+        :tabItems="[
+          (object)[
+            'routeName' => 'tutelage-group.list-student',
+            'routeQuery' => 'tutelage-group.list-student',
+            'title' => 'Daftar Mahasiswa'
+          ],
+        ]"
+      />
+      <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
+          <x-typography variant="body-medium-bold">Daftar Mahasiswa</x-typography>
+          <x-container :class="'flex flex-row items-center justify-between'">
+            <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-start !px-0'">
+              <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+                  <x-typography :variant="'body-medium-bold'">Periode Akademik</x-typography>
+                  <x-form.dropdown 
+                    :buttonId="'sortPeriode'"
+                    :dropdownId="'periodeList'"
+                    :label="'Pilih Periode'"
+                    :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+                    :isIconCanRotate="true"
+                    :isUsedForInputField="true"
+                    :dropdownItem="array_merge(
+                      ['Pilih Periode' => ''], 
+                      array_column(array_map(function ($item) {
+                        $data = [
+                          'nama' => $item->tahun . ' - ' . ($item->semester == 1 ? 'Ganjil' : ($item->semester == 2 ? 'Genap' : 'Pendek')),
+                          'id' => $item->id
+                        ];
+                        return $data;
+                      }, $periodeList), 'id', 'nama')
+                    )"
+                    x-model="$store.listPage.periode"
+                  />
+              </x-container>
+              <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+                <x-typography :variant="'body-medium-bold'">Tahun Masuk</x-typography>
+                <x-form.dropdown 
+                  :buttonId="'sortButtonYear'"
+                  :dropdownId="'sortYear'"
+                  :label="'Pilih Tahun Masuk'"
+                  :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+                  :isIconCanRotate="true"
+                  :isUsedForInputField="true"
+                  :dropdownItem="array_merge(['Pilih Tahun' => ''], 
+                    array_combine(
+                      array_map(fn($y) => 'Tahun '.$y, array_reverse(range(date('Y') - 4, date('Y')))),
+                      array_map('strval', array_reverse(range(date('Y') - 4, date('Y'))))
+                    )
+                  )"
+                  x-model="$store.listPage.year"
+                />
+              </x-container>
+            </x-container>
+            <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center justify-end'">
+              <x-form.dropdown 
+                :buttonId="'sortFilterButton'"
+                :dropdownId="'sortFilterDropdown'"
+                :label="'Filter'"
+                :imgSrc="asset('assets/icon-filter-v2.svg')"
+                :isIconCanRotate="false"
+                :dropdownItem="[
+                  'Filter' => '',
+                  'SKS Lulus < 138 SKS' => 'sks_lulus_<_138',
+                  'SKS Lulus >= 138 SKS' => 'sks_lulus_<=_138',
+                  'SKS Lulus MK Wajib < 100 SKS' => 'sks_mk_wajib_<_100',
+                  'SKS Lulus MK Wajib >= 100 SKS' => 'sks_mk_wajib_>=_100',
+                  'IPK < 1.75' => 'ipk_<_1.75',
+                  'IPK >= 1.75' => 'ipk_>=_1.75',
+                  'IPS < 1.75' => 'ips_<_1.75',
+                  'IPS >= 1.75' => 'ips_>=_1.75',
+                  'Nilai PEM < 3000' => 'pem_<_3000',
+                  'Nilai PEM >= 3000' => 'pem_>=_3000',
+                ]"
+                x-model="$store.listPage.filter"
+              />
+              <x-form.dropdown 
+                :buttonId="'sortFilterButton'"
+                :dropdownId="'sortFilterDropdown'"
+                :label="'Urutkan'"
+                :imgSrc="asset('assets/icon-filter.svg')"
+                :isIconCanRotate="false"
+                :dropdownItem="[
+                  'Urutkan' => '',
+                  'SKS Lulus Terendah' => 'sks_lulus, asc',
+                  'SKS Lulus Tertinggi' => 'sks_lulus, desc',
+                  'SKS Lulus MK Wajib Terendah' => 'sks_lulus_mk_wajib, asc',
+                  'SKS Lulus MK Wajib Tertinggi' => 'sks_lulus_mk_wajib, desc',
+                  'IPK Terendah' => 'ipk, asc',
+                  'IPK Tertinggi' => 'ipk, desc',
+                  'IPS Terendah' => 'ips, asc',
+                  'IPS Tertinggi' => 'ips, desc',
+                  'Nilai PEM Terendah' => 'pem, asc',
+                  'Nilai PEM Tertinggi' => 'pem, desc',
+                ]"
+                x-model="$store.listPage.sort"
+              />
+            </x-container>
+          </x-container>
+          <x-container class="flex flex-col gap-[10px] !bg-[#FAFAFA]">
+            <x-typography variant="caption-bold">Keterangan Status Persetujuan:</x-typography>
+            <x-container :variant="'content-wrapper'" class="grid grid-cols-2 gap-[10px]">
+              <template x-for="[key, status] in Object.entries(statusList)">
+                <x-container :variant="'content-wrapper'" class="flex flex-row items-center gap-[6px]">
+                  <x-typography :variant="'caption-bold'" class="px-4 py-[2px] rounded-[4px]" x-bind:style="{color: `${status.textColor}`, backgroundColor: `${status.color}` }">
+                      x
+                  </x-typography>
+                  <x-typography variant="caption-regular" x-html="': '+status.text"></x-typography>
+                </x-container>
+              </template>
+            </x-container>
+          </x-container>
+          <x-table>
+              <x-table-head>
+                  <x-table-row>
+                      <x-table-header>No</x-table-header>
+                      <x-table-header>NIM</x-table-header>
+                      <x-table-header>Angkatan</x-table-header>
+                      <x-table-header>Nama</x-table-header>
+                      <x-table-header>IPS</x-table-header>
+                      <x-table-header>IPK</x-table-header>
+                      <x-table-header>SKS Lulus</x-table-header>
+                      <x-table-header>SKS Lulus MK Wajib</x-table-header>
+                      <x-table-header>Nilai PEM</x-table-header>
+                      <x-table-header>Status Akademik</x-table-header>
+                      <x-table-header>Status Persetujuan</x-table-header>
+                      <x-table-header>Aksi</x-table-header>
+                  </x-table-row>
+              </x-table-head>
 
-    <div class="academics-layout">
-        @include('tutelage.layout.navbar-tutelage')
-
-        <div class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
-
-            <x-typography variant="heading-h6">
-                Daftar Mahasiswa
-            </x-typography>
-
-            <div class="border rounded-lg border-[#D9D9D9] p-5 flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                    <x-typography variant="body-medium-bold">Periode Akademik</x-typography>
-                    <x-select.filter
-                        name="periodAcademic"
-                        id="periodAcademic"
-                        :options="[
-                            '1' => '2023 - Ganjil',
-                            '2' => '2023 - Genap',
-                            '3' => '2024 - Ganjil'
-                        ]"
-                        selected="1"
-                    />
-
-                    <x-typography variant="body-medium-bold">Tahun Masuk</x-typography>
-                    <x-select.filter
-                        name="enterYear"
-                        id="enterYear"
-                        :options="[
-                            '1' => '2021',
-                            '2' => '2022',
-                            '3' => '2023'
-                        ]"
-                        selected="2"
-                    />
-                </div>
-
-                <div class="flex items-center gap-3 mt-4">
-                    <x-select.filter
-                        name="filter"
-                        id="filter"
-                        :options="[
-                            '1' => '2023 - Ganjil',
-                            '2' => '2023 - Genap',
-                            '3' => '2024 - Ganjil'
-                        ]"
-                    />
-
-                    <x-select.filter
-                        name="urutkan"
-                        id="urutkan"
-                        :options="[
-                            '1' => '2021',
-                            '2' => '2022',
-                            '3' => '2023'
-                        ]"
-                    />
-                </div>
-
-
-            </div>
-
-            <div class="border rounded-lg border-[#D9D9D9] p-5 flex flex-col gap-[10px] bg-[#FAFAFA]">
-                <x-typography variant="caption-bold">Keterangan Status Persetujuan:</x-typography>
-
-                @php
-                    $statuses = [
-                        [
-                            'color' => '#D0DE68',
-                            'text'  => 'Menunjukkan jumlah mata kuliah yang telah <b>disetujui</b>.',
-                            'textColor' => '#262626', // default hitam
-                        ],
-                        [
-                            'color' => '#EB474D',
-                            'text'  => 'Menunjukkan jumlah mata kuliah yang telah <b>ditolak</b>.',
-                            'textColor' => '#FFFFFF', // putih
-                        ],
-                        [
-                            'color' => '#FDE05D',
-                            'text'  => 'Menunjukkan jumlah mata kuliah yang <b>menunggu persetujuan</b>.',
-                            'textColor' => '#262626',
-                        ],
-                        [
-                            'color' => '#0097F5',
-                            'text'  => 'Menunjukkan jumlah mata kuliah yang <b>mengajukan penghapusan</b>.',
-                            'textColor' => '#FFFFFF', // putih
-                        ],
-                    ];
-                @endphp
-
-                <div class="grid grid-cols-2 gap-[10px]">
-                    @foreach ($statuses as $status)
-                        <div class="flex items-center gap-[6px]">
-                            <span class="flex items-center justify-center px-4 py-[2px] rounded-[4px]"
-                                  style="background-color: {{ $status['color'] }}; color: {{ $status['textColor'] }}">
-                                x
-                            </span>
-                            <x-typography variant="caption-regular">: {!! $status['text'] !!}</x-typography>
-                        </div>
-                    @endforeach
-                </div>
-
-            </div>
-
-            @php
-                $statusMap = [
-                    'disetujui' => ['color' => '#D0DE68', 'textColor' => '#262626'],
-                    'ditolak'   => ['color' => '#EB474D', 'textColor' => '#FFFFFF'],
-                    'menunggu'  => ['color' => '#FDE05D', 'textColor' => '#262626'],
-                    'hapus'     => ['color' => '#0097F5', 'textColor' => '#FFFFFF'],
-                ];
-            @endphp
-
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>No</x-table-header>
-                        <x-table-header>NIM</x-table-header>
-                        <x-table-header>Angkatan</x-table-header>
-                        <x-table-header>Nama</x-table-header>
-                        <x-table-header>IPS</x-table-header>
-                        <x-table-header>IPK</x-table-header>
-                        <x-table-header>SKS Lulus</x-table-header>
-                        <x-table-header>SKS Lulus MK Wajib</x-table-header>
-                        <x-table-header>Nilai PEM</x-table-header>
-                        <x-table-header>Status Akademik</x-table-header>
-                        <x-table-header>Status Persetujuan</x-table-header>
-                        <x-table-header>Aksi</x-table-header>
-                    </x-table-row>
-                </x-table-head>
-
-                <x-table-body>
-                    @foreach ($students as $student)
-                        <x-table-row>
-                            <x-table-cell>{{ $student['id'] }}</x-table-cell>
-                            <x-table-cell>{{ $student['nim'] }}</x-table-cell>
-                            <x-table-cell>{{ $student['angkatan'] }}</x-table-cell>
-                            <x-table-cell>{{ $student['nama'] }}</x-table-cell>
-                            <x-table-cell>{{ number_format($student['ips'], 2) }}</x-table-cell>
-                            <x-table-cell>{{ number_format($student['ipk'], 2) }}</x-table-cell>
-                            <x-table-cell>{{ $student['sks_lulus'] }}</x-table-cell>
-                            <x-table-cell>{{ $student['sks_lulus_wajib'] }}</x-table-cell>
-                            <x-table-cell>{{ $student['nilai_pem'] }}</x-table-cell>
-                            <x-table-cell>{{ $student['status_akademik'] }}</x-table-cell>
-                            <x-table-cell>
-                                <div class="flex flex-wrap justify-center gap-2">
-                                    @foreach ($student['status_persetujuan'] as $sp)
-                                        @php
-                                            $cfg = $statusMap[$sp['status']] ?? ['color' => '#D9D9D9', 'textColor' => '#262626'];
-                                        @endphp
-                                        <span class="flex items-center justify-center px-4 py-[2px] rounded-[4px] text-xs"
-                                              style="background-color: {{ $cfg['color'] }}; color: {{ $cfg['textColor'] }}">
-                                            {{ $sp['nilai'] }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            </x-table-cell>
-                            <x-table-cell>
-                                <x-button.primary
-                                    href="{{ route('tutelage-group.student-list.detail-krs', ['id' => $student['id']]) }}"
-                                    class="px-0"
-                                    style="min-width: 0;"
-                                >
-                                    Detail
-                                </x-button.primary>
-                            </x-table-cell>
-                        </x-table-row>
-                    @endforeach
-                </x-table-body>
-            </x-table>
-
-        </div>
-
-        <!-- Pagination Component -->
-        <div class="px-5 py-5"
-             x-data="{
-        currentPage: {{ $pagination['current_page'] }},
-        totalPages: {{ $pagination['total_pages'] }},
-        perPage: {{ $pagination['per_page'] }},
-        changePage(page) {
-            if (page >= 1 && page <= this.totalPages) {
-                window.location.href = '?page=' + page + '&per_page=' + this.perPage
-            }
-        },
-        changePerPage(e) {
-            this.perPage = e.target.value
-            window.location.href = '?page=1&per_page=' + this.perPage
-        }
-     }">
-
-            <x-pagination
-                :current-page="$pagination['current_page']"
-                :total-pages="$pagination['total_pages']"
-                :per-page-input="$pagination['per_page']"
-                :default-per-page-options="[10, 25, 50, 100]"
-                onPerPageChange="changePerPage(event)"
-                onPageChange="changePage({page})"
-                onPrevious="changePage(currentPage - 1)"
-                onNext="changePage(currentPage + 1)"
-            />
-        </div>
-
-    </div>
+              <x-table-body>
+                  <template x-if="$store.listPage.datas && $store.listPage.datas.length > 0">
+                    <template x-for="data in $store.listPage.datas">
+                      <x-table-row>
+                        <x-table-cell x-text="data.id"></x-table-cell>
+                        <x-table-cell x-text="data.nim"></x-table-cell>
+                        <x-table-cell x-text="data.angkatan"></x-table-cell>
+                        <x-table-cell x-text="data.nama"></x-table-cell>
+                        <x-table-cell x-text="data.ips.toFixed(2)"></x-table-cell>
+                        <x-table-cell x-text="data.ipk.toFixed(2)"></x-table-cell>
+                        <x-table-cell x-text="data.sks_lulus"></x-table-cell>
+                        <x-table-cell x-text="data.sks_lulus_wajib"></x-table-cell>
+                        <x-table-cell x-text="data.nilai_pem"></x-table-cell>
+                        <x-table-cell x-text="data.status_akademik"></x-table-cell>
+                        <x-table-cell>
+                            <x-container :variant="'content-wrapper'" class="flex flex-row justify-center gap-2">
+                                <template x-for="persetujuan in data.status_persetujuan">
+                                  <span 
+                                    class="flex items-center justify-center px-4 py-[2px] rounded-[4px] text-xs" 
+                                    x-bind:style="{color: `${statusList[persetujuan.status].textColor}`, backgroundColor: `${statusList[persetujuan.status].color}` }"
+                                    x-text="persetujuan.nilai"
+                                  ></span>
+                                </template>
+                            </x-container>
+                        </x-table-cell>
+                        <x-table-cell>
+                            <x-button.primary
+                              x-on:click="window.location.href='{{route('tutelage-group.student-list.detail-krs', ['id' => ':id'])}}'.replace(':id', data.id)"
+                              {{-- href="{{ route('tutelage-group.student-list.detail-krs', ['id' => $student['id']]) }}" --}}
+                              style="min-width: 0;"
+                            >
+                                Detail
+                            </x-button.primary>
+                        </x-table-cell>
+                      </x-table-row>
+                    </template>
+                  </template>
+              </x-table-body>
+          </x-table>
+      </x-container>
+    </x-container>
+    <template x-if="$store.listPage.datas.length !== 0">
+      <x-pagination 
+        x-data="{ 
+          pagination: null,
+          requestData: null
+        }"
+        x-effect="(() => {
+          pagination = $store.listPage.paginationData;
+          requestData = {
+            periode: $store.listPage.periode,
+            year: $store.listPage.year,
+            sort: $store.listPage.sort,
+            filter: $store.listPage.filter
+          }
+        })"
+        :storeName="'listPage'"
+        :storeKey="'datas'"
+        :requestRoute="route('tutelage-group.list-student')"
+        :responseKeyData="'students'"
+        :defaultPerPageOptions="[5, 10, 15, 20, 25]"
+      />
+    </template>
+  </x-container>
 @endsection

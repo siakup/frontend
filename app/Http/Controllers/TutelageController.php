@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
-
+use App\Endpoint\PeriodAcademicService;
 use App\Traits\ApiResponse;
 
 use Exception;
@@ -18,52 +18,82 @@ class TutelageController extends Controller
 
     public function listStudent(Request $request)
     {
-        // ambil current page & per page
-        $currentPage = $request->input('page', 1);
-        $perPage     = $request->input('per_page', 10);
-
-        // dummy total data
-        $totalItems = 53; // misal 53 mahasiswa
-        $totalPages = (int) ceil($totalItems / $perPage);
-
-        // generate dummy mahasiswa sesuai page
+      try {
+        $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+        $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+        if(!isset($responsePeriode->data) || !isset($responsePeriode->success) || !$responsePeriode->success || count($responsePeriode->data) == 0) {
+          throw new \Exception(json_encode([
+            'message'=>'Periode belum ditambahkan!',
+            'system_error' => $responsePeriode,
+          ]));
+        }
+        $periodeList = $responsePeriode->data ?? [];
+        
+        $limit = $request->input('limit', 10);
+        $page = $request->input('page', 1);
+        $periode = $request->input('periode', $periodeList[0]->id);
+        $year = $request->input('year', date('Y'));
+        $filter = $request->input('filter', '');
+        $sort = $request->input('sort', '');
+  
         $students = [];
-        $startId = ($currentPage - 1) * $perPage + 1;
-        $endId   = min($startId + $perPage - 1, $totalItems);
+  
+        for ($i = 1; $i <= 10; $i++) {
+          $students[] = [
+            'id' => $i,
+            'nim' => "10522{$i}",
+            'angkatan' => 2021,
+            'nama' => "Mahasiswa {$i}",
+            'ips' => rand(200, 400) / 100,
+            'ipk' => rand(200, 400) / 100,
+            'sks_lulus' => rand(60, 130),
+            'sks_lulus_wajib' => rand(40, 120),
+            'nilai_pem' => rand(100, 1500),
+            'status_akademik' => $i % 2 === 0 ? 'Aktif' : 'Kosong',
+            'status_persetujuan' => [
+              ['nilai' => rand(1, 4), 'status' => 'disetujui'],
+              ['nilai' => rand(0, 2), 'status' => 'ditolak'],
+              ['nilai' => rand(0, 2), 'status' => 'menunggu'],
+              ['nilai' => rand(0, 2), 'status' => 'hapus'],
+            ],
+          ];
+        }
+  
+        $pagination = [
+          'currentPage' => 1,
+          'from' => 1,
+          'last' => 1,
+          'limit' => $limit
+        ];
+  
+        if ($request->ajax()) {
+          return $this->successResponse(['students' => $students, 'pagination' => $pagination] ?? [], 'Daftar Mahasiswa berhasil didapatkan');
+        }
+  
+        return view('tutelage.student-list.index', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
 
-        for ($i = $startId; $i <= $endId; $i++) {
-            $students[] = [
-                'id' => $i,
-                'nim' => "10522{$i}",
-                'angkatan' => 2021,
-                'nama' => "Mahasiswa {$i}",
-                'ips' => rand(200, 400) / 100,
-                'ipk' => rand(200, 400) / 100,
-                'sks_lulus' => rand(60, 130),
-                'sks_lulus_wajib' => rand(40, 120),
-                'nilai_pem' => rand(100, 1500),
-                'status_akademik' => $i % 2 === 0 ? 'Aktif' : 'Kosong',
-                'status_persetujuan' => [
-                    ['nilai' => rand(1, 4), 'status' => 'disetujui'],
-                    ['nilai' => rand(0, 2), 'status' => 'ditolak'],
-                ],
-            ];
+        Log::error('Gagal memuat halaman perwalian daftar mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
         }
 
-        return view('tutelage.student-list.index', [
-            'students' => $students,
-            'pagination' => [
-                'current_page' => $currentPage,
-                'per_page'     => $perPage,
-                'total_items'  => $totalItems,
-                'total_pages'  => $totalPages,
-            ],
-        ]);
+        return redirect()
+          ->route('home')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman perwalian daftar mahasiswa']);
+      }
     }
 
 
     public function showKrs(Request $request, $id)
     {
+      try {
         // Dummy student
         $student = [
             'nama' => 'Budi Santoso',
@@ -84,10 +114,10 @@ class TutelageController extends Controller
         // Helper pill
         $pill = function ($txt, $type) {
             $map = [
-                'pending'  => 'pill-wait',
-                'deletion' => 'pill-del',
-                'rejected' => 'pill-no',
-                'approved' => 'pill-ok',
+                'pending'  => 'bg-[#FDE05D] text-black',
+                'deletion' => 'bg-[#3B82F6] text-white',
+                'rejected' => 'bg-[#EF4444] text-black',
+                'approved' => 'bg-[#F7B6B8 text-black',
             ];
             return '<span class="pill ' . $map[$type] . '">' . $txt . '</span>';
         };
@@ -165,25 +195,193 @@ class TutelageController extends Controller
             ],
         ];
 
-
-
-        // Kolom tabel
-        $cols = [
-            'No','Nama Kelas','Nama Mata Kuliah','SKS','Nilai',
-            'Prodi Lain','Presensi Kehadiran','Status UAS','Status'
-        ];
-
         // Grouping by status
         $tblPending  = array_filter($courses, fn($c) => $c['status'] === 'pending');
         $tblDeletion = array_filter($courses, fn($c) => $c['status'] === 'deletion');
         $tblRejected = array_filter($courses, fn($c) => $c['status'] === 'rejected');
         $tblApproved = array_filter($courses, fn($c) => $c['status'] === 'approved');
 
+        $data = compact('student', 'krsInfo', 'events');
+        $tbl = [
+          'pending' => array_values($tblPending),
+          'deletion' => array_values($tblDeletion),
+          'rejected' => array_values($tblRejected),
+          'approved' => array_values($tblApproved),
+        ];
+
+        // dd($tbl);
+
         return view('tutelage.student-list.detail-krs', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman detail krs mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+        }
+
+        return redirect()
+          ->route('tutelage-group.list-student')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman detail krs mahasiswa']);
+      }
     }
 
     public function showTranskripKurikulum(Request $request, $id)
     {
+      try {
+        $transkrip = [
+            'nim' => '105221015',
+            'nip_wali' => '116130',
+            'nama' => 'Fauzan Akmal Mukhlas',
+            'dosen_wali' => 'Ade Irawan Ph.D',
+            'sks' => '118/118',
+            'fakultas' => 'Fakultas Sains dan Ilmu Komputer',
+            'program' => 'Sarjana',
+            'prodi'=> 'Ilmu Komputer',
+            'ipk' => '3.20',
+        ];
+
+        $curriculum = [
+            [
+            'tahun' => 2021,
+            'semester' => '3',
+            'jenis' => 'Ganjil',
+            'matkul' => [
+                [
+                    'kode'=>'10008',
+                    'nama'=>'Inovasi dan Kewirausahaan',
+                    'sks'=> 2,
+                    'nilai'=>'A-',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52201',
+                    'nama'=>'Studi Literatur Penulisan Ilmiah',
+                    'sks'=>2,
+                    'nilai'=>'A-',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52202',
+                    'nama'=>'Probabilitas dan Statistika',
+                    'sks'=> 3,
+                    'nilai'=>'C',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52203',
+                    'nama'=>'Aljabar Linear dan Aplikasinya',
+                    'sks'=> 3,
+                    'nilai'=>'B',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52204',
+                    'nama'=>'Algoritma dan Struktur Data',
+                    'sks'=> 3,
+                    'nilai'=>'B',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52205',
+                    'nama'=> 'Praktikum Algoritma dan Struktur Data',
+                    'sks'=> 1,
+                    'nilai'=>'B',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52206',
+                    'nama'=>'Basis Data',
+                    'sks'=> 3,
+                    'nilai'=>'B+',
+                    'status'=>'Lulus'
+                ],
+                [
+                    'kode'=>'52207',
+                    'nama'=>'Praktikum Basis Data',
+                    'sks'=> 1,
+                    'nilai'=>'A',
+                    'status'=>'Lulus'
+                ],
+            ],
+            'sks_total' => 18,
+            'ips' => 3.09,
+            ],
+            [
+                'tahun' => 2021,
+                'semester' => '4',
+                'jenis' => 'Genap',
+                'matkul' => [
+                    [
+                        'kode'=>'52208',
+                        'nama'=>'Kecerdasan Artifisial',
+                        'sks'=> 2,
+                        'nilai'=>'B',
+                        'status'=>'Lulus'
+                    ],
+                    [
+                        'kode'=>'52209',
+                        'nama'=>'Metode Numerik',
+                        'sks'=> 3,
+                        'nilai'=>'C',
+                        'status'=>'Lulus'
+                    ],
+                    [
+                        'kode'=>'52210',
+                        'nama'=>'Rekayasa Perangkat Lunak',
+                        'sks'=> 3,
+                        'nilai'=>'B+',
+                        'status'=>'Lulus'
+                    ],
+                    [
+                        'kode'=>'52211',
+                        'nama'=>'Komputasi Pararel dan Terdistribusi',
+                        'sks'=> 3,
+                        'nilai'=>'B',
+                        'status'=>'Lulus'
+                    ],
+                    [
+                        'kode'=>'52212',
+                        'nama'=>'Jaringan Komputer',
+                        'sks'=> 2,
+                        'nilai'=>'B-',
+                        'status'=>'Lulus'
+                    ],
+
+                ],
+                'sks_total' => 13,
+                'ips' => 3.09,
+            ]
+        ];
+
+        return view('tutelage.student-list.detail-transkrip-kurikulum', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman detail transkrip kurikulum mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+        }
+
+        return redirect()
+          ->route('tutelage-group.list-student')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman detail transkrip kurikulum mahasiswa']);
+      }
+    }
+
+    public function showTranskripHistoris(Request $request, $id)
+    {
+      try {
         $transkrip = [
             'nim' => '105221015',
             'nip_wali' => '116130',
@@ -309,10 +507,28 @@ class TutelageController extends Controller
             ]
         ];
 
-        return view('tutelage.student-list.detail-transkrip-kurikulum', get_defined_vars());
+        return view('tutelage.student-list.detail-transkrip-historis', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman detail transkrip historis mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+        }
+
+        return redirect()
+          ->route('tutelage-group.list-student')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman detail transkrip historis mahasiswa']);
+      }
     }
 
     public function showTranskripPem(Request $request, $id){
+      try {
         $student = [
             'nim' => '105221015',
             'nama' => 'Fauzan Akmal Mukhlas',
@@ -382,6 +598,190 @@ class TutelageController extends Controller
         ];
 
         return view('tutelage.student-list.detail-transkrip-pem', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman detail transkrip pem mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+        }
+
+        return redirect()
+          ->route('tutelage-group.list-student')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman detail transkrip pem mahasiswa']);
+      }
+    }
+
+    public function showTranskripResmi(Request $request, $id) {
+      try {
+        $transkrip = [
+          'nim' => '105221015',
+          'nip_wali' => '116130',
+          'nama' => 'Fauzan Akmal Mukhlas',
+          'dosen_wali' => 'Ade Irawan Ph.D',
+          'sks' => '118/118',
+          'fakultas' => 'Fakultas Sains dan Ilmu Komputer',
+          'program' => 'Sarjana',
+          'prodi'=> 'Ilmu Komputer',
+          'ipk' => '3.20',
+        ];
+
+        $mataKuliahResmi = [
+          [
+              'kode'=>'10008',
+              'nama'=>'Inovasi dan Kewirausahaan',
+              'sks'=> 2,
+              'nilai'=>'A-',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52201',
+              'nama'=>'Studi Literatur Penulisan Ilmiah',
+              'sks'=>2,
+              'nilai'=>'A-',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52202',
+              'nama'=>'Probabilitas dan Statistika',
+              'sks'=> 3,
+              'nilai'=>'C',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52203',
+              'nama'=>'Aljabar Linear dan Aplikasinya',
+              'sks'=> 3,
+              'nilai'=>'B',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52204',
+              'nama'=>'Algoritma dan Struktur Data',
+              'sks'=> 3,
+              'nilai'=>'B',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52205',
+              'nama'=> 'Praktikum Algoritma dan Struktur Data',
+              'sks'=> 1,
+              'nilai'=>'B',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52206',
+              'nama'=>'Basis Data',
+              'sks'=> 3,
+              'nilai'=>'B+',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52207',
+              'nama'=>'Praktikum Basis Data',
+              'sks'=> 1,
+              'nilai'=>'A',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52208',
+              'nama'=>'Kecerdasan Artifisial',
+              'sks'=> 2,
+              'nilai'=>'B',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52209',
+              'nama'=>'Metode Numerik',
+              'sks'=> 3,
+              'nilai'=>'C',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52210',
+              'nama'=>'Rekayasa Perangkat Lunak',
+              'sks'=> 3,
+              'nilai'=>'B+',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52211',
+              'nama'=>'Komputasi Pararel dan Terdistribusi',
+              'sks'=> 3,
+              'nilai'=>'B',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ],
+          [
+              'kode'=>'52212',
+              'nama'=>'Jaringan Komputer',
+              'sks'=> 2,
+              'nilai'=>'B-',
+              'status'=>'Lulus',
+              'tahun' => '2022',
+              'semester' => 'Ganjil',
+              'konversi' => rand(0, 20) / 50
+          ]
+        ];
+
+        return view('tutelage.student-list.detail-transkrip-resmi', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman detail transkrip resmi mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+        }
+
+        return redirect()
+          ->route('tutelage-group.list-student')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman detail transkrip resmi mahasiswa']);
+      }
     }
 
     public function addCourse(Request $request, $id)
@@ -478,6 +878,8 @@ class TutelageController extends Controller
 
         return view('tutelage.student-list.add-course', get_defined_vars());
     }
+
+
 
     public function edit(Request $request, $id)
     {

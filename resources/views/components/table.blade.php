@@ -2,16 +2,19 @@
   'variant' => 'default',
   'isHaveTitle' => false,
   'tableTitle' => '',
+  'isRoundedTop' => true,
+  'isRoundedBottom' => true,
+  'isBordered' => true
 ])
 
 @php
     $variants = [
       'default' => [
-        'div-class' => "rounded-[24px] overflow-hidden border border-[#d9d9d9]",
+        'div-class' => "overflow-hidden ".($isRoundedTop ? 'rounded-t-[24px] ' : '').($isRoundedBottom ? 'rounded-b-[24px] ' : '').($isBordered ? 'border border-[#d9d9d9] ' : ''),
         'table-class' => 'min-w-full border-separate border-spacing-0'
       ],
       'old' => [
-        'div-class' => "max-h-[580px] rounded-xl bg-white border-[1px] border-solid border-[#D9D9D9] overflow-hidden",
+        'div-class' => "max-h-[580px] bg-white overflow-hidden ".($isRoundedTop ? 'rounded-t-xl ' : '').($isRoundedBottom ? 'rounded-b-xl ' : '').($isBordered ? 'border-[1px] border-solid border-[#D9D9D9] ' : ''),
         'table-class' => "w-full border-collapse"
       ],
     ]

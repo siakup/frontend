@@ -652,64 +652,54 @@ public function uploadResult(Request $request)
       // Convert file ke array of object/array
       $file_data = convertFileDataExcelToObject($file);
       $grouped_datas = [];
-  
+
+      
       array_walk($file_data, function ($item) use(&$grouped_datas) {
         $grouped_datas[$item['activity_id']][] = $item; 
       });
-  
+      
       $datas = [];
   
       array_walk($grouped_datas, function($grouped_data) use(&$datas, $periode) {
-        $tempDatas = [];
-  
-        array_walk($grouped_data, function($item, $index) use(&$tempDatas, $periode) {
-          $studentSets = explode('+', $item['students_sets']);
-        
-          array_walk($studentSets, function($studentSet) use($item, &$tempDatas, $periode) {
-            $hours = explode('-', $item['hour']);
-  
-            $teachers = explode('+', $item['teachers']);
-  
-            $subject = explode('#', $item['subject']);
-            $kode_matakuliah = $subject[0];
-            $nama_matakuliah_id = $subject[1];
-  
-            if(isset($tempDatas[$studentSet])) {
-              array_push($tempDatas[$studentSet]['scheduleList'], [
-                'hari' => $item['day'],
-                'jam_mulai' => $hours[0],
-                'jam_selesai' => $hours[1],
-                'ruangan' => $item['room']
-              ]);
-            } else {
-              $tempDatas[$studentSet] = [
-                'scheduleList' => [
-                  [
-                    'hari' => $item['day'],
-                    'jam_mulai' => $hours[0],
-                    'jam_selesai' => $hours[1],
-                    'ruangan' => $item['room']
-                  ]
-                ],
-                'semester' => $periode->semester,
-                'nama_matakuliah_id' => $nama_matakuliah_id,
-                'kode_matakuliah' => $kode_matakuliah,
-                'kapasitas' => '',
-                'ruangan' => $item['room'],
-                'lectureList' => $teachers,
-                'nama_kelas' => $nama_matakuliah_id.'-'.$studentSet.'-'.$periode->tahun,
-                'program_perkuliahan' => $item['program']
-              ];
-            }
-          });
-  
+        $hoursStart = explode('-', $grouped_data[0]['hour']);
+        $hoursEnd = explode('-', $grouped_data[count($grouped_data) - 1]['hour']);
+        $subject = explode('#', $grouped_data[0]['subject']);
+        $teachers = explode('+', $grouped_data[0]['teachers']);
+        $studentSets = explode('+', $grouped_data[0]['students_sets']);
+
+        array_walk($studentSets, function($studentSet) use($hoursStart, $hoursEnd, &$datas, $periode, $grouped_data, $subject, $teachers) {
+          $existingKey = array_search(
+            $subject[1] . '-' . $studentSet . '-' . $periode->tahun,
+            array_column($datas, 'nama_kelas')
+          );
+          if($existingKey !== false) {
+            $datas[$existingKey]['scheduleList'][] = [
+              'hari' => $grouped_data[0]['day'],
+              'jam_mulai' => $hoursStart[0],
+              'jam_selesai' => $hoursEnd[1],
+              'ruangan' => $grouped_data[0]['room']
+            ];
+          } else {
+            array_push($datas, [
+              'scheduleList' => [
+                [
+                  'hari' => $grouped_data[0]['day'],
+                  'jam_mulai' => $hoursStart[0],
+                  'jam_selesai' => $hoursEnd[1],
+                  'ruangan' => $grouped_data[0]['room']
+                ]
+              ],
+              'semester' => $periode->semester,
+              'nama_matakuliah_id' => $subject[1],
+              'kode_matakuliah' => $subject[0],
+              'kapasitas' => '',
+              'ruangan' => $grouped_data[0]['room'],
+              'lectureList' => $teachers,
+              'nama_kelas' => $subject[1].'-'.$studentSet.'-'.$periode->tahun,
+              'program_perkuliahan' => $grouped_data[0]['program']
+            ]);
+          }
         });
-  
-        array_walk($tempDatas, function($temp) use(&$datas) {
-          array_push($datas, $temp);
-        });
-  
-        $tempDatas = [];
       });
   
       return view('academics.schedule.prodi_schedule.upload-result', get_defined_vars());
@@ -1896,56 +1886,45 @@ public function parentInstitutionCreate(Request $request)
       $datas = [];
   
       array_walk($grouped_datas, function($grouped_data) use(&$datas, $periode) {
-        $tempDatas = [];
-  
-        array_walk($grouped_data, function($item, $index) use(&$tempDatas, $periode) {
-          $studentSets = explode('+', $item['students_sets']);
-        
-          array_walk($studentSets, function($studentSet) use($item, &$tempDatas, $periode) {
-            $hours = explode('-', $item['hour']);
-  
-            $teachers = explode('+', $item['teachers']);
-  
-            $subject = explode('#', $item['subject']);
-            $kode_matakuliah = $subject[0];
-            $nama_matakuliah_id = $subject[1];
-  
-            if(isset($tempDatas[$studentSet])) {
-              array_push($tempDatas[$studentSet]['scheduleList'], [
-                'hari' => $item['day'],
-                'jam_mulai' => $hours[0],
-                'jam_selesai' => $hours[1],
-                'ruangan' => $item['room']
-              ]);
-            } else {
-              $tempDatas[$studentSet] = [
-                'scheduleList' => [
-                  [
-                    'hari' => $item['day'],
-                    'jam_mulai' => $hours[0],
-                    'jam_selesai' => $hours[1],
-                    'ruangan' => $item['room']
-                  ]
-                ],
-                'semester' => $periode->semester,
-                'nama_matakuliah_id' => $nama_matakuliah_id,
-                'kode_matakuliah' => $kode_matakuliah,
-                'kapasitas' => '',
-                'ruangan' => $item['room'],
-                'lectureList' => $teachers,
-                'nama_kelas' => $nama_matakuliah_id.'-'.$studentSet.'-'.$periode->tahun,
-                'program_perkuliahan' => $item['program']
-              ];
-            }
-          });
-  
+        $hoursStart = explode('-', $grouped_data[0]['hour']);
+        $hoursEnd = explode('-', $grouped_data[count($grouped_data) - 1]['hour']);
+        $subject = explode('#', $grouped_data[0]['subject']);
+        $teachers = explode('+', $grouped_data[0]['teachers']);
+        $studentSets = explode('+', $grouped_data[0]['students_sets']);
+
+        array_walk($studentSets, function($studentSet) use($hoursStart, $hoursEnd, &$datas, $periode, $grouped_data, $subject, $teachers) {
+          $existingKey = array_search(
+            $subject[1] . '-' . $studentSet . '-' . $periode->tahun,
+            array_column($datas, 'nama_kelas')
+          );
+          if($existingKey !== false) {
+            $datas[$existingKey]['scheduleList'][] = [
+              'hari' => $grouped_data[0]['day'],
+              'jam_mulai' => $hoursStart[0],
+              'jam_selesai' => $hoursEnd[1],
+              'ruangan' => $grouped_data[0]['room']
+            ];
+          } else {
+            array_push($datas, [
+              'scheduleList' => [
+                [
+                  'hari' => $grouped_data[0]['day'],
+                  'jam_mulai' => $hoursStart[0],
+                  'jam_selesai' => $hoursEnd[1],
+                  'ruangan' => $grouped_data[0]['room']
+                ]
+              ],
+              'semester' => $periode->semester,
+              'nama_matakuliah_id' => $subject[1],
+              'kode_matakuliah' => $subject[0],
+              'kapasitas' => '',
+              'ruangan' => $grouped_data[0]['room'],
+              'lectureList' => $teachers,
+              'nama_kelas' => $subject[1].'-'.$studentSet.'-'.$periode->tahun,
+              'program_perkuliahan' => $grouped_data[0]['program']
+            ]);
+          }
         });
-  
-        array_walk($tempDatas, function($temp) use(&$datas) {
-          array_push($datas, $temp);
-        });
-  
-        $tempDatas = [];
       });
   
       return view('academics.schedule.parent-institution_schedule.upload-result', get_defined_vars());
