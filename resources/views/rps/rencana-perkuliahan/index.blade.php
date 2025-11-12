@@ -1,10 +1,10 @@
 @extends('layouts.main')
 
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
+@section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
     <div class="page-header pl-5">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>
+        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
     </div>
     <x-button.back class="ml-2" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
 

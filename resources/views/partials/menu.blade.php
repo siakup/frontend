@@ -157,7 +157,7 @@
             :variant="'parent'"
           />
           <x-menu.item
-            :label="'RPS (Rencana Pembelajaran Dosen)'"
+            :label="'RPS (Rencana Pembelajaran Semester)'"
             :haveIcon="true"
             :icon="asset('assets/base/icon-kurikulum.svg')"
             :routeName="'rps.index'"

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
+@section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 <script src="{{ asset('js/controllers/rencanaPerkuliahan.js') }}" defer></script>
 
