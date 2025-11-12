@@ -94,16 +94,16 @@
                 :isIconCanRotate="false"
                 :dropdownItem="[
                   'Filter' => '',
-                  'SKS Lulus < 138 SKS' => 'semester_1',
-                  'SKS Lulus >= 138 SKS' => 'semester_2',
-                  'SKS Lulus MK Wajib < 100 SKS' => 'semester_3',
-                  'SKS Lulus MK Wajib >= 100 SKS' => 'semester_4',
-                  'IPK < 1.75' => 'semester_5',
-                  'IPK >= 1.75' => 'semester_6',
-                  'IPS < 1.75' => 'semester_7',
-                  'IPS >= 1.75' => 'semester_8',
-                  'Nilai PEM < 3000' => 'nama, asc',
-                  'Nilai PEM >= 3000' => 'nama, desc',
+                  'SKS Lulus < 138 SKS' => 'sks_lulus_<_138',
+                  'SKS Lulus >= 138 SKS' => 'sks_lulus_<=_138',
+                  'SKS Lulus MK Wajib < 100 SKS' => 'sks_mk_wajib_<_100',
+                  'SKS Lulus MK Wajib >= 100 SKS' => 'sks_mk_wajib_>=_100',
+                  'IPK < 1.75' => 'ipk_<_1.75',
+                  'IPK >= 1.75' => 'ipk_>=_1.75',
+                  'IPS < 1.75' => 'ips_<_1.75',
+                  'IPS >= 1.75' => 'ips_>=_1.75',
+                  'Nilai PEM < 3000' => 'pem_<_3000',
+                  'Nilai PEM >= 3000' => 'pem_>=_3000',
                 ]"
                 x-model="$store.listPage.filter"
               />
@@ -115,16 +115,16 @@
                 :isIconCanRotate="false"
                 :dropdownItem="[
                   'Urutkan' => '',
-                  'SKS Lulus Terendah' => 'semester_1',
-                  'SKS Lulus Tertinggi' => 'semester_2',
-                  'SKS Lulus MK Wajib Terendah' => 'semester_3',
-                  'SKS Lulus MK Wajib Tertinggi' => 'semester_4',
-                  'IPK Terendah' => 'semester_5',
-                  'IPK Tertinggi' => 'semester_6',
-                  'IPS Terendah' => 'semester_7',
-                  'IPS Tertinggi' => 'semester_8',
-                  'Nilai PEM Terendah' => 'nama, asc',
-                  'Nilai PEM Tertinggi' => 'nama, desc',
+                  'SKS Lulus Terendah' => 'sks_lulus, asc',
+                  'SKS Lulus Tertinggi' => 'sks_lulus, desc',
+                  'SKS Lulus MK Wajib Terendah' => 'sks_lulus_mk_wajib, asc',
+                  'SKS Lulus MK Wajib Tertinggi' => 'sks_lulus_mk_wajib, desc',
+                  'IPK Terendah' => 'ipk, asc',
+                  'IPK Tertinggi' => 'ipk, desc',
+                  'IPS Terendah' => 'ips, asc',
+                  'IPS Tertinggi' => 'ips, desc',
+                  'Nilai PEM Terendah' => 'pem, asc',
+                  'Nilai PEM Tertinggi' => 'pem, desc',
                 ]"
                 x-model="$store.listPage.sort"
               />
@@ -188,9 +188,9 @@
                         </x-table-cell>
                         <x-table-cell>
                             <x-button.primary
-                                {{-- href="{{ route('tutelage-group.student-list.detail-krs', ['id' => $student['id']]) }}" --}}
-                                class="px-0"
-                                style="min-width: 0;"
+                              x-on:click="window.location.href='{{route('tutelage-group.student-list.detail-krs', ['id' => ':id'])}}'.replace(':id', data.id)"
+                              {{-- href="{{ route('tutelage-group.student-list.detail-krs', ['id' => $student['id']]) }}" --}}
+                              style="min-width: 0;"
                             >
                                 Detail
                             </x-button.primary>

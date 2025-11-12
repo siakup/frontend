@@ -7,222 +7,215 @@
     <div class="breadcrumb-item active">Kelompok Perwalian</div>
 @endsection
 
-@section('css')
-    <style>
-        .krs-section{ border-radius:14px; overflow:hidden; background:#fff; }
-        .krs-head{ height:80px;border-radius: 14px 14px 0 0 ;display:flex; justify-content:space-between; align-items:center; padding:10px 12px; font-weight:700; }
-        .grad-wait{ background:linear-gradient(90deg,#FFFFFF,#FEF3C0); }
-        .grad-del{  background:linear-gradient(90deg,#FFFFFF,#99D8FF); }
-        .grad-rej{  background:linear-gradient(90deg,#FFFFFF,#F7B6B8); }
-        .grad-ok{   background:linear-gradient(90deg,#FFFFFF,#D0DE68); }
+<script type="module">
+  import PerwalianKRS from "{{ asset('js/controllers/perwalianKrs.js') }}";
+  document.addEventListener('alpine:init', () => {
+    Alpine.store('detailPage', { 
+      data: @js($data),
+      tbl: @js($tbl)
+    });
 
-        .pill{ display:inline-flex; align-items:center; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:600; }
-        .pill-wait{ background:#FDE05D; color:black; }
-        .pill-del{ background:#3B82F6; color:#FFFFFF; }
-        .pill-ok{  background:#F7B6B8; color:black; }
-        .pill-no{  background:#EF4444; color:black; }
-
-        .chk {width: 18px;height: 18px;border-radius: 4px;border: 2px solid #9CA3AF;appearance: none;-webkit-appearance: none;outline: none;cursor: pointer;background: #fff;}
-        .chk:hover {border-color: #6B7280;}
-        .chk:checked {
-            background-color: #EF4444;border-color: #EF4444;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6.00016 10.2002L3.30016 7.50016L2.3335 8.46683L6.00016 12.1335L14.0002 4.1335L13.0335 3.16683L6.00016 10.2002Z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;background-position: center;background-size: 12px 12px;
-        }
-
-        .btn{ display:inline-flex; align-items:center; gap:8px; border:1px solid transparent; border-radius:10px; padding:10px 14px; font-weight:600; font-size:13px; cursor:pointer; }
-        .btn-approve{ background:#E62129; color:#fff; }
-        .btn-reject{  background:#FFFFFF; color:#E62129; }
-        .btn-plain{   background:#fff; color:#374151; border-color:#E5E7EB; }
-    </style>
-@endsection
+    Alpine.data('detailKRSPerwalianKRS', PerwalianKRS.detailKRSPerwalianKRS);
+  });
+</script>
 
 @section('content')
-    <div class="page-header">
-        <div class="page-title-text">Detail Kartu Studi Mahasiswa</div>
-    </div>
-
-<div class="academics-layout">
-  @include('tutelage.student-list.layout.navbar-tutelage')
-
-        <div class="academics-slicing-content content-card p-[10px]" style="border-top-left-radius: 0">
-
-            {{-- === Data Mahasiswa === --}}
-            <div class="page-title-text">Kartu Rencana Studi Mahasiswa</div>
-            <div class="p-[10px]">
-                <div class="overflow-hidden rounded-lg border border-[#E8E8E8]">
-                    <table class="min-w-full table-fixed text-sm text-[#262626]">
-                        <tbody>
-                        <tr class="h-[38px]">
-                            <td class="w-[313px] bg-[#E8E8E8] px-6 py-3">Nama Mahasiswa</td>
-                            <td class="bg-[#F5F5F5] px-6 py-3 font-semibold">{{ $student['nama'] }}</td>
-                        </tr>
-                        <tr class="h-[38px]">
-                            <td class="bg-[#F5F5F5] px-6 py-3">Nomor Induk Mahasiswa</td>
-                            <td class="bg-white px-6 py-3 font-semibold">{{ $student['nim'] }}</td>
-                        </tr>
-                        <tr class="h-[38px]">
-                            <td class="bg-[#E8E8E8] px-6 py-3">Status Pembayaran</td>
-                            <td class="bg-[#F5F5F5] px-6 py-3 font-semibold">
-                                @if($student['status_bayar'] === 'Sudah Membayar')
-                                    <span class="text-green-600">Sudah Membayar</span>
-                                @else
-                                    <span class="text-red-600">Belum Membayar</span>
-                                @endif
-                            </td>
-                        </tr>
-                        <tr class="h-[38px]">
-                            <td class="bg-[#F5F5F5] px-6 py-3">Indeks Prestasi Kumulatif</td>
-                            <td class="bg-white px-6 py-3 font-semibold">{{ $student['ipk'] }}</td>
-                        </tr>
-                        <tr class="h-[38px]">
-                            <td class="bg-[#E8E8E8] px-6 py-3">SKS yang diperbolehkan</td>
-                            <td class="bg-[#F5F5F5] px-6 py-3 font-semibold">{{ $student['sks_boleh'] }} SKS</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            {{-- === Info KRS === --}}
-            <div class="px-[10px] mb-5">
-                <div class="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-sm leading-relaxed flex items-center gap-3">
-                    {{-- Icon di kiri --}}
-                    <img src="{{ asset('assets/icon-caution-warning.svg') }}" alt="caution" class="w-6 h-6 mt-0.5"/>
-
-                    {{-- Konten teks di kanan --}}
-                    <div class="flex-1">
+  <x-container
+    :variant="'content-wrapper'"
+    x-data="detailKRSPerwalianKRS()"
+  >
+    <x-typography variant="body-large-semibold">Detail Kartu Studi Mahasiswa</x-typography>
+    <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
+      <x-tab 
+        :tabItems="[
+          (object)[
+            'routeName' => 'tutelage-group.student-list.detail-krs',
+            'routeQuery' => 'tutelage-group.student-list.detail-krs',
+            'title' => 'KRS',
+            'param' => ['id' => $id]
+          ],
+          (object)[
+            'routeName' => 'tutelage-group.student-list.detail-student-data',
+            'routeQuery' => 'tutelage-group.student-list.detail-student-data',
+            'title' => 'Data Mahasiswa',
+            'param' => ['id' => $id]
+          ],
+          (object)[
+            'routeName' => 'tutelage-group.student-list.detail-transkrip-resmi',
+            'routeQuery' => 'tutelage-group.student-list.detail-transkrip-resmi',
+            'title' => 'Transk. Resmi',
+            'param' => ['id' => $id]
+          ],
+          (object)[
+            'routeName' => 'tutelage-group.student-list.detail-transkrip-historis',
+            'routeQuery' => 'tutelage-group.student-list.detail-transkrip-historis',
+            'title' => 'Transk. Historis',
+            'param' => ['id' => $id]
+          ],
+          (object)[
+            'routeName' => 'tutelage-group.student-list.detail-transkrip-kurikulum',
+            'routeQuery' => 'tutelage-group.student-list.detail-transkrip-kurikulum',
+            'title' => 'Transk. Kurikulum',
+            'param' => ['id' => $id]
+          ],
+          (object)[
+            'routeName' => 'tutelage-group.student-list.detail-transkrip-pem',
+            'routeQuery' => 'tutelage-group.student-list.detail-transkrip-pem',
+            'title' => 'Transk. PEM',
+            'param' => ['id' => $id]
+          ],
+          (object)[
+            'routeName' => 'home',
+            'routeQuery' => 'home',
+            'title' => 'Pesan untuk Mahasiswa',
+            'param' => ['id' => $id]
+          ],
+        ]"
+      />
+        <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
+            <x-typography variant="body-medium-bold">Kartu Rencana Studi Mahasiswa</x-typography>
+            <x-container :class="'!p-0 !overflow-hidden'">
+              <table class="min-w-full table-fixed text-sm text-[#262626]">
+                  <tbody>
+                  <x-table-row class="text-[#262626]">
+                      <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Mahasiswa</x-table-cell>
+                      <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.student.nama"></x-table-cell>
+                  </x-table-row>
+                  <x-table-row class="text-[#262626]">
+                      <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Induk Mahasiswa</x-table-cell>
+                      <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.student.nim"></x-table-cell>
+                  </x-table-row>
+                  <x-table-row class="text-[#262626]">
+                      <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Status Pembayaran</x-table-cell>
+                      <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">
+                        <span 
+                          x-bind:class="{
+                            'text-green-600': $store.detailPage.data.student.status_bayar === 'Sudah Membayar', 
+                            'text-red-600': $store.detailPage.data.student.status_bayar === 'Belum Membayar'
+                          }" 
+                          x-text="$store.detailPage.data.student.status_bayar"></span>
+                      </x-table-cell>
+                  </x-table-row>
+                  <x-table-row class="text-[#262626]">
+                      <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Indeks Prestasi Kumulatif</x-table-cell>
+                      <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.student.ipk"></x-table-cell>
+                  </x-table-row>
+                  <x-table-row class="text-[#262626]">
+                      <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">SKS yang diperbolehkan</x-table-cell>
+                      <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.student.sks_boleh+' SKS'"></x-table-cell>
+                  </x-table-row>
+                  </tbody>
+              </table>
+            </x-container>
+            <x-container :variant="'content-wrapper'" :class="'!px-0'">
+                <x-container class="!border-yellow-300 !bg-yellow-50 text-sm leading-relaxed flex flex-row items-center gap-3">
+                    <x-icon :iconUrl="asset('assets/icon-caution-warning.svg')" :iconAlt="'caution'" />
+                    <x-container :variant="'content-wrapper'" class="!flex-1 !p-0 !gap-0">
                         <x-typography variant="body-medium-bold">Perhatian!</x-typography>
-                        <br>
                         <x-typography>
                             Mahasiswa kurang
-                            <b>{{ $krsInfo['sisa_sks_kelulusan'] }}</b> SKS untuk lulus
-                            {{ $krsInfo['total_sks_kelulusan'] }} SKS.
+                            <b x-text="$store.detailPage.data.krsInfo.sisa_sks_kelulusan"></b> SKS untuk lulus
+                            <span x-text="$store.detailPage.data.krsInfo.total_sks_kelulusan"></span> SKS.
                         </x-typography>
-
-                        <div class="mt-3">
-                            <x-typography variant="body-medium-bold">Rekomendasi wajib:</x-typography>
-                            <ul class="list-disc pl-5">
-                                @foreach($krsInfo['rekom_wajib'] as $r)
-                                    <li>{{ $r }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-
-                        <div class="mt-3">
-                            <x-typography variant="body-medium-bold">Rekomendasi ulang:</x-typography>
-                            <ul class="list-disc pl-5">
-                                @foreach($krsInfo['rekom_ulang'] as $r)
-                                    <li>{{ $r }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {{-- === Section Tables === --}}
-            @php
-                $sections = [
-                  'pending'  => ['title'=>'Menunggu Persetujuan','grad'=>'grad-wait','btns'=>['approve'=>'Setujui','reject'=>'Tolak Pengajuan']],
-                  'deletion' => ['title'=>'Mengajukan Penghapusan','grad'=>'grad-del','btns'=>['approveDel'=>'Setujui','rejectDel'=>'Tolak Penghapusan']],
-                  'rejected' => ['title'=>'Ditolak','grad'=>'grad-rej','btns'=>['cancelReject'=>'Batalkan Penolakan']],
-                  'approved' => ['title'=>'Disetujui','grad'=>'grad-ok','btns'=>['revokeApprove'=>'Tolak Persetujuan']],
-                ];
-                $tables = [
-                  'pending'=>$tblPending,
-                  'deletion'=>$tblDeletion,
-                  'rejected'=>$tblRejected,
-                  'approved'=>$tblApproved,
-                ];
-            @endphp
-
-            @foreach($sections as $key=>$sec)
-                <div class="krs-section mb-5 px-[10px]">
-                    <div class="krs-head border border-[#d9d9d9] {{ $sec['grad'] }}">
-                        <div>Mata Kuliah [{{ $sec['title'] }}]</div>
-                        <div class="flex gap-2">
-                            @foreach($sec['btns'] as $action => $label)
-                                @php
-                                    $isApprove = str_contains($action, 'approve');
-                                    $isReject  = str_contains($action, 'reject');
-                                @endphp
-
-                                @if ($isApprove)
+                        <x-typography variant="body-medium-bold" :class="'!mt-3'">Rekomendasi wajib:</x-typography>
+                        <ul class="list-disc pl-5">
+                          <template x-for="rekomendasi_wajib in $store.detailPage.data.krsInfo.rekom_wajib">
+                            <li x-text="rekomendasi_wajib"></li>
+                          </template>
+                        </ul>
+                        <x-typography variant="body-medium-bold" :class="'!mt-3'">Rekomendasi ulang:</x-typography>
+                        <ul class="list-disc pl-5">
+                          <template x-for="rekomendasi_ulang in $store.detailPage.data.krsInfo.rekom_ulang">
+                            <li x-text="rekomendasi_ulang"></li>
+                          </template>
+                        </ul>
+                    </x-container>
+                </x-container>
+            </x-container>
+            <template x-for="([key, section]) in Object.entries(sections)">
+                <x-container :class="'!p-0 overflow-hidden'">
+                    <x-container :variant="'content-wrapper'" class="h-20 rounded-t-[14px] flex flex-row justify-between items-center !py-2.5 !px-3" x-bind:class="{[section.grad]: section.grad}">
+                        <x-typography :variant="'body-small-bold'" class="w-full" x-text="'Mata Kuliah '+section.title"></x-typography>
+                        <x-container :variant="'content-wrapper'" class="flex flex-row justify-end gap-2">
+                            <template x-for="([action, label]) in Object.entries(section.btns)">
+                                <template x-if="action.includes('approve')">
                                     <x-button.primary
-                                        data-action="{{ $action }}"
-                                        data-table="tbl{{ ucfirst($key) }}"
-                                    >
-                                        {{ $label }}
-                                    </x-button.primary>
-                                @elseif ($isReject)
+                                        {{-- data-action="{{ $action }}"
+                                        data-table="tbl{{ ucfirst($key) }}" --}}
+                                        x-text="label"
+                                    ></x-button.primary>
+                                </template>
+                                <template x-if="action.includes('reject')">
                                     <x-button.secondary
-                                        data-action="{{ $action }}"
-                                        data-table="tbl{{ ucfirst($key) }}"
-                                    >
-                                        {{ $label }}
-                                    </x-button.secondary>
-                                @else
+                                        {{-- data-action="{{ $action }}"
+                                        data-table="tbl{{ ucfirst($key) }}" --}}
+                                        x-text="label"
+                                    ></x-button.secondary>
+                                </template>
+                                <template x-if="!action.includes('approve') && !action.includes('reject')">
                                     <x-button.secondary
-                                        data-action="{{ $action }}"
-                                        data-table="tbl{{ ucfirst($key) }}"
-                                    >
-                                        {{ $label }}
-                                    </x-button.secondary>
-                                @endif
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <x-table id="tbl{{ ucfirst($key) }}" style="border-top-left-radius: 0; border-top-right-radius: 0">
+                                        {{-- data-action="{{ $action }}" --}}
+                                        {{-- data-table="tbl{{ ucfirst($key) }}" --}}
+                                        x-text="label"
+                                    ></x-button.secondary>
+                                </template>
+                            </template>
+                        </x-container>
+                    </x-container>
+                    <x-table :isRoundedTop="false" :isBordered="false">
                         <x-table-head>
                             <x-table-row>
-                                <x-table-header class="w-[40px]"><input type="checkbox" class="chk" data-select-all="tbl{{ ucfirst($key) }}"></x-table-header>
-                                @foreach($cols as $c)<x-table-header>{{ $c }}</x-table-header>@endforeach
+                              {{-- data-select-all="tbl{{ ucfirst($key) }}" --}}
+                                <x-table-header class="w-[40px]"><input type="checkbox" class="chk"></x-table-header>
+                                <template x-for="col in cols">
+                                  <x-table-header x-text="col"></x-table-header>
+                                </template>
                             </x-table-row>
                         </x-table-head>
                         <x-table-body>
-                            @forelse($tables[$key] as $r)
-                                <x-table-row>
-                                    <x-table-cell><input type="checkbox" class="chk" data-row-check="tbl{{ ucfirst($key) }}"></x-table-cell>
-                                    <x-table-cell>{{ $r['no'] }}</x-table-cell>
-                                    <x-table-cell>{{ $r['kelas'] }}</x-table-cell>
-                                    <x-table-cell>{{ $r['mk'] }}</x-table-cell>
-                                    <x-table-cell>{{ $r['sks'] }}</x-table-cell>
-                                    <x-table-cell>{{ $r['nilai'] }}</x-table-cell>
-                                    <x-table-cell>{{ $r['prodi'] }}</x-table-cell>
-                                    <x-table-cell>{{ $r['presensi'] }}</x-table-cell>
-                                    <x-table-cell>{{ $r['uas'] }}</x-table-cell>
-                                    <x-table-cell>{!! $r['status_label'] !!}</x-table-cell>
-                                </x-table-row>
-                            @empty
-                                <x-table-row><x-table-cell colspan="10" class="text-center text-gray-500">Belum Ada Data</x-table-cell></x-table-row>
-                            @endforelse
+                          <template x-if="$store.detailPage.tbl[key] && $store.detailPage.tbl[key].length > 0">
+                            <template x-for="table in $store.detailPage.tbl[key]">
+                              <x-table-row>
+                                <x-table-cell><input type="checkbox" class="chk"></x-table-cell>
+                                <x-table-cell x-text="table.no"></x-table-cell>
+                                <x-table-cell x-text="table.kelas"></x-table-cell>
+                                <x-table-cell x-text="table.mk"></x-table-cell>
+                                <x-table-cell x-text="table.sks"></x-table-cell>
+                                <x-table-cell x-text="table.nilai"></x-table-cell>
+                                <x-table-cell x-text="table.prodi"></x-table-cell>
+                                <x-table-cell x-text="table.presensi"></x-table-cell>
+                                <x-table-cell x-text="table.uas"></x-table-cell>
+                                <x-table-cell x-html="table.status_label"></x-table-cell>
+                              </x-table-row>
+                            </template>
+                          </template>
+                          <template x-if="!$store.detailPage.tbl[key] || $store.detailPage.tbl[key].length == 0">
+                            <x-table-row><x-table-cell colspan="10" class="text-center text-gray-500">Belum Ada Data</x-table-cell></x-table-row>
+                          </template>
                         </x-table-body>
                     </x-table>
-                </div>
-            @endforeach
+                </x-container>
+            </template>
+            <x-container>
+              <x-button.primary
+                  href="{{ route('tutelage-group.student-list.detail-krs.add-course',['id'=>1]) }}"
+                  class="w-full"
+                  iconPosition="right"
+                  icon="{{ asset('assets/icon-plus-white.svg') }}"
+              >
+                Tambah Kelas Mata Kuliah
+              </x-button.primary>
+            </x-container>
 
-            <div class="border p-5 mx-[10px] my-5 rounded-lg border-[#D9D9D9]">
-                <x-button.primary
-                    href="{{ route('tutelage-group.student-list.detail-krs.add-course',['id'=>1]) }}"
-                    class="w-full"
-                    iconPosition="right"
-                    icon="{{ asset('assets/icon-plus-white.svg') }}"
-                >
-                    Tambah Kelas Mata Kuliah
-                </x-button.primary>
-            </div>
+            {{-- TODO: Tambah Kalender--}}
+            <x-container class="!p-0 box-border overflow-clip">
+              <x-full-calendar :events="$events" />
+            </x-container>
 
-{{--            TODO: Tambah Kalender--}}
-            <div class="mx-[10px] box-border border rounded-xl border-[#D9D9D9] overflow-clip">
-                <x-full-calendar :events="$events" />
-            </div>
-
-            <div class="flex justify-end mx-[10px] my-5">
-                <x-button.secondary href="{{route('tutelage-group.list-student')}}">Kembali</x-button.secondary>
-            </div>
-
-        </div>
-    </div>
+            <x-container :variant="'content-wrapper'" class="flex flex-row justify-end !px-0">
+              <x-button.secondary href="{{route('tutelage-group.list-student')}}">Kembali</x-button.secondary>
+            </x-container>
+        </x-container>
+    </x-container>
+  </x-container>
 @endsection

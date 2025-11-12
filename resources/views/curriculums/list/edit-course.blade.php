@@ -17,7 +17,7 @@
 </script>
 
 @section('content')
-<form action="{{route('curriculum.list.edit.update-study', ['id' => $id, 'course_id' => $course_id])}}" method="POST">
+<form action="{{route('curriculum.list.edit.update-assign-study', ['id' => $id, 'course_id' => $course_id])}}" method="POST">
   @csrf
   <x-container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Ubah Mata Kuliah Kurikulum</x-typography>
