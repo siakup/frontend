@@ -36,7 +36,7 @@
     label: '{{ $label }}',
     toggle() { this.open = ! this.open },
     setFalse() { this.open = false },
-    options: {{ json_encode($dropdownItem) }},
+    options: @js($dropdownItem),
     onSelectedOption() {
       if({{ json_encode($isOptionRedirectableToURLQueryParameter) }}) {
         const params = new URLSearchParams(window.location.search);
@@ -75,7 +75,7 @@
         x-init="{{ $attributes->get('x-init') }}"
       @else
         x-data="{
-          options: {{ json_encode($dropdownItem) }},
+          options: @js($dropdownItem),
         }"
       @endif
       x-show.important="open"

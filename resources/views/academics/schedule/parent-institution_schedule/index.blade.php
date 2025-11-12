@@ -90,28 +90,28 @@
               />
             </div>
             <x-form.dropdown 
-                :buttonId="'sortFilterButton'"
-                :dropdownId="'sortFilterDropdown'"
-                :label="'Urutkan'"
-                :imgSrc="asset('assets/icon-filter.svg')"
-                :isIconCanRotate="false"
-                :dropdownItem="[
-                  'Urutkan' => '',
-                  'Semester 1' => 'semester_1',
-                  'Semester 2' => 'semester_2',
-                  'Semester 3' => 'semester_3',
-                  'Semester 4' => 'semester_4',
-                  'Semester 5' => 'semester_5',
-                  'Semester 6' => 'semester_6',
-                  'Semester 7' => 'semester_7',
-                  'Semester 8' => 'semester_8',
-                  'A-Z' => 'nama, asc',
-                  'Z-A' => 'nama, desc',
-                  'Terbaru' => 'created_at,desc',
-                  'Terlama' => 'created_at,asc'
-                ]"
-                x-model="$store.listPage.sort"
-              />
+              :buttonId="'sortFilterButton'"
+              :dropdownId="'sortFilterDropdown'"
+              :label="'Urutkan'"
+              :imgSrc="asset('assets/icon-filter.svg')"
+              :isIconCanRotate="false"
+              :dropdownItem="[
+                'Urutkan' => '',
+                'Semester 1' => 'semester_1',
+                'Semester 2' => 'semester_2',
+                'Semester 3' => 'semester_3',
+                'Semester 4' => 'semester_4',
+                'Semester 5' => 'semester_5',
+                'Semester 6' => 'semester_6',
+                'Semester 7' => 'semester_7',
+                'Semester 8' => 'semester_8',
+                'A-Z' => 'nama, asc',
+                'Z-A' => 'nama, desc',
+                'Terbaru' => 'created_at,desc',
+                'Terlama' => 'created_at,asc'
+              ]"
+              x-model="$store.listPage.sort"
+            />
           </x-container>
           <x-table>
               <x-table-head>
@@ -230,8 +230,6 @@
         <x-button.primary x-on:click="">Hapus</x-button.primary>
       </x-slot>
     </x-modal.container-pure-js>
-      {{-- @if (isset($data['data']))
-      @endif --}}
   </x-container>
   <div id="view-parent-institution-schedule"></div>
 @endsection
