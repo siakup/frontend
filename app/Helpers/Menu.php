@@ -352,7 +352,6 @@ class Menu
 
                         ]
                     ],
-
                     'tutelage-group-student-list-student-data' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/student-data/*',
@@ -362,11 +361,37 @@ class Menu
 
                         ]
                     ],
-
                     'tutelage-group-student-list-transkrip-resmi' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/transkrip-resmi/*',
                         'parent' => 'tutelage-group.student-list.detail-transkrip-resmi',
+                        'isExpandable' => true,
+                        'children' => [
+
+                        ]
+                    ],
+                    'tutelage-group-student-list-transkrip-historis' => [
+                        'name' => 'Detail Kartu Mahasiswa',
+                        'url' => '/tutelage-group/student-list/detail/transkrip-historis/*',
+                        'parent' => 'tutelage-group.student-list.detail-transkrip-historis',
+                        'isExpandable' => true,
+                        'children' => [
+
+                        ]
+                    ],
+                    'tutelage-group-student-list-transkrip-kurikulum' => [
+                        'name' => 'Detail Kartu Mahasiswa',
+                        'url' => '/tutelage-group/student-list/detail/transkrip-kurikulum/*',
+                        'parent' => 'tutelage-group.student-list.detail-transkrip-kurikulum',
+                        'isExpandable' => true,
+                        'children' => [
+
+                        ]
+                    ],
+                    'tutelage-group-student-list-transkrip-pem' => [
+                        'name' => 'Detail Kartu Mahasiswa',
+                        'url' => '/tutelage-group/student-list/detail/transkrip-pem/*',
+                        'parent' => 'tutelage-group.student-list.detail-transkrip-pem',
                         'isExpandable' => true,
                         'children' => [
 

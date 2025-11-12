@@ -58,6 +58,69 @@ class PerwalianKRS {
       }
     }
   }
+
+  detailKRSPerwalianKRS() {
+    return {
+      cols: [
+        'No','Nama Kelas','Nama Mata Kuliah','SKS','Nilai',
+        'Prodi Lain','Presensi Kehadiran','Status UAS','Status'
+      ],
+      sections: {
+        pending: {
+          title: 'Menunggu Persetujuan',
+          grad: 'wait',
+          btns: {
+            approve: 'Setujui',
+            reject: 'Tolak Pengajuan'
+          }
+        },
+        deletion: {
+          title: 'Mengajukan Penghapusan',
+          grad: 'del',
+          btns: {
+            approveDel: 'Setujui',
+            rejectDel: 'Tolak Penghapusan'
+          }
+        },
+        rejected: {
+          title: 'Ditolak',
+          grad: 'rej',
+          btns: {cancelReject: 'Batalkan Penolakan'}
+        },
+        approved: {
+          title: 'Disetujui',
+          grad: 'ok',
+          btns: {revokeApprove: 'Tolak Persetujuan'}
+        }
+      },
+
+      init() { }
+    }
+  }
+
+  detailTranskripResmi() {
+    return {
+      init() { }
+    }
+  }
+
+  detailTranskripHistoris() {
+    return {
+      init() { }
+    }
+  }
+
+  detailTranskripKurikulum() {
+    return {
+      init() { }
+    }
+  }
+
+  detailTranskripPEM() {
+    return {
+      init() { }
+    }
+  }
 }
 
 export default new PerwalianKRS();
