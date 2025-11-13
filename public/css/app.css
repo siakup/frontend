@@ -286,6 +286,21 @@
     border-top: solid 1px #f39194 !important;
 }
 
+.rps-content{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 0 16px 0 16px !important;
+    border-top: solid 1px #f39194 !important;
+    background: #ffffff;
+    border-radius: 0 0 12px 12px;
+    border: 1px solid var(--Surface-Border-Primary, #d9d9d9);
+    overflow: visible !important;
+    position: relative;
+    z-index: 1;
+
+}
+
 .academics-menu {
     display: flex;
     align-self: self-end;
@@ -320,8 +335,7 @@
 
 .navigation-rps-card {
     display: flex;
-    margin-left: 16px;
-    margin-top: 16px;
+    margin: 16px 16px 0 16px;
     position: relative;
     bottom: -1px;
     z-index: 2;

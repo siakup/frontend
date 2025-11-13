@@ -65,22 +65,16 @@
                 </x-slot>
             </x-form.input-container>
         </x-container>
-            
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg m-4 py-4">
-            <div class="flex gap-4">
-                <div class="mt-10">
-                    <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
-                </div>
-                <div class="flex flex-col">
-                    <x-typography variant="body-small-bold">Catatan!</x-typography>
-                    <x-typography variant="body-small-regular" class="mb-5">Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah)</x-typography>
-                    <x-typography variant="body-small-regular">
-                        *Dosen harus merubah periode (sesuai dengan periode yang sedang berjalan atau periode selanjutnya. 
-                        Tidak muncul pilihan periode yg sama dengan RPS yang di salin sebelumnya)
-                    </x-typography>
-                </div>
+        <x-dialog variant="yellow" class="my-4">
+            <div class="flex flex-col">
+                <x-typography variant="body-small-bold">Catatan!</x-typography>
+                <x-typography variant="body-small-regular" class="mb-5">Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah)</x-typography>
+                <x-typography variant="body-small-regular">
+                    *Dosen harus merubah periode (sesuai dengan periode yang sedang berjalan atau periode selanjutnya. 
+                    Tidak muncul pilihan periode yg sama dengan RPS yang di salin sebelumnya)
+                </x-typography>
             </div>
-        </x-container>
+        </x-dialog>
         <x-table>
             <x-table-head>
                 <x-table-row>

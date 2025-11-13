@@ -14,7 +14,7 @@
 
     <div class="academics-layout">
         @include('rps.layout.navbar-rps')
-        <div x-data class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
+        <div x-data class="rps-content p-5 flex flex-col gap-5">
             <x-typography variant="body-medium-bold">Capaian Pembelajaran (CP)</x-typography>
 
             {{-- Capaian Pembelajaran Lulusan --}}
