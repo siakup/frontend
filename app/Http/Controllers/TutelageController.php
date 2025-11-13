@@ -231,6 +231,186 @@ class TutelageController extends Controller
       }
     }
 
+    public function showStudentData(Request $request, $id) {
+      try {
+        $data = [
+          'nama' => 'Fauzan Akmal Mukhlas',
+          'nim' => '105221015',
+          'judul_ta' => '',
+          'nik' => '140002848925',
+          'kota_lahir' => 'Tangerang Selatan',
+          'tanggal_lahir' => '28-11-2003',
+          'agama' => 'Islam',
+          'jenis_kelamin' => 'Pria',
+          'kewarganegaraan' => 'WNI',
+          'alamat_asal' => 'Jl. Teuku Nyak Arief, RT.7/RW.8, Simprug, Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta',
+          'rt' => '007',
+          'rw' => '014',
+          'dusun' => 'Durian',
+          'kelurahan' => 'Serpong',
+          'kecamatan' => 'Serpong',
+          'kota' => 'Tangerang Selatan',
+          'provinsi' => 'Banten',
+          'kode_pos' => '12210',
+          'jenis_tinggal' => 'Bersama Orang Tua',
+          'jenis_tinggal_lain' => 'Asrama',
+          'transport' => 'Motor',
+          'transport_lain' => 'Mobil',
+          'alamat_domisili' => 'ASRAMA SASAK DALAM 2, ASRAMA MAHASISWA H.SUGIANTO, JL. SASAK II NO.5 15, RT.5/RW.2, KLP. DUA, KEC. KB. JERUK, KOTA JAKARTA BARAT, DKI JAKARTA 11550 LEWAT JL. ARTERI PERMATA HIJAU DAN JL. PANJANG ARTERI KLP. DUA RAYA.',
+          'telp_rumah' => '0909090909',
+          'telp_seluler' => '0909090908',
+          'telp_darurat' => '0909090907',
+          'email' => 'siup@universitaspertamina.ac.id',
+          'kps' => true,
+          'no_kps' => '934234',
+          'kebutuhan_khusus' => false,
+          'orang_tua' => [
+            'ayah' => [
+              'nama' => 'Budi Suratno',
+              'nik' => '140002848925',
+              'tanggal_lahir' => '10-10-1960',
+              'riwayat_pendidikan' => 'Sarjana',
+              'pendidikan_lain' => '',
+              'pekerjaan' => 'Karyawan BUMN',
+              'pekerjaan_lain' => 'Investor',
+              'penghasilan' => 50000000,
+            ],
+            'ibu' => [
+              'nama' => 'Susi Susanti',
+              'nik' => '140002848923',
+              'tanggal_lahir' => '10-10-1962',
+              'riwayat_pendidikan' => 'Magister',
+              'pendidikan_lain' => 'Sarjana',
+              'pekerjaan' => 'Ibu Rumah Tangga',
+              'pekerjaan_lain' => 'Wirausaha',
+              'penghasilan' => 10000000,
+            ]
+          ],
+          'data_tambahan' => [
+            'jumlah_tanggungan' => 3,
+            'alamat_orang_tua' => 'Jl. Teuku Nyak Arief, RT.7/RW.8, Simprug, Kec. Kby. Lama, Kota Jakarta Selatan, Daerah Khusus Ibukota Jakarta 12220',
+            'alamt_alternatif_orang_tua' => '',
+            'no_hp_orang_tua' => '0909090904',
+            'kecamatan_orang_tua' => 'Kebayoran Lama',
+            'kota_orang_tua' => 'Jakarta Selatan',
+            'provinsi_orang_tua' => 'DKI Jakarta',
+            'email_orang_tua' => 'susisusanti6219@gmail.com'
+          ],
+          'data_sma' => [
+            'nisn' => '140002848921',
+            'tahun_lulus' => 2021,
+            'asal' => 'SMA Negeri 7 Sumedang',
+            'provinsi' => 'Jawa Tengah',
+            'kota' => 'Sumedang',
+            'kecamatan' => 'Sidomakmur',
+            'jenis' => 'SMA',
+            'jurusan' => 'MIPA',
+            'no_ijazah' => 'M-SMK-1292/2911',
+            'uan_mtk' => rand(0, 100),
+            'uan_inggris' => rand(0, 100), 
+            'uan_fisika' => rand(0, 100), 
+            'rapor_mtk' => rand(0, 100), 
+            'rapor_inggris' => rand(0, 100),
+          ],
+          'health' => [
+            'buta_warna' => false,
+            'napza' => false,
+            'riwayat_pribadi' => true,
+            'riwayat_keluarga' => true,
+            'pernyataan_kesehatan' => '',
+            'pernyataan_napza' => false,
+          ],
+          'statusAdministrasi' => [
+            'administrasi' => 'Belum Membayar',
+            'akademik' => 'active'
+          ],
+          'catatanAkademik' => [
+            [
+              'id' => 1,
+              'year' => 2021,
+              'ips' => 3.5,
+              'ipk' => 3.5,
+              'sks_diambil' => 16,
+              'sks_diperoleh' => 16,
+              'semester' => 1,
+              'mataKuliah' => [
+                [
+                  'nama' => 'Pancasila',
+                  'nama_kelas' => 'Pancasila - CS21',
+                  'nilai' => 'A-'
+                ],
+                [
+                  'nama' => 'Kalkulus I',
+                  'nama_kelas' => 'Kalkulus I - CS21',
+                  'nilai' => 'A'
+                ],
+              ]
+            ],
+            [
+              'id' => 2,
+              'year' => 2022,
+              'ips' => 3.6,
+              'ipk' => 3.55,
+              'sks_diambil' => 16,
+              'sks_diperoleh' => 32,
+              'semester' => 2,
+              'mataKuliah' => [
+                [
+                  'nama' => 'Kewarganegaraan',
+                  'nama_kelas' => 'Kewarganegaraan - CS21',
+                  'nilai' => 'A-'
+                ],
+                [
+                  'nama' => 'Kalkulus II',
+                  'nama_kelas' => 'Kalkulus II - CS21',
+                  'nilai' => 'A'
+                ],
+              ]
+            ],
+            [
+              'id' => 3,
+              'year' => 2022,
+              'ips' => 3.3,
+              'ipk' => 3.45,
+              'sks_diambil' => 23,
+              'sks_diperoleh' => 55,
+              'semester' => 1,
+              'mataKuliah' => [
+                [
+                  'nama' => 'Agama',
+                  'nama_kelas' => 'Agama - CS21',
+                  'nilai' => 'A-'
+                ],
+                [
+                  'nama' => 'Aljabar Linear dan Aplikasinya',
+                  'nama_kelas' => 'Aljabar Linear dan Aplikasinya - CS21',
+                  'nilai' => 'A'
+                ],
+              ]
+            ],
+          ]
+        ];
+
+        return view('tutelage.student-list.detail-student-data', get_defined_vars());
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman detail data mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data');
+        }
+
+        return redirect()
+          ->route('tutelage-group.list-student')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman detail data mahasiswa']);
+      }
+    }
+
     public function showTranskripKurikulum(Request $request, $id)
     {
       try {
