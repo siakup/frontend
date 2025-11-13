@@ -98,6 +98,135 @@ class PerwalianKRS {
     }
   }
 
+  detailStudentData() {
+    return {
+      isModalOpen: false,
+      selectedId: null,
+      fileOpen: true,
+      loadingKey: null,
+      chart: null,
+      docs: {
+        'Ijazah/Surat Keterangan Lulus': 'ijazah_skl',
+        'Foto': 'foto',
+        'Akta Kelahiran': 'akta_lahir',
+        'Kartu Peserta Ujian': 'kartu_peserta',
+        'Bukti Pembayaran': 'bukti_bayar',
+        'Sertifikat Prestasi': 'sertifikat_prestasi',
+        'Kartu Keluarga': 'kartu_keluarga',
+        'Kartu Identitas': 'kartu_identitas',
+        'Surat Keterangan Bebas Buta Warna': 'skb_buta_warna',
+        'Surat Pernyataan Mahasiswa Baru': 'spm_baru',
+        'Rapor': 'rapor',
+        'Transkrip Nilai': 'transkrip',
+        'Ijazah': 'ijazah',
+        'Hasil Tes Skor TKDA/TKA': 'tkda_tka',
+        'Hasil Tes Bahasa Inggris (TOEFL/IELTS)': 'english_test',
+      },
+
+      async openDoc(key, nim){
+        try {
+          this.loadingKey = key;
+
+          // === Ganti endpoint route backend ===
+          const nim = nim ?? null;
+          const url = `/api/students/${nim ?? 'dummy'}/documents/${key}`;
+
+          const res = await fetch(url, { headers: { 'Accept': 'application/json' }});
+          if(!res.ok){
+            if(res.status === 404){ alert('Dokumen tidak ditemukan'); return; }
+            throw new Error('Gagal memuat dokumen');
+          }
+
+          // A) backend balas { url: "https://..." }
+          // B) backend balas file (blob)
+          const contentType = res.headers.get('content-type') || '';
+          if(contentType.includes('application/json')){
+            const data = await res.json();
+            if(data?.url){ window.open(data.url, '_blank'); }
+            else { alert('URL dokumen tidak tersedia'); }
+          } else {
+            const blob = await res.blob();
+            const fileUrl = URL.createObjectURL(blob);
+            window.open(fileUrl, '_blank');
+          }
+        } catch(e) {
+          console.error(e);
+          alert('Terjadi kesalahan saat membuka dokumen.');
+        } finally {
+          this.loadingKey = null;
+        }
+      },
+
+      init() {},
+
+      initChart() {
+        if(this.chart) return;
+        const ctx = this.$el.querySelector('canvas');
+        const data = this.$store.detailPage.data.catatanAkademik;
+        const labels = data.map(value => `${value.year} ${value.semester == 1 ? 'Ganjil' : (value.semester == 2 ? 'Genap' : 'Pendek') }`);
+        const datasets = [
+          {
+            label: 'IPK',
+            data: data.map(value => value.ipk),
+            borderColor: '#2563eb',
+            backgroundColor: '#2563eb',
+            tension: 0.3
+          },
+          {
+            label: 'IPS',
+            data: data.map(value => value.ips),
+            borderColor: '#84cc16',
+            backgroundColor: '#84cc16',
+            tension: 0.3
+          }
+        ]
+        
+        const chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: labels,
+              datasets: datasets
+          },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: {
+                      position: 'bottom',
+                      labels: {
+                          boxWidth: 12,
+                          padding: 15
+                      }
+                  }
+              },
+              scales: {
+                  y: {
+                      min: 1,
+                      max: 5,
+                      ticks: { stepSize: 1 }
+                  }
+              }
+          }
+        });
+
+        this.chart = chart;
+      },
+
+      downloadChart() {
+        const a = document.createElement('a');
+        a.href = this.chart.toBase64Image();
+        a.download = 'statistik-ipk-ips.png';
+        a.click();
+      },
+
+      printChart() {
+        const w = window.open('', '_blank');
+        w.document.write('<img src="' + this.chart.toBase64Image() + '" />');
+        w.print();
+      }
+    }
+  }
+
   detailTranskripResmi() {
     return {
       init() { }

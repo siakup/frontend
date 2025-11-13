@@ -77,33 +77,33 @@
             <x-container :class="'!p-0 !overflow-hidden'">
               <table class="min-w-full table-fixed text-sm text-[#262626]">
                   <tbody>
-                  <x-table-row class="text-[#262626]">
-                      <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Mahasiswa</x-table-cell>
-                      <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.student.nama"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                      <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Induk Mahasiswa</x-table-cell>
-                      <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.student.nim"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                      <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Status Pembayaran</x-table-cell>
-                      <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">
-                        <span 
-                          x-bind:class="{
-                            'text-green-600': $store.detailPage.data.student.status_bayar === 'Sudah Membayar', 
-                            'text-red-600': $store.detailPage.data.student.status_bayar === 'Belum Membayar'
-                          }" 
-                          x-text="$store.detailPage.data.student.status_bayar"></span>
-                      </x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                      <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Indeks Prestasi Kumulatif</x-table-cell>
-                      <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.student.ipk"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                      <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">SKS yang diperbolehkan</x-table-cell>
-                      <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.student.sks_boleh+' SKS'"></x-table-cell>
-                  </x-table-row>
+                    <x-table-row class="text-[#262626]">
+                        <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Mahasiswa</x-table-cell>
+                        <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.student.nama"></x-table-cell>
+                    </x-table-row>
+                    <x-table-row class="text-[#262626]">
+                        <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Induk Mahasiswa</x-table-cell>
+                        <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.student.nim"></x-table-cell>
+                    </x-table-row>
+                    <x-table-row class="text-[#262626]">
+                        <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Status Pembayaran</x-table-cell>
+                        <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">
+                          <span 
+                            x-bind:class="{
+                              'text-green-600': $store.detailPage.data.student.status_bayar === 'Sudah Membayar', 
+                              'text-red-600': $store.detailPage.data.student.status_bayar === 'Belum Membayar'
+                            }" 
+                            x-text="$store.detailPage.data.student.status_bayar"></span>
+                        </x-table-cell>
+                    </x-table-row>
+                    <x-table-row class="text-[#262626]">
+                        <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Indeks Prestasi Kumulatif</x-table-cell>
+                        <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.student.ipk"></x-table-cell>
+                    </x-table-row>
+                    <x-table-row class="text-[#262626]">
+                        <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">SKS yang diperbolehkan</x-table-cell>
+                        <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.student.sks_boleh+' SKS'"></x-table-cell>
+                    </x-table-row>
                   </tbody>
               </table>
             </x-container>
