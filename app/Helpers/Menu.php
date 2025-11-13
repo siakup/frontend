@@ -400,13 +400,13 @@ class Menu
                 ]
             ],
             'rps' => [
-                'name' => 'RPS (Rencana Pembelajaran Dosen)',
+                'name' => 'RPS (Rencana Pembelajaran Semester)',
                 'url' => '/rps',
                 'parent' => 'rps.index',
                 'isExpandable' => true,
                 'children' => [
                   'buat-rps' => [
-                        'name' => 'Buat RPS (Rencana Pembelajaran Dosen)',
+                        'name' => 'Buat RPS (Rencana Pembelajaran Semester)',
                         'url' => '/rps/*',
                         'parent' => 'rps',
                         'isExpandable' => true,

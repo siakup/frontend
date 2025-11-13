@@ -12,7 +12,7 @@
             </div>
         </x-slot>
         <x-container class="!rounded-lg">
-            <x-form.input-container class="w-[250px]" containerClass="mb-5">
+            <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">Range Nilai</x-slot>
                 <x-slot name="input">
                     <x-form.input 
@@ -23,7 +23,7 @@
 
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container class="w-[200px]" labelClass="self-start">
+            <x-form.input-container labelClass="w-[200px] self-start">
                 <x-slot name="label">Kualitas Jawaban</x-slot>
                 <x-slot name="input">
                     <x-form.textarea

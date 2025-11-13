@@ -20,7 +20,7 @@
 @php
   $variants = [
     'red' => 'flex items-center gap-2 py-2 px-4 bg-transparent border-[1px] border-[#E62129] cursor-pointer text-[#E62129] transition-all duration-200 rounded-lg hover:bg-[#FBE8E6]',
-    'gray' => 'flex items-center justify-between py-2 px-4 w-auto cursor-pointer border-[1px] border-[#BFBFBF] bg-[#FFFFFF] transition-all duration-200 rounded-lg'
+    'gray' => 'flex items-center text-sm justify-between py-2 px-4 w-full cursor-pointer border-[1px] border-[#BFBFBF] bg-[#FFFFFF] transition-all duration-200 rounded-lg'
   ];
 
   $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];
@@ -65,8 +65,8 @@
     </button>
     <div 
       class="
-      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex-col items-start max-h-[200px] overflow-y-auto z-10 w-full right-0 left-0
-      {{ $variant === 'gray' ? 'min-w-[240px]' : '' }}
+      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex-col items-start max-h-[200px] overflow-y-auto z-10
+      {{ $variant === 'gray' ? 'min-w-[240px] right-0' : 'w-full right-0 left-0' }}
       {{ $optionStyleClass }}
     " 
       id="{{ $dropdownId }}" 

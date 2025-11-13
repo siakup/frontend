@@ -1,10 +1,10 @@
 @extends('layouts.main')
 
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
+@section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
     <div class="page-header pl-5">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>
+        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
     </div>
     <x-button.back class="ml-2 mb-4" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
     @include('rps.layout.navbar-rps')
@@ -31,13 +31,11 @@
                         <x-table-cell>{{ $komponen['bobot'] }}</x-table-cell>
                         @foreach($komponen['cpmk'] as $nilaiCpmk)
                             <x-table-cell>
-                                @if($nilaiCpmk === true)
-                                    <div class="flex justify-center items-center">
-                                        @if ($nilaiCpmk)
-                                            <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px]" />
-                                        @endif
-                                    </div>
-                                @endif
+                                <div class="flex justify-center items-center">
+                                    @if ($nilaiCpmk)
+                                        <x-icon iconUrl="{{ asset('assets/base/icon-tick-20.svg') }}" />
+                                    @endif
+                                </div>
                             </x-table-cell>
                         @endforeach
                     </x-table-row>
