@@ -14,8 +14,7 @@
         <div 
             x-data="deskripsiUmum()" 
             
-            class="academics-slicing-content content-card p-5 flex flex-col gap-5" 
-            style="border-radius: 0 12px 12px 12px !important;"
+            class="rps-content p-5 flex flex-col gap-5" 
         >
             <x-typography variant="body-medium-bold">Informasi RPS</x-typography>
             <x-form.input-container labelClass="w-[200px]">
@@ -162,12 +161,9 @@
             <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label"></x-slot>
                 <x-slot name="input">
-                    <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3">
-                        <div class="flex gap-4">
-                            <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
-                            <x-typography variant="body-medium-regular">Tim pengajar bisa lebih dari satu</x-typography>
-                        </div>
-                    </x-container>
+                    <x-dialog variant="yellow">
+                        <x-typography variant="body-medium-regular">Tim pengajar bisa lebih dari satu</x-typography>
+                    </x-dialog>
                 </x-slot>
             </x-form.input-container>
             <x-form.input-container labelClass="self-start w-[200px]">

@@ -9,7 +9,7 @@
     <x-button.back class="ml-2 mb-4" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
     @include('rps.layout.navbar-rps')
 
-    <div x-data="{ komponenList: @js($komponenList ?? []) }" class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
+    <div x-data="{ komponenList: @js($komponenList ?? []) }"  class="rps-content p-5 flex flex-col gap-5" >
         <x-typography variant="body-medium-bold">Komponen Penilaian</x-typography>
 
         @if($komponenList)

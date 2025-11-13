@@ -4,7 +4,8 @@
   'label' => null,  
   'name',
   'disabled' => false,
-  'checked' => false
+  'checked' => false,
+  'containerClass' => '',
 ])
 
 @php
@@ -28,13 +29,13 @@
   }
 </script>
 
-<div class="flex gap-3 items-center">
+<div class="flex gap-3 items-center {{ $containerClass }}">
   <input 
     id="{{ $id }}" 
     type="checkbox" 
     {{
       $attributes->except('onchange')->merge([
-        'class' => "accent-[#E62129] w-fit pe-10 box-border ps-3 border-[1px] border-[#D9D9D9] rounded-lg text-sm leading-5 h-10"
+        'class' => "accent-[#E62129] w-fit pe-10 box-border flex items-center ps-3 border-[1px] border-[#D9D9D9] rounded-lg text-sm leading-5 h-10"
       ])
     }}
     onchange="{{$onChange}}"

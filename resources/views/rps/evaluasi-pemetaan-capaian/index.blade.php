@@ -1,4 +1,4 @@
-{{-- @extends('layouts.main')
+@extends('layouts.main')
 
 @section('title', 'RPS (Rencana Pembelajaran Dosen)')
 
@@ -9,71 +9,70 @@
     <x-button.back class="ml-2 mb-4" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
     @include('rps.layout.navbar-rps')
 
-    <div x-data class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
+    <div x-data class="rps-content p-5 flex flex-col gap-5" >
         <x-typography variant="body-medium-bold">Evaluasi Pemetaan Konten Perkuliahan Dengan Capaian Lulusan</x-typography>
         <x-typography variant="body-small-semibold" class="mt-4">Capaian Pembelajaran Lulusan (CPL)</x-typography>
 
-        @if($isPemetaan)
-            @foreach ($groupedEvaluasi as $cpl => $evaluasiList)
-                <x-table>
-                    <x-table-head>
-                        <x-table-row>
-                            <x-table-header colspan="2" rowspan="2">Capaian Mata Kuliah (CPMK)</x-table-header>
-                            <x-table-header colspan="3">{{ $cpl }}</x-table-header>
-                        </x-table-row>
-                        <x-table-row>
-                            <x-table-header>Tugas</x-table-header>
-                            <x-table-header>UTS</x-table-header>
-                            <x-table-header>UAS</x-table-header>
-                        </x-table-row>
-                    </x-table-head>
+        @if($evaluasiList)
+        <x-table>
+            <x-table-head>
+                <x-table-row>
+                    <x-table-header colspan="2" rowspan="2">Capaian Mata Kuliah (CPMK)</x-table-header>
+                    <x-table-header colspan="3">{{ $cpl }}</x-table-header>
+                </x-table-row>
+                <x-table-row>
+                    <x-table-header>Tugas</x-table-header>
+                    <x-table-header>UTS</x-table-header>
+                    <x-table-header>UAS</x-table-header>
+                </x-table-row>
+            </x-table-head>
 
-                    <x-table-body>
-                        @foreach ($evaluasiList as $eval)
-                            <x-table-row>
-                                <x-table-cell class="w-[200px] !text-xs">{{ $eval['cpmk'] }}</x-table-cell>
-                                <x-table-cell position="left" class="text-xs">{{ $eval['deskripsi'] }}</x-table-cell>
+            <x-table-body>
+                @foreach ($evaluasiList as $eval)
+                <x-table-row>
+                    <x-table-cell class="w-[200px] !text-xs">{{ $eval['cpmk'] }}</x-table-cell>
+                    <x-table-cell position="left" class="text-xs">{{ $eval['deskripsi'] }}</x-table-cell>
 
-                                <x-table-cell class="text-center">
-                                    @if ($eval['rincian']['tugas'])
-                                        <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px] mx-auto" />
-                                    @endif
-                                </x-table-cell>
-                                <x-table-cell class="text-center">
-                                    @if ($eval['rincian']['uts'])
-                                        <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px] mx-auto" />
-                                    @endif
-                                </x-table-cell>
-                                <x-table-cell class="text-center">
-                                    @if ($eval['rincian']['uas'])
-                                        <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px] mx-auto" />
-                                    @endif
-                                </x-table-cell>
-                            </x-table-row>
-                        @endforeach
-                    </x-table-body>
-                </x-table>
-            @endforeach
+                    <x-table-cell class="text-center">
+                        @if ($eval['rincian']['tugas'])
+                            <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px] mx-auto" />
+                        @endif
+                        </x-table-cell>
+                    <x-table-cell class="text-center">
+                        @if ($eval['rincian']['uts'])
+                            <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px] mx-auto" />
+                        @endif
+                    </x-table-cell>
+                    <x-table-cell class="text-center">
+                        @if ($eval['rincian']['uas'])
+                            <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px] mx-auto" />
+                        @endif
+                    </x-table-cell>
+                </x-table-row>
+                @endforeach
+            </x-table-body>
+        </x-table>
+
         @else
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header colspan="2">Capaian Mata Kuliah (CPMK)</x-table-header>
-                        <x-table-header></x-table-header>
-                    </x-table-row>
-                </x-table-head>
-                <x-table-body>
-                    @foreach ($evaluasiList as $eval)
-                        <x-table-row>
-                            <x-table-cell class="w-[200px] !text-xs">{{ $eval['cpmk'] }}</x-table-cell>
-                            <x-table-cell position="left" class="text-xs">{{ $eval['deskripsi'] }}</x-table-cell>
-                            @if($loop->first)
-                                <x-table-cell rowspan="{{ $loop->count }}" class="bg-[#D9D9D9] font-semibold text-xs">Belum Ada Evaluasi Pemetaan, Silahkan Tambah Evaluasi Pemetaan Terlebih Dahulu</x-table-cell>
-                            @endif
-                        </x-table-row>
-                    @endforeach
-                </x-table-body>
-            </x-table>
+        <x-table>
+            <x-table-head>
+                <x-table-row>
+                    <x-table-header colspan="2">Capaian Mata Kuliah (CPMK)</x-table-header>
+                    <x-table-header></x-table-header>
+                </x-table-row>
+            </x-table-head>
+            <x-table-body>
+                @foreach ($evaluasiList as $eval)
+                <x-table-row>
+                    <x-table-cell class="w-[200px] !text-xs">{{ $eval['cpmk'] }}</x-table-cell>
+                    <x-table-cell position="left" class="text-xs">{{ $eval['deskripsi'] }}</x-table-cell>
+                    @if($loop->first)
+                        <x-table-cell rowspan="{{ $loop->count }}" class="bg-[#D9D9D9] font-semibold text-xs">Belum Ada Evaluasi Pemetaan, Silahkan Tambah Evaluasi Pemetaan Terlebih Dahulu</x-table-cell>
+                    @endif
+                </x-table-row>
+                @endforeach
+            </x-table-body>
+        </x-table>
         @endif
 
         <div class="flex justify-end">
@@ -124,4 +123,4 @@
             </div>
         </x-container>
     </x-modal.confirmation>
-@endsection --}}
+@endsection

@@ -50,15 +50,11 @@ class RpsController extends Controller
         ];
 
         $periodeList = [
-            '2022 - Ganjil' => '1',
-            '2022 - Genap' => '2',
-            '2023- Ganjil' => '3',
-            '2023 - Genap' => '4',
-            '2024 - Ganjil' => '5',
-            '2024 - Genap' => '6',
-            '2025 - Ganjil' => '7',
-            '2025 - Genap' => '8',
-            '2026 - Ganjil' => '9',
+            '2025 - Ganjil' => '1',
+            '2025 - Pendek' => '2',
+            '2025- Genap' => '3',
+            '2024 - Ganjil' => '4',
+            '2024 - Pendek' => '5',
         ];
         
         $prodiList = [
@@ -84,15 +80,11 @@ class RpsController extends Controller
 
     public function buatRpsDeskripsiUmum() {
         $periodeList = [
-            '2022 - Ganjil' => '1',
-            '2022 - Genap' => '2',
-            '2023- Ganjil' => '3',
-            '2023 - Genap' => '4',
-            '2024 - Ganjil' => '5',
-            '2024 - Genap' => '6',
-            '2025 - Ganjil' => '7',
-            '2025 - Genap' => '8',
-            '2026 - Ganjil' => '9',
+            '2025 - Ganjil' => '1',
+            '2025 - Pendek' => '2',
+            '2025- Genap' => '3',
+            '2024 - Ganjil' => '4',
+            '2024 - Pendek' => '5',
         ];
         
         $prodiList = [
@@ -271,13 +263,13 @@ class RpsController extends Controller
             [
                 'minggu' => 1,
                 'cpmk' => 'CPMK-1',
-                'sub_cpmk' => '1. Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi steam power plant, seperti: menentukan laju alir steam, daya pompa/turbin, laju alir panas pada boiler/condenser).
-                                2. Mahasiswa dapat menentukan efisiensi termal steam power plant yang beroperasi dengan siklus Rankine (ideal maupun aktual)',
-                'rencana' => '1. Rencana Pembelajaran Studi
+                'sub_cpmk' => "1. Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi steam power plant, seperti: menentukan laju alir steam, daya pompa/turbin, laju alir panas pada boiler/condenser).
+                2. Mahasiswa dapat menentukan efisiensi termal steam power plant yang beroperasi dengan siklus Rankine (ideal maupun aktual)",
+                'rencana' => "1. Rencana Pembelajaran Studi
                             2. Steam power plant
                                 a. Review siklus Carnot
                                 b. Siklus Rankine ideal (ideal vapor power cycle)
-                                c. Siklus Rankine aktual',
+                                c. Siklus Rankine aktual",
                 'waktu_kuliah' => 100,
                 'waktu_diskusi_latihan' => 50,
                 'waktu_praktikum' => 180,
@@ -287,7 +279,7 @@ class RpsController extends Controller
             [
                 'minggu' => 2,
                 'cpmk' => 'CPMK-1',
-                'sub_cpmk' => '1. Mahasiswa memahami perbedaan antara siklus refrigerasi dan power plant
+                'sub_cpmk' => '1. Mahasiswa memahami perbedaan antara siklus refrigerasi dan power plant \n
                                 2. Mahasiswa memahami siklus vapor compression ideal',
                 'rencana' => '2. Steam power plant
                                 a. Meningkatkan efisiensi siklus Ranking
@@ -389,110 +381,49 @@ class RpsController extends Controller
     }
 
     public function showEvaluasiPemetaan() {
-        // $evaluasiList = [
-        //     [
-        //         'cpmk' => 'CPMK-1',
-        //         'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
-        //         'pemetaan' => [
-        //             [
-        //                 'cpl' => 'CPL-G',
-        //                 'rincian' => [
-        //                     'tugas' => true,
-        //                     'uts' => true,
-        //                     'uas' => true,
-        //                 ]
-        //             ],
-        //             [
-        //                 'cpl' => 'CPL-H',
-        //                 'rincian' => [
-        //                     'tugas' => true,
-        //                     'uts' => false,
-        //                     'uas' => true,
-        //                 ]
-        //             ],
-        //         ]
-        //     ],
-        //     [
-        //         'cpmk' => 'CPMK-2',
-        //         'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
-        //         'pemetaan' => [
-        //             [
-        //                 'cpl' => 'CPL-G',
-        //                 'rincian' => [
-        //                     'tugas' => true,
-        //                     'uts' => true,
-        //                     'uas' => true,
-        //                 ]
-        //             ],
-        //             [
-        //                 'cpl' => 'CPL-H',
-        //                 'rincian' => [
-        //                     'tugas' => true,
-        //                     'uts' => false,
-        //                     'uas' => true,
-        //                 ]
-        //             ],
-        //         ]
-        //     ],
-        //     [
-        //         'cpmk' => 'CPMK-3',
-        //         'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
-        //         'pemetaan' => [
-        //             [
-        //                 'cpl' => 'CPL-G',
-        //                 'rincian' => [
-        //                     'tugas' => true,
-        //                     'uts' => false,
-        //                     'uas' => true,
-        //                 ]
-        //             ],
-        //             [
-        //                 'cpl' => 'CPL-H',
-        //                 'rincian' => [
-        //                     'tugas' => true,
-        //                     'uts' => true,
-        //                     'uas' => true,
-        //                 ]
-        //             ],
-        //         ]      
-        //     ]
-        // ];
 
         $evaluasiList = [
-            'CPL-G' => [
-
+            [
+                'id'=> 1,
+                'cpmk' => 'CPMK-1',
+                'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
+                'rincian' => [
+                    'tugas' => true,
+                    'uts' => false,
+                    'uas' => true,
+                ]
+            ],
+            [
+                'id'=> 2,
+                'cpmk' => 'CPMK-2',
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
+                'rincian' => [
+                    'tugas' => false,
+                    'uts' => true,
+                    'uas' => true,
+                ]
+            ],
+            [
+                'id'=> 3,
+                'cpmk' => 'CPMK-3',
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
+                'rincian' => [
+                    'tugas' => true,
+                    'uts' => true,
+                    'uas' => false,
+                ]
             ]
         ];
 
-        // $isPemetaan = !empty($evaluasiList[0]['pemetaan']);
-        // $groupedEvaluasi = [];
-
-        // if($isPemetaan) {
-        //     foreach ($evaluasiList as $eval) {
-        //         foreach ($eval['pemetaan'] as $map) {
-        //             $cpl = $map['cpl'];
-        //             $groupedEvaluasi[$cpl][] = [
-        //                 'cpmk' => $eval['cpmk'],
-        //                 'deskripsi' => $eval['deskripsi'],
-        //                 'rincian' => $map['rincian'],
-        //             ];
-        //         }
-        //     }
-
-        // }
-        
-
-        // $dataCpl = array_keys($groupedEvaluasi);
-
-        
+        $cpl = 'CPL-G';
 
         $cplList = [
-            'CPL-H' => '1',
-            'CPL-I' => '2',
-            'CPL-J' => '3',
-            'CPL-K' => '4',
-            'CPL-L' => '5',
-            'CPL-M' => '6',
+            'CPL-H' => 'CPL-H',
+            'CPL-I' => 'CPL-I',
+            'CPL-J' => 'CPL-J',
+            'CPL-K' => 'CPL-K',
+            'CPL-L' => 'CPL-L',
+            'CPL-M' => 'CPL-M',
         ];
 
 

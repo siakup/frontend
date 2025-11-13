@@ -11,7 +11,7 @@
     <div class="academics-layout">
     @include('rps.layout.navbar-rps')
 
-        <div x-data="{ matriksList: @js($matriksList ?? []) }" class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
+        <div x-data="{ matriksList: @js($matriksList ?? []) }"  class="rps-content p-5 flex flex-col gap-5" >
             <x-typography variant="body-medium-bold">Matriks Penilaian Kognitif</x-typography>
 
             @if($matriksList)
