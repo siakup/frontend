@@ -99,7 +99,7 @@
                     </x-table-cell>
                     <x-table-cell>
                         @if($rps['status']==='Finalized')
-                            <x-badge class="inline-flex bg-[#D0DE68]">Finalized</x-badge>
+                            <x-tag variant="green-filled">Finalized</x-tag>
                         @endif
                     </x-table-cell>
                     <x-table-cell text_size="text-xs">{{ $rps['tanggal_upload'] }}</x-table-cell>
