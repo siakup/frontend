@@ -1,4 +1,4 @@
-@props(['id', 'value' => null, 'variant' => 'default'])
+@props(['value' => false, 'variant' => 'default'])
 
 @php
   $variants = [
@@ -13,44 +13,35 @@
   ]   
 @endphp
 
-<script>
-  function onHandleToggleInput(element, isInit) {
-    const toggleIcon = element.querySelector('img');
-    const toggleInfo = element.querySelector('span');
-    const input = element.nextElementSibling;
-
-    let isActive = input.value === "true" ? true : false;
-    if(!isInit) {
-      isActive = !isActive;
+<div 
+  class="flex items-center gap-3 m-2"
+  x-data="{
+    value: @js($value),
+    variant: @js($variant),
+    variants: @js($variants),
+    offSrc: @js(asset('components/toggle-off-disabled-true.svg')),
+    onSrc: @js($variants[$variant]['imgSource']),
+    onClick () {
+      if(this.variant !== 'readonly') {
+        this.value = ! this.value;
+      }
     }
-
-    if (isActive) {
-      toggleIcon.src = "{{ $variants[$variant]['imgSource'] }}";
-      toggleInfo.textContent = "Aktif";
-      input.value = "true";
-    } else {
-      toggleIcon.src = "{{ asset('components/toggle-off-disabled-true.svg') }}";
-      toggleInfo.textContent = "Tidak Aktif";
-      input.value = "false";
-    }
-  }
-
-  setTimeout(() => {
-    onHandleToggleInput(document.getElementById('{{$id}}').previousElementSibling, true);
-  }, 0);
-</script>
-
-<div class="flex items-center gap-3 m-2">
+  }"
+  x-modelable="value"
+  x-model="{{$attributes->whereStartsWith('x-model')->first()}}"
+>
   <label class="whitespace-nowrap text-[#262626] text-sm font-semibold flex w-[200px] items-center gap-2" for="status">Status</label>
   <button 
     type="button"
     class="p-0 border-none bg-transparent outline-none flex items-center cursor-pointer gap-4" 
-    @if($variant !== 'readonly')
-      onclick="onHandleToggleInput(this, false);"
-    @endif  
+    x-on:click="onClick()"
   >
-      <img src="{{ asset('components/toggle-off-disabled-true.svg') }}" alt="Toggle Icon">
-      <span class="text-sm {{ $variants[$variant]['span'] }}">Tidak Aktif</span>
+      <img 
+        src="{{ asset('components/toggle-off-disabled-true.svg') }}" 
+        x-bind:src="value ? onSrc : offSrc"
+        alt="Toggle Icon" 
+      />
+      <span class="text-sm {{ $variants[$variant]['span'] }}" x-text="value ? 'Aktif' : 'Tidak Aktif'">Tidak Aktif</span>
   </button>
-  <input onload="onHandleToggleInput(this, true)" type="hidden" name="status" id="{{$id}}" value="{{ $value ? 'true' : 'false' }}">
+  <input type="hidden" x-model="value">
 </div>
