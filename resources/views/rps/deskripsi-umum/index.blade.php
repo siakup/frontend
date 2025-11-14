@@ -226,6 +226,7 @@
         title="Tunggu Sebentar" 
         confirmText="Ya, Simpan Sekarang"
         cancelText="Cek Kembali"
+        :redirectConfirm="route('rps.capaian-pembelajaran')"
     >
         <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
 

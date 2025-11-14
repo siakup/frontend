@@ -4,7 +4,7 @@
 ])
 
 @php
-    $base = 'px-5 py-3 border-[1px] rounded-lg flex flex-row gap-4 mx-auto';
+    $base = 'px-5 py-3 border-[1px] rounded-lg flex flex-row gap-4 mx-auto my-4';
     $variants = [
         'yellow' => 'bg-[#FFFBEB] border-[#FDD835]',
         'red' => 'bg-[#FBE8E6] border-[#EB474D]',

@@ -430,6 +430,51 @@ class RpsController extends Controller
         return view('rps.evaluasi-pemetaan-capaian.index', get_defined_vars());
     }
 
+    public function showRencanaEvaluasi() {
+        $rencanaList = [
+            [
+                'bentuk_ujian' => 'Tugas',
+                'judul_evaluasi' => 'Tugas',
+                'sub_cpmk' => [
+                    'CPMK-1',
+                    'CPMK-2',
+                ],
+                'metode_pengerjaan' => '1. Mengumpulkan informasi mengenai proses dan reaksi untuk menghasilkan produk.
+                                        2. Mendeskripsikan alat-alat yang digunakan dalam proses dengan baik.',
+            ],
+            [
+                'bentuk_ujian' => 'Ujian',
+                'judul_evaluasi' => 'Kuis',
+                'sub_cpmk' => [
+                    'CPMK-1',
+                    'CPMK-2',
+                ],
+                'metode_pengerjaan' => 'Kuis menggunakan media e-learning',
+            ], 
+            [
+                'bentuk_ujian' => 'Ujian',
+                'judul_evaluasi' => 'UTS',
+                'sub_cpmk' => [
+                    'CPMK-1',
+                ],
+                'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
+            ],
+            [
+                'bentuk_ujian' => 'Ujian',
+                'judul_evaluasi' => 'UAS',
+                'sub_cpmk' => [
+                    'CPMK-2',
+                ],
+                'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
+            ],            
+
+        ];
+
+
+        return view('rps.rencana-evaluasi-mahasiswa.index', get_defined_vars());
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */

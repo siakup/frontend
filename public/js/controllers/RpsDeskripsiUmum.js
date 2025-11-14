@@ -1,8 +1,8 @@
 class DeskripsiUmum {
     constructor() {
         this.bobot = '7';
-        this.semester = '9';
-        this.rumpun_mk = 'Mata Kuliah Prodi';
+        this.semester = 'Semester 2';
+        this.rumpun_mk = 'Mata Kuliah Umum';
         this.level_program = 'Sarjana';
         this.deskripsi_singkat_mk = '';
         this.prodi = '',
@@ -49,10 +49,13 @@ class DeskripsiUmum {
                 this.isian_perangkat_keras,
                 this.perangkat_lunak,
                 this.isian_perangkat_lunak,
-                ...this.pengajarList.map(p => p.value)
             ],
             () => this.checkDisabled()
         );
+
+        this.$watch('pengajarList', () => {
+            this.checkDisabled();
+        }, { deep: true });
     }
 
     // --- Modul 1: Cek disabled button ---

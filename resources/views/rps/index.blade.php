@@ -65,7 +65,7 @@
                 </x-slot>
             </x-form.input-container>
         </x-container>
-        <x-dialog variant="yellow" class="my-4">
+        <x-dialog variant="yellow">
             <div class="flex flex-col">
                 <x-typography variant="body-small-bold">Catatan!</x-typography>
                 <x-typography variant="body-small-regular" class="mb-5">Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah)</x-typography>

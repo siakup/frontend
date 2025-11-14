@@ -3,7 +3,7 @@
     'label' => '',
     'icon' => null,
     'iconPosition' => 'left',
-    'class' => '',
+    'buttonClass' => '',
     'wireClick' => null,
     'href' => null,
     'sizeText' => 'body-small-regular'
@@ -19,7 +19,7 @@
   @endif
   {{ 
     $attributes->merge([
-      'class' => "inline-flex w-max justify-center items-center gap-1 py-2 rounded-lg cursor-pointer {$class}"
+      'class' => "inline-flex w-max justify-center items-center gap-1 py-2 rounded-lg cursor-pointer {$buttonClass}"
     ]) 
   }}
 >
