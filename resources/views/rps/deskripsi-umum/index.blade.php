@@ -17,7 +17,7 @@
             class="rps-content p-5 flex flex-col gap-5" 
         >
             <x-typography variant="body-medium-bold">Informasi RPS</x-typography>
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Periode</x-slot>
                 <x-slot name="input">
                     <x-form.dropdown
@@ -33,7 +33,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Program Studi</x-slot>
                 <x-slot name="input">
                     <x-form.dropdown
@@ -49,7 +49,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Mata Kuliah</x-slot>
                 <x-slot name="input">
                     <x-form.dropdown
@@ -66,32 +66,32 @@
                 </x-slot>
             </x-form.input-container>
             <div class="grid grid-cols-2 flex gap-5">
-                <x-form.input-container labelClass="w-[200px]">
+                <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Bobot (SKS)</x-slot>
                     <x-slot name="input">
                         <x-form.input disabled type="number" name="bobot" x-model="bobot"></x-form.input>
                     </x-slot>
                 </x-form.input-container>
-                <x-form.input-container labelClass="w-[200px]">
+                <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Semester</x-slot>
                     <x-slot name="input">
                         <x-form.input disabled name="semester" x-model="semester"></x-form.input>
                     </x-slot>
                 </x-form.input-container>
-                <x-form.input-container labelClass="w-[200px]">
+                <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Rumpun MK</x-slot>
                     <x-slot name="input">
                         <x-form.input disabled name="rumpun_mk" x-model="rumpun_mk"></x-form.input>
                     </x-slot>
                 </x-form.input-container>
-                <x-form.input-container labelClass="w-[200px]">
+                <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Level Program</x-slot>
                     <x-slot name="input">
                         <x-form.input disabled name="level_program" x-model="level_program"></x-form.input>
                     </x-slot>
                 </x-form.input-container>
             </div>
-            <x-form.input-container class="w-[200px]">
+            <x-form.input-container class="w-50">
                 <x-slot name="label">Deskripsi Singkat MK</x-slot>
                 <x-slot name="input">
                     <x-form.textarea
@@ -103,7 +103,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]" :labelWrap="true">
+            <x-form.input-container labelClass="w-50" :labelWrap="true">
                 <x-slot name="label" >Materi Pembelajaran / Pokok Bahasan</x-slot>
                 <x-slot name="input">
                     <x-form.textarea
@@ -114,7 +114,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label" >Pustaka</x-slot>
                 <x-slot name="input">
                     <x-form.textarea
@@ -125,7 +125,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Metode Pembelajaran</x-slot>
                 <x-slot name="input">
                     <div class="flex gap-20">
@@ -135,7 +135,7 @@
                     </div>
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]" :labelWrap="true">
+            <x-form.input-container labelClass="w-50" :labelWrap="true">
                 <x-slot name="label">Media Pembelajaran</x-slot>
                 <x-slot name="input">
                     <div class="grid grid-cols-[1fr_4fr] gap-3">
@@ -158,15 +158,15 @@
                     </div>
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label"></x-slot>
                 <x-slot name="input">
-                    <x-dialog variant="yellow">
+                    <x-dialog variant="warning">
                         <x-typography variant="body-medium-regular">Tim pengajar bisa lebih dari satu</x-typography>
                     </x-dialog>
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="self-start w-[200px]">
+            <x-form.input-container labelClass="self-start w-50">
                 <x-slot name="label">Tim Pengajaran</x-slot>
                 <x-slot name="input">
                     <div class="grid grid-cols-[3fr_1fr] gap-3"> 
@@ -194,7 +194,7 @@
                 </x-slot>
             </x-form.input-container>
 
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Mata Kuliah Syarat</x-slot>
                 <x-slot name="input">
                     <x-form.dropdown
@@ -216,11 +216,6 @@
             </div>
         </div>
     </div>
-
-    
-
-    
-
     <x-modal.confirmation 
         id="save-confirmation" 
         title="Tunggu Sebentar" 
@@ -229,14 +224,6 @@
         :redirectConfirm="route('rps.capaian-pembelajaran')"
     >
         <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-
-        <div
-            x-on:confirmed.window="
-            console.log('Data disimpan');
-            window.location.href = '/'; 
-        ">
         </div>
-    </x-modal.confirmation>
-    
-    
+    </x-modal.confirmation>  
 @endsection

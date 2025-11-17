@@ -11,7 +11,7 @@
     <x-button.back class="ml-2 mb-4" href="{{ route('rps.capaian-pembelajaran') }}">Buat RPS (Rencana Pembelajaran Semester)</x-button.back>
 
     
-    <div class="cpl-head border border-[#d9d9d9] ml-3 grad-peach">
+    <div class="cpl-head border border-gray-400 ml-3 grad-peach">
         <x-typography variant="body-medium-bold">Capaian Pembelajaran Lulusan</x-typography>
     </div>
 
@@ -20,9 +20,9 @@
             <x-table>
                 <x-table-head>
                     <x-table-row>
-                        <x-table-header class="w-[150px]">Kode</x-table-header>
+                        <x-table-header class="w-38">Kode</x-table-header>
                         <x-table-header>Capaian</x-table-header>
-                        <x-table-header class="w-[50px]">
+                        <x-table-header class="w-13">
                             <x-form.checklist
                                 id="select-all"
                                 label=""

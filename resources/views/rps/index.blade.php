@@ -13,8 +13,8 @@
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
     </div>
     <x-container variant="content" class="ml-3" x-data="rps()">
-        <x-container variant="content-wrapper">
-            <x-form.input-container labelClass="w-[200px]">
+        <x-container variant="content-wrapper" class="mb-5">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Periode</x-slot>
                 <x-slot name="input">
                     <x-form.dropdown
@@ -30,7 +30,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Program Studi</x-slot>
                 <x-slot name="input">
                     <x-form.dropdown
@@ -46,7 +46,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]" inputClass="flex flex-row gap-3">
+            <x-form.input-container labelClass="w-50" inputClass="flex flex-row gap-3">
                 <x-slot name="label">Mata Kuliah</x-slot>
                 <x-slot name="input">
                     <x-form.dropdown
@@ -65,7 +65,7 @@
                 </x-slot>
             </x-form.input-container>
         </x-container>
-        <x-dialog variant="yellow">
+        <x-dialog variant="warning" isCloseable>
             <div class="flex flex-col">
                 <x-typography variant="body-small-bold">Catatan!</x-typography>
                 <x-typography variant="body-small-regular" class="mb-5">Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah)</x-typography>
@@ -99,12 +99,12 @@
                     </x-table-cell>
                     <x-table-cell>
                         @if($rps['status']==='Finalized')
-                            <x-tag variant="green-filled">Finalized</x-tag>
+                            <x-badge variant="green-filled">Finalized</x-badge>
                         @endif
                     </x-table-cell>
                     <x-table-cell text_size="text-xs">{{ $rps['tanggal_upload'] }}</x-table-cell>
                     <x-table-cell>
-                        <div class="flex flex-nowrap gap-3">
+                        <div class="flex flex-nowrap inline-flex gap-3">
                             <x-button.base 
                                 :icon="asset('assets/base/icon-copy-16.svg')"
                                 iconPosition="left"
@@ -115,7 +115,7 @@
                             <x-button.base 
                                 :icon="asset('assets/icon-edit.svg')"
                                 iconPosition="left"
-                                class="text-[#E62129]"
+                                class="text-red-500"
                                 sizeText="caption-regular"
                             >
                                 Ubah

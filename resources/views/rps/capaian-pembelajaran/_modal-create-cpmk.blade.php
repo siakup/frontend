@@ -2,17 +2,17 @@
 
 <div x-data="cpmk()">
     <x-modal.container id="create-cpmk" maxWidth="6xl">
-        <x-slot name="header" class="items-center bg-[#F5F5F5]">
+        <x-slot name="header" class="items-center bg-gray-200">
             <div class="w-full relative flex items-center justify-center">
                 <x-typography variant="heading-h5">Tambah Capaian Pembelajaran Mata Kuliah</x-typography>
                 <button x-on:click.stop="close()"
                     class="text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0">
-                    <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="h-[24px] w-[24px]"/>
+                    <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="h-6 w-6"/>
                 </button>
             </div>
         </x-slot>
         <x-container class="!rounded-lg">
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Kode</x-slot>
                 <x-slot  name="input">
                     <x-form.input
@@ -22,7 +22,7 @@
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Deskripsi</x-slot>
                 <x-slot  name="input">
                     <x-form.textarea
@@ -57,12 +57,5 @@
             cancelText="Cek Kembali"
         >
             <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-
-            <div
-                x-on:confirmed.window="
-                console.log('Data disimpan');
-                window.location.href = '/'; 
-            ">
-            </div>
     </x-modal.confirmation>
 </div>

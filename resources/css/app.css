@@ -79,6 +79,14 @@
 
   /* === Crayola === */
   --color-crayola-500: #F5A623;
+
+   /* === Disable === */
+   --color-disable-red: #FBE8E6;
+   --color-disable-blue: #E9EDF4;
+   --color-disable-white: #F5F5F5;
+   --color-disable-yellow: #FFFBEB;
+   --color-disable-grey: #E8E8E8;
+
 }
 
 .scroll-thin {
