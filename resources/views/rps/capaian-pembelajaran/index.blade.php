@@ -22,7 +22,7 @@
             <x-table>
                 <x-table-head>
                     <x-table-row>
-                        <x-table-header class="w-[200px]">CPL</x-table-header>
+                        <x-table-header class="w-50">CPL</x-table-header>
                         <x-table-header>Deskripsi</x-table-header>
                     </x-table-row>
                 </x-table-head>
@@ -45,7 +45,7 @@
             <x-table>
                 <x-table-head>
                     <x-table-row>
-                        <x-table-header class="w-[200px]">CPMK</x-table-header>
+                        <x-table-header class="w-50">CPMK</x-table-header>
                         <x-table-header>Deskripsi</x-table-header>
                     </x-table-row>
                 </x-table-head>

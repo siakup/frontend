@@ -1,32 +1,45 @@
 @props([
-    'variant' => 'yellow',
-    'class' => '',
+    'variant' => 'warning',
+    'dialogClass' => '',
+    'isCloseable' => false,
 ])
 
 @php
-    $base = 'px-5 py-3 border-[1px] rounded-lg flex flex-row gap-4 mx-auto my-4';
+    $base = 'px-5 py-3 border rounded-lg flex flex-row gap-4 mx-auto my-4';
     $variants = [
-        'yellow' => 'bg-[#FFFBEB] border-[#FDD835]',
-        'red' => 'bg-[#FBE8E6] border-[#EB474D]',
-        'grey' => 'bg-[#F5F5F5] border-[#D9D9D9]',
-        'blue' => 'bg-[#E9EDF4] border-[#0076BE]',
+        'warning' => 'bg-yellow-50 border-yellow-500',
+        'danger' => 'bg-disable-red border-red-400',
+        'info' => 'bg-gray-200 border-gray-400',
+        'success' => 'bg-disable-blue border-blue-500',
     ];
 
     $icon = [
-        'yellow' => 'assets/icon-caution-warning.svg',
-        'red' => 'assets/icon-caution-red.svg',
-        'grey' => 'assets/icon-caution-black.svg',
-        'blue' => 'assets/icon-caution-blue.svg',
+        'warning' => 'assets/icon-caution-warning.svg',
+        'danger' => 'assets/icon-caution-red.svg',
+        'info' => 'assets/icon-caution-black.svg',
+        'success' => 'assets/icon-caution-blue.svg',
     ];
 
-    $selectedVariant = $variants[$variant] ?? $variants['yellow'];
-    $selectedIcon = $icon[$variant] ?? $icon['yellow'];
-    $dialogClass = "{$base} {$selectedVariant} {$class}";
+    $selectedVariant = $variants[$variant] ?? $variants['warning'];
+    $selectedIcon = $icon[$variant] ?? $icon['warning'];
+    $dialogClass = "{$base} {$selectedVariant} {$dialogClass}";
 @endphp
 
-<div {{ $attributes->merge(['class' => $dialogClass]) }}>
+<div 
+    x-data="{ open: true }"
+    x-show="open"
+    {{ $attributes->merge(['class' => $dialogClass]) }}
+>
     <x-icon iconUrl="{{ asset($selectedIcon) }}"/>
     <div class="flex-grow">
         {{ $slot }}
     </div>
+    @if ($isCloseable)
+        <button 
+            class="self-start cursor-pointer"
+            x-on:click="open = false"
+        >
+            <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="h-4 w-4"/>
+        </button>
+    @endif
 </div>

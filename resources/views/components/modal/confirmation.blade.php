@@ -22,9 +22,9 @@
     </x-slot>
 
     <!-- Content -->
-    <x-typography variant="body-small-regular" class="text-center">
+    <div class="text-center text-sm">
         {{ $slot }}
-    </x-typography>
+    </div>
 
     <!-- Footer -->
     <x-slot name="footer">
