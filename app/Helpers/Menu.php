@@ -422,7 +422,19 @@ class Menu
                             'url' => '/rps/rencana-perkuliahan/*',
                             'parent' => 'rps.rencana-perkuliahan.index',
                             'isExpandable' => false,
-                          ]
+                          ],
+                          'buat-rencana-evaluasi-mahasiswa' => [
+                            'name' => 'Tambah Rencana Evaluasi',
+                            'url' => '/rps/rencana-evaluasi-mahasiswa/create',
+                            'parent' => 'rps.rencana-evaluasi-mahasiswa.index',
+                            'isExpandable' => false,
+                          ],
+                          'buat-rencana-evaluasi-mahasiswa' => [
+                            'name' => 'Ubah Rencana Evaluasi',
+                            'url' => '/rps/rencana-evaluasi-mahasiswa/edit',
+                            'parent' => 'rps.rencana-evaluasi-mahasiswa.index',
+                            'isExpandable' => false,
+                          ],
                     
                         ]
                   ]
