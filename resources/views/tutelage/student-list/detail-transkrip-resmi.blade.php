@@ -136,16 +136,10 @@
                     <x-table-cell x-text="matkul.konversi"></x-table-cell>
                     <x-table-cell>
                       <x-badge 
-                        class="inline-flex bg-[#FEF3C0] border border-[#FDD835] font-bold" 
-                        x-bind:class="{
-                          'bg-[#FEF3C0]': matkul.status == 'Lulus',
-                          'border-[#FDD835]': matkul.status == 'Lulus',
-                          'bg-[#FBE8E6]': matkul.status !== 'Lulus',
-                          'text-[#EB374D]': matkul.status !== 'Lulus',
-                          'border-[#EB474D]': matkul.status !== 'Lulus'
-                        }"
-                        x-text="matkul.status"
-                      ></x-badge>
+                          :variant="matkul.status == 'Lulus' ? 'yellow-bordered' : 'red-bordered'"
+                          :badgeClass="'font-bold'"
+                          x-text="matkul.status"
+                      />
                     </x-table-cell>
                   </x-table-row>
                 </template>

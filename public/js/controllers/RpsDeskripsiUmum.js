@@ -1,8 +1,8 @@
 class DeskripsiUmum {
     constructor() {
-        this.bobot = 7;
-        this.semester = '9';
-        this.rumpun_mk = 'Mata Kuliah Prodi';
+        this.bobot = '7';
+        this.semester = 'Semester 2';
+        this.rumpun_mk = 'Mata Kuliah Umum';
         this.level_program = 'Sarjana';
         this.deskripsi_singkat_mk = '';
         this.prodi = '',
@@ -49,34 +49,37 @@ class DeskripsiUmum {
                 this.isian_perangkat_keras,
                 this.perangkat_lunak,
                 this.isian_perangkat_lunak,
-                ...this.pengajarList.map(p => p.value)
             ],
             () => this.checkDisabled()
         );
+
+        this.$watch('pengajarList', () => {
+            this.checkDisabled();
+        }, { deep: true });
     }
 
     // --- Modul 1: Cek disabled button ---
     checkDisabled() {
         const semuaTerisi =
-            this.bobot !== null &&
-            this.semester.trim() !== '' &&
-            this.rumpun_mk.trim() !== '' &&
-            this.level_program.trim() !== '' &&
-            this.deskripsi_singkat_mk.trim() !== '' &&
-            this.periode.trim() !== '' &&
-            this.mata_kuliah.trim() !== '' &&
-            this.materi_pembelajaran.trim() !== '' &&
-            this.pustaka.trim() !== '' &&
-            this.mata_kuliah_syarat.trim() !== '' &&
+            this.bobot !== '' &&
+            this.semester !== '' &&
+            this.rumpun_mk !== '' &&
+            this.level_program !== '' &&
+            this.deskripsi_singkat_mk !== '' &&
+            this.periode !== '' &&
+            this.mata_kuliah !== '' &&
+            this.materi_pembelajaran !== '' &&
+            this.pustaka !== '' &&
+            this.mata_kuliah_syarat !== '' &&
             this.prodi !== '';
         
         const minimalSatuChecklist =
             this.kuliah || this.diskusi_latihan || this.tugas;
 
         const perangkatValid = 
-            (this.perangkat_lunak && this.isian_perangkat_lunak.trim() !== '') || (this.perangkat_keras && this.isian_perangkat_keras.trim() !== '') 
+            (this.perangkat_lunak && this.isian_perangkat_lunak !== '') || (this.perangkat_keras && this.isian_perangkat_keras !== '') 
         
-        const semuaDropdownTerisi = this.pengajarList.every(p => p.value.trim() !== '');
+        const semuaDropdownTerisi = this.pengajarList.every(p => p.value !== '');
 
         this.isDisabled = !(semuaTerisi && minimalSatuChecklist && perangkatValid && semuaDropdownTerisi);
     }

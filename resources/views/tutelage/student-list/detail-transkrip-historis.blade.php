@@ -99,11 +99,11 @@
             <x-typography variant="caption-bold">Keterangan Highlight Status :</x-typography>
             <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center justify-between'">
                 <x-container :variant="'content-wrapper'" class="!px-0 flex flex-row items-center gap-2 w-full">
-                    <x-badge class="bg-[#FBE8E6] text-[#EB474D] border border-[#EB474D] font-bold">Tidak Lulus</x-badge>
+                    <x-badge variant="red-bordered" badgeClass="font-bold">Tidak Lulus</x-badge>
                     <x-typography variant="caption-regular">: Menunjukkan mata kuliah dengan nilai <x-typography variant="caption-bold">tidak lulus</x-typography></x-typography>
                 </x-container>
                 <x-container :variant="'content-wrapper'" class="!px-0 flex flex-row items-center gap-2 w-full">
-                    <x-badge class="bg-[#FEF3C0] border border-[#FDD835] font-bold">Lulus</x-badge>
+                    <x-badge variant="yellow-bordered" badgeClass="font-bold">Lulus</x-badge>
                     <x-typography variant="caption-regular">: Menunjukkan mata kuliah dengan nilai <x-typography variant="caption-bold">lulus</x-typography></x-typography>
                 </x-container>
             </x-container>
@@ -133,16 +133,10 @@
                     <x-table-cell x-text="matkul.nilai"></x-table-cell>
                     <x-table-cell>
                       <x-badge 
-                        class="inline-flex bg-[#FEF3C0] border border-[#FDD835] font-bold" 
-                        x-bind:class="{
-                          'bg-[#FEF3C0]': matkul.status == 'Lulus',
-                          'border-[#FDD835]': matkul.status == 'Lulus',
-                          'bg-[#FBE8E6]': matkul.status !== 'Lulus',
-                          'text-[#EB374D]': matkul.status !== 'Lulus',
-                          'border-[#EB474D]': matkul.status !== 'Lulus'
-                        }"
-                        x-text="matkul.status"
-                      ></x-badge>
+                          x-bind:variant="matkul.status == 'Lulus' ? 'yellow-bordered' : 'red-bordered'"
+                          badgeClass="font-bold"
+                          x-text="matkul.status"
+                      />
                     </x-table-cell>
                   </x-table-row>
                 </template>

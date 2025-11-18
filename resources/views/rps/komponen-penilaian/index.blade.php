@@ -1,25 +1,25 @@
 @extends('layouts.main')
 
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
+@section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
     <div class="page-header pl-5">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>
+        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
     </div>
     <x-button.back class="ml-2 mb-4" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
     @include('rps.layout.navbar-rps')
 
-    <div x-data="{ komponenList: @js($komponenList ?? []) }" class="academics-slicing-content content-card p-5 flex flex-col gap-5" style="border-radius: 0 12px 12px 12px !important;">
+    <div x-data="{ komponenList: @js($komponenList ?? []) }"  class="rps-content p-5 flex flex-col gap-5" >
         <x-typography variant="body-medium-bold">Komponen Penilaian</x-typography>
 
         @if($komponenList)
             <x-table>
                 <x-table-head>
                     <x-table-row>
-                        <x-table-header class="w-[104px]">Nama Komponen</x-table-header>
-                        <x-table-header class="w-[104px]">Bobot Komponen</x-table-header>
+                        <x-table-header class="w-25">Nama Komponen</x-table-header>
+                        <x-table-header class="w-25">Bobot Komponen</x-table-header>
                         @foreach($cpmkList as $cpmk)
-                        <x-table-header class="w-[85px]">{{ $cpmk }}</x-table-header>
+                        <x-table-header class="w-21">{{ $cpmk }}</x-table-header>
                         @endforeach
                     </x-table-row>
                 </x-table-head>
@@ -31,13 +31,11 @@
                         <x-table-cell>{{ $komponen['bobot'] }}</x-table-cell>
                         @foreach($komponen['cpmk'] as $nilaiCpmk)
                             <x-table-cell>
-                                @if($nilaiCpmk === true)
-                                    <div class="flex justify-center items-center">
-                                        @if ($nilaiCpmk)
-                                            <x-icon iconUrl="{{ asset('assets/base/icon-tick.svg') }}" class="h-[20px] w-[20px]" />
-                                        @endif
-                                    </div>
-                                @endif
+                                <div class="flex justify-center items-center">
+                                    @if ($nilaiCpmk)
+                                        <x-icon iconUrl="{{ asset('assets/base/icon-tick-20.svg') }}" />
+                                    @endif
+                                </div>
                             </x-table-cell>
                         @endforeach
                     </x-table-row>
@@ -45,7 +43,7 @@
                 </x-table-body>
             </x-table>
         @else
-            <x-container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
+            <x-container variant="content-grey" class="!rounded-xl h-22 flex items-center justify-center">
                 <x-typography variant="body-small-bold">Belum Ada Komponen Penilaian, Silahkan Tambah Komponen Terlebih Dahulu</x-typography>
             </x-container>
         @endif
@@ -67,16 +65,13 @@
         :redirectConfirm="route('rps.rencana-perkuliahan')"
     >
         <p>Apakah Anda yakin ingin menyimpan <b>komponen penilaian</b>?</p>
-
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
-            <div class="flex gap-4">
-                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
-                <div class="flex flex-col text-left">
-                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                    <x-typography variant="body-small-regular">Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman berikutnya.</x-typography>
-                </div>
+        
+        <x-dialog variant="yellow-bordered">
+            <div class="flex flex-col text-left">
+                <x-typography variant="body-small-bold">Perhatian!</x-typography>
+                <x-typography variant="body-small-regular">Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman berikutnya.</x-typography>
             </div>
-        </x-container>
+        </x-dialog>
     </x-modal.confirmation>
 
     <x-modal.confirmation 
@@ -88,13 +83,11 @@
     >
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
 
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
-            <div class="flex gap-4">
-                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
-                <div class="flex flex-col text-left">
-                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                    <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.</p>
+        <x-dialog variant="yellow-bordered">
+            <div class="flex flex-col text-left">
+                <x-typography variant="body-small-bold">Perhatian!</x-typography>
+                <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.</p>
             </div>
-        </x-container>
+        </x-dialog>
     </x-modal.confirmation>
 @endsection

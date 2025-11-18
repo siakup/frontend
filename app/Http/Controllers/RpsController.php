@@ -35,7 +35,7 @@ class RpsController extends Controller
             ],
             [
                 'mata_kuliah' => 'Ilmu Komputer',
-                'dosen' => 'Meredita Susanti',
+                'dosen' => 'Meredita Susanty',
                 'review_status' => 'Sedang Direview',
                 'status' => 'Finalized',
                 'tanggal_upload' => '2025-08-19, 11:42:15'
@@ -50,15 +50,11 @@ class RpsController extends Controller
         ];
 
         $periodeList = [
-            '2022 - Ganjil' => '1',
-            '2022 - Genap' => '2',
-            '2023- Ganjil' => '3',
-            '2023 - Genap' => '4',
-            '2024 - Ganjil' => '5',
-            '2024 - Genap' => '6',
-            '2025 - Ganjil' => '7',
-            '2025 - Genap' => '8',
-            '2026 - Ganjil' => '9',
+            '2025 - Ganjil' => '1',
+            '2025 - Pendek' => '2',
+            '2025- Genap' => '3',
+            '2024 - Ganjil' => '4',
+            '2024 - Pendek' => '5',
         ];
         
         $prodiList = [
@@ -84,15 +80,11 @@ class RpsController extends Controller
 
     public function buatRpsDeskripsiUmum() {
         $periodeList = [
-            '2022 - Ganjil' => '1',
-            '2022 - Genap' => '2',
-            '2023- Ganjil' => '3',
-            '2023 - Genap' => '4',
-            '2024 - Ganjil' => '5',
-            '2024 - Genap' => '6',
-            '2025 - Ganjil' => '7',
-            '2025 - Genap' => '8',
-            '2026 - Ganjil' => '9',
+            '2025 - Ganjil' => '1',
+            '2025 - Pendek' => '2',
+            '2025- Genap' => '3',
+            '2024 - Ganjil' => '4',
+            '2024 - Pendek' => '5',
         ];
         
         $prodiList = [
@@ -115,7 +107,7 @@ class RpsController extends Controller
 
         $timPengajarList = [
             'Catia Angli Curie, MS' => '1',
-            'Meredita Susanti' => '2',
+            'Meredita Susanty' => '2',
             'Abdul Hamid' => '3',
             'Hasan Hasbi' => '4',
             'Irwan Nasution' => '5',
@@ -271,13 +263,13 @@ class RpsController extends Controller
             [
                 'minggu' => 1,
                 'cpmk' => 'CPMK-1',
-                'sub_cpmk' => '1. Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi steam power plant, seperti: menentukan laju alir steam, daya pompa/turbin, laju alir panas pada boiler/condenser).
-                                2. Mahasiswa dapat menentukan efisiensi termal steam power plant yang beroperasi dengan siklus Rankine (ideal maupun aktual)',
-                'rencana' => '1. Rencana Pembelajaran Studi
+                'sub_cpmk' => "1. Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi steam power plant, seperti: menentukan laju alir steam, daya pompa/turbin, laju alir panas pada boiler/condenser).
+                2. Mahasiswa dapat menentukan efisiensi termal steam power plant yang beroperasi dengan siklus Rankine (ideal maupun aktual)",
+                'rencana' => "1. Rencana Pembelajaran Studi
                             2. Steam power plant
                                 a. Review siklus Carnot
                                 b. Siklus Rankine ideal (ideal vapor power cycle)
-                                c. Siklus Rankine aktual',
+                                c. Siklus Rankine aktual",
                 'waktu_kuliah' => 100,
                 'waktu_diskusi_latihan' => 50,
                 'waktu_praktikum' => 180,
@@ -287,7 +279,7 @@ class RpsController extends Controller
             [
                 'minggu' => 2,
                 'cpmk' => 'CPMK-1',
-                'sub_cpmk' => '1. Mahasiswa memahami perbedaan antara siklus refrigerasi dan power plant
+                'sub_cpmk' => '1. Mahasiswa memahami perbedaan antara siklus refrigerasi dan power plant \n
                                 2. Mahasiswa memahami siklus vapor compression ideal',
                 'rencana' => '2. Steam power plant
                                 a. Meningkatkan efisiensi siklus Ranking
@@ -387,6 +379,101 @@ class RpsController extends Controller
 
         return view('rps.matriks-penilaian-kognitif.index', get_defined_vars());
     }
+
+    public function showEvaluasiPemetaan() {
+
+        $evaluasiList = [
+            [
+                'id'=> 1,
+                'cpmk' => 'CPMK-1',
+                'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
+                'rincian' => [
+                    'tugas' => true,
+                    'uts' => false,
+                    'uas' => true,
+                ]
+            ],
+            [
+                'id'=> 2,
+                'cpmk' => 'CPMK-2',
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
+                'rincian' => [
+                    'tugas' => false,
+                    'uts' => true,
+                    'uas' => true,
+                ]
+            ],
+            [
+                'id'=> 3,
+                'cpmk' => 'CPMK-3',
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
+                'rincian' => [
+                    'tugas' => true,
+                    'uts' => true,
+                    'uas' => false,
+                ]
+            ]
+        ];
+
+        $cpl = 'CPL-G';
+
+        $cplList = [
+            'CPL-H' => 'CPL-H',
+            'CPL-I' => 'CPL-I',
+            'CPL-J' => 'CPL-J',
+            'CPL-K' => 'CPL-K',
+            'CPL-L' => 'CPL-L',
+            'CPL-M' => 'CPL-M',
+        ];
+
+
+        return view('rps.evaluasi-pemetaan-capaian.index', get_defined_vars());
+    }
+
+    public function showRencanaEvaluasi() {
+        $rencanaList = [
+            [
+                'bentuk_ujian' => 'Tugas',
+                'judul_evaluasi' => 'Tugas',
+                'sub_cpmk' => [
+                    'CPMK-1',
+                    'CPMK-2',
+                ],
+                'metode_pengerjaan' => '1. Mengumpulkan informasi mengenai proses dan reaksi untuk menghasilkan produk.
+                                        2. Mendeskripsikan alat-alat yang digunakan dalam proses dengan baik.',
+            ],
+            [
+                'bentuk_ujian' => 'Ujian',
+                'judul_evaluasi' => 'Kuis',
+                'sub_cpmk' => [
+                    'CPMK-1',
+                    'CPMK-2',
+                ],
+                'metode_pengerjaan' => 'Kuis menggunakan media e-learning',
+            ], 
+            [
+                'bentuk_ujian' => 'Ujian',
+                'judul_evaluasi' => 'UTS',
+                'sub_cpmk' => [
+                    'CPMK-1',
+                ],
+                'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
+            ],
+            [
+                'bentuk_ujian' => 'Ujian',
+                'judul_evaluasi' => 'UAS',
+                'sub_cpmk' => [
+                    'CPMK-2',
+                ],
+                'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
+            ],            
+
+        ];
+
+
+        return view('rps.rencana-evaluasi-mahasiswa.index', get_defined_vars());
+    }
+
 
     /**
      * Show the form for creating a new resource.

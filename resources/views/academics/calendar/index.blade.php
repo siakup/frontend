@@ -54,7 +54,7 @@
                   </x-table-cell>
                   <x-table-cell :variant="'old'">
                       @if (new DateTime() >= new DateTime($d->tanggal_mulai) && new DateTime() <= new DateTime($d->tanggal_akhir))
-                        <x-badge class="bg-[#0097F5] text-white">Sedang berlangsung</x-badge>
+                        <x-badge variant="blue-filled">Sedang berlangsung</x-badge>
                       @endif
                   </x-table-cell>
               </x-table-row>

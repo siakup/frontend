@@ -134,9 +134,9 @@
                           <x-table-cell>
                             <x-container :variant="'content-wrapper'" :class="'!px-0 !w-max'">
                               @if ($d->status_aktif === 'active')
-                                <x-badge class="bg-[#D0DE68]">Aktif</x-badge>
+                                <x-badge variant="green-filled">Aktif</x-badge>
                               @else
-                                <x-badge class="bg-[#FAFBEE] text-[#98A725] leading-5 border-[1px] border-[#D0DE68]">Tidak Aktif</x-badge>
+                                <x-badge variant="green-bordered"></x-badge>
                               @endif
                             </x-container>
                           </x-table-cell>

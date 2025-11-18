@@ -23,28 +23,28 @@
   --color-red-900: #5C0A0D;
 
   /* === Green Pear === */
-  --color-green-pear-50:  #FAFBEE;
-  --color-green-pear-100: #EFF4CD;
-  --color-green-pear-200: #E5EDAB;
-  --color-green-pear-300: #DBE58A;
-  --color-green-pear-400: #D0DE68;
-  --color-green-pear-500: #C2D43D;
-  --color-green-pear-600: #B6C92C;
-  --color-green-pear-700: #98A725;
-  --color-green-pear-800: #7A861D;
-  --color-green-pear-900: #5B6416;
+  --color-green-50:  #FAFBEE;
+  --color-green-100: #EFF4CD;
+  --color-green-200: #E5EDAB;
+  --color-green-300: #DBE58A;
+  --color-green-400: #D0DE68;
+  --color-green-500: #C2D43D;
+  --color-green-600: #B6C92C;
+  --color-green-700: #98A725;
+  --color-green-800: #7A861D;
+  --color-green-900: #5B6416;
 
   /* === Honolulu Blue === */
-  --color-honolulu-pear-50:  #FAFBEE;
-  --color-honolulu-pear-100: #70C8FF;
-  --color-honolulu-pear-200: #47B9FF;
-  --color-honolulu-pear-300: #1FA9FF;
-  --color-honolulu-pear-400: #0097F5;
-  --color-honolulu-pear-500: #0076BE;
-  --color-honolulu-pear-600: #0065A3;
-  --color-honolulu-pear-700: #004B7A;
-  --color-honolulu-pear-800: #003252;
-  --color-honolulu-pear-900: #001929;
+  --color-blue-50:  #99D8FF;
+  --color-blue-100: #70C8FF;
+  --color-blue-200: #47B9FF;
+  --color-blue-300: #1FA9FF;
+  --color-blue-400: #0097F5;
+  --color-blue-500: #0076BE;
+  --color-blue-600: #0065A3;
+  --color-blue-700: #004B7A;
+  --color-blue-800: #003252;
+  --color-blue-900: #001929;
 
   /* === Beaver === */
   --color-beaver-50:  #E5E1DC;
@@ -79,6 +79,14 @@
 
   /* === Crayola === */
   --color-crayola-500: #F5A623;
+
+   /* === Disable === */
+   --color-disable-red: #FBE8E6;
+   --color-disable-blue: #E9EDF4;
+   --color-disable-white: #F5F5F5;
+   --color-disable-yellow: #FFFBEB;
+   --color-disable-grey: #E8E8E8;
+
 }
 
 .scroll-thin {

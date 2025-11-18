@@ -6,13 +6,13 @@
             <div class="w-full relative flex items-center justify-center">
                 <x-typography variant="heading-h5">Tambah Komponen Nilai</x-typography>
                 <button x-on:click.stop="close()"
-                    class="text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0">
-                    <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="h-[24px] w-[24px]"/>
+                    class="absolute right-0">
+                    <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="h-6 w-6"/>
                 </button>
             </div>
         </x-slot>
         <x-container class="!rounded-lg">
-            <x-form.input-container class="w-[220px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Nama Komponen Nilai</x-slot>
                 <x-slot  name="input">
                     <x-form.dropdown
@@ -21,15 +21,14 @@
                         dropdownId="dropdownKomponenList"
                         label="-Pilih Komponen Nilai-"
                         :dropdownItem="$komponenPenilaian"
-                        buttonStyleClass="text-sm min-w-[835px] h-[40px]"
-                        optionStyleClass="min-w-[250px]"
+                        dropdownContainerClass="w-full"
                         :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
                         :isIconCanRotate="true"
                         x-model="nama"
                     />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container class="w-[220px]">
+            <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Bobot Komponen</x-slot>
                 <x-slot name="input">
                     <div class="flex items-center">
@@ -38,20 +37,20 @@
                             placeholder="Contoh: 30.00"
                             type="number"
                             x-model="bobot"
-                            inputClass="!rounded-r-none !border-r-0 !border-[1px] !border-[#BFBFBF] !w-[796px] !focus:ring-0 !focus:outline-none"
+                            inputClass="!rounded-r-none !border-r-0 !border !border-[#BFBFBF] !focus:ring-0 !focus:outline-none"
                         />
-                        <div class="-ml-[2px] border border-[1px] border-[#BFBFBF] rounded-r-lg bg-[#E8E8E8] w-[40px] h-[42px] flex items-center justify-center text-[#8C8C8C] text-sm">
+                        <div class="-ml-1 border border border-[#BFBFBF] rounded-r-lg bg-[#E8E8E8] w-10 h-[42px] flex items-center justify-center text-[#8C8C8C] text-sm">
                             %
                         </div>
                     </div>
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container class="w-[220px]">
+            <x-form.input-container labelClass="w-50" :labelWrap="true">
                 <x-slot name="label">Capaian Pembelajaran MK</x-slot>
                 <x-slot  name="input">
-                    <div class="grid grid-rows-2 grid-flow-col gap-y-3 gap-x-10">
+                    <div class="grid grid-rows-2 grid-flow-col gap-y-3 gap-x-7">
                     @foreach($cpmkList as $index => $cpmk)
-                        <x-form.checklist class="!w-fit" id="{{ $index }}" value="{{ $index }}" label="{{ $cpmk }}" name="{{ $cpmk }}" x-model="cpmk"/>
+                        <x-form.checklist id="{{ $index }}" value="{{ $index }}" label="{{ $cpmk }}" name="{{ $cpmk }}" x-model="cpmk"/>
                     @endforeach
                     </div>
                 </x-slot>
