@@ -25,7 +25,7 @@
     <x-typography :variant="'body-large-semibold'">Manajemen Pengguna</x-typography>
 
     <div class="flex items-center justify-end w-full px-4">
-      <x-button.primary :href="route('users.create')">Tambah Pengguna Baru</x-button.primary>
+      <x-button :variant="'primary'" :size="'lg'" :href="route('users.create')">Tambah Pengguna Baru</x-button.primary>
     </div>
     <x-container :class="'flex justify-between'">
       <div class="w-64">
@@ -43,7 +43,7 @@
         :buttonId="'sortFilterButton'"
         :dropdownId="'sortFilterDropdown'"
         :label="'Urutkan'"
-        :imgSrc="asset('assets/icon-filter.svg')"
+        :imgSrc="asset('assets/icons/sort/red-20.svg')"
         :isIconCanRotate="false"
         :dropdownItem="[
           'Urutkan' => '',
@@ -82,18 +82,9 @@
                   x-text="formatDateTime(user.created_at)"
                 ></x-table-cell>
                 <x-table-cell :variant="'old'">
-                  <x-badge 
-                    class="bg-[#D0DE68]" 
-                    x-bind:class="{
-                      'bg-[#D0DE68]': user.status == 'active',
-                      'bg-[#FAFBEE]': user.status != 'active',
-                      'text-[#98A725]': user.status != 'active',
-                      'border-[#D0DE68]': user.status != 'active',
-                      'border-[1px]': user.status != 'active',
-                      'leading-5': user.status != 'active'
-                    }"
-                    x-text="user.status == 'active' ? 'Aktif' : 'Tidak Aktif'"
-                  ></x-badge>
+                  
+                  <template x-if="user.status === 'active'"><x-badge :variant="'green-filled'" x-text="'Aktif'"></x-badge></template>
+                  <template x-if="user.status !== 'active'"><x-badge :variant="'green-bordered'"  x-text="'Tidak Aktif'"></x-badge></template>
                 </x-table-cell>
                 <x-table-cell :variant="'old'">
                     <a 
@@ -112,20 +103,20 @@
                 <x-table-cell :variant="'old'">
                     <x-container :variant="'content-wrapper'" :class="'flex flex-row gap-10 items-center justify-center'">
                       <x-button.base
-                          :icon="asset('assets/button-view.svg')"
-                          class="scale-250"
+                          :icon="asset('assets/icons/search/black-16.svg')"
+                          class="flex items-center"
                           x-on:click="requestDisplayTemplate(
                             '{{ route('users.detail') }}', 
                             '#userDetailModalContainer', 
                             '#modalDetailPengguna', 
                             { nomor_induk: user.nomor_induk }
                           )"
-                      />
+                      >Lihat</x-button.base>
                       <x-button.base
-                          :icon="asset('assets/button-edit.svg')"
-                          class="scale-210"
+                          :icon="asset('assets/icons/edit/red-16, property=default.svg')"
+                          class="text-[#E62129]"
                           x-on:click="window.location.href='{{ route('users.edit', ['nomor_induk' => ':nomor_induk']) }}'.replace(':nomor_induk', user.nomor_induk)"
-                      />
+                      >Ubah</x-button.base>
                     </x-container>
                 </x-table-cell>
             </x-table-row>
