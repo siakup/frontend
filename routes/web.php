@@ -232,3 +232,4 @@ require __DIR__.'/module/rps.php';
 require __DIR__.'/module/lecture-preparation.php';
 require __DIR__.'/module/calendar.php';
 require __DIR__.'/module/courses.php';
+require __DIR__.'/module/class-lecturer.php';

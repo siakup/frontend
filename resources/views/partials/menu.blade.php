@@ -164,6 +164,14 @@
             :routeQuery="'rps*'"
             :variant="'parent'"
           />
+          <x-menu.item
+            :label="'Kelas Perkuliahan'"
+            :haveIcon="true"
+            :icon="asset('assets/base/icon-kurikulum.svg')"
+            :routeName="'class-lecturer.index'"
+            :routeQuery="'class-lecturer*'"
+            :variant="'parent'"
+          />
           {{-- <x-menu.item
             :label="'Penelitian'"
             :haveIcon="true"

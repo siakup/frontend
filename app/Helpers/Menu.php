@@ -428,6 +428,12 @@ class Menu
                   ]
                 ]
             ],
+            'class-lecturer' => [
+                'name' => 'Kelas Perkuliahan',
+                'url' => '/class-lecturer',
+                'parent' => 'class-lecturer.index',
+                'isExpandable' => false,
+            ],
         ];
     }
 
