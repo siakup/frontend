@@ -39,8 +39,9 @@
       Tarik & letakkan file di sini
     </div>
     <div>Atau</div>
-    <x-button.secondary 
+    <x-button 
       :isUsedWithLabelTagForFileInput="true"
+      :variant="'secondary'"
       name="{{ $name }}"
       x-on:change="onChangeFile"
       x-ref="fileInput"
