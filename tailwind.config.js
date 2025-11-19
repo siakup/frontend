@@ -21,7 +21,7 @@ module.exports = {
           800: '#810E12',
           900: '#5C0A0D',
         },
-        greenPear: { // ✅ Gunakan camelCase untuk konsistensi kelas: `text-greenPear-500`
+        greenPear: {
           50:  '#FAFBEE',
           100: '#EFF4CD',
           200: '#E5EDAB',

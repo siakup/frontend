@@ -31,7 +31,7 @@
 @section('content')
   <x-container :variant="'content-wrapper'" x-data="createUser()">
     <x-typography :variant="'body-large-semibold'">Pengguna Baru</x-typography>
-    <x-button.back :href="route('users.index')">Manajemen Pengguna</x-button.back>
+    <x-button :variant="'tertiary'" :icon="asset('assets/icons/arrow-left/red-20.svg')" :href="route('users.index')">Manajemen Pengguna</x-button>
     <x-container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Pengguna Baru</x-typography>
       <x-form.input-container class="min-w-[120px]" for="nip-search">
@@ -96,12 +96,13 @@
       </x-form.input-container>
       <x-form.toggle x-model="$store.createPage.status" />
       <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-end !px-0'">
-        <x-button.primary 
+        <x-button
+          :variant="'primary'" 
           x-on:click="$store.createPage.isModalTambahPeranOpen = true;"
           x-bind:disabled="checkValidity()"
         >
           Tambah Peran
-        </x-button.primary>
+        </x-button>
       </x-container>
     </x-container>
     <x-container :class="'flex flex-col gap-4'">
@@ -123,13 +124,17 @@
                 <x-table-cell :variant="'old'" x-text="peran.institutionName"></x-table-cell>
                 <x-table-cell :variant="'old'" x-text="formatDateTime(peran.createdAt)"></x-table-cell>
                 <x-table-cell :variant="'old'">
-                  <x-button.base
-                    :icon="asset('assets/icon-delete-gray-600.svg')"
-                    class="text-[#8C8C8C] scale-75"
-                    x-on:click="selectedId = index; isModalKonfirmasiHapusOpen = true;"
-                  >
-                    Hapus
-                  </x-button.base>
+                  <x-container :variant="'content-wrapper'" class="w-full items-center">
+                    <x-button
+                      :variant="'tertiary'"
+                      :size="'sm'"
+                      :icon="asset('assets/icons/delete/grey-20.svg')"
+                      class="!text-[#8C8C8C]"
+                      x-on:click="selectedId = index; isModalKonfirmasiHapusOpen = true;"
+                    >
+                      Hapus
+                    </x-button>
+                  </x-container>
                 </x-table-cell>
               </x-table-row>
             </template>
@@ -137,12 +142,13 @@
         </tbody>
       </x-table>
       <x-container :variant="'content-wrapper'" :class="'flex-row justify-end gap-4 !px-0'" x-bind:class="{'hidden': !$store.createPage.peran || $store.createPage.peran.length == 0, 'flex': $store.createPage.peran && $store.createPage.peran.length > 0 }">
-        <x-button.secondary :href="route('users.index')">Batal</x-button.secondary>
-        <x-button.primary 
+        <x-button :variant="'secondary'" :href="route('users.index')">Batal</x-button.secondary>
+        <x-button 
+          :variant="'primary'" 
           x-on:click="isModalKonfirmasiSimpanOpen = true"
         >
           Simpan
-        </x-button.primary>
+        </x-button>
       </x-container>
     </x-container>
 
@@ -151,7 +157,7 @@
         <x-slot name="header">
           <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
             <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tambah Peran Pengguna</x-typography>
-            <x-icon :iconUrl="asset('assets/base/icon-caution.svg')" :class="'w-8 h-8'" />
+            <x-icon :iconUrl="asset('assets/icons/caution/outline-black-24.svg')" />
           </x-container>
         </x-slot name="header">
         <x-slot name="body">
@@ -162,7 +168,7 @@
                 :buttonId="'sortPeran'"
                 :dropdownId="'peranList'"
                 :label="'Pilih Peran'"
-                :imgSrc="asset('assets/base/icon-arrow-down.svg')"
+                :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                 :isIconCanRotate="true"
                 :dropdownItem="(array_column(array_merge([['id' => '', 'nama' => 'Pilih Peran']], $roles->data), 'id', 'nama'))"
                 :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black !w-full flex items-center justify-between flex-1'"
@@ -180,7 +186,7 @@
                 :buttonId="'sortInstitusi'"
                 :dropdownId="'institusiList'"
                 :label="'Pilih Institusi'"
-                :imgSrc="asset('assets/base/icon-arrow-down.svg')"
+                :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                 :isIconCanRotate="true"
                 :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black !w-full flex items-center justify-between flex-1'"
                 :dropdownContainerClass="'!w-full'"
@@ -193,13 +199,13 @@
           </x-form.input-container>
         </x-slot>
         <x-slot name="footer">
-          <x-button.secondary x-on:click="$store.createPage.isModalTambahPeranOpen = false">Batal</x-button.secondary>
-          <x-button.primary 
+          <x-button :variant="'secondary'" x-on:click="$store.createPage.isModalTambahPeranOpen = false">Batal</x-button>
+          <x-button :variant="'primary'" 
             x-on:click="onSavePeran()" 
             x-bind:disabled="peran == '' || namaInstitusi == ''"
           >
             Tambah
-          </x-button.primary>
+          </x-button>
         </x-slot>
       </x-modal.container-pure-js>
     </div>
@@ -208,28 +214,27 @@
       <x-slot name="header">
         <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
-          <x-icon :iconUrl="asset('assets/base/icon-caution.svg')" :class="'w-8 h-8'" />
+          <x-icon :iconUrl="asset('assets/icons/caution/outline-black-24.svg')" />
         </x-container>
       </x-slot>
-      <x-slot name="body">
-        <div>Apakah anda yakin informasi anda sudah benar?</div>
-      </x-slot>
+      <x-slot name="body">Apakah anda yakin informasi anda sudah benar?</x-slot>
       <x-slot name="footer">
-        <x-button.secondary x-on:click="isModalKonfirmasiSimpanOpen = false">Cek Kembali</x-button.secondary>
-        <x-button.primary x-on:click="saveData('{{route('users.store')}}', '{{ route('users.index') }}')">Ya, Simpan Sekarang</x-button.primary>
+        <x-button :variant="'secondary'" x-on:click="isModalKonfirmasiSimpanOpen = false">Cek Kembali</x-button>
+        <x-button :variant="'primary'" x-on:click="saveData('{{route('users.store')}}', '{{ route('users.index') }}')">Ya, Simpan Sekarang</x-button>
       </x-slot>
     </x-modal.container-pure-js>
   
     <x-modal.container-pure-js x-bind:class="{'hidden': !isModalKonfirmasiHapusOpen, 'flex': isModalKonfirmasiHapusOpen}">
       <x-slot name="header">
-        <span class="text-lg-bd">Hapus Peran Pengguna</span>
+        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Hapus Peran Pengguna</x-typography>
+          <x-icon :iconUrl="asset('assets/icons/delete/grey-24.svg')" />
+        </x-container>
       </x-slot name="header">
-      <x-slot name="body">
-        <div>Apakah anda yakin ingin menghapus?</div>
-      </x-slot>
+      <x-slot name="body">Apakah anda yakin ingin menghapus?</x-slot>
       <x-slot name="footer">
-        <x-button.secondary x-on:click="isModalKonfirmasiHapusOpen = false; selectedId = null">Cek Kembali</x-button.secondary>
-        <x-button.primary x-on:click="onDeletePeran()">Ya, Hapus Sekarang</x-button.primary>
+        <x-button :variant="'secondary'" x-on:click="isModalKonfirmasiHapusOpen = false; selectedId = null">Cek Kembali</x-button>
+        <x-button :variant="'primary'" x-on:click="onDeletePeran()">Ya, Hapus Sekarang</x-button>
       </x-slot>
     </x-modal.container-pure-js>
   </x-container>

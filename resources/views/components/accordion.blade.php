@@ -9,14 +9,14 @@
     'red-gradient' => [
       'head' => 'bg-linear-to-r from-white to-[#FFECED]',
       'text' => 'text-[#E62129]',
-      'icon' => asset('assets/icon-arrow-right-red.svg'),
-      'closeRotateIcon' => 'rotate-90',
-      'openRotateIcon' => '-rotate-90'
+      'icon' => asset('assets/icons/arrow-down/red-16.svg'),
+      'closeRotateIcon' => '',
+      'openRotateIcon' => 'rotate-180'
     ],
     'white-background' => [
       'head' => 'bg-white',
       'text' => 'black',
-      'icon' => asset('assets/icon-arrow-down-black-16.svg'),
+      'icon' => asset('assets/icons/arrow-down/black-16.svg'),
       'closeRotateIcon' => '',
       'openRotateIcon' => 'rotate-180'
     ]
@@ -40,7 +40,7 @@
       <span x-text="open ? 'Tutup' : 'Buka'"></span>
       <img src="{{ $variants[$variant]['icon'] }}"
           alt="arrow"
-          class="w-4 h-4 transition-transform duration-200"
+          class="transition-transform duration-200"
           :class="open ? '{{$variants[$variant]['openRotateIcon']}}' : '{{$variants[$variant]['closeRotateIcon']}}'">
     </span>
   </button>
