@@ -5,7 +5,7 @@
 ])
 
 @php
-    $base = 'p-4 border rounded-sm flex flex-row gap-4 mx-auto my-4';
+    $base = 'p-4 border rounded-sm flex flex-row gap-4 mx-auto my-4 text-left';
     $variants = [
         'warning' => 'bg-yellow-50 border-yellow-500',
         'danger' => 'bg-disable-red border-red-400',

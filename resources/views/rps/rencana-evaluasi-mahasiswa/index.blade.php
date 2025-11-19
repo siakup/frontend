@@ -43,7 +43,7 @@
                                         :icon="asset('assets/base/icon-search-16.svg')"
                                         iconPosition="left"
                                         sizeText="caption-regular"
-                                        x-on:click="$dispatch('open-modal', {id: 'edit-matriks-penilaian'})"
+                                        x-on:click="$dispatch('open-modal', {id: 'view-rencana-evaluasi'})"
                                     >
                                         Lihat
                                     </x-button.base>
@@ -52,7 +52,7 @@
                                         iconPosition="left"
                                         sizeText="caption-regular"
                                         buttonClass="text-[#E62129]"
-                                        x-on:click="$dispatch('open-modal', {id: 'edit-matriks-penilaian'})"
+                                        :href="route('rps.rencana-evaluasi-mahasiswa.edit', ['id' => $rencana['id']])"
                                     >
                                         Ubah
                                     </x-button.base>
@@ -73,7 +73,7 @@
                     </x-table-body>
                 </x-table>
             @else
-                <x-container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
+                <x-container variant="content-grey" class="h-22 flex items-center justify-center" borderRadius="rounded-xl">
                     <x-typography variant="body-small-bold">Belum Ada Rencana Evaluasi Mahasiswa, Silahkan Tambah Rencana Evaluasi Terlebih Dahulu</x-typography>
                 </x-container>
             @endif
@@ -88,6 +88,7 @@
             
         </div>
     </div>
+    @include('rps.rencana-evaluasi-mahasiswa._view')
 
     <x-modal.confirmation 
         id="save-confirmation" 
@@ -97,10 +98,8 @@
     >
         <p>Apakah Anda yakin ingin menyimpan <b>rencana evaluasi mahasiswa</b>?</p>
         <x-dialog variant="warning" dialogClass="mb-0">
-            <div class="flex flex-col text-left">
-                <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                <x-typography variant="body-small-regular">Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman berikutnya.</x-typography>
-            </div>
+            <x-slot name="header">Perhatian!</x-slot>
+            Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman berikutnya.
         </x-dialog>
     </x-modal.confirmation>
 
@@ -113,10 +112,8 @@
     >
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
         <x-dialog variant="warning" dialogClass="mb-0">
-            <div class="flex flex-col text-left">
-                <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.</p>
-            </div>
+            <x-slot name="header">Perhatian!</x-slot>
+            Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.
         </x-dialog>
     </x-modal.confirmation>
 @endsection

@@ -16,6 +16,7 @@ use App\Http\Controllers\RpsController;
         Route::get('/evaluasi-pemetaan-capaian', [RpsController::class, 'showEvaluasiPemetaan'])->name('rps.evaluasi-pemetaan-capaian');
         Route::get('/rencana-evaluasi-mahasiswa', [RpsController::class, 'showRencanaEvaluasi'])->name('rps.rencana-evaluasi-mahasiswa');
         Route::get('/rencana-evaluasi-mahasiswa/create', [RpsController::class, 'buatRencanaEvaluasi'])->name('rps.rencana-evaluasi-mahasiswa.create');
+        Route::get('/rencana-evaluasi-mahasiswa/edit/{id}', [RpsController::class, 'ubahRencanaEvaluasi'])->name('rps.rencana-evaluasi-mahasiswa.edit');
         Route::get('/submission', [RpsController::class, 'showRencanaPerkuliahan'])->name('rps.submission');
     });
 // });

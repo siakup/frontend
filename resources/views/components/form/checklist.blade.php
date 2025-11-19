@@ -20,11 +20,11 @@
     const checked = element.checked;
 
     if(checked) {
-      label.classList.add('text-[#262626]')
-      label.classList.remove('text-[#8C8C8C]')
+      label.classList.add('text-gray-800')
+      label.classList.remove('text-gray-600')
     } else {
-      label.classList.add('text-[#8C8C8C]')
-      label.classList.remove('text-[#262626]')
+      label.classList.add('text-600')
+      label.classList.remove('text-gray-800')
     }
   }
 </script>
@@ -35,7 +35,8 @@
     type="checkbox" 
     {{
       $attributes->except('onchange')->merge([
-        'class' => "accent-[#E62129] w-fit pe-10 box-border flex items-center ps-3 border-[1px] border-[#D9D9D9] rounded-lg text-sm leading-5 h-10"
+        'class' => "accent-red-500 w-fit pe-10 box-border flex items-center ps-3 border 
+        border-gray-400 rounded-lg text-sm leading-5 h-6 disabled:cursor-not-allowed"
       ])
     }}
     onchange="{{$onChange}}"
@@ -51,7 +52,7 @@
   @if($label)
     <label 
       for="{{ $id }}" 
-      class="text-sm w-max {{ $checked ? 'text-[#262626]' : 'text-[#8C8C8C]'}}"
+      class="text-sm w-max {{ $checked ? 'text-gray-800' : 'text-gray-600'}}"
     >
       {{ $label }}
     </label>
