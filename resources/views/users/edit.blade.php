@@ -3,89 +3,92 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('javascript')
-<script src="{{asset('js/custom/helper.js')}}"></script>
-<script src="{{asset('js/custom/user.js')}}"></script>
+  <script src="{{ asset('js/component-helpers/api.js')}}"></script>
+  <script src="{{ asset('js/component-helpers/formatter.js')}}"></script>
+  <script type="module">
+    import User from "{{ asset('js/controllers/user.js') }}";
+
+    document.addEventListener('alpine:init', () => {
+      Alpine.store('editPage', {
+        user_id: @js($response->data->user->id),
+        nomor_induk: @js($response->data->user->nomor_induk),
+        nama: @js($response->data->user->nama),
+        username: @js($response->data->user->username),
+        email: @js($response->data->user->email),
+        status: @js($response->data->user->status) === 'active',
+        peran: @json($peran),
+        isModalTambahPeranOpen: false,
+      });
+
+      Alpine.data('editUser', User.editUser);
+      Alpine.data('createPeran', User.createPeran);
+    });
+  </script>
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'">
+  <x-container :variant="'content-wrapper'" x-data="editUser()">
     <x-typography :variant="'body-large-semibold'">Ubah Informasi</x-typography>
     <x-button.back :href="route('users.index')">Manajemen Pengguna</x-button.back>
     <x-container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Ubah Informasi Data Pengguna</x-typography>
-      <input type="hidden" id="user_id" value="{{ $response->data->user->id }}">
       <x-form.input-container class="min-w-[120px]" id="nip-search">
         <x-slot name="label">NIP</x-slot>
         <x-slot name="input">
           <div class="w-full flex-1">
-            <x-form.search-v2 
-              class="w-full"
-              :routes="route('users.index')"
-              :fieldKey="'username'"
-              :placeholder="'Nomor Induk Pegawai (NIP)'"
-              :search="''"
-              id="nip-search"
-              value="{{ $response->data->user->nomor_induk ?? '' }}"
+            <x-form.search
+              :placeholder="'Username / Nama / Status'"
+              :storeName="'editPage'"
+              :storeKey="'users'"
+              :requestRoute="route('users.search-nip')"
+              :responseKeyData="'users'"
+              x-model="$store.editPage.nomor_induk"
               readonly
             />
-            <input type="hidden" id="nip" name="nip" value="{{ $response->data->user->nomor_induk ?? '' }}">
           </div>
         </x-slot>
       </x-form.input-container>
       <x-form.input-container class="min-w-[120px]" id="nama_lengkap">
         <x-slot name="label">Nama Lengkap</x-slot>
         <x-slot name="input">
-          <input 
-            type="text" 
-            id="nama_lengkap" 
-            class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" 
-            placeholder="Auto Generate" 
-            value="{{ $response->data->user->nama ?? '' }}"
-            readonly 
+          <x-form.input 
+            :placeholder="'Auto Generate'" 
+            :name="'nama'" 
+            readonly
+            x-model="$store.editPage.nama"
           />
         </x-slot>
       </x-form.input-container>
       <x-form.input-container class="min-w-[120px]" id="username">
         <x-slot name="label">Username</x-slot>
         <x-slot name="input">
-          <input 
-            type="text" 
-            id="username" 
-            class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" 
-            placeholder="Auto Generate"
-            value="{{ $response->data->user->username ?? '' }}" 
-            readonly 
+          <x-form.input 
+            :placeholder="'Auto Generate'" 
+            :name="'username'" 
+            readonly
+            x-model="$store.editPage.username"
           />
         </x-slot>
       </x-form.input-container>
       <x-form.input-container class="min-w-[120px]" id="email">
         <x-slot name="label">Email</x-slot>
         <x-slot name="input">
-          <input 
-            type="text" 
-            id="email" 
-            class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm leading-5 read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:cursor-not-allowed flex-1 rounded-lg" 
-            placeholder="Auto Generate" 
-            value="{{ $response->data->user->email }}"
-            readonly />
+          <x-form.input 
+            :placeholder="'Auto Generate'" 
+            :name="'email'" 
+            readonly
+            x-model="$store.editPage.email"
+          />
         </x-slot>
       </x-form.input-container>
-      <x-form.toggle :id="'user-status'" :value="($response->data->user->status ?? 'inactive') === 'active'" />
+      <x-form.toggle x-model="$store.editPage.status" />
       <x-container class="flex flex-row items-center justify-end w-full px-8 py-4 border-none">
-        <x-button.primary 
-          onclick="
-            document.getElementById('modalTambahPeran').classList.add('flex');
-            document.getElementById('modalTambahPeran').classList.remove('hidden');
-          "
-          id="btnShowModal"
-        >
-          Tambah Peran
-        </x-button.primary>
+        <x-button.primary x-on:click="$store.editPage.isModalTambahPeranOpen = true;">Tambah Peran</x-button.primary>
       </x-container>
     </x-container>
     <x-container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Daftar Peran</x-typography>
-      <x-table id="list-role" :variant="'old'">
+      <x-table id="list-role" class="table" :variant="'old'">
         <x-table-head :variant="'old'">
           <x-table-row :variant="'old'">
             <x-table-header :variant="'old'">Nama Peran</x-table-header>
@@ -95,89 +98,88 @@
           </x-table-row>
         </x-table-head>
         <tbody>
-          @foreach($response->data->roles as $role)
-            <x-table-row 
-              data-role-id="{{ $role->id_role }}" 
-              data-institusi-id="{{ $role->id_institusi }}" 
-              :variant="'old'"
-            >
-              <x-table-cell :variant="'old'">{{ $role->role?->nama_role ?? '-' }}</x-table-cell>
-              <x-table-cell :variant="'old'">{{ $role->institusi?->nama_institusi ?? '-' }}</x-table-cell>
-              <x-table-cell :variant="'old'">{{ formatDateTime($role->created_at) }}</x-table-cell>
-              <x-table-cell :variant="'old'" class="flex items-center justify-center">
-                <x-button.secondary 
-                  onclick="handleClickConfirmationDeleteRole(this)"
-                  class="border-none"
-                  :icon="asset('/assets/active/icon-delete.svg')"
-                  :iconPosition="'left'"
-                >
-                  <span>Hapus</span>
-                </x-button.secondary>
-              </x-table-cell>
-            </x-table-row>
-          @endforeach
+          <template x-if="$store.editPage.peran && $store.editPage.peran.length > 0">
+            <template x-for="(peran, index) in $store.editPage.peran">
+              <x-table-row :variant="'old'">
+                <x-table-cell :variant="'old'" x-text="peran.peranName"></x-table-cell>
+                <x-table-cell :variant="'old'" x-text="peran.institutionName"></x-table-cell>
+                <x-table-cell :variant="'old'" x-text="formatDateTime(peran.createdAt)"></x-table-cell>
+                <x-table-cell :variant="'old'">
+                  <x-button.base
+                    :icon="asset('assets/icon-delete-gray-600.svg')"
+                    class="text-[#8C8C8C] scale-75"
+                    x-on:click="selectedId = index; isModalKonfirmasiHapusOpen = true;"
+                  >
+                    Hapus
+                  </x-button.base>
+                </x-table-cell>
+              </x-table-row>
+            </template>
+          </template>
         </tbody>
       </x-table>
       <x-container :variant="'content-wrapper'" :class="'flex flex-row !px-0 gap-3 justify-end'">
         <x-button.secondary :href="route('users.index')">Batal</x-button.secondary>
-        <x-button.primary 
-          onclick="
-            document.getElementById('modalKonfirmasiSimpan').classList.add('flex');
-            document.getElementById('modalKonfirmasiSimpan').classList.remove('hidden');
-          "
-        >
-          Simpan
-        </x-button.primary>
+        <x-button.primary x-on:click="isModalKonfirmasiSimpanOpen = true">Simpan</x-button.primary>
       </x-container>
     </x-container>
-    <x-modal.container-pure-js id="modalTambahPeran">
-      <x-slot name="header">
-        <span class="text-lg-bd">Tambah Peran Pengguna</span>
-      </x-slot name="header">
-      <x-slot name="body">
-        <x-form.input-container class="min-w-[120px]" id="">
-          <x-slot name="label">Nama Peran</x-slot>
-          <x-slot name="input">
-            <select 
-              id="roleSelect" 
-              class="w-full ps-3 pe-10 box-border border-[1px] border-[#D9D9D9] rounded-lg h-10" 
-              onchange="handleChangeRole(this)"
-            >
-              <option value="" selected disabled hidden>Pilih Peran</option>
-              @foreach($roles->data as $role)
-                <option value="{{ $role->id }}">{{ $role->nama }}</option>
-              @endforeach
-            </select>
-          </x-slot>
-        </x-form.input-container>
-        <x-form.input-container class="min-w-[120px]" id="">
-          <x-slot name="label">Nama Institusi</x-slot>
-          <x-slot name="input">
-            <select 
-              id="institusiSelect" 
-              class="w-full ps-3 pe-10 box-border border-[1px] border-[#D9D9D9] rounded-lg h-10" 
-              onchange="updateTambahButtonState(document.getElementById('roleSelect'), this)" 
-              disabled
-            >
-              <option value="" selected disabled hidden>Pilih Institusi</option>
-            </select>
-          </x-slot>
-        </x-form.input-container>
-      </x-slot>
-      <x-slot name="footer">
-        <x-button.secondary 
-          onclick="
-            document.getElementById('modalTambahPeran').classList.add('hidden');
-            document.getElementById('modalTambahPeran').classList.remove('flex');
-          "
-        >
-          Cek Kembali
-        </x-button.secondary>
-        <x-button.primary id="btnTambahModal" onclick="handleClickAddRole(this)" disabled>Ya, Simpan Sekarang</x-button.primary>
-      </x-slot>
-    </x-modal.container-pure-js>
+
+    <div x-data="createPeran('{{ route('institutions.role') }}', @js($roles->data))" x-effect="getData();">
+      <x-modal.container-pure-js x-bind:class="{'hidden': !$store.editPage.isModalTambahPeranOpen, 'flex': $store.editPage.isModalTambahPeranOpen}">
+        <x-slot name="header">
+          <span class="text-lg-bd">Tambah Peran Pengguna</span>
+        </x-slot name="header">
+        <x-slot name="body">
+          <x-form.input-container class="min-w-[120px]" id="">
+            <x-slot name="label">Nama Peran</x-slot>
+            <x-slot name="input">
+              <x-form.dropdown 
+                :buttonId="'sortPeran'"
+                :dropdownId="'peranList'"
+                :label="'Pilih Peran'"
+                :imgSrc="asset('assets/base/icon-arrow-down.svg')"
+                :isIconCanRotate="true"
+                :dropdownItem="(array_column(array_merge([['id' => '', 'nama' => 'Pilih Peran']], $roles->data), 'id', 'nama'))"
+                :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black !w-full flex items-center justify-between flex-1'"
+                :dropdownContainerClass="'!w-full'"
+                :isUsedForInputField="true"
+                :inputFieldName="'peran'"
+                x-model="peran"
+              />
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container class="min-w-[120px]" id="">
+            <x-slot name="label">Nama Institusi</x-slot>
+            <x-slot name="input">
+              <x-form.dropdown 
+                :buttonId="'sortInstitusi'"
+                :dropdownId="'institusiList'"
+                :label="'Pilih Institusi'"
+                :imgSrc="asset('assets/base/icon-arrow-down.svg')"
+                :isIconCanRotate="true"
+                :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black !w-full flex items-center justify-between flex-1'"
+                :dropdownContainerClass="'!w-full'"
+                :isUsedForInputField="true"
+                :inputFieldName="'namaInstitusi'"
+                x-model="namaInstitusi"
+                x-init="$watch('institusiList', value => options = {...institusiList})"
+              />
+            </x-slot>
+          </x-form.input-container>
+        </x-slot>
+        <x-slot name="footer">
+          <x-button.secondary x-on:click="$store.editPage.isModalTambahPeranOpen = false">Cek Kembali</x-button.secondary>
+          <x-button.primary 
+            x-on:click="onSavePeran('editPage')" 
+            x-bind:disabled="peran == '' || namaInstitusi == ''"
+          >
+            Ya, Simpan Sekarang
+          </x-button.primary>
+        </x-slot>
+      </x-modal.container-pure-js>
+    </div>
   
-    <x-modal.container-pure-js id="modalKonfirmasiSimpan">
+    <x-modal.container-pure-js x-bind:class="{'hidden': !isModalKonfirmasiSimpanOpen, 'flex': isModalKonfirmasiSimpanOpen}">
       <x-slot name="header">
         <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
@@ -188,18 +190,12 @@
         <div>Apakah anda yakin informasi anda sudah benar?</div>
       </x-slot>
       <x-slot name="footer">
-        <x-button.secondary 
-          onclick="
-            document.getElementById('modalKonfirmasiSimpan').classList.add('hidden');
-            document.getElementById('modalKonfirmasiSimpan').classList.remove('flex');
-          ">
-            Cek Kembali
-          </x-button.secondary>
-        <x-button.primary id="btnYaSimpan" onclick="handleUpdateData()">Ya, Simpan Sekarang</x-button.primary>
+        <x-button.secondary x-on:click="isModalKonfirmasiSimpanOpen = false">Cek Kembali</x-button.secondary>
+        <x-button.primary x-on:click="saveData('{{route('users.update', ['id' => ':id'])}}'.replace(':id', $store.editPage.user_id), '{{ route('users.index') }}')">Ya, Simpan Sekarang</x-button.primary>
       </x-slot>
     </x-modal.container-pure-js>
   
-    <x-modal.container-pure-js id="modalKonfirmasiHapus">
+    <x-modal.container-pure-js x-bind:class="{'hidden': !isModalKonfirmasiHapusOpen, 'flex': isModalKonfirmasiHapusOpen}">
       <x-slot name="header">
         <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Hapus Peran Pengguna</x-typography>
@@ -210,14 +206,8 @@
         <div>Apakah anda yakin ingin menghapus?</div>
       </x-slot>
       <x-slot name="footer">
-        <x-button.secondary 
-          onclick="
-            document.getElementById('modalKonfirmasiHapus').classList.add('hidden');
-            document.getElementById('modalKonfirmasiHapus').classList.remove('flex');
-          ">
-            Cek Kembali
-          </x-button.secondary>
-        <x-button.primary id="btnYaHapus" onclick="handleClickDeleteRole(this)">Ya, Hapus Sekarang</x-button.primary>
+        <x-button.secondary x-on:click="isModalKonfirmasiHapusOpen = false; selectedId = null">Cek Kembali</x-button.secondary>
+        <x-button.primary x-on:click="onDeletePeran()">Ya, Hapus Sekarang</x-button.primary>
       </x-slot>
     </x-modal.container-pure-js>
   

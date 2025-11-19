@@ -1,3 +1,7 @@
+<script>
+  window.modalData = @json($response->data)
+</script>
+
 <x-modal.container-pure-js id="modalDetailPengguna">
   <x-slot name="header">
     <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
@@ -15,79 +19,83 @@
     </x-container>
   </x-slot>
   <x-slot name="body">
-    <x-container :variant="'content-wrapper'" :class="'!px-0'" id="section-detail">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'" onclick="toggleSection('detail')">
-        <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Informasi Detail Pengguna</x-typography>
-        <x-icon :id="'icon-detail'" :iconUrl="asset('assets/icon-arrow-up-black-16.svg')" :class="'!w-5 !h-5 transition-transform duration-200'" />
-      </x-container>
-      <x-container :variant="'content-wrapper'" class="!px-0 block" id="content-detail">
-        <x-form.input-container class="min-w-[120px]" id="nip">
-          <x-slot name="label">NIP</x-slot>
-          <x-slot name="input">
-            <input type="text" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm rounded-lg leading-5 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed" value="{{ $response->data->user->nomor_induk }}" readonly>
-          </x-slot>
-        </x-form.input-container>
-        <x-form.input-container class="min-w-[120px]" id="nama_lengkap">
-          <x-slot name="label">Nama Lengkap</x-slot>
-          <x-slot name="input">
-            <input type="text" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm rounded-lg leading-5 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed" value="{{ $response->data->user->nama }}" readonly>
-          </x-slot>
-        </x-form.input-container>
-        <x-form.input-container class="min-w-[120px]" id="username">
-          <x-slot name="label">Username</x-slot>
-          <x-slot name="input">
-            <input type="text" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm rounded-lg leading-5 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed" value="{{ $response->data->user->username }}" readonly>
-          </x-slot>
-        </x-form.input-container>
-        <x-form.input-container class="min-w-[120px]" id="email">
-          <x-slot name="label">Email</x-slot>
-          <x-slot name="input">
-            <input type="text" class="w-full px-3 py-2 border-[1px] border-[#D9D9D9] text-sm rounded-lg leading-5 bg-[#F5F5F5] text-[#8C8C8C] cursor-not-allowed" value="{{ $response->data->user->email }}" readonly>
-          </x-slot>
-        </x-form.input-container>
-      </x-container>
-    </x-container>
-    <div class="modal-divider"></div>
-    <x-container :variant="'content-wrapper'" :class="'!px-0'" id="section-role">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'" onclick="toggleSection('role')">
-          <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Peran Pengguna</x-typography>
-          <x-icon :id="'icon-role'" :iconUrl="asset('assets/icon-arrow-up-black-16.svg')" :class="'!w-5 !h-5 transition-transform duration-200'" />
-      </x-container>
-      <x-container :variant="'content-wrapper'" class="block !px-0" id="content-role">
-        <x-table :variant="'old'">
-          <x-table-head :variant="'old'">
-              <x-table-row :variant="'old'">
-                <x-table-header :variant="'old'">Nama Peran</x-table-header>
-                <x-table-header :variant="'old'">Nama Institusi</x-table-header>
-              </x-table-row>
-          </x-table-head>
-          <tbody>
-            @foreach($response->data->roles as $role)
-              <x-table-row :variant="'old'">
-                <x-table-cell :variant="'old'">{{ $role->role->nama_role }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $role->institusi->nama_institusi }}</x-table-cell>
-              </x-table-row>
-            @endforeach
-          </tbody>
-        </x-table>
-      </x-container>
+    <x-container 
+      :variant="'content-wrapper'" 
+      :class="'!px-0'"
+      x-data='Object.assign(window.modalData)'
+    >
+      <x-accordion :label="'Informasi Detail Pengguna'" :isDefaultOpen="true" :variant="'white-background'">
+        <x-container :variant="'content-wrapper'" :class="'!p-4'">
+          <x-form.input-container class="min-w-[120px]" id="nip">
+            <x-slot name="label">NIP</x-slot>
+            <x-slot name="input">
+              <x-form.input 
+                :placeholder="''" 
+                :name="''" 
+                readonly
+                x-model="user.nomor_induk"
+              />
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container class="min-w-[120px]" id="nama_lengkap">
+            <x-slot name="label">Nama Lengkap</x-slot>
+            <x-slot name="input">
+              <x-form.input 
+                :placeholder="''" 
+                :name="''" 
+                readonly
+                x-model="user.nama"
+              />
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container class="min-w-[120px]" id="username">
+            <x-slot name="label">Username</x-slot>
+            <x-slot name="input">
+              <x-form.input 
+                :placeholder="''" 
+                :name="''" 
+                readonly
+                x-model="user.username"
+              />
+            </x-slot>
+          </x-form.input-container>
+          <x-form.input-container class="min-w-[120px]" id="email">
+            <x-slot name="label">Email</x-slot>
+            <x-slot name="input">
+              <x-form.input 
+                :placeholder="''" 
+                :name="''" 
+                readonly
+                x-model="user.email"
+              />
+            </x-slot>
+          </x-form.input-container>
+        </x-container>
+      </x-accordion>
+
+      <x-accordion :label="'Peran Pengguna'" :variant="'white-background'">
+        <x-container :variant="'content-wrapper'" :class="'!p-4'">
+          <x-table :variant="'old'">
+            <x-table-head :variant="'old'">
+                <x-table-row :variant="'old'">
+                  <x-table-header :variant="'old'">Nama Peran</x-table-header>
+                  <x-table-header :variant="'old'">Nama Institusi</x-table-header>
+                </x-table-row>
+            </x-table-head>
+            <tbody>
+              <template x-if="roles && roles.length > 0">
+                <template x-for="role in roles">
+                  <x-table-row :variant="'old'">
+                    <x-table-cell :variant="'old'" x-text="role.role.nama_role"></x-table-cell>
+                    <x-table-cell :variant="'old'" x-text="role.institusi.nama_institusi"></x-table-cell>
+                  </x-table-row>
+                </template>
+              </template>
+            </tbody>
+          </x-table>
+        </x-container>
+      </x-accordion>
     </x-container>
   </x-slot>
   <x-slot name="footer"></x-slot>
 </x-modal.container-pure-js>
-
-<script>
-  function toggleSection(section) {
-    const content = document.getElementById('content-' + section);
-    const icon = document.getElementById('icon-' + section);
-    if (content.classList.contains('hidden')) {
-      content.classList.add('block');
-      content.classList.remove('hidden');
-      icon.src = "{{ asset('assets/icon-arrow-up-black-16.svg') }}";
-    } else {
-      content.classList.add('hidden');
-      content.classList.remove('block');
-      icon.src = "{{ asset('assets/icon-arrow-down-black-16.svg') }}";
-    }
-  }
-</script>

@@ -37,6 +37,13 @@
     toggle() { this.open = ! this.open },
     setFalse() { this.open = false },
     options: @js($dropdownItem),
+    init () {
+      this.$watch('value', (val) => {
+          if (val === '') {
+            this.label = '{{ $label }}';
+          }
+      });
+    },
     onSelectedOption() {
       if({{ json_encode($isOptionRedirectableToURLQueryParameter) }}) {
         const params = new URLSearchParams(window.location.search);

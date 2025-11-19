@@ -6,7 +6,7 @@
     'storeKey' => '',
     'requestRoute' => '',
     'responseKeyData' => '',
-    'responseKeyPaginationData' => 'pagination'
+    'responseKeyPaginationData' => 'pagination',
 ])
 <script src="{{ asset('js/component-helpers/api.js')}}"></script>
 <div 
@@ -18,21 +18,25 @@
     responseKeyData: @js($responseKeyData),
     responseKeyPaginationData: @js($responseKeyPaginationData),
     async onSearch() {
-      await requestGetData(
-        '{{ $requestRoute }}', {
-          search: this.key,
-          display: 'false'
-        }, (response) => {
-          if ($store[this.storeName][this.storeKey]) {
-            $store[this.storeName][this.storeKey] = response.data[this.responseKeyData];
-            $store[this.storeName].paginationData = response.data[this.responseKeyPaginationData];
-          }
-      });
+      if($store[this.storeName].isOptionListOpen || $store[this.storeName].isOptionListOpen === undefined) {
+        await requestGetData(
+          '{{ $requestRoute }}', {
+            search: this.key,
+            display: 'false'
+          }, (response) => {
+            if ($store[this.storeName][this.storeKey]) {
+              $store[this.storeName][this.storeKey] = response.data[this.responseKeyData];
+              $store[this.storeName].paginationData = response.data[this.responseKeyPaginationData];
+            }
+        });
+      } else {
+        $store[this.storeName].isOptionListOpen = true;
+      }
     }
   }"
   x-modelable="key"
   x-model="{{$attributes->whereStartsWith('x-model')->first()}}"
-  x-effect="onSearch()"
+  x-init="$watch('key', value => onSearch())"
 >
     <input
         type="text"
@@ -40,9 +44,10 @@
         value=""
         placeholder="{{ $placeholder }}"
         {{ $attributes->merge([
-            'class' => 'w-full pl-10 pr-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none'
+            'class' => 'w-full pl-10 pr-4 py-2 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none read-only:bg-[#F5F5F5] read-only:text-[#8C8C8C] read-only:border-[#E8E8E8] read-only:cursor-not-allowed'
         ]) }}
         x-model="key"
+        autocomplete="off"
     >
 
     {{-- Icon search --}}

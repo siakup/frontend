@@ -35,8 +35,15 @@ class UserController extends Controller
         }
         $data = json_decode(json_encode($response), true);
 
+        $pagination = [
+          'currentPage' => $response->pagination->current_page,
+          'from' => $response->pagination->from,
+          'last' => ceil($response->pagination->total / $response->pagination->per_page),
+          'limit' => $limit
+        ];
+
         if ($request->ajax()) {
-          return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+          return $this->successResponse(['users' => $response->data, 'pagination' => $pagination], 'Berhasil mendapatkan data');
         }
         
         return view('users.index', get_defined_vars());
@@ -229,6 +236,16 @@ class UserController extends Controller
           ]));
         }
 
+        $peran = array_map(function($value) { 
+          return [
+            'peranName' => $value->role->nama_role,
+            'peranId' => $value->id_role,
+            'institutionName' => $value->institusi->nama_institusi,
+            'institutionId' => $value->id_institusi,
+            'createdAt' => $value->created_at
+          ];
+        }, $response->data->roles);
+
         return view('users.edit', get_defined_vars());
       } catch (\Throwable $err) {
         $decoded = json_decode($err->getMessage());
@@ -276,7 +293,7 @@ class UserController extends Controller
         }
 
         if ($request->ajax()) {
-          return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+          return $this->successResponse(['users' => $response->data ?? []], 'Berhasil mendapatkan data');
         }
 
         throw new \Exception(json_encode([
@@ -353,6 +370,7 @@ class UserController extends Controller
           'message' => "Request tidak valid"
         ]));
       } catch (\Throwable $err) {
+        dd($err);
         $decoded = json_decode($err->getMessage());
         Log::error('Gagal memuat reset password', [
           'url' => $url,
