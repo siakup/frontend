@@ -27,7 +27,7 @@
                         label="-Pilih Periode Akademik-"
                         :dropdownItem="$periodeList"
                         dropdownContainerClass="w-full"
-                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                         :isIconCanRotate="true"
                         x-model="periode"
                     />
@@ -43,7 +43,7 @@
                         label="-Pilih Program Studi-"
                         :dropdownItem="$prodiList"
                         dropdownContainerClass="w-full"
-                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                         :isIconCanRotate="true"
                         x-model="prodi"
                     />
@@ -59,7 +59,7 @@
                         label="-Pilih Mata Kuliah-"
                         :dropdownItem="$matkulList"
                         dropdownContainerClass="w-full"
-                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                         :isIconCanRotate="true"
                         x-model="mata_kuliah"
                     />
@@ -177,7 +177,7 @@
                                     label="-Tim Pengajar-"
                                     :dropdownItem="$timPengajarList"
                                     dropdownContainerClass="w-full"
-                                    :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                                    :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                                     :isIconCanRotate="true"
                                     x-model="pengajarList[index].value"
                                 />
@@ -186,7 +186,7 @@
                         <div class="self-start"> 
                             <x-button.primary 
                                 x-on:click="addPengajar()" 
-                                :icon="asset('assets/icon-perwalian-white-20.svg')">
+                                :icon="asset('assets/icons/advisory/white-20.svg')">
                                 Tambah Pengajar
                             </x-button.primary>
                         </div>
@@ -204,7 +204,7 @@
                         label="-Mata Kuliah Syarat-"
                         :dropdownItem="$matkulSyaratList"
                         dropdownContainerClass="w-full"
-                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                         :isIconCanRotate="true"
                         x-model="mata_kuliah_syarat"
                     />

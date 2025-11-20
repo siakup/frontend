@@ -40,7 +40,7 @@
                             <x-table-cell>
                                 <div class="flex flex-nowrap gap-3">
                                     <x-button.base 
-                                        :icon="asset('assets/base/icon-search-16.svg')"
+                                        :icon="asset('assets/icons/search/black-16.svg')"
                                         iconPosition="left"
                                         sizeText="caption-regular"
                                         x-on:click="$dispatch('open-modal', {id: 'view-rencana-evaluasi'})"
@@ -48,20 +48,20 @@
                                         Lihat
                                     </x-button.base>
                                     <x-button.base 
-                                        :icon="asset('assets/base/icon-edit-red-16.svg')"
+                                        :icon="asset('assets/icons/edit/red-16.svg')"
                                         iconPosition="left"
                                         sizeText="caption-regular"
-                                        buttonClass="text-[#E62129]"
+                                        buttonClass="text-red-500"
                                         :href="route('rps.rencana-evaluasi-mahasiswa.edit', ['id' => $rencana['id']])"
                                     >
                                         Ubah
                                     </x-button.base>
                                     <x-button.base 
-                                        :icon="asset('assets/icon-delete-gray-600.svg')"
+                                        :icon="asset('assets/icons/delete/grey-16.svg')"
                                         iconPosition="left"
                                         sizeText="caption-regular"
-                                        buttonClass="text-[#8C8C8C]"
-                                        x-on:click="$dispatch('open-modal', {id: 'delete-matriks-penilaian'})"
+                                        buttonClass="text-gray-600"
+                                        x-on:click="$dispatch('open-modal', {id: 'delete-rencana-evaluasi'})"
 
                                     >
                                         Hapus
@@ -89,6 +89,7 @@
         </div>
     </div>
     @include('rps.rencana-evaluasi-mahasiswa._view')
+    @include('rps.rencana-evaluasi-mahasiswa._delete')
 
     <x-modal.confirmation 
         id="save-confirmation" 

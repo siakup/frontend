@@ -26,7 +26,7 @@
                         label="-Pilih Bentuk Ujian-"
                         :dropdownItem="$bentukUjian"
                         dropdownContainerClass="w-full"
-                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                         :isIconCanRotate="true"
                     />
                 </x-slot>
@@ -108,11 +108,11 @@
                         <x-table-cell class="text-xs">{{ $indikator['bobot'] }}</x-table-cell>
                         <x-table-cell>
                             <x-button.base                  
-                                :icon="asset('assets/icon-delete-gray-600.svg')"
+                                :icon="asset('assets/icons/delete/grey-20.svg')"
                                 iconPosition="left"
                                 sizeText="caption-regular"
-                                buttonClass="text-[#8C8C8C]"
-                                x-on:click="$dispatch('open-modal', {id: 'delete-matriks-penilaian'})"
+                                buttonClass="text-gray-600"
+                                x-on:click="$dispatch('open-modal', {id: 'delete-indikator'})"
                             >
                                 Hapus
                             </x-button.base>
@@ -143,11 +143,11 @@
                         <x-table-cell class="text-xs">{{ $jadwal['minggu_ke'] }}</x-table-cell>
                         <x-table-cell>
                             <x-button.base                  
-                                :icon="asset('assets/icon-delete-gray-600.svg')"
+                                :icon="asset('assets/icons/delete/grey-20.svg')"
                                 iconPosition="left"
                                 sizeText="caption-regular"
-                                buttonClass="text-[#8C8C8C]"
-                                x-on:click="$dispatch('open-modal', {id: 'delete-matriks-penilaian'})"
+                                buttonClass="text-gray-600"
+                                x-on:click="$dispatch('open-modal', {id: 'delete-kegiatan'})"
                             >
                                 Hapus
                             </x-button.base>
@@ -177,6 +177,8 @@
     </x-container>
     @include('rps.rencana-evaluasi-mahasiswa._create-indikator')
     @include('rps.rencana-evaluasi-mahasiswa._create-kegiatan')
+    @include('rps.rencana-evaluasi-mahasiswa._delete-indikator')
+    @include('rps.rencana-evaluasi-mahasiswa._delete-kegiatan')
 
     <x-modal.confirmation 
         id="save-confirmation" 
