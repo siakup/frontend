@@ -6,13 +6,13 @@
 
 @section('content')
     <div class="page-header pl-5">
-        <x-typography variant="heading-h6">Tambah Rencana Evaluasi</x-typography>
+        <x-typography variant="heading-h6">Ubah Rencana Evaluasi</x-typography>
     </div>
     <x-button.back class="ml-2 mb-4" href="{{ route('rps.rencana-evaluasi-mahasiswa') }}">Rencana Evaluasi Mahasiswa</x-button.back>
 
     
     <div class="cpl-head border border-gray-400 ml-3 grad-peach">
-        <x-typography variant="body-medium-bold">Tambah Rencana Evaluasi</x-typography>
+        <x-typography variant="body-medium-bold">Ubah Rencana Evaluasi</x-typography>
     </div>
     <x-container x-data variant="content" class="ml-3" borderRadius="rounded-b-xl">
         <x-container variant="content" class="flex flex-col gap-3" borderRadius="rounded-xl">
@@ -111,7 +111,7 @@
                                 :icon="asset('assets/icons/delete/grey-20.svg')"
                                 iconPosition="left"
                                 sizeText="caption-regular"
-                                buttonClass="text-gray-600"
+                                buttonClass="text-[#8C8C8C]"
                                 x-on:click="$dispatch('open-modal', {id: 'delete-indikator'})"
                             >
                                 Hapus

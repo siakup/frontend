@@ -4,7 +4,7 @@
     'title' => 'Confirm Action',
     'confirmText' => 'Confirm',
     'cancelText' => 'Cancel',
-    'iconUrl' => asset('assets/icon-caution.svg'),
+    'iconUrl' => asset('assets/icons/caution/outline-black-24.svg'),
     'redirectConfirm' => null,
 ])
 
@@ -32,7 +32,7 @@
             <x-button.secondary :label="$cancelText" class="w-full" x-on:click.stop="
                 $dispatch('close-modal', { id: '{{ $id }}' })
             " />
-            <x-button.primary :label="$confirmText" class="w-full" :href="$redirectConfirm"
+            <x-button.primary :label="$confirmText" class="!w-full" :href="$redirectConfirm"
                 x-on:click.stop="
                     $dispatch('close-modal', { id: '{{ $id }}' });
                     $dispatch('on-submit');

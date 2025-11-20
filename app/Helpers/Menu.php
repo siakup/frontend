@@ -429,9 +429,9 @@ class Menu
                             'parent' => 'rps.rencana-evaluasi-mahasiswa.index',
                             'isExpandable' => false,
                           ],
-                          'buat-rencana-evaluasi-mahasiswa' => [
+                          'ubah-rencana-evaluasi-mahasiswa' => [
                             'name' => 'Ubah Rencana Evaluasi',
-                            'url' => '/rps/rencana-evaluasi-mahasiswa/edit',
+                            'url' => '/rps/rencana-evaluasi-mahasiswa/edit/*',
                             'parent' => 'rps.rencana-evaluasi-mahasiswa.index',
                             'isExpandable' => false,
                           ],

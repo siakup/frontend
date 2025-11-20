@@ -433,6 +433,7 @@ class RpsController extends Controller
     public function showRencanaEvaluasi() {
         $rencanaList = [
             [
+                'id' => 1,
                 'bentuk_ujian' => 'Tugas',
                 'judul_evaluasi' => 'Tugas',
                 'sub_cpmk' => [
@@ -443,6 +444,7 @@ class RpsController extends Controller
                                         2. Mendeskripsikan alat-alat yang digunakan dalam proses dengan baik.',
             ],
             [
+                'id' => 2,
                 'bentuk_ujian' => 'Ujian',
                 'judul_evaluasi' => 'Kuis',
                 'sub_cpmk' => [
@@ -452,6 +454,7 @@ class RpsController extends Controller
                 'metode_pengerjaan' => 'Kuis menggunakan media e-learning',
             ], 
             [
+                'id' => 3,
                 'bentuk_ujian' => 'Ujian',
                 'judul_evaluasi' => 'UTS',
                 'sub_cpmk' => [
@@ -460,6 +463,7 @@ class RpsController extends Controller
                 'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
             ],
             [
+                'id' => 4,
                 'bentuk_ujian' => 'Ujian',
                 'judul_evaluasi' => 'UAS',
                 'sub_cpmk' => [
@@ -468,6 +472,41 @@ class RpsController extends Controller
                 'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
             ],            
 
+        ];
+
+        $bentukUjian = [
+            'Tugas' => 'tugas',
+            'Kuis' => 'kuis',
+            'Ujian' => 'ujian',
+        ];
+
+        $subCpmk = ['CPMK-1', 'CPMK-2', 'CPMK-3'];
+
+        $indikatorList = [
+            [
+                'indikator' => 'Ketepatan dalam mendeskripsikan reaksi dan menggambar process flow diagram.',
+                'bobot' => '35%'
+            ],
+            [
+                'indikator' => 'Ketepatan dalam membuat grafik kesetimbangan fasa cair dan uap.',
+                'bobot' => '35%'
+            ],
+            [
+                'indikator' => 'Ketepatan dalam melakukan perhitungan yang berkaitan dengan solution thermodynamics.',
+                'bobot' => '30%'
+            ],
+
+        ];
+
+        $jadwalPelaksanaan = [
+            [
+                'nama_kegiatan' => 'Pemberian Tugas',
+                'minggu_ke' => '1, 5, 10, 11',
+            ],
+            [
+                'nama_kegiatan' => 'Pengumpulan Tugas',
+                'minggu_ke' => '3, 7, 12, 14',
+            ],
         ];
 
 
@@ -511,6 +550,45 @@ class RpsController extends Controller
         ];
 
         return view('rps.rencana-evaluasi-mahasiswa.create', get_defined_vars());
+    }
+
+    public function ubahRencanaEvaluasi () {
+        $bentukUjian = [
+            'Tugas' => 'tugas',
+            'Kuis' => 'kuis',
+            'Ujian' => 'ujian',
+        ];
+
+        $subCpmk = ['CPMK-1', 'CPMK-2', 'CPMK-3'];
+
+        $indikatorList = [
+            [
+                'indikator' => 'Ketepatan dalam mendeskripsikan reaksi dan menggambar process flow diagram.',
+                'bobot' => '35%'
+            ],
+            [
+                'indikator' => 'Ketepatan dalam membuat grafik kesetimbangan fasa cair dan uap.',
+                'bobot' => '35%'
+            ],
+            [
+                'indikator' => 'Ketepatan dalam melakukan perhitungan yang berkaitan dengan solution thermodynamics.',
+                'bobot' => '30%'
+            ],
+
+        ];
+
+        $jadwalPelaksanaan = [
+            [
+                'nama_kegiatan' => 'Pemberian Tugas',
+                'minggu_ke' => '1, 5, 10, 11',
+            ],
+            [
+                'nama_kegiatan' => 'Pengumpulan Tugas',
+                'minggu_ke' => '3, 7, 12, 14',
+            ],
+        ];
+
+        return view('rps.rencana-evaluasi-mahasiswa.edit', get_defined_vars());
     }
 
 
