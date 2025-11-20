@@ -74,14 +74,13 @@
                 </x-table>
             @else
                 <x-container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
-                    <x-typography variant="body-small-bold">Belum Ada Matriks Penilaian Kognitif, Silahkan Tambah Matriks Penilaian Terlebih Dahulu</x-typography>
+                    <x-typography variant="body-small-bold">Belum Ada Rencana Evaluasi Mahasiswa, Silahkan Tambah Rencana Evaluasi Terlebih Dahulu</x-typography>
                 </x-container>
             @endif
 
             <div class="flex justify-end">
-                <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-matriks-penilaian'})">Tambah Matriks Penilaian</x-button.primary>
+                <x-button.primary :href="route('rps.rencana-evaluasi-mahasiswa.create')">Tambah Rencana Evaluasi</x-button.primary>
             </div>
-
             <div class="flex mt-5 justify-end gap-2">
                 <x-button.secondary x-bind:disabled="!rencanaList || rencanaList.length === 0" x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Kembali</x-button.secondary>
                 <x-button.primary x-bind:disabled="!rencanaList || rencanaList.length === 0" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
@@ -96,17 +95,13 @@
         confirmText="Ya, Simpan Sekarang"
         cancelText="Cek Kembali"
     >
-        <p>Apakah Anda yakin ingin menyimpan <b>matriks peniliaian kognitif</b>?</p>
-
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
-            <div class="flex gap-4">
-                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
-                <div class="flex flex-col text-left">
-                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                    <x-typography variant="body-small-regular">Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman berikutnya.</x-typography>
-                </div>
+        <p>Apakah Anda yakin ingin menyimpan <b>rencana evaluasi mahasiswa</b>?</p>
+        <x-dialog variant="warning" dialogClass="mb-0">
+            <div class="flex flex-col text-left">
+                <x-typography variant="body-small-bold">Perhatian!</x-typography>
+                <x-typography variant="body-small-regular">Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman berikutnya.</x-typography>
             </div>
-        </x-container>
+        </x-dialog>
     </x-modal.confirmation>
 
     <x-modal.confirmation 
@@ -114,17 +109,14 @@
         title="Tunggu Sebentar" 
         confirmText="Ya, Kembali"
         cancelText="Tidak"
-       :redirectConfirm="route('rps.rencana-perkuliahan')"
+       :redirectConfirm="route('rps.evaluasi-pemetaan-capaian')"
     >
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
-
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
-            <div class="flex gap-4">
-                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
-                <div class="flex flex-col text-left">
-                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                    <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.</p>
+        <x-dialog variant="warning" dialogClass="mb-0">
+            <div class="flex flex-col text-left">
+                <x-typography variant="body-small-bold">Perhatian!</x-typography>
+                <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.</p>
             </div>
-        </x-container>
+        </x-dialog>
     </x-modal.confirmation>
 @endsection
