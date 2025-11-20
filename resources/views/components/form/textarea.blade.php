@@ -4,60 +4,66 @@
   'name' => 'deskripsi',
   'rows' => "10",
   'value' => null,
-  'maxChar' => null
+  'maxChar' => null,
+  'helperText' => '',
 ])
 
 @php
   $extraOnClick = $attributes->get('oninput');
+  $initialLength = $value ? strlen($value) : 0;
 @endphp
 
 <script>
   function onInputTextArea(element, maxChar) {
-    const lengthDisplayDiv = element.nextElementSibling;
-    if(lengthDisplayDiv && maxChar) {
-      const lengthDisplay = lengthDisplayDiv.querySelector('#Length-display');
-      const word = element.value ?? '';
-      let splitWord = word.split('');
+    const display = element.parentElement.querySelector('.length-display');
+    if (!display || !maxChar) return;
 
-      if (splitWord.length >= maxChar) {
-        lengthDisplay.classList.add('text-[#E62129]');
-        lengthDisplay.classList.remove('text-[#8C8C8C]');
-      } else {
-        lengthDisplay.classList.add('text-[#8C8C8C]');
-        lengthDisplay.classList.remove('text-[#E62129]');
-      }
+    let text = element.value || '';
 
-      if (splitWord.length > maxChar) {
-        splitWord = splitWord.slice(0, maxChar).join("");
-        element.value = splitWord;
-      }
-  
-      lengthDisplay.textContent = `${splitWord.length}/${maxChar}`;
+    if (text.length > maxChar) {
+      text = text.slice(0, maxChar);
+      element.value = text;
     }
+
+    const isLimitReached = text.length >= maxChar;
+
+    display.textContent = `${text.length}/${maxChar}`;
+    display.classList.toggle('text-red-500', isLimitReached);
+    display.classList.toggle('text-gray-600', !isLimitReached);
+
+    element.classList.toggle('border-red-500', isLimitReached);
+    element.classList.toggle('border-gray-400', !isLimitReached);
+
     element.style.height = "auto"; 
-    element.style.height = (element.scrollHeight) + "px";
+    element.style.height = element.scrollHeight + "px";
   }
 </script>
 
-<div 
-  class="flex flex-col gap-0.5 flex-1"
->
+
+<div class="flex flex-col gap-0.5 flex-1">
   <textarea 
     cols="110" 
     rows="{{ $rows }}" 
     {{ $attributes->merge([
-      'class' => 'w-full pe-10 box-border ps-3 text-sm pt-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 focus:outline-none focus:border-[1px] focus:border-[#D9D9D9]'
+      'class' => 
+        'w-full pe-10 box-border ps-3 text-sm pt-3 border border-gray-400 rounded-lg leading-5 focus:outline-none
+        disabled:bg-gray-200 disabled:text-gray-600 disabled:cursor-not-allowed'
     ]) }}
-    style="display: auto;" 
     name="{{ $name }}" 
     placeholder="{{ $placeholder }}" 
     id="{{ $id }}"
     oninput="onInputTextArea(this, {{ $maxChar }});{{ $extraOnClick }}"
-  >@if($value !== null){{ $value }}@endif</textarea>
-  @if($maxChar !== null)
-    <div class="flex flex-col gap-1">
-      {{-- <span class="text-xs text-[#8C8C8C]">Maksimal {{ $maxChar }} Karakter</span> --}}
-      <span class="text-xs text-[#8C8C8C] flex justify-end" id="Length-display">{{ $value ? strlen($value) : 0 }}/{{ $maxChar }}</span>
+  >{{ $value }}</textarea>
+
+  @if($maxChar)
+    <div class="flex flex-row items-center text-xs text-[#8C8C8C]">
+      @if($helperText)
+        <span>{{ $helperText }}</span>
+      @endif
+
+      <span class="ml-auto length-display text-gray-600">
+        {{ $initialLength }}/{{ $maxChar }}
+      </span>
     </div>
   @endif
 </div>

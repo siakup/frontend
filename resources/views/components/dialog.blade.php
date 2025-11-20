@@ -5,7 +5,7 @@
 ])
 
 @php
-    $base = 'p-4 border rounded-sm flex flex-row gap-4 mx-auto my-4';
+    $base = 'p-4 border rounded-sm flex flex-row gap-4 mx-auto my-4 text-left';
     $variants = [
         'warning' => 'bg-yellow-50 border-yellow-500',
         'danger' => 'bg-disable-red border-red-400',
@@ -14,10 +14,10 @@
     ];
 
     $icon = [
-        'warning' => 'assets/icon-caution-warning.svg',
-        'danger' => 'assets/icon-caution-red.svg',
-        'info' => 'assets/icon-caution-black.svg',
-        'success' => 'assets/icon-caution-blue.svg',
+        'warning' => 'assets/icons/caution/outline-yellow-24.svg',
+        'danger' => 'assets/icons/caution/outline-red-24.svg',
+        'info' => 'assets/icons/caution/outline-grey-24.svg',
+        'success' => 'assets/icons/caution/outline-blue-24.svg',
     ];
 
     $selectedVariant = $variants[$variant] ?? $variants['warning'];
@@ -53,7 +53,7 @@
             class="self-start cursor-pointer"
             x-on:click="open = false"
         >
-            <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="h-4 w-4"/>
+            <x-icon iconUrl="{{ asset('assets/icons/close-cancel/grey-16.svg') }}"/>
         </button>
     @endif
 </div>

@@ -24,7 +24,7 @@
                         label="-Pilih Periode Akademik-"
                         :dropdownItem="$periodeList"
                         buttonStyleClass="text-sm"
-                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                         :isIconCanRotate="true"
                         x-model="periode"
                     />
@@ -40,7 +40,7 @@
                         label="-Pilih Program Studi-"
                         :dropdownItem="$prodiList"
                         buttonStyleClass="text-sm"
-                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                         :isIconCanRotate="true"
                         x-model="prodi"
                     />
@@ -57,7 +57,7 @@
                         :dropdownItem="$matkulList"
                         buttonStyleClass="text-sm"
                         dropdownContainerClass="w-full"
-                        :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
+                        :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
                         :isIconCanRotate="true"
                         x-model="mata_kuliah"
                     />
@@ -102,14 +102,14 @@
                     <x-table-cell>
                         <div class="flex flex-nowrap inline-flex gap-3">
                             <x-button.base 
-                                :icon="asset('assets/base/icon-copy-16.svg')"
+                                :icon="asset('assets/icons/copy/black-16.svg')"
                                 iconPosition="left"
                                 sizeText="caption-regular"
                             >
                                 Salin
                             </x-button.base>
                             <x-button.base 
-                                :icon="asset('assets/icon-edit.svg')"
+                                :icon="asset('assets/icons/edit/red-16.svg')"
                                 iconPosition="left"
                                 class="text-red-500"
                                 sizeText="caption-regular"
@@ -125,7 +125,7 @@
         </x-table>
 
         <div class="flex mt-5 justify-end gap-2">
-            <x-button.secondary iconPosition="right" icon="{{asset('assets/icon-upload-red-500.svg')}}">
+            <x-button.secondary iconPosition="right" icon="{{asset('assets/icons/upload/red-20.svg')}}">
                 Unggah RPS
             </x-button.secondary>
             <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
