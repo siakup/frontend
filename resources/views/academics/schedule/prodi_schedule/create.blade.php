@@ -65,7 +65,7 @@
                   :buttonId="'sortCampusProgram'"
                   :dropdownId="'campusProgramList'"
                   :label="'Pilih Program Perkuliahan'"
-                  :imgSrc="asset('assets/base/icon-arrow-down.svg')"
+                  :imgSrc="asset('assets/icons/arrow-down/black-20.svg')"
                   :isIconCanRotate="true"
                   :dropdownItem="array_column($programPerkuliahanList, 'name', 'name')"
                   :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black !w-full flex items-center justify-between flex-1'"
@@ -84,7 +84,7 @@
                   :buttonId="'sortStudyProgram'"
                   :dropdownId="'studyProgramList'"
                   :label="'Pilih Program Studi'"
-                  :imgSrc="asset('assets/base/icon-arrow-down.svg')"
+                  :imgSrc="asset('assets/icons/arrow-down/black-20.svg')"
                   :isIconCanRotate="true"
                   :dropdownItem="array_column($programStudiList, 'id', 'nama')"
                   :buttonStyleClass="'!border-[#D9D9D9] hover:!bg-[#D9D9D9] !text-black w-full flex items-center justify-between flex-1'"
@@ -104,7 +104,7 @@
               :buttonId="'sortPeriode'"
               :dropdownId="'periodeList'"
               :label="'Pilih Periode'"
-              :imgSrc="asset('assets/base/icon-arrow-down.svg')"
+              :imgSrc="asset('assets/icons/arrow-down/black-20.svg')"
               :isIconCanRotate="true"
               :dropdownItem="array_column(array_map(function ($item) {
                 $data = [
@@ -139,9 +139,10 @@
               <input placeholder="Pilih Mata Kuliah" name="matakuliah[id]" x-model="$store.createPage.course.id_matakuliah" type="hidden">
             </x-slot>
           </x-form.input-container>
-          <x-button.primary 
+          <x-button
+            :variant="'primary'" 
             x-bind:disabled="$store.createPage.program_perkuliahan == '' || $store.createPage.program_studi == '' || $store.createPage.periode == ''" 
-            :icon="asset('assets/icon-mata-kuliah-white.svg')"
+            :icon="asset('assets/icons/course/outline-white-20.svg')"
             x-on:click="showModal(
               '{{ route('academics.schedule.prodi-schedule.add-course', ['periode' => '__periode__', 'program_perkuliahan' => '__program_perkuliahan__', 'program_studi' => '__program_studi__']) }}'
                 .replace('__periode__', $store.createPage.periode).replace('__program_perkuliahan__', $store.createPage.program_perkuliahan)
@@ -158,7 +159,7 @@
           <x-slot name="input">
             <x-form.input 
               :name="'nama_kelas'" 
-              :iconUrl="asset('assets/icon-remove-text-input.svg')" 
+              :iconUrl="asset('assets/icons/close-cancel/black-20.svg')" 
               :showRemoveIcon="true" 
               :placeholder="'Masukan Nama Kelas. Contoh: Makroekonomi-EC2'"
               x-model="$store.createPage.nama_kelas"
@@ -170,7 +171,7 @@
           <x-slot name="input">
             <x-form.input 
               :name="'nama_singkat'" 
-              :iconUrl="asset('assets/icon-remove-text-input.svg')" 
+              :iconUrl="asset('assets/icons/close-cancel/black-20.svg')" 
               :showRemoveIcon="true" 
               :placeholder="'Masukan Nama Singkat. Contoh: EC2'"
               x-model="$store.createPage.nama_singkat"
@@ -184,7 +185,7 @@
               <x-form.input 
                 :type="'number'"
                 :name="'kapasitas_peserta'" 
-                :iconUrl="asset('assets/icon-remove-text-input.svg')" 
+                :iconUrl="asset('assets/icons/close-cancel/black-20.svg')" 
                 :showRemoveIcon="true" 
                 :placeholder="'Masukkan Kapasitas. Contoh: 50'"
                 x-model="$store.createPage.kapasitas_peserta"
@@ -198,7 +199,7 @@
                 :buttonId="'sortMBKMClass'"
                 :dropdownId="'MBKMClassType'"
                 :label="'Pilih Kelas MBKM'"
-                :imgSrc="asset('assets/base/icon-arrow-down.svg')"
+                :imgSrc="asset('assets/icons/arrow-down/black-20.svg')"
                 :isIconCanRotate="true"
                 :dropdownItem="[
                   'Ya' => true,

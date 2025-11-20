@@ -14,17 +14,19 @@
   $variantsModelling = [
     'primary' => 'text-white bg-[#E62129] hover:bg-[#B5171C] active:bg-[#841418] disabled:bg-[#E8E8E8] ',
     'secondary' => 'text-[#E62129] bg-white hover:bg-[#FBDADB] active:bg-[#F7B6B8] disabled:bg-white border border-[#E62129] disabled:border-[#E8E8E8] ',
-    'tertiary' => 'text-[#E62129] bg-white hover:bg-[#FBDADB] active:bg-[#F7B6B8] disabled:bg-white '
+    'tertiary' => 'text-[#E62129] bg-transparent hover:bg-[#FBDADB] active:bg-[#F7B6B8] disabled:bg-transparent '
   ];
 
   $variantSizingClass = [
     'md' => ($slot->isNotEmpty() || $label !== '') ? "px-3 py-1 " : 'p-1.25 ',
-    'lg' => ($slot->isNotEmpty() || $label !== '') ? "px-4 py-2 " : 'p-2.5 '
+    'lg' => ($slot->isNotEmpty() || $label !== '') ? "px-4 py-2 " : 'p-2.5 ',
+    'sm' => ($slot->isNotEmpty() || $label !== '') ? "px-3 py-1 " : 'p-1.25 ',
   ];
   
   $variantsSizing = [
     'md' => 'body-small-regular',
-    'lg' => 'body-medium-regular'
+    'lg' => 'body-medium-regular',
+    'sm' => 'caption-regular'
   ];
 
   $variantsIcon = [
@@ -56,7 +58,7 @@
     ]) }}
   >
     @if ($icon && $iconPosition === 'left')
-        <x-icon :iconUrl="$icon" class="w-5 h-5 [filter:brightness(0)_invert(1)]" />
+        <x-icon :iconUrl="$icon" class="w-5 h-5 {{$variantsIcon[$variant]}}" />
     @endif
 
     @if($slot->isNotEmpty() || $label !== '')

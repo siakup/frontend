@@ -117,7 +117,7 @@ class TutelageController extends Controller
                 'pending'  => 'bg-[#FDE05D] text-black',
                 'deletion' => 'bg-[#3B82F6] text-white',
                 'rejected' => 'bg-[#EF4444] text-black',
-                'approved' => 'bg-[#F7B6B8 text-black',
+                'approved' => 'bg-[#F7B6B8] text-black',
             ];
             return '<span class="pill ' . $map[$type] . '">' . $txt . '</span>';
         };

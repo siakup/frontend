@@ -51,7 +51,7 @@
               :buttonId="'sortButtonCampus'"
               :dropdownId="'sortCampus'"
               :label="'Pilih Program Perkuliahan'"
-              :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+              :imgSrc="asset('assets/icons/arrow-down/red-20.svg')"
               :isIconCanRotate="true"
               :isUsedForInputField="true"
               :dropdownItem="array_merge(['Pilih Program Perkuliahan' => ''], array_column($programPerkuliahanList, 'name', 'name'))"
@@ -64,7 +64,7 @@
               :buttonId="'sortButtonStudyProgram'"
               :dropdownId="'sortStudyProgram'"
               :label="'Pilih Program Studi'"
-              :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+              :imgSrc="asset('assets/icons/arrow-down/red-20.svg')"
               :isIconCanRotate="true"
               :isUsedForInputField="true"
               :dropdownItem="array_merge(['Pilih Program Studi' => ''],array_column($programStudiList, 'id', 'nama'))"
@@ -88,7 +88,7 @@
               :buttonId="'sortFilterButton'"
               :dropdownId="'sortFilterDropdown'"
               :label="'Urutkan'"
-              :imgSrc="asset('assets/icon-filter.svg')"
+              :imgSrc="asset('assets/icons/sort/red-20.svg')"
               :isIconCanRotate="false"
               :dropdownItem="[
                 'Urutkan' => '',
@@ -149,27 +149,33 @@
                     </x-table-cell>
                     <x-table-cell>
                         <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
-                          <x-button.base
-                            :icon="asset('assets/icon-search.svg')"
-                            class="scale-75"
+                          <x-button
+                            :variant="'tertiary'"
+                            :size="'sm'"
+                            :icon="asset('assets/icons/search/black-16.svg')"
+                            class="!text-black"
                             x-on:click="idSelectedProdiSchedule = schedule.id_kelas; showView()" 
                           >
                             Lihat
-                          </x-button.base>
-                          <x-button.base
-                            :icon="asset('assets/icon-edit.svg')"
-                            class="text-[#E62129] scale-75"
+                          </x-button>
+                          <x-button
+                            :variant="'tertiary'"
+                            :size="'sm'"
+                            :icon="asset('assets/icons/edit/red-16, property=default.svg')"
+                            class="!text-[#E62129]"
                             x-on:click="window.location.href = '{{ route('academics.schedule.prodi-schedule.edit', ['id' => ':id']) }}'.replace(':id', schedule.id_kelas)"
                           >
                             Ubah
-                          </x-button.base>
-                          <x-button.base
-                            :icon="asset('assets/icon-delete-gray-600.svg')"
-                            class="text-[#8C8C8C] scale-75"
+                          </x-button>
+                          <x-button
+                            :variant="'tertiary'"
+                            :size="'sm'"
+                            :icon="asset('assets/icons/delete/grey-16.svg')"
+                            class="!text-[#8C8C8C]"
                             x-on:click="idSelectedProdiSchedule = schedule.id_kelas; modalConfirmationDeleteOpen = true;"
                           >
                             Hapus
-                          </x-button.base>
+                          </x-button>
                         </x-container>
                     </x-table-cell>
                 </x-table-row>
@@ -181,14 +187,15 @@
           </tbody>
         </x-table>
         <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-end !px-0'">
-          <x-button.secondary 
-            :icon="asset('assets/icon-upload-red-500.svg')"
+          <x-button 
+            :variant="'secondary'"
+            :icon="asset('assets/icons/upload/red-20.svg')"
             :iconPosition="'right'"
             :href="route('academics.schedule.prodi-schedule.import-fet1')"
           >
             Impor File FET
-          </x-button.secondary>
-          <x-button.primary :href="route('academics.schedule.prodi-schedule.create')">Tambah Jadwal Baru</x-button.primary>
+          </x-button>
+          <x-button :variant="'primary'" :href="route('academics.schedule.prodi-schedule.create')">Tambah Jadwal Baru</x-button>
         </x-container>
       </x-container>
     </x-container>

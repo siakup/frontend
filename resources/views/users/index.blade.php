@@ -87,24 +87,22 @@
                   <template x-if="user.status !== 'active'"><x-badge :variant="'green-bordered'"  x-text="'Tidak Aktif'"></x-badge></template>
                 </x-table-cell>
                 <x-table-cell :variant="'old'">
-                    <a 
-                      href="#" 
-                      x-on:click.prevent="requestDisplayTemplate(
-                        '{{ route('users.resetPassword') }}', 
-                        '#userDetailModalContainer', 
-                        '#modalResetPassword', 
-                        { nomor_induk: user.nomor_induk }
-                      )" 
-                      class="link-blue text-[#0076BE] text-center text-xs leading-5 text-none no-underline"
-                    >
-                      Reset Password
-                    </a>
+                  <x-container :class="'!px-0 w-full items-center'" :variant="'content-wrapper'">
+                    <x-button x-on:click="requestDisplayTemplate(
+                      '{{ route('users.resetPassword') }}',
+                      '#userDetailModalContainer',
+                      '#modalResetPassword',
+                      { nomor_induk: user.nomor_induk }
+                    )" :variant="'tertiary'" :size="'sm'" class="!text-[#0076BE] text-center">Reset Password</x-button>
+                  </x-container>
                 </x-table-cell>
                 <x-table-cell :variant="'old'">
                     <x-container :variant="'content-wrapper'" :class="'flex flex-row gap-10 items-center justify-center'">
-                      <x-button.base
+                      <x-button
+                          :variant="'tertiary'"
+                          :size="'sm'"
                           :icon="asset('assets/icons/search/black-16.svg')"
-                          class="flex items-center"
+                          class="!text-black"
                           x-on:click="requestDisplayTemplate(
                             '{{ route('users.detail') }}', 
                             '#userDetailModalContainer', 
@@ -112,9 +110,10 @@
                             { nomor_induk: user.nomor_induk }
                           )"
                       >Lihat</x-button.base>
-                      <x-button.base
+                      <x-button
                           :icon="asset('assets/icons/edit/red-16, property=default.svg')"
-                          class="text-[#E62129]"
+                          :variant="'tertiary'"
+                          :size="'sm'"
                           x-on:click="window.location.href='{{ route('users.edit', ['nomor_induk' => ':nomor_induk']) }}'.replace(':nomor_induk', user.nomor_induk)"
                       >Ubah</x-button.base>
                     </x-container>
