@@ -8,7 +8,7 @@ class Menu
         return [
             'home' => [
                 'name' => 'Beranda',
-                'url' => '/',
+                'url' => '/home',
                 'parent' => null,
                 'isExpandable' => false,
                 'children' => [

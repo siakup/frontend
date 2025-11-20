@@ -1,4 +1,5 @@
 // tailwind.config.js
+import defaultTheme from 'tailwindcss/defaultTheme'
 
 module.exports = {
   content: [

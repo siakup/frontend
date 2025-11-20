@@ -97,7 +97,7 @@
       <span class="text-left">{{ $label }}</span>
     </div>
     @if($slot->isNotEmpty())
-      <img src="{{ asset('assets/base/icon-arrow-down.svg') }}" alt="Expand" class="w-4 h-4 ml-2 {{
+      <img src="{{ asset('assets/icons/arrow-down/black-32.svg') }}" alt="Expand" class="w-4 h-4 ml-2 {{
         !empty(array_filter($routeChild, fn($route) => Request::is($route)))
           ? 'rotate-180 [filter:invert(27%)_sepia(91%)_saturate(2576%)_hue-rotate(335deg)_brightness(89%)_contrast(97%)]' 
           : ''

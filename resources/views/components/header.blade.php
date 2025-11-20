@@ -35,9 +35,11 @@
       <x-typography :variant="'pixie-regular'">{{ \Carbon\Carbon::now()->format('H:i') }} WIB</x-typography>
     </div>
   </div>
-  <div class="col-start-7 col-end-10 row-span-3 flex items-start px-10 py-7">
-    <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="absolute left-3 w-5 h-5 pointer-events-none">
-    <input type="text" placeholder="Cari" class="py-2 pe-3 ps-10 border-[1px] border-[#D9D9D9] rounded-lg w-full text-sm">
+  <div class="col-start-7 col-end-10 row-span-3 px-10 py-7">
+    <div class="flex items-start gap-2 p-2 border-[1px] border-[#D9D9D9] rounded-lg">
+      <img src="{{ asset('assets/icons/search/black-32.svg') }}" alt="search" class="w-5 h-5 pointer-events-none">
+      <input type="text" placeholder="Cari" class="w-full text-sm focus:outline-none focus:border-none">
+    </div>
   </div>
   <div class="col-start-10 col-end-12 row-span-3 grid grid-rows-2 w-full h-full gap-1">
     <div class="row-start-1 row-end-2 self-end flex items-center gap-3">

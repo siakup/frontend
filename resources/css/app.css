@@ -109,6 +109,10 @@
 }
 
 
+* {
+  font-family: Poppins;
+}
+
 /* END OF TAILWIND CSS  */
 
 .pill{ display:inline-flex; align-items:center; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:600; }

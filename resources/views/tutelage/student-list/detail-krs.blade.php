@@ -134,7 +134,7 @@
             </x-container>
             <template x-for="([key, section]) in Object.entries(sections)">
                 <x-container :class="'!p-0 overflow-hidden'">
-                    <x-container :variant="'content-wrapper'" class="h-20 rounded-t-[14px] flex flex-row justify-between items-center !py-2.5 !px-3" x-bind:class="{[section.grad]: section.grad}">
+                    <x-container :variant="'content-wrapper'" class="h-20 rounded-none flex flex-row justify-between items-center !py-2.5 !px-3" x-bind:class="{[section.grad]: section.grad}">
                         <x-typography :variant="'body-small-bold'" class="w-full" x-text="'Mata Kuliah '+section.title"></x-typography>
                         <x-container :variant="'content-wrapper'" class="flex flex-row justify-end gap-2">
                             <template x-for="([action, label]) in Object.entries(section.btns)">
