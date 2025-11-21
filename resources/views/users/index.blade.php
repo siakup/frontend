@@ -97,7 +97,7 @@
                   </x-container>
                 </x-table.cell>
                 <x-table.cell :variant="'old'">
-                    <x-container :variant="'content-wrapper'" :class="'flex flex-row gap-10 items-center justify-center'">
+                    <x-container :variant="'content-wrapper'" :class="'flex !flex-row gap-10 items-center justify-center'">
                       <x-button
                           :variant="'tertiary'"
                           :size="'sm'"

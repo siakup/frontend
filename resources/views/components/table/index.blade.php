@@ -19,7 +19,7 @@
       old: {
         divClass: ({{json_encode($isRoundedTop)}} ? 'rounded-t-xl ' : '')
           +({{json_encode($isRoundedBottom)}} ? 'rounded-b-xl ' : '')
-          +({{json_encode($isBordered)}} ? 'border-[1px] border-solid border-gray-400 ' : ''),
+          +({{json_encode($isBordered)}} ? 'border border-solid border-gray-400 ' : ''),
         tableClass: 'border-collapse'
       },
     },
