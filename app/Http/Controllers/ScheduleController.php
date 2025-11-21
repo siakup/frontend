@@ -145,7 +145,7 @@ class ScheduleController extends Controller
                             'nama' => 'Dosen Rahasia',
                         ],
                     ],
-          ],
+                ],
             ];
 
             $dataSchedule = array_filter($dataSchedule, function ($item) use ($params) {
