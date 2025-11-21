@@ -9,7 +9,7 @@ class CplService
     public static function getInstance()
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;
@@ -20,18 +20,18 @@ class CplService
      *
      * @return string The base URL for the calendar API.
      */
-
     public function url()
     {
-        return config('endpoint.lecture.url') . '/api/cpl';
+        return config('endpoint.lecture.url').'/api/cpl';
     }
+
     public function cplUrl($id)
     {
-        return $this->url() . '/' . $id;
+        return $this->url().'/'.$id;
     }
 
     public function bulkStore()
     {
-        return $this->url() . '/bulk-store';
+        return $this->url().'/bulk-store';
     }
 }

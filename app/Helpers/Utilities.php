@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-if (!function_exists('snakeToCamelCase')) {
+if (! function_exists('snakeToCamelCase')) {
     function snakeToCamelCase($input)
     {
         return lcfirst(preg_replace_callback('/_(.)/', function ($matches) {
@@ -9,14 +9,15 @@ if (!function_exists('snakeToCamelCase')) {
     }
 }
 
-if (!function_exists('check')) {
-    function check($param) {
-        echo "<pre>";
+if (! function_exists('check')) {
+    function check($param)
+    {
+        echo '<pre>';
         var_dump($param);
     }
 }
 
-if (!function_exists('objectToArray')) {
+if (! function_exists('objectToArray')) {
     function objectToArray($data)
     {
         if (is_object($data)) {
@@ -31,91 +32,95 @@ if (!function_exists('objectToArray')) {
     }
 }
 
-if (!function_exists('bulan')) {
-    function bulan($bulan){
+if (! function_exists('bulan')) {
+    function bulan($bulan)
+    {
         switch ($bulan) {
             case 1:
-                $bulan = "Januari";
+                $bulan = 'Januari';
                 break;
             case 2:
-                $bulan = "Februari";
+                $bulan = 'Februari';
                 break;
             case 3:
-                $bulan = "Maret";
+                $bulan = 'Maret';
                 break;
             case 4:
-                $bulan = "April";
+                $bulan = 'April';
                 break;
             case 5:
-                $bulan = "Mei";
+                $bulan = 'Mei';
                 break;
             case 6:
-                $bulan = "Juni";
+                $bulan = 'Juni';
                 break;
             case 7:
-                $bulan = "Juli";
+                $bulan = 'Juli';
                 break;
             case 8:
-                $bulan = "Agustus";
+                $bulan = 'Agustus';
                 break;
             case 9:
-                $bulan = "September";
+                $bulan = 'September';
                 break;
             case 10:
-                $bulan = "Oktober";
+                $bulan = 'Oktober';
                 break;
             case 11:
-                $bulan = "November";
+                $bulan = 'November';
                 break;
             case 12:
-                $bulan = "Desember";
+                $bulan = 'Desember';
                 break;
             default:
-                $bulan = Date('F');
+                $bulan = date('F');
                 break;
         }
-        
+
         return $bulan;
     }
 }
 
-if (!function_exists('formatCurrency')) {
-    function formatCurrency($number = null) {
-        
+if (! function_exists('formatCurrency')) {
+    function formatCurrency($number = null)
+    {
+
         $data = number_format((float) $number, 0, ',', '.');
 
         return $data;
     }
 }
 
-if (!function_exists('tanggal')) {
-    function tanggal($tanggal = null) {
-        
-        if ($tanggal) {            
-            $a = explode('-',$tanggal);
-            $tanggal = $a['2']." ".bulan($a['1'])." ".$a['0'];
+if (! function_exists('tanggal')) {
+    function tanggal($tanggal = null)
+    {
+
+        if ($tanggal) {
+            $a = explode('-', $tanggal);
+            $tanggal = $a['2'].' '.bulan($a['1']).' '.$a['0'];
         }
 
         return $tanggal;
     }
 }
 
-if (!function_exists('formatDateTime')) {
-    function formatDateTime($dateTime) {
+if (! function_exists('formatDateTime')) {
+    function formatDateTime($dateTime)
+    {
         $returnValue = '';
 
         $date = tanggal(date('Y-m-d', strtotime($dateTime)));
         $time = date('H:i', strtotime($dateTime));
 
-        $returnValue = $date . ", " . $time . ' WIB';
+        $returnValue = $date.', '.$time.' WIB';
 
         return $returnValue;
     }
 }
 
-
-if (!function_exists('hari')) {
-    function hari($tanggal = null) {
+if (! function_exists('hari')) {
+    function hari($tanggal = null)
+    {
         $day = date('l', strtotime($tanggal));
 
         switch ($day) {
@@ -140,7 +145,7 @@ if (!function_exists('hari')) {
             case 'Saturday':
                 $hari = 'Sabtu';
                 break;
-            
+
             default:
                 $hari = null;
                 break;
@@ -150,8 +155,9 @@ if (!function_exists('hari')) {
     }
 }
 
-if (!function_exists('generateRandomString')) {
-    function generateRandomString($length = null) {
+if (! function_exists('generateRandomString')) {
+    function generateRandomString($length = null)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -164,8 +170,9 @@ if (!function_exists('generateRandomString')) {
     }
 }
 
-if (!function_exists('generateRandomUpperCaseAlphabet')) {
-    function generateRandomUpperCaseAlphabet($length = null) {
+if (! function_exists('generateRandomUpperCaseAlphabet')) {
+    function generateRandomUpperCaseAlphabet($length = null)
+    {
         $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -178,8 +185,9 @@ if (!function_exists('generateRandomUpperCaseAlphabet')) {
     }
 }
 
-if (!function_exists('generateRandomLowerCaseAlphabet')) {
-    function generateRandomLowerCaseAlphabet($length = null) {
+if (! function_exists('generateRandomLowerCaseAlphabet')) {
+    function generateRandomLowerCaseAlphabet($length = null)
+    {
         $characters = 'abcdefghijklmnopqrstuvwxyz';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -192,8 +200,9 @@ if (!function_exists('generateRandomLowerCaseAlphabet')) {
     }
 }
 
-if (!function_exists('generateRandomNumber')) {
-    function generateRandomNumber($length = null) {
+if (! function_exists('generateRandomNumber')) {
+    function generateRandomNumber($length = null)
+    {
         $characters = '0123456789';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -206,37 +215,39 @@ if (!function_exists('generateRandomNumber')) {
     }
 }
 
-if (!function_exists('getToken')) {
+if (! function_exists('getToken')) {
     function getToken()
     {
         return @$_COOKIE['central_access_token'] ?: null;
     }
 }
 
-if (!function_exists('getHeaders')) {
+if (! function_exists('getHeaders')) {
 
     function getHeaders()
     {
         $headers = [
-            'Authorization: Bearer ' . getToken(),
+            'Authorization: Bearer '.getToken(),
         ];
+
         return $headers;
     }
 }
 
-if(!function_exists('convertFileDataExcelToObject')) {
-  function convertFileDataExcelToObject($file) 
-  {
-    $data = Maatwebsite\Excel\Facades\Excel::toArray([], $file)[0];
-    $key = array_map(function ($value) {
-        return str_replace(' ', '_', strtolower(trim($value)));
-    }, $data[0]);
+if (! function_exists('convertFileDataExcelToObject')) {
+    function convertFileDataExcelToObject($file)
+    {
+        $data = Maatwebsite\Excel\Facades\Excel::toArray([], $file)[0];
+        $key = array_map(function ($value) {
+            return str_replace(' ', '_', strtolower(trim($value)));
+        }, $data[0]);
 
-    $value = [];
+        $value = [];
 
-    for ($i = 1; $i < count($data); $i++) {
-      $value[] = array_combine($key, $data[$i]);
+        for ($i = 1; $i < count($data); $i++) {
+            $value[] = array_combine($key, $data[$i]);
+        }
+
+        return $value;
     }
-    return $value;
-  } 
 }

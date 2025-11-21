@@ -10,10 +10,15 @@ class CustomPagination extends Component
     use WithPagination;
 
     public $totalItems;
+
     public $currentPage;
+
     public $perPage;
+
     public $perPageInput;
+
     public $defaultPerPageOptions = [5, 10, 25, 50];
+
     public $totalPages;
 
     public function mount($paginator)
@@ -59,7 +64,7 @@ class CustomPagination extends Component
     public function changePerPage()
     {
         // Validasi input
-        $validPerPage = max(1, min(100, (int)$this->perPageInput));
+        $validPerPage = max(1, min(100, (int) $this->perPageInput));
         $this->perPage = $validPerPage;
         $this->perPageInput = $validPerPage;
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 return [
     'jenis_mata_kuliah' => [
@@ -16,4 +16,3 @@ return [
         ['name' => 'Merdeka Belajar', 'code' => 5],
     ],
 ];
-

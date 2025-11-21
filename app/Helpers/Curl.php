@@ -1,11 +1,11 @@
-<?php 
+<?php
 
-if (!function_exists('postCurl')) {
+if (! function_exists('postCurl')) {
     function postCurl($url = '', $params = '', $header = [])
     {
-        $headers = array(
+        $headers = [
             'Content-Type: application/json',
-        );
+        ];
 
         if ($header) {
             $headers = array_merge($headers, $header);
@@ -21,26 +21,26 @@ if (!function_exists('postCurl')) {
         $output = curl_exec($ch);
 
         curl_close($ch);
-        
+
         $data = json_decode($output);
-        
+
         return $data;
     }
 }
 
-if (!function_exists('getCurl')) {
+if (! function_exists('getCurl')) {
     function getCurl($url = '', $params = '', $header = [])
     {
-        $headers = array(
+        $headers = [
             'Content-Type: application/x-www-form-urlencoded',
-        );
+        ];
 
         if ($header) {
             $headers = array_merge($headers, $header);
         }
 
         if ($params) {
-            $url .= '?' . http_build_query($params);
+            $url .= '?'.http_build_query($params);
         }
 
         $ch = curl_init();
@@ -52,19 +52,19 @@ if (!function_exists('getCurl')) {
         $output = curl_exec($ch);
 
         curl_close($ch);
-        
+
         $data = json_decode($output);
-        
+
         return $data;
     }
 }
 
-if (!function_exists('putCurl')) {
+if (! function_exists('putCurl')) {
     function putCurl($url = '', $params = '', $header = [])
     {
-        $headers = array(
+        $headers = [
             'Content-Type: application/json',
-        );
+        ];
 
         if ($header) {
             $headers = array_merge($headers, $header);
@@ -80,19 +80,19 @@ if (!function_exists('putCurl')) {
         $output = curl_exec($ch);
 
         curl_close($ch);
-        
+
         $data = json_decode($output);
-        
+
         return $data;
     }
 }
 
-if (!function_exists('deleteCurl')) {
+if (! function_exists('deleteCurl')) {
     function deleteCurl($url = '', $header = [])
     {
-        $headers = array(
+        $headers = [
             'Content-Type: application/json',
-        );
+        ];
 
         if ($header) {
             $headers = array_merge($headers, $header);
@@ -107,10 +107,9 @@ if (!function_exists('deleteCurl')) {
         $output = curl_exec($ch);
 
         curl_close($ch);
-        
+
         $data = json_decode($output);
-        
+
         return $data;
     }
 }
-
