@@ -8,20 +8,6 @@
 
 @section('content')
 {{-- penjelasan parameter --}}
-{{-- variant = default: header berwarna abu-abu --}}
-{{-- variant = old: header berwarna gradient putih ke merah --}}
-{{-- 
-
-colorTypeTableTitle: default = pure-gray
-
-value list
-'pure-gray': header abu-abu,
-'light-yellow-gradient': header gradient putih ke kuning,
-'light-blue-gradient': header gradient putih ke biru,
-'light-red-gradient': header gradient putih ke merah,
-'light-green-gradient': header gradient putih ke hijau,
-
---}}
 
 {{-- isRounderedTop = true: radius di sisi atas --}}
 {{-- isRounderedBottom = true: radius di sisi atas --}}
