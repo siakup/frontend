@@ -71,35 +71,35 @@
                 *Dosen harus merubah periode <b>(sesuai dengan periode yang sedang berjalan atau periode selanjutnya. <br>
                 Tidak muncul pilihan periode yg sama dengan RPS yang di salin sebelumnya)</b>
             </x-dialog>
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>No</x-table-header>
-                        <x-table-header>Mata Kuliah</x-table-header>
-                        <x-table-header>Dosen Pengampu</x-table-header>
-                        <x-table-header>Review Status</x-table-header>
-                        <x-table-header>Status</x-table-header>
-                        <x-table-header>Tanggal Upload</x-table-header>
-                        <x-table-header>Status</x-table-header>
-                    </x-table-row>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>No</x-table.header-cell>
+                        <x-table.header-cell>Mata Kuliah</x-table.header-cell>
+                        <x-table.header-cell>Dosen Pengampu</x-table.header-cell>
+                        <x-table.header-cell>Review Status</x-table.header-cell>
+                        <x-table.header-cell>Status</x-table.header-cell>
+                        <x-table.header-cell>Tanggal Upload</x-table.header-cell>
+                        <x-table.header-cell>Status</x-table.header-cell>
+                    </x-table.row>
                 </x-table-head>
 
-                <x-table-body>
+                <x-table.body>
                     @foreach($rpsList as $index => $rps)
-                    <x-table-row :odd="$index % 2 === 1" :last="$loop->last">
-                        <x-table-cell text_size="text-xs">{{ $index + 1 }}</x-table-cell>
-                        <x-table-cell text_size="text-xs">{{ $rps['mata_kuliah'] }}</x-table-cell>
-                        <x-table-cell text_size="text-xs">{{ $rps['dosen'] }}</x-table-cell>
-                        <x-table-cell>
+                    <x-table.row :odd="$index % 2 === 1" :last="$loop->last">
+                        <x-table.cell text_size="text-xs">{{ $index + 1 }}</x-table.cell>
+                        <x-table.cell text_size="text-xs">{{ $rps['mata_kuliah'] }}</x-table.cell>
+                        <x-table.cell text_size="text-xs">{{ $rps['dosen'] }}</x-table.cell>
+                        <x-table.cell>
                             <x-button.link variant="caption-regular"> {{ $rps['review_status'] }}</x-button.link> 
-                        </x-table-cell>
-                        <x-table-cell>
+                        </x-table.cell>
+                        <x-table.cell>
                             @if($rps['status']==='Finalized')
                                 <x-badge variant="green-filled">Finalized</x-badge>
                             @endif
-                        </x-table-cell>
-                        <x-table-cell text_size="text-xs">{{ $rps['tanggal_upload'] }}</x-table-cell>
-                        <x-table-cell>
+                        </x-table.cell>
+                        <x-table.cell text_size="text-xs">{{ $rps['tanggal_upload'] }}</x-table.cell>
+                        <x-table.cell>
                             <div class="flex flex-nowrap inline-flex gap-3">
                                 <x-button.base 
                                     :icon="asset('assets/icons/copy/black-16.svg')"
@@ -118,11 +118,11 @@
                                 </x-button.base>
                             </div>
                                 
-                        </x-table-cell>
-                    </x-table-row>
+                        </x-table.cell>
+                    </x-table.row>
                     @endforeach
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
 
             <div class="flex mt-5 justify-end gap-2">
                 <x-button.secondary iconPosition="right" icon="{{asset('assets/icons/upload/red-20.svg')}}">
@@ -132,14 +132,6 @@
             </div>
         </x-container>
     </x-container>
-    
-    <div class="ml-20">
-        @include('partials.pagination', [
-                'currentPage' => 1,
-                'lastPage' => 10,
-                'limit' => 3,
-                'routes' => '',
-            ])
-    </div>
+    <x-pagination></x-pagination>
     
 @endsection
