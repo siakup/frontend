@@ -1,6 +1,5 @@
 // tailwind.config.js
 import defaultTheme from 'tailwindcss/defaultTheme'
-
 module.exports = {
   content: [
     './resources/**/*.blade.php',
@@ -9,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Poppins', ...defaultTheme.fontFamily.sans]
+      },
       colors: {
         red: {
           50:  '#FBDADB',

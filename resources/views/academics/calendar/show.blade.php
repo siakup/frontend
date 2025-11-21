@@ -105,6 +105,11 @@
         </x-container>
       </x-container>
       <x-table :variant="'old'" :isHaveTitle="true" :tableTitle="'Event Kalender Akademik'">
+        <x-slot name="tableTitleSlot">
+          <x-container :variant="'content-wrapper'">
+            <x-typography :variant="'body-medium-bold'" class="text-center">Event Kalender Akademik</x-typography>
+          </x-container>
+        </x-slot>
         <x-table-head :variant="'old'">
           <x-table-row :variant="'old'">
               <x-table-header :variant="'old'">Nama Event</x-table-header>

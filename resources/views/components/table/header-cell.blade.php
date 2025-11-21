@@ -7,10 +7,10 @@
 @php
   $variants = [
     'default' => [
-        'px-6 py-[22px] text-center align-middle text-sm font-semibold text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0',
+        'px-6 py-[22px] text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0',
         'bg-[#d9d9d9]' => ! str_contains($attributes->get('class', ''), 'bg-'),
     ],
-    'old' => ["w-auto text-center text-sm py-4 px-2 align-middle font-semibold"],
+    'old' => ["py-4 px-2"],
   ]
 @endphp
 
@@ -20,7 +20,7 @@
             'colspan' => $colspan,
             'rowspan' => $rowspan,
         ])
-        ->class($variants[$variant])
+        ->class(["text-center align-middle font-semibold text-sm text-center align-middle font-semibold text-sm", ...$variants[$variant]])
     }}
 >
     {{ $slot }}
