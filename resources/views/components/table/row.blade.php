@@ -8,7 +8,7 @@
       'last' => $last ? 'border-b-0' : ''
     ],
     'old' => [
-      'other-class' => "w-full items-center m-0 p-0 table-row",
+      'other-class' => "items-center",
       'odd' => '',
       'last' => '',
     ],

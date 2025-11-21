@@ -57,36 +57,36 @@
         x-model="$store.listPage.sort"
       />
     </x-container>
-    <x-table :variant="'old'">
-      <x-table-head :variant="'old'">
-          <x-table-row :variant="'old'">
-              <x-table-header :variant="'old'">NIP/NIM</x-table-header>
-              <x-table-header :variant="'old'">Nama</x-table-header>
-              <x-table-header :variant="'old'">Username</x-table-header>
-              <x-table-header :variant="'old'">Dibuat Pada</x-table-header>
-              <x-table-header :variant="'old'">Status</x-table-header>
-              <x-table-header :variant="'old'">Reset</x-table-header>
-              <x-table-header :variant="'old'">Aksi</x-table-header>
-          </x-table-row>
-      </x-table-head>
-      <tbody>
+    <x-table.index :variant="'old'">
+      <x-table.head :variant="'old'">
+          <x-table.row :variant="'old'">
+              <x-table.header-cell :variant="'old'">NIP/NIM</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Nama</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Username</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Dibuat Pada</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Status</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Reset</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
+          </x-table.row>
+      </x-table.head>
+      <x-table.body>
         <template x-if="$store.listPage.datas && $store.listPage.datas.length > 0">
           <template x-for="user in $store.listPage.datas">
-            <x-table-row :variant="'old'">
-                <x-table-cell :variant="'old'" x-text="user.nomor_induk"></x-table-cell>
-                <x-table-cell :variant="'old'" x-text="user.nama"></x-table-cell>
-                <x-table-cell :variant="'old'" x-text="user.username"></x-table-cell>
-                <x-table-cell 
+            <x-table.row :variant="'old'">
+                <x-table.cell :variant="'old'" x-text="user.nomor_induk"></x-table.cell>
+                <x-table.cell :variant="'old'" x-text="user.nama"></x-table.cell>
+                <x-table.cell :variant="'old'" x-text="user.username"></x-table.cell>
+                <x-table.cell 
                   :variant="'old'" 
                   class=" text-gray-12"
                   x-text="formatDateTime(user.created_at)"
-                ></x-table-cell>
-                <x-table-cell :variant="'old'">
+                ></x-table.cell>
+                <x-table.cell :variant="'old'">
                   
                   <template x-if="user.status === 'active'"><x-badge :variant="'green-filled'" x-text="'Aktif'"></x-badge></template>
                   <template x-if="user.status !== 'active'"><x-badge :variant="'green-bordered'"  x-text="'Tidak Aktif'"></x-badge></template>
-                </x-table-cell>
-                <x-table-cell :variant="'old'">
+                </x-table.cell>
+                <x-table.cell :variant="'old'">
                   <x-container :class="'!px-0 w-full items-center'" :variant="'content-wrapper'">
                     <x-button x-on:click="requestDisplayTemplate(
                       '{{ route('users.resetPassword') }}',
@@ -95,8 +95,8 @@
                       { nomor_induk: user.nomor_induk }
                     )" :variant="'tertiary'" :size="'sm'" class="!text-[#0076BE] text-center">Reset Password</x-button>
                   </x-container>
-                </x-table-cell>
-                <x-table-cell :variant="'old'">
+                </x-table.cell>
+                <x-table.cell :variant="'old'">
                     <x-container :variant="'content-wrapper'" :class="'flex flex-row gap-10 items-center justify-center'">
                       <x-button
                           :variant="'tertiary'"
@@ -117,12 +117,12 @@
                           x-on:click="window.location.href='{{ route('users.edit', ['nomor_induk' => ':nomor_induk']) }}'.replace(':nomor_induk', user.nomor_induk)"
                       >Ubah</x-button.base>
                     </x-container>
-                </x-table-cell>
-            </x-table-row>
+                </x-table.cell>
+            </x-table.row>
           </template>
         </template>
-      </tbody>
-    </x-table>
+      </x-table.body>
+    </x-table.index>
     <template x-if="$store.listPage.datas && $store.listPage.datas.length > 0">
       <x-pagination 
         x-data="{ 
