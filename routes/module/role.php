@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'roles'], function () {

@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -60,7 +59,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 //     return view('subjects.create', compact('currentPage', 'totalPages', 'perPage', 'prasyaratMataKuliahList', 'addedPrasyarat'));
 // })->name('subject.create');
-
 
 // Route::get('/subject/edit/', function () {
 //     $currentPage = 1;
@@ -213,12 +211,12 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // })->name('subject.view');
 
 // Route::group(['middleware' => ['auth']], function () {
-    Route::get('/', [HomeController::class, 'index']);
-    Route::get('home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index']);
+Route::get('home', [HomeController::class, 'index'])->name('home');
 
-    Route::get('/test-email', function () {
-        return view('emails.new_user');
-    });
+Route::get('/test-email', function () {
+    return view('emails.new_user');
+});
 // });
 
 require __DIR__.'/module/academic.php';
@@ -232,3 +230,4 @@ require __DIR__.'/module/rps.php';
 require __DIR__.'/module/lecture-preparation.php';
 require __DIR__.'/module/calendar.php';
 require __DIR__.'/module/courses.php';
+require __DIR__.'/module/components-documentation.php';

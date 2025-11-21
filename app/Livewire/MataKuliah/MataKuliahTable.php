@@ -2,35 +2,34 @@
 
 namespace App\Livewire\MataKuliah;
 
+use App\Traits\ApiResponse;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Pagination\LengthAwarePaginator;
-
-use App\Traits\ApiResponse;
-use App\Endpoint\CourseService;
-
-
 
 class MataKuliahTable extends Component
 {
-    use WithPagination;
     use ApiResponse;
-
+    use WithPagination;
 
     public $search = '';
+
     public $perPage = 5;
+
     public $sortBy = 'nama';
+
     public $sortDirection = 'asc';
+
     public $programStudi = '';
+
     public int $page = 1;
 
     public $mataKuliahList = [];
-    public $programStudiList = [];
 
+    public $programStudiList = [];
 
     protected $listeners = [
         'page-changed' => 'updatePage',
-        'per-page-changed' => 'updatePerPage'
+        'per-page-changed' => 'updatePerPage',
     ];
 
     protected $queryString = [
@@ -38,7 +37,7 @@ class MataKuliahTable extends Component
         'perPage' => ['except' => 5],
         'sortBy' => ['except' => 'nama'],
         'sortDirection' => ['except' => 'asc'],
-        'programStudi' => ['except' => '']
+        'programStudi' => ['except' => ''],
     ];
 
     public function mount($mataKuliahList = [], $programStudiList = [])
@@ -51,6 +50,7 @@ class MataKuliahTable extends Component
     {
         return view('livewire.mata-kuliah.mata-kuliah-table');
     }
+
     public function sort($field)
     {
         if ($this->sortBy === $field) {
@@ -60,6 +60,7 @@ class MataKuliahTable extends Component
             $this->sortDirection = 'asc';
         }
     }
+
     public function updatingProgramStudi()
     {
         $this->resetPage();

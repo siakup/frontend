@@ -9,7 +9,7 @@ class LectureService
     public static function getInstance()
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;
@@ -17,12 +17,11 @@ class LectureService
 
     private function url()
     {
-        return config('endpoint.lecture.url') . '/api/courses';
+        return config('endpoint.lecture.url').'/api/courses';
     }
 
     public function getMataKuliah()
     {
-        return $this->url() . '/';
+        return $this->url().'/';
     }
-    
 }

@@ -1,16 +1,9 @@
 <?php
-namespace App\Http\Controllers;
-use Illuminate\Http\Request;
 
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Storage;
+namespace App\Http\Controllers;
 
 use App\Traits\ApiResponse;
-
-use Exception;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -26,10 +19,7 @@ class StudentController extends Controller
         return view('', get_defined_vars());
     }
 
-    public function store(Request $request)
-    {
-        
-    }
+    public function store(Request $request) {}
 
     public function show(Request $request, $id)
     {
@@ -41,14 +31,10 @@ class StudentController extends Controller
         return view('students.show', get_defined_vars());
     }
 
-    public function update(Request $request, $id)
-    {
-        
-    }
+    public function update(Request $request, $id) {}
 
     public function delete(Request $request, $id)
     {
         return redirect()->back();
     }
-
 }

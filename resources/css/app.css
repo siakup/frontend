@@ -11,7 +11,7 @@
     'Segoe UI Symbol', 'Noto Color Emoji';
 
   /* === Red (SIUP Red) === */
-  --color-red-50:  #FBDADB;
+  --color-red-50: #FBDADB;
   --color-red-100: #F7B6B8;
   --color-red-200: #F39194;
   --color-red-300: #EF6C70;
@@ -23,7 +23,7 @@
   --color-red-900: #5C0A0D;
 
   /* === Green Pear === */
-  --color-green-50:  #FAFBEE;
+  --color-green-50: #FAFBEE;
   --color-green-100: #EFF4CD;
   --color-green-200: #E5EDAB;
   --color-green-300: #DBE58A;
@@ -35,7 +35,7 @@
   --color-green-900: #5B6416;
 
   /* === Honolulu Blue === */
-  --color-blue-50:  #99D8FF;
+  --color-blue-50: #99D8FF;
   --color-blue-100: #70C8FF;
   --color-blue-200: #47B9FF;
   --color-blue-300: #1FA9FF;
@@ -47,7 +47,7 @@
   --color-blue-900: #001929;
 
   /* === Beaver === */
-  --color-beaver-50:  #E5E1DC;
+  --color-beaver-50: #E5E1DC;
   --color-beaver-100: #D4CDC4;
   --color-beaver-200: #C2B9AD;
   --color-beaver-300: #B1A595;
@@ -59,7 +59,7 @@
   --color-beaver-900: #2F2A23;
 
   /* === Neutral Gray === */
-  --color-gray-50:  #FFFFFF;
+  --color-gray-50: #FFFFFF;
   --color-gray-100: #FAFAFA;
   --color-gray-200: #F5F5F5;
   --color-gray-300: #E8E8E8;
@@ -71,7 +71,7 @@
   --color-gray-900: #1C1C1C;
 
   /* === Yellow === */
-  --color-yellow-50:  #FFFBEB;
+  --color-yellow-50: #FFFBEB;
   --color-yellow-100: #FEF3C0;
   --color-yellow-400: #FDE05D;
   --color-yellow-500: #FDD835;
@@ -80,12 +80,12 @@
   /* === Crayola === */
   --color-crayola-500: #F5A623;
 
-   /* === Disable === */
-   --color-disable-red: #FBE8E6;
-   --color-disable-blue: #E9EDF4;
-   --color-disable-white: #F5F5F5;
-   --color-disable-yellow: #FFFBEB;
-   --color-disable-grey: #E8E8E8;
+  /* === Disable === */
+  --color-disable-red: #FBE8E6;
+  --color-disable-blue: #E9EDF4;
+  --color-disable-white: #F5F5F5;
+  --color-disable-yellow: #FFFBEB;
+  --color-disable-grey: #E8E8E8;
 
 }
 
@@ -109,10 +109,33 @@
 }
 
 
+* {
+  font-family: Poppins;
+}
+
 /* END OF TAILWIND CSS  */
 
-.pill{ display:inline-flex; align-items:center; padding:6px 10px; border-radius:8px; font-size:12px; font-weight:600; }
-.wait{ background:linear-gradient(90deg,#FFFFFF,#FEF3C0); }
-.del{  background:linear-gradient(90deg,#FFFFFF,#99D8FF); }
-.rej{  background:linear-gradient(90deg,#FFFFFF,#F7B6B8); }
-.ok{   background:linear-gradient(90deg,#FFFFFF,#D0DE68); }
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.wait {
+  background: linear-gradient(90deg, #FFFFFF, #FEF3C0);
+}
+
+.del {
+  background: linear-gradient(90deg, #FFFFFF, #99D8FF);
+}
+
+.rej {
+  background: linear-gradient(90deg, #FFFFFF, #F7B6B8);
+}
+
+.ok {
+  background: linear-gradient(90deg, #FFFFFF, #D0DE68);
+}

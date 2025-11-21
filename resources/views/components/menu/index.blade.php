@@ -1,23 +1,7 @@
-<div class="fixed left-0 top-0 w-80 h-[100vh] bg-white z-1000 flex flex-col">
-    <div class="shrink-0 py-5 px-2.5">
-        <img src="{{ asset('images/uper.png') }}" alt="Logo" class=" w-[180px] h-auto block my-0 mx-auto">
-        <div class="flex items-center justify-center gap-1 mb-1 w-[156px] mx-auto">
-            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="5" viewBox="0 0 40 5" fill="none">
-                <path d="M0.5 2.5H39.5" stroke="#0076BE" stroke-width="8" />
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="56" height="5" viewBox="0 0 56 5" fill="none">
-                <path d="M0.5 2.5H55.5" stroke="#E62129" stroke-width="8" />
-            </svg>
-            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="5" viewBox="0 0 60 5" fill="none">
-                <path d="M0.5 2.5H59.5" stroke="#98A725" stroke-width="8" />
-            </svg>
-        </div>
-        <div class="flex items-center justify-center gap-1 mb-1 w-[156px] mx-auto text-center text-xs leading-5">
-            <span class="text-[#0076BE]">Sistem</span>
-            <span class="text-[#E62129]">Informasi</span>
-            <span class="text-[#98A725]">Akademik</span>
-        </div>
-    </div>
+<div
+  x-bind:class="$store.mainLayout.isOpen ? 'col-span-3 col-start-1' : 'hidden'"
+  class="w-full min-h-[calc(100vh-9rem)] h-full bg-white z-1000 flex flex-col border-r-[1px] border-r-[#d9d9d9]"
+>
     <nav class="flex-1 overflow-y-auto h-[calc(100vh-169px-56px)] scroll-thin">
         <x-menu.container :variant="'main'">
           <x-menu.item
@@ -159,7 +143,7 @@
           <x-menu.item
             :label="'RPS (Rencana Pembelajaran Semester)'"
             :haveIcon="true"
-            :icon="asset('assets/icons/curriculum/outline-black-24.svg')"
+            :icon="asset('assets/base/icon-kurikulum.svg')"
             :routeName="'rps.index'"
             :routeQuery="'rps*'"
             :variant="'parent'"

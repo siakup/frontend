@@ -16,24 +16,24 @@ class StoreEventAcademicRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-      $flags = [
-        'nilai_on' => in_array('nilai_on', $this->flag ?? []),
-        'irs_on' => in_array('irs_on', $this->flag ?? []),
-        'lulus_on' => in_array('lulus_on', $this->flag ?? []),
-        'registrasi_on' => in_array('registrasi_on', $this->flag ?? []),
-        'yudisium_on' => in_array('yudisium_on', $this->flag ?? []),
-        'survei_on' => in_array('survei_on', $this->flag ?? []),
-        'dosen_on' => in_array('dosen_on', $this->flag ?? []),
-      ];
+        $flags = [
+            'nilai_on' => in_array('nilai_on', $this->flag ?? []),
+            'irs_on' => in_array('irs_on', $this->flag ?? []),
+            'lulus_on' => in_array('lulus_on', $this->flag ?? []),
+            'registrasi_on' => in_array('registrasi_on', $this->flag ?? []),
+            'yudisium_on' => in_array('yudisium_on', $this->flag ?? []),
+            'survei_on' => in_array('survei_on', $this->flag ?? []),
+            'dosen_on' => in_array('dosen_on', $this->flag ?? []),
+        ];
 
-      $data = [
-        'nama_event' => $this->name,
-        'status' => $this->status == "true" ? 'active' : 'inactive',
-        'flags' => $flags,
-        'created_by' => session('username'),
-      ];
-      
-      $this->replace($data);
+        $data = [
+            'nama_event' => $this->name,
+            'status' => $this->status == 'true' ? 'active' : 'inactive',
+            'flags' => $flags,
+            'created_by' => session('username'),
+        ];
+
+        $this->replace($data);
     }
 
     /**
@@ -43,10 +43,10 @@ class StoreEventAcademicRequest extends FormRequest
      */
     public function rules(): array
     {
-      return [
-        'nama_event' => 'required|string|max:255',
-        'flags' => 'array',
-        'status' => 'required|string|in:active,inactive',
-      ];
+        return [
+            'nama_event' => 'required|string|max:255',
+            'flags' => 'array',
+            'status' => 'required|string|in:active,inactive',
+        ];
     }
 }

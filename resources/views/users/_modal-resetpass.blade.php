@@ -86,8 +86,8 @@
       <x-container :variant="'content-wrapper'" class="flex flex-col gap-3 w-full items-center !p-0">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Reset Password</x-typography>
         <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center gap-3">
-          <x-button.secondary :href="route('users.index')">Batal</x-button.secondary>
-          <x-button.primary x-on:click="resetPassword()">Reset Password</x-button.primary>
+          <x-button :variant="'secondary'" :href="route('users.index')">Batal</x-button>
+          <x-button :variant="'primary'" x-on:click="resetPassword()">Reset Password</x-button>
         </x-container>
       </x-container>
     </x-slot>

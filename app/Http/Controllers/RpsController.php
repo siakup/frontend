@@ -17,36 +17,36 @@ class RpsController extends Controller
                 'dosen' => 'Teuku Muhammad Rofii',
                 'review_status' => 'Sedang Direview',
                 'status' => 'Finalized',
-                'tanggal_upload' => '2025-08-19, 11:42:15'
+                'tanggal_upload' => '2025-08-19, 11:42:15',
             ],
             [
                 'mata_kuliah' => 'Manajemen',
                 'dosen' => 'Teuku Muhammad Rofii',
                 'review_status' => 'Sedang Direview',
                 'status' => 'Finalized',
-                'tanggal_upload' => '2025-08-19, 11:42:15'
-            ],     
+                'tanggal_upload' => '2025-08-19, 11:42:15',
+            ],
             [
                 'mata_kuliah' => 'Sistem Informasi',
                 'dosen' => 'Teuku Muhammad Rofii',
                 'review_status' => 'Sedang Direview',
                 'status' => 'Finalized',
-                'tanggal_upload' => '2025-08-19, 11:42:15'
+                'tanggal_upload' => '2025-08-19, 11:42:15',
             ],
             [
                 'mata_kuliah' => 'Ilmu Komputer',
                 'dosen' => 'Meredita Susanty',
                 'review_status' => 'Sedang Direview',
                 'status' => 'Finalized',
-                'tanggal_upload' => '2025-08-19, 11:42:15'
+                'tanggal_upload' => '2025-08-19, 11:42:15',
             ],
             [
                 'mata_kuliah' => 'Aplikasi Komputer',
                 'dosen' => 'Teuku Muhammad Rofii',
                 'review_status' => 'Sedang Direview',
                 'status' => 'Finalized',
-                'tanggal_upload' => '2025-08-19, 11:42:15'
-            ]                                           
+                'tanggal_upload' => '2025-08-19, 11:42:15',
+            ],
         ];
 
         $periodeList = [
@@ -56,7 +56,7 @@ class RpsController extends Controller
             '2024 - Ganjil' => '4',
             '2024 - Pendek' => '5',
         ];
-        
+
         $prodiList = [
             'Teknik Lingkungan' => '1',
             'Hubungan Internasional' => '2',
@@ -78,7 +78,8 @@ class RpsController extends Controller
         return view('rps.index', get_defined_vars());
     }
 
-    public function buatRpsDeskripsiUmum() {
+    public function buatRpsDeskripsiUmum()
+    {
         $periodeList = [
             '2025 - Ganjil' => '1',
             '2025 - Pendek' => '2',
@@ -86,7 +87,7 @@ class RpsController extends Controller
             '2024 - Ganjil' => '4',
             '2024 - Pendek' => '5',
         ];
-        
+
         $prodiList = [
             'Teknik Lingkungan' => '1',
             'Hubungan Internasional' => '2',
@@ -120,129 +121,131 @@ class RpsController extends Controller
             'Agama dan Etika' => '3',
         ];
 
-
         return view('rps.deskripsi-umum.index', get_defined_vars());
     }
 
-    public function showCapaianPembelajaran(){
+    public function showCapaianPembelajaran()
+    {
         $cplList = [
             [
                 'cpl' => 'CPL-G',
                 'deskripsi' => 'Kemampuan menerapkan pengetahuan matematika dan ilmu pengetahuan dasar lainnya 
                                 terutama pada kekhususan bidang teknik dan memahami konteks ilmu pengetabuan 
-                                dan rekayasa multidisiplin yang lebih luas.'
+                                dan rekayasa multidisiplin yang lebih luas.',
             ],
             [
                 'cpl' => 'CPL-H',
                 'deskripsi' => 'Kemampuan untuk mengidentifikasi, merumuskan dan menyelesaikan permasalahan rekayasa
                                 di bidang studi masing nasing: dan memilih serta menerapkan metode-metode relevan 
-                                yang dibangun dari metode analitis, komputasi, da: chsnerimental vano telah dislani.'
+                                yang dibangun dari metode analitis, komputasi, da: chsnerimental vano telah dislani.',
             ],
             [
                 'cpl' => 'CPL-I',
                 'deskripsi' => 'Kemampuan untuk memilih dan memakai teknik-teknik, sumber days, serta peralatan 
                                 rekayasa dan aplikasi IT modern yang sesuai, termasuk melakukan prediksi dan 
-                                pemodelan problem rekayasa .'
-            ]
+                                pemodelan problem rekayasa .',
+            ],
         ];
 
         $cpmkList = [
             [
                 'cpmk' => 'CPMK-1',
                 'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem 
-                                pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.'
+                                pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
             ],
             [
                 'cpmk' => 'CPMK-2',
                 'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk 
                                 menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun 
-                                kesetimbangan reaksi kimia.'
+                                kesetimbangan reaksi kimia.',
             ],
             [
                 'cpmk' => 'CPMK-3',
                 'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk 
                                 menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun 
-                                kesetimbangan reaksi kimia'
-            ]
+                                kesetimbangan reaksi kimia',
+            ],
 
         ];
 
         return view('rps.capaian-pembelajaran.index', get_defined_vars());
     }
 
-    public function buatCapaianPembelajaranLulusan () {
+    public function buatCapaianPembelajaranLulusan()
+    {
         $cplList = [
             [
                 'kode' => 'CPL-A',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
             ],
             [
                 'kode' => 'CPL-B',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
             ],
             [
                 'kode' => 'CPL-C',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
             ],
             [
                 'kode' => 'CPL-D',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
-            ], 
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+            ],
             [
                 'kode' => 'CPL-E',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
-            ], 
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+            ],
             [
                 'kode' => 'CPL-F',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
-            ], 
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+            ],
             [
                 'kode' => 'CPL-G',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
-            ], 
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+            ],
             [
                 'kode' => 'CPL-H',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
-            ], 
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+            ],
             [
                 'kode' => 'CPL-I',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
             ],
             [
                 'kode' => 'CPL-J',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
-            ], 
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+            ],
             [
                 'kode' => 'CPL-K',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
-            ], 
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+            ],
             [
                 'kode' => 'CPL-L',
-                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air'
-            ]              
+                'deskripsi' => 'Memiliki karakter individu yang berbudi pekerti luhur, berintegritas, spiritual dan cinta tanah air',
+            ],
         ];
 
         return view('rps.capaian-pembelajaran.create-cpl', get_defined_vars());
     }
 
-    public function buatKomponenPenilaian () {
-        $cpmkList = ['CPMK-1','CPMK-2','CPMK-3','CPMK-4','CPMK-5','CPMK-6','CPMK-7','CPMK-8','CPMK-9','CPMK-10'];
+    public function buatKomponenPenilaian()
+    {
+        $cpmkList = ['CPMK-1', 'CPMK-2', 'CPMK-3', 'CPMK-4', 'CPMK-5', 'CPMK-6', 'CPMK-7', 'CPMK-8', 'CPMK-9', 'CPMK-10'];
 
         $komponenList = [
             [
                 'nama' => 'TUGAS',
                 'bobot' => '30.00%',
-                'cpmk' => [false, true, true, true, false, true, true, true, false, true]
+                'cpmk' => [false, true, true, true, false, true, true, true, false, true],
             ],
             [
                 'nama' => 'UTS',
                 'bobot' => '30.00%',
-                'cpmk' => [true, false, true, true, false, false, true, true, false, true]     
+                'cpmk' => [true, false, true, true, false, false, true, true, false, true],
             ],
             [
                 'nama' => 'UAS',
                 'bobot' => '30.00%',
-                'cpmk' => [true, false, true, true, false, false, true, true, false, true]
+                'cpmk' => [true, false, true, true, false, false, true, true, false, true],
             ],
         ];
 
@@ -257,24 +260,25 @@ class RpsController extends Controller
         return view('rps.komponen-penilaian.index', get_defined_vars());
     }
 
-    public function showRencanaPerkuliahan() {
+    public function showRencanaPerkuliahan()
+    {
 
         $rencanaPerkuliahan = [
             [
                 'minggu' => 1,
                 'cpmk' => 'CPMK-1',
-                'sub_cpmk' => "1. Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi steam power plant, seperti: menentukan laju alir steam, daya pompa/turbin, laju alir panas pada boiler/condenser).
-                2. Mahasiswa dapat menentukan efisiensi termal steam power plant yang beroperasi dengan siklus Rankine (ideal maupun aktual)",
-                'rencana' => "1. Rencana Pembelajaran Studi
+                'sub_cpmk' => '1. Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi steam power plant, seperti: menentukan laju alir steam, daya pompa/turbin, laju alir panas pada boiler/condenser).
+                2. Mahasiswa dapat menentukan efisiensi termal steam power plant yang beroperasi dengan siklus Rankine (ideal maupun aktual)',
+                'rencana' => '1. Rencana Pembelajaran Studi
                             2. Steam power plant
                                 a. Review siklus Carnot
                                 b. Siklus Rankine ideal (ideal vapor power cycle)
-                                c. Siklus Rankine aktual",
+                                c. Siklus Rankine aktual',
                 'waktu_kuliah' => 100,
                 'waktu_diskusi_latihan' => 50,
                 'waktu_praktikum' => 180,
                 'waktu_mandiri' => 180,
-                'metode_penilaian' => 'Tugas 1, UTS'
+                'metode_penilaian' => 'Tugas 1, UTS',
             ],
             [
                 'minggu' => 2,
@@ -289,7 +293,7 @@ class RpsController extends Controller
                 'waktu_diskusi_latihan' => 50,
                 'waktu_praktikum' => 180,
                 'waktu_mandiri' => 180,
-                'metode_penilaian' => 'Tugas 2, UTS'
+                'metode_penilaian' => 'Tugas 2, UTS',
             ],
             [
                 'minggu' => 3,
@@ -303,7 +307,7 @@ class RpsController extends Controller
                 'waktu_diskusi_latihan' => 50,
                 'waktu_praktikum' => 180,
                 'waktu_mandiri' => 180,
-                'metode_penilaian' => 'Tugas 3, UTS'
+                'metode_penilaian' => 'Tugas 3, UTS',
             ],
             [
                 'minggu' => 4,
@@ -316,14 +320,15 @@ class RpsController extends Controller
                 'waktu_diskusi_latihan' => 50,
                 'waktu_praktikum' => 180,
                 'waktu_mandiri' => 180,
-                'metode_penilaian' => 'UTS'
-            ]
+                'metode_penilaian' => 'UTS',
+            ],
         ];
 
         $rencanaPerkuliahan = collect($rencanaPerkuliahan)->map(function ($item) {
             $item['total_waktu'] = collect($item)->only([
-                'waktu_kuliah', 'waktu_diskusi_latihan', 'waktu_praktikum', 'waktu_mandiri'
+                'waktu_kuliah', 'waktu_diskusi_latihan', 'waktu_praktikum', 'waktu_mandiri',
             ])->sum();
+
             return $item;
         });
 
@@ -343,76 +348,78 @@ class RpsController extends Controller
         return view('rps.rencana-perkuliahan.index', get_defined_vars());
     }
 
-    public function buatRencanaPerkuliahan() {
+    public function buatRencanaPerkuliahan()
+    {
         $cpmkList = [
             [
-                'label' => 'CPMK-1', 'value' => 1
+                'label' => 'CPMK-1', 'value' => 1,
             ],
             [
-                'label' => 'CPMK-2', 'value' => 2
+                'label' => 'CPMK-2', 'value' => 2,
             ],
             [
-                'label' => 'CPMK-3', 'value' => 3
+                'label' => 'CPMK-3', 'value' => 3,
             ],
         ];
 
         return view('rps.rencana-perkuliahan.create', get_defined_vars());
     }
 
-    public function showMatriksPenilaianKognitif() {
+    public function showMatriksPenilaianKognitif()
+    {
         $matriksList = [
             [
                 'nilai' => '40 < X <= 60',
-                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman konsep dan teknik pemecahan masalah, tapi masih ada gap dalam penjelasan atau alasannya.'
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman konsep dan teknik pemecahan masalah, tapi masih ada gap dalam penjelasan atau alasannya.',
             ],
             [
                 'nilai' => '60 < X <= 80',
-                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman sebagian dari konsep atau mahasiswa telah memulai jawaban dengan benar namun salah pada bagian penyelesaian masalah.'
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman sebagian dari konsep atau mahasiswa telah memulai jawaban dengan benar namun salah pada bagian penyelesaian masalah.',
             ],
             [
                 'nilai' => '80 < X <= 100',
-                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman tentang bagaimana memecahkan masalah dan hasilnya benar. Kesalahan kecil dapat diterima sepanjang tidak mengindikasıkan kesalahpahaman konsep.'
-            ],            
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman tentang bagaimana memecahkan masalah dan hasilnya benar. Kesalahan kecil dapat diterima sepanjang tidak mengindikasıkan kesalahpahaman konsep.',
+            ],
 
         ];
-
 
         return view('rps.matriks-penilaian-kognitif.index', get_defined_vars());
     }
 
-    public function showEvaluasiPemetaan() {
+    public function showEvaluasiPemetaan()
+    {
 
         $evaluasiList = [
             [
-                'id'=> 1,
+                'id' => 1,
                 'cpmk' => 'CPMK-1',
                 'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
                 'rincian' => [
                     'tugas' => true,
                     'uts' => false,
                     'uas' => true,
-                ]
+                ],
             ],
             [
-                'id'=> 2,
+                'id' => 2,
                 'cpmk' => 'CPMK-2',
                 'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
                 'rincian' => [
                     'tugas' => false,
                     'uts' => true,
                     'uas' => true,
-                ]
+                ],
             ],
             [
-                'id'=> 3,
+                'id' => 3,
                 'cpmk' => 'CPMK-3',
                 'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
                 'rincian' => [
                     'tugas' => true,
                     'uts' => true,
                     'uas' => false,
-                ]
-            ]
+                ],
+            ],
         ];
 
         $cpl = 'CPL-G';
@@ -426,11 +433,11 @@ class RpsController extends Controller
             'CPL-M' => 'CPL-M',
         ];
 
-
         return view('rps.evaluasi-pemetaan-capaian.index', get_defined_vars());
     }
 
-    public function showRencanaEvaluasi() {
+    public function showRencanaEvaluasi()
+    {
         $rencanaList = [
             [
                 'id' => 1,
@@ -452,7 +459,7 @@ class RpsController extends Controller
                     'CPMK-2',
                 ],
                 'metode_pengerjaan' => 'Kuis menggunakan media e-learning',
-            ], 
+            ],
             [
                 'id' => 3,
                 'bentuk_ujian' => 'Ujian',
@@ -470,7 +477,7 @@ class RpsController extends Controller
                     'CPMK-2',
                 ],
                 'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
-            ],            
+            ],
 
         ];
 
@@ -485,15 +492,15 @@ class RpsController extends Controller
         $indikatorList = [
             [
                 'indikator' => 'Ketepatan dalam mendeskripsikan reaksi dan menggambar process flow diagram.',
-                'bobot' => '35%'
+                'bobot' => '35%',
             ],
             [
                 'indikator' => 'Ketepatan dalam membuat grafik kesetimbangan fasa cair dan uap.',
-                'bobot' => '35%'
+                'bobot' => '35%',
             ],
             [
                 'indikator' => 'Ketepatan dalam melakukan perhitungan yang berkaitan dengan solution thermodynamics.',
-                'bobot' => '30%'
+                'bobot' => '30%',
             ],
 
         ];
@@ -509,11 +516,11 @@ class RpsController extends Controller
             ],
         ];
 
-
         return view('rps.rencana-evaluasi-mahasiswa.index', get_defined_vars());
     }
 
-    public function buatRencanaEvaluasi () {
+    public function buatRencanaEvaluasi()
+    {
         $bentukUjian = [
             'Tugas' => 'tugas',
             'Kuis' => 'kuis',
@@ -525,15 +532,15 @@ class RpsController extends Controller
         $indikatorList = [
             [
                 'indikator' => 'Ketepatan dalam mendeskripsikan reaksi dan menggambar process flow diagram.',
-                'bobot' => '35%'
+                'bobot' => '35%',
             ],
             [
                 'indikator' => 'Ketepatan dalam membuat grafik kesetimbangan fasa cair dan uap.',
-                'bobot' => '35%'
+                'bobot' => '35%',
             ],
             [
                 'indikator' => 'Ketepatan dalam melakukan perhitungan yang berkaitan dengan solution thermodynamics.',
-                'bobot' => '30%'
+                'bobot' => '30%',
             ],
 
         ];
@@ -552,7 +559,8 @@ class RpsController extends Controller
         return view('rps.rencana-evaluasi-mahasiswa.create', get_defined_vars());
     }
 
-    public function ubahRencanaEvaluasi () {
+    public function ubahRencanaEvaluasi()
+    {
         $bentukUjian = [
             'Tugas' => 'tugas',
             'Kuis' => 'kuis',
@@ -564,15 +572,15 @@ class RpsController extends Controller
         $indikatorList = [
             [
                 'indikator' => 'Ketepatan dalam mendeskripsikan reaksi dan menggambar process flow diagram.',
-                'bobot' => '35%'
+                'bobot' => '35%',
             ],
             [
                 'indikator' => 'Ketepatan dalam membuat grafik kesetimbangan fasa cair dan uap.',
-                'bobot' => '35%'
+                'bobot' => '35%',
             ],
             [
                 'indikator' => 'Ketepatan dalam melakukan perhitungan yang berkaitan dengan solution thermodynamics.',
-                'bobot' => '30%'
+                'bobot' => '30%',
             ],
 
         ];
