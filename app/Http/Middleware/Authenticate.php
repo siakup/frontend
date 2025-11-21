@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -13,12 +14,12 @@ class Authenticate
         $token = $_COOKIE[$cookieName] ?? null;
 
         $headers = [
-            'x-app-id: ' . config('central.client_app_id'),
-            'Authorization: Bearer ' . $token,
+            'x-app-id: '.config('central.client_app_id'),
+            'Authorization: Bearer '.$token,
         ];
 
         // check auth user central
-        $url = config('central.api_url') . '/api/v1/client/session';
+        $url = config('central.api_url').'/api/v1/client/session';
         $response = postCurl($url, null, $headers);
 
         if (
@@ -33,9 +34,9 @@ class Authenticate
                 $cookie->name,
                 $cookie->value,
                 [
-                    'expires'  => time() + ($cookie->expire ?? 0),
-                    'path'     => $cookie->path ?? '/',
-                    'secure'   => $cookie->secure ?? false,
+                    'expires' => time() + ($cookie->expire ?? 0),
+                    'path' => $cookie->path ?? '/',
+                    'secure' => $cookie->secure ?? false,
                     'httponly' => $cookie->httpOnly ?? true,
                     'samesite' => $cookie->sameSite ?? 'Lax',
                 ]
@@ -43,7 +44,7 @@ class Authenticate
         }
 
         // Jika response tidak sukses, redirect ke SSO
-        if (!$response || !isset($response->success) || $response->success !== true) {
+        if (! $response || ! isset($response->success) || $response->success !== true) {
             return Redirect::to(config('central.auth_url'));
         }
 
@@ -51,7 +52,7 @@ class Authenticate
         if (isset($response->data->user)) {
             session([
                 'username' => $response->data->user->username ?? null,
-                'nama'     => $response->data->user->full_name ?? null,
+                'nama' => $response->data->user->full_name ?? null,
             ]);
         }
 

@@ -9,7 +9,7 @@ class UserService
     public static function getInstance()
     {
         if (self::$instance === null) {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;
@@ -17,81 +17,81 @@ class UserService
 
     private function url()
     {
-        return config('endpoint.users.url') . '/api/';
+        return config('endpoint.users.url').'/api/';
     }
 
     public function getListAllUsers()
     {
-        return $this->url() . 'users/list';
+        return $this->url().'users/list';
     }
 
     public function getUserDetail($nomor_induk)
     {
-        return $this->url() . 'users/detail/' . $nomor_induk;
+        return $this->url().'users/detail/'.$nomor_induk;
     }
 
     public function getUserByUsername($username)
     {
-        return $this->url() . 'users/show/' . $username;
+        return $this->url().'users/show/'.$username;
     }
 
     public function searchUser($params)
     {
-        return $this->url() . 'users/search/' . $params;
+        return $this->url().'users/search/'.$params;
     }
 
     public function getListAllRoles()
     {
-        return $this->url() . 'roles/list';
+        return $this->url().'roles/list';
     }
 
     public function getListAllInstitution()
     {
-        return $this->url() . 'institutions/list';
+        return $this->url().'institutions/list';
     }
 
     public function getListInstitutionByRoles($role)
     {
-        return $this->url() . 'institutions/list-by-role/' . $role;
+        return $this->url().'institutions/list-by-role/'.$role;
     }
 
     public function searchStaff()
     {
-        return $this->url() . 'staff/search/';
+        return $this->url().'staff/search/';
     }
 
     public function generateUsername()
     {
-        return $this->url() . 'users/generate-username/';
+        return $this->url().'users/generate-username/';
     }
 
     public function store()
     {
-        return $this->url() . 'users/';
+        return $this->url().'users/';
     }
 
     public function update($id)
     {
-        return $this->url() . 'users/' . $id;
+        return $this->url().'users/'.$id;
     }
 
     public function updateStatus($id)
     {
-        return $this->url() . 'users/' . $id . '/status';
+        return $this->url().'users/'.$id.'/status';
     }
 
     public function updatePassword($id)
     {
-        return $this->url() . 'users/' . $id . '/reset-password';
+        return $this->url().'users/'.$id.'/reset-password';
     }
 
     public function getListStudyProgram()
     {
-        return $this->url() . 'institutions/list-by-user';
+        return $this->url().'institutions/list-by-user';
     }
 
     public function getListLecturer()
     {
-        return $this->url() . 'lecturers/';
+        return $this->url().'lecturers/';
     }
 }

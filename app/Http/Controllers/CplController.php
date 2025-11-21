@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Endpoint\CplService;
-
 use App\Traits\ApiResponse;
+use Illuminate\Http\Request;
 
 class CplController extends Controller
 {
@@ -33,13 +31,12 @@ class CplController extends Controller
         $data = json_decode(json_encode($response), true);
 
         if ($request->ajax()) {
-            if (!isset($response->data)) {
+            if (! isset($response->data)) {
                 return $this->errorResponse($response->message);
             }
 
             return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
         }
-
 
         return view('cpl.index', get_defined_vars());
     }
@@ -52,9 +49,9 @@ class CplController extends Controller
         foreach ($data as $cplData) {
             $cpl[] = [
                 'kode_matakuliah' => $cplData['kode_matakuliah'],
-                'kode_cpl'        => $cplData['kode_cpl'] ?? [],
-                'bobot'           => $cplData['bobot'],
-                'created_by'      => session('username'),
+                'kode_cpl' => $cplData['kode_cpl'] ?? [],
+                'bobot' => $cplData['bobot'],
+                'created_by' => session('username'),
             ];
         }
 

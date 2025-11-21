@@ -16,20 +16,20 @@ class UpdateEventAcademicRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-      $data = [
-        'nama_event' => $this->nama_event,
-        'nilai_on' => $this->nilai_on ? true : false,
-        'irs_on' => $this->irs_on ? true : false,
-        'lulus_on' => $this->lulus_on ? true : false,
-        'registrasi_on' => $this->registrasi_on ? true : false,
-        'yudisium_on' => $this->yudisium_on ? true : false,
-        'survei_on' => $this->survei_on ? true : false,
-        'dosen_on' => $this->dosen_on ? true : false,
-        'status' => $this->status == "true" ? 'active' : 'inactive',
-        'updated_by' => session('username')
-      ];
-      
-      $this->replace($data);
+        $data = [
+            'nama_event' => $this->nama_event,
+            'nilai_on' => $this->nilai_on ? true : false,
+            'irs_on' => $this->irs_on ? true : false,
+            'lulus_on' => $this->lulus_on ? true : false,
+            'registrasi_on' => $this->registrasi_on ? true : false,
+            'yudisium_on' => $this->yudisium_on ? true : false,
+            'survei_on' => $this->survei_on ? true : false,
+            'dosen_on' => $this->dosen_on ? true : false,
+            'status' => $this->status == 'true' ? 'active' : 'inactive',
+            'updated_by' => session('username'),
+        ];
+
+        $this->replace($data);
     }
 
     /**
@@ -39,15 +39,15 @@ class UpdateEventAcademicRequest extends FormRequest
      */
     public function rules(): array
     {
-      return [
-        'nama_event' => 'required',
-      ];
+        return [
+            'nama_event' => 'required',
+        ];
     }
 
     public function messages(): array
     {
-      return [
-        'nama_event.required' => "Mohon diisi Nama Event sebelum disimpan"
-      ];
+        return [
+            'nama_event.required' => 'Mohon diisi Nama Event sebelum disimpan',
+        ];
     }
 }

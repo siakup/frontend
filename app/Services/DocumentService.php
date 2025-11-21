@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services;
 
@@ -11,7 +11,7 @@ class DocumentService
 {
     public function saveDocument(UploadedFile $file, $title, $disk, $id = null)
     {
-        $fileName = Str::slug($title) . '-' . date('YmdHos') . $id . '.' . $file->getClientOriginalExtension();
+        $fileName = Str::slug($title).'-'.date('YmdHos').$id.'.'.$file->getClientOriginalExtension();
         Storage::disk('public')->putFileAs($disk, $file, $fileName);
 
         return $fileName;
@@ -19,7 +19,7 @@ class DocumentService
 
     public function deleteDocument($fileName, $disk)
     {
-        $path = storage_path() . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $disk . DIRECTORY_SEPARATOR . $fileName;
+        $path = storage_path().DIRECTORY_SEPARATOR.'app'.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.$disk.DIRECTORY_SEPARATOR.$fileName;
 
         return File::delete($path);
     }

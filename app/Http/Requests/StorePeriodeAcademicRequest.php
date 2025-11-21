@@ -17,26 +17,26 @@ class StorePeriodeAcademicRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-      $data = $this->all(); 
+        $data = $this->all();
 
-      $namaSemester = [
-        1 => 'ganjil',
-        2 => 'genap',
-        3 => 'pendek',
-      ];
+        $namaSemester = [
+            1 => 'ganjil',
+            2 => 'genap',
+            3 => 'pendek',
+        ];
 
-      $data['status'] = $data['status'] == "true" ? 'active' : 'inactive';
-      $data['tahun'] = (int) $data['year'];
-      $data['created_by'] = session('username');
-      if(!array_key_exists((int) $data['semester'], $namaSemester)) {
-        throw ValidationException::withMessages([
-          'semester' => 'Semester tidak valid.',
-        ]);
-      }
-      $data['semester'] = $namaSemester[(int) $data['semester']];
-      
-      unset($data['year']);
-      $this->replace($data);
+        $data['status'] = $data['status'] == 'true' ? 'active' : 'inactive';
+        $data['tahun'] = (int) $data['year'];
+        $data['created_by'] = session('username');
+        if (! array_key_exists((int) $data['semester'], $namaSemester)) {
+            throw ValidationException::withMessages([
+                'semester' => 'Semester tidak valid.',
+            ]);
+        }
+        $data['semester'] = $namaSemester[(int) $data['semester']];
+
+        unset($data['year']);
+        $this->replace($data);
     }
 
     /**
@@ -46,15 +46,15 @@ class StorePeriodeAcademicRequest extends FormRequest
      */
     public function rules(): array
     {
-      return [
-        'tahun' => 'required|integer',
-        'semester' => 'required|string|in:ganjil,genap,pendek',
-        'status' => 'required|string|in:active,inactive',
-        'tahun_akademik' => 'required',
-        'tanggal_mulai' => 'required',
-        'tanggal_akhir' => 'required',
-        'deskripsi' => 'required',
-        'created_by' => 'required'
-      ];
+        return [
+            'tahun' => 'required|integer',
+            'semester' => 'required|string|in:ganjil,genap,pendek',
+            'status' => 'required|string|in:active,inactive',
+            'tahun_akademik' => 'required',
+            'tanggal_mulai' => 'required',
+            'tanggal_akhir' => 'required',
+            'deskripsi' => 'required',
+            'created_by' => 'required',
+        ];
     }
 }

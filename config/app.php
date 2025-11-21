@@ -55,7 +55,6 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
     'lecturer_api_url' => env('LECTURER_API_URL', 'http://127.0.0.1:8005/api'),
 
-
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

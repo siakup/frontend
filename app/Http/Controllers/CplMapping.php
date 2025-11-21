@@ -3,21 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Excel as ExcelFormat;
+use Maatwebsite\Excel\Facades\Excel;
+
 // use Symfony\Component\HttpFoundation\StreamedResponse;
-
-
-use App\Traits\ApiResponse;
-
-use Exception;
 
 class CplMapping extends Controller
 {
@@ -79,13 +70,13 @@ class CplMapping extends Controller
 
     public function upload(Request $request)
     {
-      return view('cpl-mapping.upload', get_defined_vars());
+        return view('cpl-mapping.upload', get_defined_vars());
     }
 
     public function uploadResult(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'file' => 'required|file|mimes:csv,xlsx|max:5120'
+            'file' => 'required|file|mimes:csv,xlsx|max:5120',
         ]);
 
         if ($validator->fails()) {
@@ -103,21 +94,20 @@ class CplMapping extends Controller
         $file_data = array_map(function ($value) {
             return [
                 'kode_matakuliah' => $value['kode_matakuliah'] ?? null,
-                'kode_cpl'        => $value['kode_cpl'] ?? null,
-                'bobot'           => $value['bobot'] ?? null,
+                'kode_cpl' => $value['kode_cpl'] ?? null,
+                'bobot' => $value['bobot'] ?? null,
             ];
         }, $file_data);
 
         return view('cpl-mapping.upload-result', get_defined_vars());
     }
 
-
     public function cplDownloadTemplate(Request $request)
     {
         $type = $request->query('type', 'xlsx');
         $allowed = ['xlsx', 'csv'];
 
-        if (!in_array($type, $allowed)) {
+        if (! in_array($type, $allowed)) {
             return redirect()->back()->with('error', 'Format file tidak valid');
         }
 
@@ -129,18 +119,22 @@ class CplMapping extends Controller
             ['MK003', 'CPL-03', 50],
         ];
 
-        $filename = 'template-cpl.' . $type;
+        $filename = 'template-cpl.'.$type;
 
-        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings {
+        return Excel::download(new class($data) implements \Maatwebsite\Excel\Concerns\FromArray, \Maatwebsite\Excel\Concerns\WithHeadings
+        {
             private $rows;
+
             public function __construct($rows)
             {
                 $this->rows = $rows;
             }
+
             public function array(): array
             {
                 return array_slice($this->rows, 1);
             }
+
             public function headings(): array
             {
                 return $this->rows[0];
@@ -165,6 +159,7 @@ class CplMapping extends Controller
         // Tentukan delimiter (koma atau titik koma)
         $rows = array_map(function ($line) {
             $delimiter = substr_count($line, ';') > substr_count($line, ',') ? ';' : ',';
+
             return str_getcsv($line, $delimiter);
         }, $lines);
 
@@ -183,23 +178,22 @@ class CplMapping extends Controller
 
             $dataCplMapping[] = [
                 'kode_matakuliah' => $row[0],
-                'kode_cpl'        => $row[1],
-                'bobot'           => is_numeric($row[2]) ? (int)$row[2] : 0,
+                'kode_cpl' => $row[1],
+                'bobot' => is_numeric($row[2]) ? (int) $row[2] : 0,
             ];
         }
 
-      // $url = EventCalendarService::getInstance()->bulkStore();
-      // $response = postCurl($url, [
-      //   'events' => $eventAkademik,
-      //   'idperiode' => $id,
-      // ], getHeaders());
+        // $url = EventCalendarService::getInstance()->bulkStore();
+        // $response = postCurl($url, [
+        //   'events' => $eventAkademik,
+        //   'idperiode' => $id,
+        // ], getHeaders());
 
-      return redirect()->route('cpl-mapping.index', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
-      // if (isset($response->success) && $response->success) {
-      //   return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
-      // }
+        return redirect()->route('cpl-mapping.index', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+        // if (isset($response->success) && $response->success) {
+        //   return redirect()->route('calendar.show', ['id' => $id])->with('success', 'Unggah Event Kalender Akademik telah berhasil');
+        // }
 
-      return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
+        return redirect()->route('cpl-mapping.index')->with('error', $response->message ?? 'Gagal menyimpan data event akademik');
     }
-
 }
