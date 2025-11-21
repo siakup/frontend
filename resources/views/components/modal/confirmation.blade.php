@@ -29,7 +29,7 @@
     <!-- Footer -->
     <x-slot name="footer">
         <div class="flex justify-center gap-4 w-full">
-            <x-button.secondary :label="$cancelText" class="w-full" x-on:click.stop="
+            <x-button.secondary :label="$cancelText" class="!w-full" x-on:click.stop="
                 $dispatch('close-modal', { id: '{{ $id }}' })
             " />
             <x-button.primary :label="$confirmText" class="!w-full" :href="$redirectConfirm"
