@@ -20,7 +20,7 @@
   @if ($wireClick) wire:click="{{ $wireClick }}" @endif 
   @if ($href) onclick="window.location.href='{{ $href }}'" @endif
   {{ $attributes->merge([
-    'class' => "flex w-fit w-max justify-center items-center gap-1 px-4 py-2 rounded-lg text-white bg-[#E62129] hover:bg-[#B5171C] active:bg-[#841418] cursor-pointer disabled:bg-[#E8E8E8] disabled:text-[#8C8C8C] disabled:cursor-not-allowed {$class}"
+    'class' => "flex w-fit w-max justify-center items-center gap-1 px-4 py-2 rounded-lg text-white bg-red-500 hover:bg-[#B5171C] active:bg-[#841418] cursor-pointer disabled:bg-[#E8E8E8] disabled:text-[#8C8C8C] disabled:cursor-not-allowed {$class}"
   ]) }}
 >
   @if ($icon && $iconPosition === 'left')
