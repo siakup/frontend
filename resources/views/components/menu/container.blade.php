@@ -6,7 +6,7 @@
 @php
  $variants = [
   'main' => 'list-none w-full',
-  'submenu' => 'bg-[#F8F9FA] '
+  'submenu' => 'bg-gray-100 '
  ]   
 @endphp
 
