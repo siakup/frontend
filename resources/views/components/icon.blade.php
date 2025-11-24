@@ -1,8 +1,7 @@
 @props([
-    'iconUrl' => '',
-    'iconAlt' => '',
+    'name' => null, // <-- nama icon saja
     'class' => '',
-    'id' => ''
+    'alt' => '',
 ])
 
-<img id="{{ $id }}" src="{{ $iconUrl }}" alt="{{ $iconAlt }}" class="{{ $class }}" loading="lazy" />
+<img src="{{ asset("assets/icons/{$name}.svg") }}" alt="{{ $alt ?: $name }}" class="{{ $class }}" loading="lazy" />

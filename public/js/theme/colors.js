@@ -10,11 +10,11 @@ export const customColors = {
     300: '#EF6C70',
     200: '#F39194',
     100: '#F7B6B8',
-    50:  '#FBDADB',
+    50: '#FBDADB',
   },
 
-  // === Green Pear ===
-  greenPear: {
+  // === Green ===
+  green: {
     900: '#5B6416',
     800: '#7A861D',
     700: '#98A725',
@@ -24,11 +24,11 @@ export const customColors = {
     300: '#DBE58A',
     200: '#E5EDAB',
     100: '#EFF4CD',
-    50:  '#FAFBEE',
+    50: '#FAFBEE',
   },
 
   // === Honolulu Blue ===
-  honolulu: {
+  blue: {
     900: '#001929',
     800: '#003252',
     700: '#004B7A',
@@ -38,7 +38,7 @@ export const customColors = {
     300: '#1FA9FF',
     200: '#47B9FF',
     100: '#70C8FF',
-    50:  '#FAFBEE',
+    50: '#FAFBEE',
   },
 
   // === Beaver ===
@@ -52,7 +52,7 @@ export const customColors = {
     300: '#B1A595',
     200: '#C2B9AD',
     100: '#D4CDC4',
-    50:  '#E5E1DC',
+    50: '#E5E1DC',
   },
 
   // === Neutral / Gray ===
@@ -66,7 +66,7 @@ export const customColors = {
     300: '#E8E8E8',
     200: '#F5F5F5',
     100: '#FAFAFA',
-    50:  '#FFFFFF',
+    50: '#FFFFFF',
   },
 
   // === Yellow ===
@@ -75,7 +75,7 @@ export const customColors = {
     500: '#FDD835',
     400: '#FDE05D',
     100: '#FEF3C0',
-    50:  '#FFFBEB',
+    50: '#FFFBEB',
   },
 
   // === Crayola ===

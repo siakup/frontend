@@ -10,4 +10,8 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.table');
     }
+    public function button(Request $request)
+    {
+        return view('components-documentation.button');
+    }
 }
