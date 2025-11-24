@@ -5,4 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/table', [ComponentsDocumentationController::class, 'table'])->name('components-documentation.table');
+    Route::get('/tooltip', [ComponentsDocumentationController::class, 'tooltip'])->name('components-documentation.tooltip');
+    Route::get('/badge', [ComponentsDocumentationController::class, 'badge'])->name('components-documentation.badge');
 });

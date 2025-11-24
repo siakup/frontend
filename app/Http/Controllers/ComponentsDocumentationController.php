@@ -10,4 +10,14 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.table');
     }
+
+    public function tooltip(Request $request)
+    {
+        return view('components-documentation.tooltip');
+    }
+
+    public function badge(Request $request)
+    {
+        return view('components-documentation.badge');
+    }
 }

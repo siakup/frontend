@@ -21,7 +21,7 @@
         'body-medium-regular' => 'text-[16px] leading-[24px]',
         'body-medium-bold' => 'text-[16px] leading-[24px] font-bold',
         'body-medium-italic' => 'text-[16px] leading-[24px] italic',
-        'body-medium-semibold' => 'text-[16px] leading-[24px] semibold',
+        'body-medium-semibold' => 'text-[16px] leading-[24px] font-semibold',
         'body-small-regular' => 'text-[14px] leading-[22px]',
         'body-small-bold' => 'text-[14px] leading-[22px] font-bold',
         'body-small-semibold' => 'text-[14px] leading-[22px] font-semibold',
