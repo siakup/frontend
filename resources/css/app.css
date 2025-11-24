@@ -87,10 +87,34 @@
    --color-disable-white: #F5F5F5;
    --color-disable-yellow: #FFFBEB;
    --color-disable-grey: #E8E8E8;
+
+   /* shadow */
+   --shadow-high: 0 16 36 0 rgba(60, 65, 82, 0.1);
+   --shadow-high-inverse: 0 -16 36 0 rgba(60, 65, 82, 0.1);
+   --shadow-medium: 0 8 24 0 rgba(60, 65, 82, 0.1);
+   --shadow-medium-inverse: 0 -8 24 0 rgba(60, 65, 82, 0.1);
+   --shadow-low: 0 4 8 0 rgba(60, 65, 82, 0.1);
+   --shadow-low-inverse: 0 -4 8 0 rgba(60, 65, 82, 0.1);
+
+   /* radius */
+   --radius-sm: 8px;
+   --radius-md: 12px;
+   --radius-lg: 20px;
+
+   /* spacing configuration */
+   --spacing: 4px;
 }
 
 @layer utilities {
 
+  .shadow-high { box-shadow: 0px 16px 36px 0px rgba(60, 65, 82, 0.1); }
+  .shadow-high-inverse { box-shadow: 0px -16px 36px 0px rgba(60, 65, 82, 0.1); }
+  .shadow-medium { box-shadow: 0px 8px 24px 0px rgba(60, 65, 82, 0.1); }
+  .shadow-medium-inverse { box-shadow: 0px -8px 24px 0px rgba(60, 65, 82, 0.1); }
+  .shadow-low { box-shadow: 0px 4px 8px 0px rgba(60, 65, 82, 0.1); }
+  .shadow-low-inverse { box-shadow: 0px -4px 8px 0px rgba(60, 65, 82, 0.1); }
+
+  /* typography text */
   .h1 { @apply text-6xl leading-16 font-bold; }
   .h2 { @apply text-5xl leading-13.5 font-bold; }
   .h3 { @apply text-4xl leading-11.5 font-bold; }
@@ -102,12 +126,6 @@
   .body-small { @apply text-sm leading-5.5; }
   .caption { @apply text-xs leading-5; }
   .pixie { @apply text-[0.625rem] leading-3; }
-
-  .content-wrapper { @apply px-5 flex flex-col gap-5; }
-  .content { @apply p-5 bg-white border border-gray-400; }
-  .wide { @apply max-w-screen-xl px-4; }
-  .narrow { @apply max-w-lg px-4; }
-  .content-grey { @apply p-5 bg-gray-400 rounded-3xl min-h-17; }
 
   @media(min-width: 1280px) {
     .h1 { @apply text-6xl leading-16 font-bold; }
@@ -123,13 +141,14 @@
     .pixie { @apply text-[0.625rem] leading-3; }
 
     .content-wrapper { @apply px-5 flex flex-col gap-5; }
-    .content { @apply p-4 bg-white border border-gray-400; }
+    .content { @apply p-4 bg-white border border-gray-400 rounded-md; }
     .wide { @apply max-w-screen-xl px-4; }
     .narrow { @apply max-w-lg px-4; }
-    .content-grey { @apply p-4 bg-gray-400 rounded-3xl min-h-17; }
+    .content-grey { @apply p-4 bg-gray-400 rounded-md min-h-17; }
   }
 }
 
+/* scrollbar */
 .scroll-thin {
   scrollbar-width: thin;
   scrollbar-color: #D9D9D9 transparent;

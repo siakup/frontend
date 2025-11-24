@@ -7,7 +7,8 @@
           <x-menu.item
             :label="'Beranda'"
             :haveIcon="true"
-            :icon="asset('assets/icons/home/black-24.svg')"
+            :iconInactive="asset('assets/icons/home/black-24.svg')"
+            :iconActive="asset('assets/icons/home/red-24.svg')"
             :routeName="'home'"
             :routeQuery="'home'"
             :variant="'parent'"
@@ -39,7 +40,8 @@
           <x-menu.item
             :label="'Konfigurasi'"
             :haveIcon="true"
-            :icon="asset('assets/icons/admin/black-24.svg')"
+            :iconInactive="asset('assets/icons/admin/black-24.svg')"
+            :iconActive="asset('assets/icons/admin/red-24.svg')"
             :routeName="''"
             :variant="'parent'"
             :routeChild="['users*', 'roles*', 'academics*']"
@@ -71,7 +73,8 @@
           <x-menu.item
             :label="'Kalender Akademik'"
             :haveIcon="true"
-            :icon="asset('assets/icons/admin/black-24.svg')"
+            :iconInactive="asset('assets/icons/admin/black-24.svg')"
+            :iconActive="asset('assets/icons/admin/red-24.svg')"
             :routeName="'calendar.index'"
             :routeQuery="'calendar*'"
             :variant="'parent'"
@@ -79,7 +82,8 @@
           <x-menu.item
             :label="'Kurikulum'"
             :haveIcon="true"
-            :icon="asset('assets/icons/curriculum/outline-black-24.svg')"
+            :iconInactive="asset('assets/icons/curriculum/outline-black-24.svg')"
+            :iconActive="asset('assets/icons/curriculum/outline-red-24.svg')"
             :routeName="'curriculum.list'"
             :routeQuery="'curriculums*'"
             :variant="'parent'"
@@ -87,7 +91,8 @@
           <x-menu.item
             :label="'Persiapan Perkuliahan'"
             :haveIcon="true"
-            :icon="asset('assets/icons/admin/black-24.svg')"
+            :iconInactive="asset('assets/icons/admin/black-24.svg')"
+            :iconActive="asset('assets/icons/admin/red-24.svg')"
             :routeName="''"
             :variant="'parent'"
             :routeChild="['lecture-preparation*']"
@@ -119,7 +124,8 @@
           <x-menu.item
             :label="'Mata Kuliah'"
             :haveIcon="true"
-            :icon="asset('assets/icons/course/outline-black-24.svg')"
+            :iconInactive="asset('assets/icons/course/outline-black-24.svg')"
+            :iconActive="asset('assets/icons/course/outline-red-24.svg')"
             :routeName="'study.index'"
             :routeQuery="'courses*'"
             :variant="'parent'"
@@ -135,7 +141,8 @@
           <x-menu.item
             :label="'Kelompok Perwalian'"
             :haveIcon="true"
-            :icon="asset('assets/icons/advisory/black-24.svg')"
+            :iconInactive="asset('assets/icons/advisory/black-24.svg')"
+            :iconActive="asset('assets/icons/advisory/red-24.svg')"
             :routeName="'tutelage-group.list-student'"
             :routeQuery="'tutelage-group*'"
             :variant="'parent'"
@@ -143,7 +150,8 @@
           <x-menu.item
             :label="'RPS (Rencana Pembelajaran Semester)'"
             :haveIcon="true"
-            :icon="asset('assets/base/icon-kurikulum.svg')"
+            :iconInactive="asset('assets/base/icon-kurikulum.svg')"
+            :iconActive="asset('assets/base/icon-kurikulum.svg')"
             :routeName="'rps.index'"
             :routeQuery="'rps*'"
             :variant="'parent'"
