@@ -25,4 +25,12 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dialog');
     }
+    
+    public function typography(Request $request) {
+      return view('components-documentation.typography');
+    }
+
+    public function button(Request $request) {
+      return view('components-documentation.button');
+    }
 }

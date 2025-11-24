@@ -8,4 +8,6 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/tooltip', [ComponentsDocumentationController::class, 'tooltip'])->name('components-documentation.tooltip');
     Route::get('/badge', [ComponentsDocumentationController::class, 'badge'])->name('components-documentation.badge');
     Route::get('/dialog', [ComponentsDocumentationController::class, 'dialog'])->name('components-documentation.dialog');
+    Route::get('/typography', [ComponentsDocumentationController::class, 'typography'])->name('components-documentation.typography');
+    Route::get('/button', [ComponentsDocumentationController::class, 'button'])->name('components-documentation.button');
 });

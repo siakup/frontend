@@ -16,6 +16,13 @@ class Menu
 
                 ],
             ],
+            'component-documentation' => [
+              'name' => 'Component Development Documentation Page',
+              'url' => '/components-documentation/*',
+              'parent' => null,
+              'isExpandable' => false,
+              'children' => []
+            ],
             'konfigurasi' => [
                 'name' => 'Konfigurasi',
                 'url' => '#',
