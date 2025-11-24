@@ -108,6 +108,10 @@
    --spacing: 4px;
 }
 
+* {
+  font-family: 'Poppins';
+}
+
 @layer utilities {
 
   .shadow-high { box-shadow: 0px 16px 36px 0px rgba(60, 65, 82, 0.1); }

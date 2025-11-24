@@ -44,7 +44,7 @@
     ];
 
     $class = collect([
-        'flex items-center gap-1 rounded-lg cursor-pointer w-max select-none whitespace-nowrap',
+        'flex items-center gap-1 rounded-sm cursor-pointer w-max select-none whitespace-nowrap',
         'disabled:cursor-not-allowed disabled:text-gray-600',
         $variants[$variant] ?? '',
         $sizes[$size]['padding'] ?? '',
@@ -54,7 +54,7 @@
 @if ($fileInput)
     <label class="{{ $class }}">
         @if ($icon && $iconPosition === 'left')
-            <x-icon name="{{ $icon }}" class="{{ $iconVariants[$variant] }}" />
+            <x-icon :name="$icon" class="{{ $iconVariants[$variant] }}" />
         @endif
 
         @if ($label || $slot->isNotEmpty())
@@ -64,7 +64,7 @@
         @endif
 
         @if ($icon && $iconPosition === 'right')
-            <x-icon name="{{ $icon }}" class="{{ $iconVariants[$variant] }}" />
+            <x-icon :name="$icon" class="{{ $iconVariants[$variant] }}" />
         @endif
 
         <input type="file" class="hidden" {{ $attributes }}>
@@ -76,7 +76,7 @@
         {{ $attributes->merge(['class' => $class]) }}>
 
         @if ($icon && $iconPosition === 'left')
-            <x-icon name="{{ $icon }}" class="{{ $iconVariants[$variant] }}" />
+            <x-icon :name="$icon" class="{{ $iconVariants[$variant] }}" />
         @endif
 
         @if ($label || $slot->isNotEmpty())
@@ -86,7 +86,7 @@
         @endif
 
         @if ($icon && $iconPosition === 'right')
-            <x-icon name="{{ $icon }}" class="{{ $iconVariants[$variant] }}" />
+            <x-icon :name="$icon" class="{{ $iconVariants[$variant] }}" />
         @endif
     </button>
 @endif
