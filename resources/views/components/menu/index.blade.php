@@ -1,8 +1,8 @@
 <div
   x-bind:class="$store.mainLayout.isOpen ? 'col-span-3 col-start-1' : 'hidden'"
-  class="w-full min-h-[calc(100vh-9rem)] h-full bg-white z-1000 flex flex-col border-r-[1px] border-r-[#d9d9d9]"
+  class="w-full min-h-[calc(100vh-9rem)] h-full bg-white z-1000 flex flex-col border-r border-r-gray-400"
 >
-    <nav class="flex-1 overflow-y-auto h-[calc(100vh-169px-56px)] scroll-thin">
+    <nav class="flex-1 overflow-y-auto h-full scroll-thin">
         <x-menu.container :variant="'main'">
           <x-menu.item
             :label="'Beranda'"
@@ -216,7 +216,7 @@
     </nav>
 
     <div class="shrink-0">
-        <div class="text-[#262626] text-xs leading-5 py-4 px-6">
+        <div class="text-gray-800 text-xs leading-5 py-4 px-6">
             <span>Copyright © 2025 Universitas Pertamina.</span>
             <span>All Rights Reserved.</span>
         </div>

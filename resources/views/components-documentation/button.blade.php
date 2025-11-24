@@ -65,21 +65,21 @@
     <x-container :variant="'content-wrapper'" class="!flex-row gap-2">
       <x-container :variant="'content-wrapper'" class="gap-2 !w-max !px-0">
         <x-typography :variant="'body-small-bold'">Button Primary</x-typography>
-        <x-button :size="'sm'" :icon="asset('assets/icons/arrow-back/black-12.svg')">Button Small Primary Icon Left</x-button>
-        <x-button :size="'sm'" :icon="asset('assets/icons/arrow-back/black-12.svg')" disabled>Button Small Primary Icon Left</x-button>
-        <x-button :size="'sm'" :icon="asset('assets/icons/arrow-right/black-12.svg')" :iconPosition="'right'">Button Small Primary Icon Right</x-button>
+        <x-button :size="'sm'" :icon="'arrow-back/black-12'">Button Small Primary Icon Left</x-button>
+        <x-button :size="'sm'" :icon="'arrow-back/black-12'" disabled>Button Small Primary Icon Left</x-button>
+        <x-button :size="'sm'" :icon="'arrow-right/black-12'" :iconPosition="'right'">Button Small Primary Icon Right</x-button>
       </x-container>
       <x-container :variant="'content-wrapper'" class="gap-2 !w-max !px-0">
         <x-typography :variant="'body-small-bold'">Button Secondary</x-typography>
-        <x-button :size="'sm'" :variant="'secondary'" :icon="asset('assets/icons/arrow-back/red-12.svg')">Button Small Secondary Icon Left</x-button>
-        <x-button :size="'sm'" :variant="'secondary'" :icon="asset('assets/icons/arrow-back/red-12.svg')" disabled>Button Small Secondary Icon Left</x-button>
-        <x-button :size="'sm'" :variant="'secondary'" :icon="asset('assets/icons/arrow-right/red-12.svg')" :iconPosition="'right'">Button Small Secondary Icon Right</x-button>
+        <x-button :size="'sm'" :variant="'secondary'" :icon="'arrow-back/red-12'">Button Small Secondary Icon Left</x-button>
+        <x-button :size="'sm'" :variant="'secondary'" :icon="'arrow-back/red-12'" disabled>Button Small Secondary Icon Left</x-button>
+        <x-button :size="'sm'" :variant="'secondary'" :icon="'arrow-right/red-12'" :iconPosition="'right'">Button Small Secondary Icon Right</x-button>
       </x-container>
       <x-container :variant="'content-wrapper'" class="gap-2 !w-max !px-0">
         <x-typography :variant="'body-small-bold'">Button Tertiary</x-typography>
-        <x-button :size="'sm'" :variant="'tertiary'" :icon="asset('assets/icons/arrow-back/red-12.svg')">Button Small Tertiary Icon Left</x-button>
-        <x-button :size="'sm'" :variant="'tertiary'" :icon="asset('assets/icons/arrow-back/red-12.svg')" disabled>Button Small Tertiary Icon Left</x-button>
-        <x-button :size="'sm'" :variant="'tertiary'" :icon="asset('assets/icons/arrow-right/red-12.svg')" :iconPosition="'right'">Button Small Tertiary Icon Right</x-button>
+        <x-button :size="'sm'" :variant="'tertiary'" :icon="'arrow-back/red-12'">Button Small Tertiary Icon Left</x-button>
+        <x-button :size="'sm'" :variant="'tertiary'" :icon="'arrow-back/red-12'" disabled>Button Small Tertiary Icon Left</x-button>
+        <x-button :size="'sm'" :variant="'tertiary'" :icon="'arrow-right/red-12'" :iconPosition="'right'">Button Small Tertiary Icon Right</x-button>
       </x-container>
     </x-container>
   </x-container>
@@ -88,25 +88,25 @@
     <x-container :variant="'content-wrapper'" class="!flex-row gap-2">
       <x-container :variant="'content-wrapper'" class="gap-2 !w-max !px-0">
         <x-typography :variant="'body-small-bold'">Button Primary</x-typography>
-        <x-button :size="'sm'" :icon="asset('assets/icons/arrow-back/black-12.svg')"></x-button>
+        <x-button :size="'sm'" :icon="'arrow-back/black-12'"></x-button>
       </x-container>
       <x-container :variant="'content-wrapper'" class="gap-2 !w-max !px-0">
         <x-typography :variant="'body-small-bold'">Button Secondary</x-typography>
-        <x-button :size="'sm'" :variant="'secondary'" :icon="asset('assets/icons/arrow-back/red-12.svg')"></x-button>
+        <x-button :size="'sm'" :variant="'secondary'" :icon="'arrow-back/red-12'"></x-button>
       </x-container>
       <x-container :variant="'content-wrapper'" class="gap-2 !w-max !px-0">
         <x-typography :variant="'body-small-bold'">Button Tertiary</x-typography>
-        <x-button :size="'sm'" :variant="'tertiary'" :icon="asset('assets/icons/arrow-back/red-12.svg')"></x-button>
+        <x-button :size="'sm'" :variant="'tertiary'" :icon="'arrow-back/red-12'"></x-button>
       </x-container>
     </x-container>
   </x-container>
   <x-container :variant="'content-wrapper'">
     <x-typography :variant="'body-medium-bold'">Text Link</x-typography>
-    <x-button :size="'sm'" :variant="'text-link'" :icon="asset('assets/icons/arrow-back/red-12.svg')">Back</x-button>
-    <x-button :size="'md'" :variant="'text-link'" :icon="asset('assets/icons/arrow-back/red-12.svg')">Back</x-button>
-    <x-button :size="'lg'" :variant="'text-link'" :icon="asset('assets/icons/arrow-back/red-12.svg')">Back</x-button>
-    <x-button :size="'lg'" :variant="'text-link'" :icon="asset('assets/icons/arrow-back/red-12.svg')" disabled>Back</x-button>
-    <x-button :size="'sm'" :variant="'text-link'" :icon="asset('assets/icons/arrow-back/red-12.svg')"></x-button>
+    <x-button :size="'sm'" :variant="'text-link'" :icon="'arrow-back/red-12'">Back</x-button>
+    <x-button :size="'md'" :variant="'text-link'" :icon="'arrow-back/red-12'">Back</x-button>
+    <x-button :size="'lg'" :variant="'text-link'" :icon="'arrow-back/red-12'">Back</x-button>
+    <x-button :size="'lg'" :variant="'text-link'" :icon="'arrow-back/red-12'" disabled>Back</x-button>
+    <x-button :size="'sm'" :variant="'text-link'" :icon="'arrow-back/red-12'"></x-button>
   </x-container>
 </x-container>
 

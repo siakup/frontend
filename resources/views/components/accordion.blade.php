@@ -7,8 +7,8 @@
 @php
   $variants = [
     'red-gradient' => [
-      'head' => 'bg-linear-to-r from-white to-[#FFECED]',
-      'text' => 'text-[#E62129]',
+      'head' => 'bg-linear-to-r from-white to-red-100',
+      'text' => 'text-red-500',
       'icon' => asset('assets/icons/arrow-down/red-16.svg'),
       'closeRotateIcon' => '',
       'openRotateIcon' => 'rotate-180'
