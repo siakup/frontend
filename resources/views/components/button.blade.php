@@ -13,20 +13,20 @@
 @php
     $variants = [
         'primary' => 'text-white bg-red-500 group/primary
-          hover:bg-red-600
+          not-disabled:hover:bg-red-600
           active:bg-red-700 
           disabled:bg-gray-300
           transition-all duration-200 ease-in-out
-          hover:scale-[1.02] active:scale-[0.97] hover:shadow-md active:shadow-sm',
+          not-disabled:hover:scale-[1.02] active:scale-[0.97] not-disabled:hover:shadow-md active:shadow-sm',
         'secondary' => 'text-red-500 bg-white border border-red-500 group/secondary
-          hover:bg-red-50 active:bg-red-100 disabled:bg-white disabled:border-gray-300
+          not-disabled:hover:bg-red-50 active:bg-red-100 disabled:bg-white disabled:border-gray-300
           transition-all duration-200 ease-in-out
-          hover:scale-[1.02] active:scale-[0.97]
-          hover:shadow-sm active:shadow-none',
+          not-disabled:hover:scale-[1.02] active:scale-[0.97]
+          not-disabled:hover:shadow-sm active:shadow-none',
         'tertiary' => 'text-red-500 bg-transparent group/tertiary
-          hover:bg-red-50 active:bg-red-100 disabled:text-gray-400
+          not-disabled:hover:bg-red-50 active:bg-red-100 disabled:text-gray-400
           transition-all duration-200 ease-in-out
-          hover:scale-[1.01] active:scale-[0.98]',
+          not-disabled:hover:scale-[1.01] active:scale-[0.98]',
         'text-link' => 'text-red-500 bg-transparent group/textlink',
     ];
 
