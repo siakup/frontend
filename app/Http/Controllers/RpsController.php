@@ -599,6 +599,26 @@ class RpsController extends Controller
         return view('rps.rencana-evaluasi-mahasiswa.edit', get_defined_vars());
     }
 
+    public function showSubmission()
+    {
+        $dosen = [
+            'nama' => 'Catia Angli Curie, MS.',
+            'nip' => '116071',
+        ];
+
+        $kaprodi = [
+            'nama' => 'Eduardus Budi Nursanto, PhD.',
+            'nip' => '116116',
+        ];
+
+        $dekan = [
+            'nama' => 'Khusnum Widiyanti, PhD.',
+            'nip' => '116053',
+        ];
+
+        return view('rps.submission.index', get_defined_vars());
+    }
+
     /**
      * Show the form for creating a new resource.
      */
