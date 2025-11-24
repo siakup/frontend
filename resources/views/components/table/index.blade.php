@@ -11,14 +11,14 @@
   x-data="{
     variants: {
       default: {
-        divClass: ({{json_encode($isRoundedTop)}} ? 'rounded-t-3xl ' : '')
-          +({{json_encode($isRoundedBottom)}} ? 'rounded-b-3xl ' : '')
+        divClass: ({{json_encode($isRoundedTop)}} ? 'rounded-t-lg ' : '')
+          +({{json_encode($isRoundedBottom)}} ? 'rounded-b-lg ' : '')
           +({{$isBordered}} ? 'border border-gray-400 ' : ''),
         tableClass:'border-separate border-spacing-0'
       },
       old: {
-        divClass: ({{json_encode($isRoundedTop)}} ? 'rounded-t-xl ' : '')
-          +({{json_encode($isRoundedBottom)}} ? 'rounded-b-xl ' : '')
+        divClass: ({{json_encode($isRoundedTop)}} ? 'rounded-t-md ' : '')
+          +({{json_encode($isRoundedBottom)}} ? 'rounded-b-md ' : '')
           +({{json_encode($isBordered)}} ? 'border border-solid border-gray-400 ' : ''),
         tableClass: 'border-collapse'
       },
