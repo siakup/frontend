@@ -5,15 +5,11 @@
 
 @php
  $variants = [
-  'main' => 'p-0 m-0 list-none w-full',
-  'submenu' => 'p-0 m-0 bg-[#F8F9FA] '.(
-    !empty($routeChild) && !empty(array_filter($routeChild, fn($route) => Request::is($route)))
-      ? 'block' 
-      : 'hidden'
-  )
+  'main' => 'list-none w-full',
+  'submenu' => 'bg-[#F8F9FA] '
  ]   
 @endphp
 
-<ul class="{{ $variants[$variant] }}">
+<ul class="p-0 m-0 {{ $variants[$variant] }}">
   {{ $slot }}
 </ul>

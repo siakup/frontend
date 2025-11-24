@@ -7,8 +7,8 @@
 @php
   $variants = [
     'default' => [
-        'px-6 py-[22px] text-[#262626] border-b border-r border-[#d9d9d9] last:border-r-0',
-        'bg-[#d9d9d9]' => ! str_contains($attributes->get('class', ''), 'bg-'),
+        'px-6 py-[22px] text-gray-800 border-b border-r border-gray-400 last:border-r-0',
+        'bg-gray-400' => ! str_contains($attributes->get('class', ''), 'bg-'),
     ],
     'old' => ["py-4 px-2"],
   ]
