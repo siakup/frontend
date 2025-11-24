@@ -3,26 +3,28 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('javascript')
-  <script src="{{ asset('js/component-helpers/api.js')}}"></script>
-  <script src="{{ asset('js/component-helpers/formatter.js')}}"></script>
-  <script type="module">
-    import User from "{{ asset('js/controllers/user.js') }}";
-    document.addEventListener('alpine:init', () => {
-      Alpine.store('listPage', { 
-        datas: @js($response->data),
-        paginationData: @js($pagination),
-        search: @js($search),
-        sort: @js($sort)
-      });
+    <script src="{{ asset('js/component-helpers/api.js') }}"></script>
+    <script src="{{ asset('js/component-helpers/formatter.js') }}"></script>
+    <script type="module">
+        import User from "{{ asset('js/controllers/user.js') }}";
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('listPage', {
+                datas: @js($response->data),
+                paginationData: @js($pagination),
+                search: @js($search),
+                sort: @js($sort)
+            });
 
-      Alpine.data('listUser', User.listUser);
-    });
-</script>
+            Alpine.data('listUser', User.listUser);
+        });
+    </script>
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'" x-data="listUser({{ json_encode(route('users.index')) }})">
-    <x-typography :variant="'body-large-semibold'">Manajemen Pengguna</x-typography>
+    <x-container :variant="'content-wrapper'" x-data="listUser({{ json_encode(route('users.index')) }})">
+        <x-typography :variant="'body-large-semibold'">
+            Manajemen Pengguna
+        </x-typography>
 
     <div class="flex items-center justify-end w-full">
       <x-button :variant="'primary'" :size="'lg'" :href="route('users.create')">Tambah Pengguna Baru</x-button>
@@ -108,42 +110,31 @@
                             '#userDetailModalContainer', 
                             '#modalDetailPengguna', 
                             { nomor_induk: user.nomor_induk }
-                          )"
-                      >Lihat</x-button.base>
-                      <x-button
-                          :icon="asset('assets/icons/edit/red-16, property=default.svg')"
-                          :variant="'tertiary'"
-                          :size="'sm'"
-                          x-on:click="window.location.href='{{ route('users.edit', ['nomor_induk' => ':nomor_induk']) }}'.replace(':nomor_induk', user.nomor_induk)"
-                      >Ubah</x-button.base>
-                    </x-container>
-                </x-table.cell>
-            </x-table.row>
-          </template>
-        </template>
-      </x-table.body>
-    </x-table.index>
-    <template x-if="$store.listPage.datas && $store.listPage.datas.length > 0">
-      <x-pagination 
-        x-data="{ 
-          pagination: null,
-          requestData: null
-        }"
-        x-effect="(() => {
+                          )">Lihat</x-button.base>
+                                        <x-button :icon="asset('assets/icons/edit/red-16, property=default.svg')" :variant="'tertiary'" :size="'sm'"
+                                            x-on:click="window.location.href='{{ route('users.edit', ['nomor_induk' => ':nomor_induk']) }}'.replace(':nomor_induk', user.nomor_induk)">Ubah</x-button.base>
+                                </x-container>
+                            </x-table.cell>
+                        </x-table.row>
+                    </template>
+                </template>
+            </x-table.body>
+        </x-table.index>
+        <template x-if="$store.listPage.datas && $store.listPage.datas.length > 0">
+            <x-pagination x-data="{
+                pagination: null,
+                requestData: null
+            }"
+                x-effect="(() => {
           pagination = $store.listPage.paginationData;
           requestData = {
             sort: $store.listPage.sort,
             search: $store.listPage.search
           }
         })"
-        :storeName="'listPage'"
-        :storeKey="'datas'"
-        :requestRoute="route('users.index')"
-        :responseKeyData="'users'"
-        :defaultPerPageOptions="[5, 10, 15, 20, 25]"
-      />
-    </template>
-  </x-container>
-  <div id="userDetailModalContainer"></div>
-  @include('partials.success-modal')
+                :storeName="'listPage'" :storeKey="'datas'" :requestRoute="route('users.index')" :responseKeyData="'users'" :defaultPerPageOptions="[5, 10, 15, 20, 25]" />
+        </template>
+    </x-container>
+    <div id="userDetailModalContainer"></div>
+    @include('partials.success-modal')
 @endsection

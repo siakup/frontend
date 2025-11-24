@@ -14,8 +14,8 @@
 <body>
     <h1 class='text-crayola text-6xl font-bold'>Style Guide ni boss</h1>
     <h1 class="text-crayola-500 text-4xl font-bold">Crayola</h1>
-    <h1 class="text-greenPear-700 text-4xl font-bold">Green Pear</h1>
-    <h1 class="text-honoluluBlue-500 text-4xl font-bold">Honolulu Blue</h1>
+    <h1 class="text-green-700 text-4xl font-bold">Green Pear</h1>
+    <h1 class="text-blue-500 text-4xl font-bold">Honolulu Blue</h1>
 
     @fluxScripts
 </body>

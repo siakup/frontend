@@ -1,77 +1,92 @@
 @props([
-  'type' => 'button',
-  'label' => '',
-  'icon' => null,
-  'iconPosition' => 'left',
-  'wireClick' => null,
-  'href' => null,
-  'size' => 'lg',
-  'variant' => 'primary',
-  'isUsedWithLabelTagForFileInput' => false,
+    'type' => 'button',
+    'label' => null,
+    'icon' => null,
+    'iconPosition' => 'left',
+    'wireClick' => null,
+    'href' => null,
+    'size' => 'lg',
+    'variant' => 'primary',
+    'fileInput' => false,
 ])
 
 @php
-  $variantsModelling = [
-    'primary' => 'text-white bg-red-500 hover:bg-red-600 active:bg-red-700 disabled:bg-gray-300 disabled:hover:bg-gray-300 group/primary ',
-    'secondary' => 'text-red-500 bg-white hover:bg-red-50 disabled:hover:bg-white active:bg-red-100 border border-red-500 disabled:border-gray-50 group/secondary ',
-    'tertiary' => 'text-red-500 bg-transparent hover:bg-red-50 active:bg-red-100 disabled:hover:bg-transparent group/tertiary ',
-    'text-link' => 'text-red-500 bg-transparent group/textlink '
-  ];
+    $variants = [
+        'primary' => 'text-white bg-red-500 
+          hover:bg-red-600
+          active:bg-red-700 
+          disabled:bg-gray-300
+          transition-all duration-200 ease-in-out
+          hover:scale-[1.02] active:scale-[0.97] hover:shadow-md active:shadow-sm',
+        'secondary' => 'text-red-500 bg-white border border-red-500
+          hover:bg-red-50 active:bg-red-100 disabled:bg-white disabled:border-gray-300
+          transition-all duration-200 ease-in-out
+          hover:scale-[1.02] active:scale-[0.97]
+          hover:shadow-sm active:shadow-none',
+        'tertiary' => 'text-red-500 bg-transparent
+          hover:bg-red-50 active:bg-red-100 disabled:text-gray-400
+          transition-all duration-200 ease-in-out
+          hover:scale-[1.01] active:scale-[0.98]',
+        'text-link' => 'text-red-500 bg-transparent group/textlink',
+    ];
 
-  $variantSizingClass = [
-    'md' => ($slot->isNotEmpty() || $label !== '') ? "px-3 py-1 " : 'p-1.25 ',
-    'lg' => ($slot->isNotEmpty() || $label !== '') ? "px-4 py-2 " : 'p-2.5 ',
-    'sm' => ($slot->isNotEmpty() || $label !== '') ? "px-3 py-1 " : 'p-1.25 ',
-  ];
-  
-  $variantsSizing = [
-    'md' => 'body-small-regular',
-    'lg' => 'body-medium-regular',
-    'sm' => 'caption-regular'
-  ];
+    $sizes = [
+        'lg' => ['padding' => 'px-4 py-2 gap-1 h-10', 'text' => 'body-medium-regular'],
+        'md' => ['padding' => 'px-3 py-2 gap-1 h-7.5', 'text' => 'body-small-regular'],
+        'sm' => ['padding' => 'px-2 py-1', 'text' => 'caption-regular'],
+    ];
 
-  $variantsIcon = [
-    'primary' => '[filter:brightness(0)_invert(1)] group-disabled/primary:[filter:brightness(0)_invert(54%)]',
-    'secondary' => 'group-disabled/secondary:[filter:brightness(0)_invert(54%)]',
-    'tertiary' => 'group-disabled/tertiary:[filter:brightness(0)_invert(54%)]',
-    'text-link' => 'group-disabled/textlink:[filter:brightness(0)_invert(54%)]'
-];
+    $iconVariants = [
+        'primary' => 'filter brightness-0 invert',
+        'secondary' => 'group-disabled/secondary:[filter:brightness(0)_invert(54%)]',
+        'tertiary' => 'group-disabled/tertiary:[filter:brightness(0)_invert(54%)]',
+        'text-link' => 'group-disabled/textlink:[filter:brightness(0)_invert(54%)]',
+    ];
 
-  $variantsLabel = [];
-  $class = $variantsModelling[$variant].$variantSizingClass[$size]."flex w-max justify-center items-center gap-1 rounded-sm cursor-pointer disabled:text-gray-600 disabled:cursor-not-allowed";
+    $class = collect([
+        'flex items-center gap-1 rounded-lg cursor-pointer w-max select-none whitespace-nowrap',
+        'disabled:cursor-not-allowed disabled:text-gray-600',
+        $variants[$variant] ?? '',
+        $sizes[$size]['padding'] ?? '',
+    ])->join(' ');
 @endphp
 
-@if($isUsedWithLabelTagForFileInput)
-  <label class="{{$class}}">
-      {{ $slot }}
-      <input 
-        type="file"
-        class="hidden"
-        {{ $attributes->except('class')->merge() }}
-      >
-  </label>
+@if ($fileInput)
+    <label class="{{ $class }}">
+        @if ($icon && $iconPosition === 'left')
+            <x-icon name="{{ $icon }}" class="{{ $iconVariants[$variant] }}" />
+        @endif
+
+        @if ($label || $slot->isNotEmpty())
+            <x-typography variant="{{ $sizes[$size]['text'] }}">
+                {{ $label ?? $slot }}
+            </x-typography>
+        @endif
+
+        @if ($icon && $iconPosition === 'right')
+            <x-icon name="{{ $icon }}" class="{{ $iconVariants[$variant] }}" />
+        @endif
+
+        <input type="file" class="hidden" {{ $attributes }}>
+    </label>
 @else
-  <button 
-    type="{{ $type }}"
-    @if ($wireClick) wire:click="{{ $wireClick }}" @endif 
-    @if ($href) onclick="window.location.href='{{ $href }}'" @endif
-    {{ $attributes->merge([
-      'class' => $class
-    ]) }}
-  >
-    @if ($icon && $iconPosition === 'left')
-        <x-icon :iconUrl="$icon" class="w-5 h-5 {{$variantsIcon[$variant]}}" />
-    @endif
+    <button type="{{ $type }}"
+        @if ($href) onclick="window.location.href='{{ $href }}'" @endif
+        @if ($wireClick) wire:click="{{ $wireClick }}" @endif
+        {{ $attributes->merge(['class' => $class]) }}>
 
-    @if($slot->isNotEmpty() || $label !== '')
-      <x-typography :variant="$variantsSizing[$size]">
-        {{ $slot->isNotEmpty() ? $slot : $label }}
-      </x-typography>
-    @endif
+        @if ($icon && $iconPosition === 'left')
+            <x-icon name="{{ $icon }}" class="{{ $iconVariants[$variant] }}" />
+        @endif
 
-    @if ($icon && $iconPosition === 'right')
-        <x-icon :iconUrl="$icon" class="w-5 h-5 {{$variantsIcon[$variant]}}" />
-    @endif
+        @if ($label || $slot->isNotEmpty())
+            <x-typography variant="{{ $sizes[$size]['text'] }}">
+                {{ $label ?? $slot }}
+            </x-typography>
+        @endif
 
-  </button>
+        @if ($icon && $iconPosition === 'right')
+            <x-icon name="{{ $icon }}" class="{{ $iconVariants[$variant] }}" />
+        @endif
+    </button>
 @endif

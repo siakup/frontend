@@ -6,7 +6,7 @@
 ])
 
 @php
-    $base = 'inline-flex flex items-center justify-center';
+    $base = 'inline-flex flex items-center justify-center w-max';
 
     $borders = [
         'default' => 'rounded-xs',
@@ -16,7 +16,7 @@
     $sizes = [
         'xl' => 'text-base min-w-25 min-h-8 py-1 px-3',
         'lg' => 'text-xs min-w-20 min-h-6 py-1 px-3',
-        'md' => 'text-[10px] min-w-25 min-h-4 py-1 px-4'
+        'md' => 'text-[10px] min-w-15 min-h-4 py-1 px-4'
     ];
 
     $variants = [
