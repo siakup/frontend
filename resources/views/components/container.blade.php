@@ -14,6 +14,7 @@
         'wide' => 'max-w-screen-xl px-4', // layar penuh
         'narrow' => 'max-w-lg px-4', // konten kecil
         'content-grey' => 'p-4 sm:p-5 bg-[#D9D9D9] rounded-3xl min-h-[68px]', // konten abu-abu
+        'content-under-navbar' => 'flex flex-col gap-5 p-5 items-stretch mx-4 border border-gray-400 border-t-red-200 bg-white rounded-b-xl overflow-visible relative z-[1]'
     ];
 
     $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];
