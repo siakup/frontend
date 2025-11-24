@@ -12,9 +12,10 @@
 
 @php
   $variantsModelling = [
-    'primary' => 'text-white bg-[#E62129] hover:bg-[#B5171C] active:bg-[#841418] disabled:bg-[#E8E8E8] ',
-    'secondary' => 'text-[#E62129] bg-white hover:bg-[#FBDADB] active:bg-[#F7B6B8] disabled:bg-white border border-[#E62129] disabled:border-[#E8E8E8] ',
-    'tertiary' => 'text-[#E62129] bg-transparent hover:bg-[#FBDADB] active:bg-[#F7B6B8] disabled:bg-transparent '
+    'primary' => 'text-white bg-red-500 hover:bg-red-600 active:bg-red-700 disabled:bg-gray-300 disabled:hover:bg-gray-300 group/primary ',
+    'secondary' => 'text-red-500 bg-white hover:bg-red-50 disabled:hover:bg-white active:bg-red-100 border border-red-500 disabled:border-gray-50 group/secondary ',
+    'tertiary' => 'text-red-500 bg-transparent hover:bg-red-50 active:bg-red-100 disabled:hover:bg-transparent group/tertiary ',
+    'text-link' => 'text-red-500 bg-transparent group/textlink '
   ];
 
   $variantSizingClass = [
@@ -30,13 +31,14 @@
   ];
 
   $variantsIcon = [
-    'primary' => '[filter:brightness(0)_invert(1)]',
-    'secondary' => '',
-    'tertiary' => ''
+    'primary' => '[filter:brightness(0)_invert(1)] group-disabled/primary:[filter:brightness(0)_invert(54%)]',
+    'secondary' => 'group-disabled/secondary:[filter:brightness(0)_invert(54%)]',
+    'tertiary' => 'group-disabled/tertiary:[filter:brightness(0)_invert(54%)]',
+    'text-link' => 'group-disabled/textlink:[filter:brightness(0)_invert(54%)]'
 ];
 
   $variantsLabel = [];
-  $class = "flex w-max justify-center items-center gap-1 rounded-lg cursor-pointer disabled:text-[#8C8C8C] disabled:cursor-not-allowed ".$variantsModelling[$variant].$variantSizingClass[$size];
+  $class = $variantsModelling[$variant].$variantSizingClass[$size]."flex w-max justify-center items-center gap-1 rounded-sm cursor-pointer disabled:text-gray-600 disabled:cursor-not-allowed";
 @endphp
 
 @if($isUsedWithLabelTagForFileInput)

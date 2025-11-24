@@ -24,8 +24,8 @@
   <x-container :variant="'content-wrapper'" x-data="listUser({{ json_encode(route('users.index')) }})">
     <x-typography :variant="'body-large-semibold'">Manajemen Pengguna</x-typography>
 
-    <div class="flex items-center justify-end w-full px-4">
-      <x-button :variant="'primary'" :size="'lg'" :href="route('users.create')">Tambah Pengguna Baru</x-button.primary>
+    <div class="flex items-center justify-end w-full">
+      <x-button :variant="'primary'" :size="'lg'" :href="route('users.create')">Tambah Pengguna Baru</x-button>
     </div>
     <x-container :class="'flex justify-between'">
       <div class="w-64">

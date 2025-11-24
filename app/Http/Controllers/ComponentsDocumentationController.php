@@ -14,4 +14,8 @@ class ComponentsDocumentationController extends Controller
     public function typography(Request $request) {
       return view('components-documentation.typography');
     }
+
+    public function button(Request $request) {
+      return view('components-documentation.button');
+    }
 }
