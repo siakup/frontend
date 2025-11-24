@@ -12,18 +12,18 @@
 
 @php
     $variants = [
-        'primary' => 'text-white bg-red-500 
+        'primary' => 'text-white bg-red-500 group/primary
           hover:bg-red-600
           active:bg-red-700 
           disabled:bg-gray-300
           transition-all duration-200 ease-in-out
           hover:scale-[1.02] active:scale-[0.97] hover:shadow-md active:shadow-sm',
-        'secondary' => 'text-red-500 bg-white border border-red-500
+        'secondary' => 'text-red-500 bg-white border border-red-500 group/secondary
           hover:bg-red-50 active:bg-red-100 disabled:bg-white disabled:border-gray-300
           transition-all duration-200 ease-in-out
           hover:scale-[1.02] active:scale-[0.97]
           hover:shadow-sm active:shadow-none',
-        'tertiary' => 'text-red-500 bg-transparent
+        'tertiary' => 'text-red-500 bg-transparent group/tertiary
           hover:bg-red-50 active:bg-red-100 disabled:text-gray-400
           transition-all duration-200 ease-in-out
           hover:scale-[1.01] active:scale-[0.98]',
@@ -37,7 +37,7 @@
     ];
 
     $iconVariants = [
-        'primary' => 'filter brightness-0 invert',
+        'primary' => 'filter brightness-0 invert group-disabled/primary:[filter:brightness(0)_invert(54%)]',
         'secondary' => 'group-disabled/secondary:[filter:brightness(0)_invert(54%)]',
         'tertiary' => 'group-disabled/tertiary:[filter:brightness(0)_invert(54%)]',
         'text-link' => 'group-disabled/textlink:[filter:brightness(0)_invert(54%)]',
