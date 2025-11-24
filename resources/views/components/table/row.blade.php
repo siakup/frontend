@@ -4,7 +4,7 @@
   $variants = [
     'default' => [
       'other-class' => '',
-      'odd' => $odd ? 'bg-[#f5f5f5]' : 'bg-white',
+      'odd' => $odd ? 'bg-gray-200' : 'bg-white',
       'last' => $last ? 'border-b-0' : ''
     ],
     'old' => [

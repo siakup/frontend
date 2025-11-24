@@ -25,7 +25,7 @@
             'colspan' => $colspan,
             'rowspan' => $rowspan,
         ])
-        ->class('align-middle border-b text-[#262626] '.$variants[$variant].$positions[$position].' '.$text_size)
+        ->class('align-middle border-b text-gray-800 '.$variants[$variant].$positions[$position].' '.$text_size)
     }}>
     {{ $slot }}
 </td>
