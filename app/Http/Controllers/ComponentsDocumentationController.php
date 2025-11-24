@@ -20,4 +20,9 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.badge');
     }
+
+    public function dialog(Request $request)
+    {
+        return view('components-documentation.dialog');
+    }
 }
