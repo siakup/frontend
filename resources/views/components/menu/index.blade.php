@@ -1,8 +1,5 @@
-<div
-  x-bind:class="$store.mainLayout.isOpen ? 'col-span-3 col-start-1' : 'hidden'"
-  class="w-full min-h-[calc(100vh-9rem)] h-full bg-white z-1000 flex flex-col border-r border-r-gray-400"
->
-    <nav class="flex-1 overflow-y-auto h-full scroll-thin">
+<div class="w-full min-h-[calc(100vh-9rem)] h-full bg-white z-1000 flex flex-col border-r border-r-gray-400">
+    <nav class="flex-1 h-full">
         <x-menu.container :variant="'main'">
           <x-menu.item
             :label="'Beranda'"

@@ -1,6 +1,7 @@
 @props([
     'variant' => 'body-small-regular',
     'class' => '',
+    'tag' => 'p'
 ])
 
 @php
@@ -40,6 +41,6 @@
     $typographyClass = "$base {$sizes[$variant]} $class";
 @endphp
 
-<span {{ $attributes->merge(['class' => $typographyClass]) }}>
+<{{ $tag }} {{ $attributes->merge(['class' => $typographyClass]) }}>
     {{ $slot }}
-</span>
+</{{ $tag }}>

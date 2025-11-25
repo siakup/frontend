@@ -1,0 +1,7 @@
+@layer utilities {
+  .content-wrapper { @apply px-5 flex flex-col gap-5; }
+  .content { @apply p-4 bg-white border border-gray-400 rounded-md; }
+  .wide { @apply max-w-screen-xl px-4; }
+  .narrow { @apply max-w-lg px-4; }
+  .content-grey { @apply p-4 bg-gray-400 rounded-md min-h-17; }
+}
