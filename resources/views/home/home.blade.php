@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'">
+  <x-container :variant="'content-wrapper'" class="min-h-[calc(100vh-9rem)]">
     <x-typography :variant="'body-large-semibold'">Beranda</x-typography>
     <x-container>
       Ini beranda SIAKUP. Selamat menjelajah!
