@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @import '../../vendor/livewire/flux/dist/flux.css';
-@import 'config.css';
+@import './config.css';
 @import './base/element.css';
-@import './components/*.css';
-@import './utilities/*.css';
+@import './components/components.css';
+@import './utilities/utilities.css';
 
 
 /* hold dulu */
