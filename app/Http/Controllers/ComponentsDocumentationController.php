@@ -33,4 +33,8 @@ class ComponentsDocumentationController extends Controller
     public function button(Request $request) {
       return view('components-documentation.button');
     }
+
+    public function quantity(Request $request) {
+      return view('components-documentation.quantity');
+    }
 }
