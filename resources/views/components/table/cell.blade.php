@@ -3,7 +3,7 @@
   'position' => 'center', 
   'rowspan' => null, 
   'colspan' => null, 
-  'text_size' => 'text-sm'
+  'text_size' => 'text-xs'
 ])
 @php
     $userClass = $attributes->get('class', '');

@@ -4,11 +4,11 @@
 
 @section('content')
 
-    <x-container variant="content-wrapper">
+    <x-container variant="content-wrapper" class="!gap-2">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-button.back class="ml-2" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
 
-        <div class="flex flex-col gap-0">
+        <div class="flex flex-col gap-0 py-0">
             @include('rps.layout.navbar-rps')
 
             <div
@@ -57,7 +57,7 @@
                     <x-button.primary x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">
                         Simpan
                     </x-button.primary>
-                    <x-button.primary x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">
+                    <x-button.primary :href="route('rps.submission.submit')">
                         Submit
                     </x-button.primary>
                 </div>

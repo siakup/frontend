@@ -2,7 +2,7 @@
   'tabItems' => [],
   'bgActive' => 'bg-white',
 ])
-<div class="flex mt-4 mx-4 relative -bottom-px z-2">
+<div class="flex mx-4 relative -bottom-px z-2">
   @if(!empty($tabItems))
     @foreach($tabItems as $tabItem)
       <a 

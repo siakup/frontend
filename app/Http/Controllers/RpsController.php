@@ -129,20 +129,20 @@ class RpsController extends Controller
         $cplList = [
             [
                 'cpl' => 'CPL-G',
-                'deskripsi' => 'Kemampuan menerapkan pengetahuan matematika dan ilmu pengetahuan dasar lainnya 
-                                terutama pada kekhususan bidang teknik dan memahami konteks ilmu pengetabuan 
+                'deskripsi' => 'Kemampuan menerapkan pengetahuan matematika dan ilmu pengetahuan dasar lainnya
+                                terutama pada kekhususan bidang teknik dan memahami konteks ilmu pengetabuan
                                 dan rekayasa multidisiplin yang lebih luas.',
             ],
             [
                 'cpl' => 'CPL-H',
                 'deskripsi' => 'Kemampuan untuk mengidentifikasi, merumuskan dan menyelesaikan permasalahan rekayasa
-                                di bidang studi masing nasing: dan memilih serta menerapkan metode-metode relevan 
+                                di bidang studi masing nasing: dan memilih serta menerapkan metode-metode relevan
                                 yang dibangun dari metode analitis, komputasi, da: chsnerimental vano telah dislani.',
             ],
             [
                 'cpl' => 'CPL-I',
-                'deskripsi' => 'Kemampuan untuk memilih dan memakai teknik-teknik, sumber days, serta peralatan 
-                                rekayasa dan aplikasi IT modern yang sesuai, termasuk melakukan prediksi dan 
+                'deskripsi' => 'Kemampuan untuk memilih dan memakai teknik-teknik, sumber days, serta peralatan
+                                rekayasa dan aplikasi IT modern yang sesuai, termasuk melakukan prediksi dan
                                 pemodelan problem rekayasa .',
             ],
         ];
@@ -150,22 +150,21 @@ class RpsController extends Controller
         $cpmkList = [
             [
                 'cpmk' => 'CPMK-1',
-                'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem 
+                'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem
                                 pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
             ],
             [
                 'cpmk' => 'CPMK-2',
-                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk 
-                                menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun 
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk
+                                menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun
                                 kesetimbangan reaksi kimia.',
             ],
             [
                 'cpmk' => 'CPMK-3',
-                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk 
-                                menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun 
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk
+                                menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun
                                 kesetimbangan reaksi kimia',
             ],
-
         ];
 
         return view('rps.capaian-pembelajaran.index', get_defined_vars());
@@ -262,7 +261,6 @@ class RpsController extends Controller
 
     public function showRencanaPerkuliahan()
     {
-
         $rencanaPerkuliahan = [
             [
                 'minggu' => 1,
@@ -325,9 +323,9 @@ class RpsController extends Controller
         ];
 
         $rencanaPerkuliahan = collect($rencanaPerkuliahan)->map(function ($item) {
-            $item['total_waktu'] = collect($item)->only([
-                'waktu_kuliah', 'waktu_diskusi_latihan', 'waktu_praktikum', 'waktu_mandiri',
-            ])->sum();
+            $item['total_waktu'] = collect($item)
+                ->only(['waktu_kuliah', 'waktu_diskusi_latihan', 'waktu_praktikum', 'waktu_mandiri'])
+                ->sum();
 
             return $item;
         });
@@ -352,13 +350,16 @@ class RpsController extends Controller
     {
         $cpmkList = [
             [
-                'label' => 'CPMK-1', 'value' => 1,
+                'label' => 'CPMK-1',
+                'value' => 1,
             ],
             [
-                'label' => 'CPMK-2', 'value' => 2,
+                'label' => 'CPMK-2',
+                'value' => 2,
             ],
             [
-                'label' => 'CPMK-3', 'value' => 3,
+                'label' => 'CPMK-3',
+                'value' => 3,
             ],
         ];
 
@@ -380,7 +381,6 @@ class RpsController extends Controller
                 'nilai' => '80 < X <= 100',
                 'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman tentang bagaimana memecahkan masalah dan hasilnya benar. Kesalahan kecil dapat diterima sepanjang tidak mengindikasıkan kesalahpahaman konsep.',
             ],
-
         ];
 
         return view('rps.matriks-penilaian-kognitif.index', get_defined_vars());
@@ -388,7 +388,6 @@ class RpsController extends Controller
 
     public function showEvaluasiPemetaan()
     {
-
         $evaluasiList = [
             [
                 'id' => 1,
@@ -443,10 +442,7 @@ class RpsController extends Controller
                 'id' => 1,
                 'bentuk_ujian' => 'Tugas',
                 'judul_evaluasi' => 'Tugas',
-                'sub_cpmk' => [
-                    'CPMK-1',
-                    'CPMK-2',
-                ],
+                'sub_cpmk' => ['CPMK-1', 'CPMK-2'],
                 'metode_pengerjaan' => '1. Mengumpulkan informasi mengenai proses dan reaksi untuk menghasilkan produk.
                                         2. Mendeskripsikan alat-alat yang digunakan dalam proses dengan baik.',
             ],
@@ -454,31 +450,23 @@ class RpsController extends Controller
                 'id' => 2,
                 'bentuk_ujian' => 'Ujian',
                 'judul_evaluasi' => 'Kuis',
-                'sub_cpmk' => [
-                    'CPMK-1',
-                    'CPMK-2',
-                ],
+                'sub_cpmk' => ['CPMK-1', 'CPMK-2'],
                 'metode_pengerjaan' => 'Kuis menggunakan media e-learning',
             ],
             [
                 'id' => 3,
                 'bentuk_ujian' => 'Ujian',
                 'judul_evaluasi' => 'UTS',
-                'sub_cpmk' => [
-                    'CPMK-1',
-                ],
+                'sub_cpmk' => ['CPMK-1'],
                 'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
             ],
             [
                 'id' => 4,
                 'bentuk_ujian' => 'Ujian',
                 'judul_evaluasi' => 'UAS',
-                'sub_cpmk' => [
-                    'CPMK-2',
-                ],
+                'sub_cpmk' => ['CPMK-2'],
                 'metode_pengerjaan' => 'Ujian menggunakan media e-learning',
             ],
-
         ];
 
         $bentukUjian = [
@@ -502,7 +490,6 @@ class RpsController extends Controller
                 'indikator' => 'Ketepatan dalam melakukan perhitungan yang berkaitan dengan solution thermodynamics.',
                 'bobot' => '30%',
             ],
-
         ];
 
         $jadwalPelaksanaan = [
@@ -542,7 +529,6 @@ class RpsController extends Controller
                 'indikator' => 'Ketepatan dalam melakukan perhitungan yang berkaitan dengan solution thermodynamics.',
                 'bobot' => '30%',
             ],
-
         ];
 
         $jadwalPelaksanaan = [
@@ -582,7 +568,6 @@ class RpsController extends Controller
                 'indikator' => 'Ketepatan dalam melakukan perhitungan yang berkaitan dengan solution thermodynamics.',
                 'bobot' => '30%',
             ],
-
         ];
 
         $jadwalPelaksanaan = [
@@ -617,6 +602,70 @@ class RpsController extends Controller
         ];
 
         return view('rps.submission.index', get_defined_vars());
+    }
+
+    public function submitSubmission()
+    {
+        $infoRps = [
+            'mata_kuliah' => 'Termodinamika Teknik Kimia 2',
+            'kode' => '23219',
+            'bobot' => '3',
+            'semester' => '4',
+            'rumpun_mk' => 'Mata Kuliah Prodi',
+            'level_program' => 'S1',
+            'tgl_penyusunan' => 'Desember 2021',
+        ];
+
+        $dosen = [
+            'nama' => 'Catia Angli Curie, MS.',
+            'nip' => '116071',
+        ];
+
+        $kaprodi = [
+            'nama' => 'Eduardus Budi Nursanto, PhD.',
+            'nip' => '116116',
+        ];
+
+        $dekan = [
+            'nama' => 'Khusnum Widiyanti, PhD.',
+            'nip' => '116053',
+        ];
+
+        $cplList = [
+            [
+                'kode' => 'CPL-G',
+                'deskripsi' => 'Kemampuan menerapkan pengetahuan matematika dan ilmu pengetahuan dasar lainnya terutama pada kekhususan bidang teknik dan memahami konteks ilmu pengetabuan dan rekayasa multidisiplin yang lebih luas.',
+            ],
+            [
+                'kode' => 'CPL-H',
+                'deskripsi' => 'Kemampuan untuk mengidentifikasi, merumuskan dan menyelesaikan permasalahan rekayasa di bidang studi masing nasing: dan memilih serta menerapkan metode-metode relevan yang dibangun dari metode analitis, komputasi, da: chsnerimental vano telah dislani.',
+            ],
+            [
+                'kode' => 'CPL-I',
+                'deskripsi' => 'Kemampuan untuk memilih dan memakai teknik-teknik, sumber days, serta peralatan rekayasa dan aplikasi IT modern yang sesuai, termasuk melakukan prediksi dan pemodelan problem rekayasa .',
+            ],
+        ];
+
+        $cpmkList = [
+            [
+                'kode' => 'CPMK-1',
+                'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
+            ],
+            [
+                'kode' => 'CPMK-2',
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
+            ],
+        ];
+
+        $deskripsiUmum = [
+            'deskripsi' => 'Mata kuliah ini mempelajari aplikasi hukum pertama dan kedua termodinamika dalam lingkup teknik kimia terkait produksi daya dari energi panas (steam power plant) serta sistem refrigerasi dan pencairan gas. Selain itu, mata kuliah ini juga mempelajari kesetimbangan fasa senyawa dalam campuran dan kesetimbangan reaksi kimia dengan pendekatan termodinamika',
+            'materi' => 'Produksi Daya dari Energi Panas (steam power plant), Refrigerasi dan Liquefaction, Kesetimbangan Fasa (Uap-Cair), Prinsip Termodinamika pada Larutan dan Aplikasinya, Kesetimbangan Reaksi Kimia.',
+            'pustaka' => 'Smith, J. M., Van Ness, H.C., Abbott, M. M.,"Introduction to Chemical Engineering Thermodynamics" 7th ed., McGraw-Hill Co-Singapore. 2005. <br> Cengel, Y.A. dan Boles, M.A., “Thermodynamics: An Engineering Approach” 5th ed., McGraw-Hill, 2006. <br> Atkins, de Paula., “Atkin’s Physical Chemistry”, 9th ed., Oxford University Press, 2009.',
+            'metode' => 'Kuliah (K) <br> Diskusi & Latihan (DL) <br> Tugas (T take home assignments yang dinilai maupun yang tidak dinilai  (misal: mahasiswa diberi pre-course reading material, dsb)',
+            'media' => '<b> Perangkat lunak </b> <br> Ms. Office (Power Point,  Word, Excel) <br> Nitro PDF <br> <br> <b>Perangkat keras</b> <br> Laptop <br> Proyektor',
+        ];
+
+        return view('rps.submission.submit', get_defined_vars());
     }
 
     /**

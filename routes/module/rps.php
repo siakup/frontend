@@ -18,5 +18,6 @@ Route::group(['prefix' => 'rps'], function () {
     Route::get('/rencana-evaluasi-mahasiswa/create', [RpsController::class, 'buatRencanaEvaluasi'])->name('rps.rencana-evaluasi-mahasiswa.create');
     Route::get('/rencana-evaluasi-mahasiswa/edit/{id}', [RpsController::class, 'ubahRencanaEvaluasi'])->name('rps.rencana-evaluasi-mahasiswa.edit');
     Route::get('/submission', [RpsController::class, 'showSubmission'])->name('rps.submission');
+    Route::get('/submission/submit', [RpsController::class, 'submitSubmission'])->name('rps.submission.submit');
 });
 // });

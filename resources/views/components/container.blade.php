@@ -3,7 +3,7 @@
 @props([
     'variant' => 'content',
     'class' => '',
-    'borderRadius' => 'rounded-3xl',
+    'borderRadius' => 'rounded-sm',
 ])
 
 @php
