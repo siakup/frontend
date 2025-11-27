@@ -19,8 +19,8 @@
 
 @php
   $variants = [
-    'red' => 'flex items-center gap-2 py-2 px-4 bg-transparent border-[1px] border-[#E62129] cursor-pointer text-[#E62129] transition-all duration-200 rounded-lg hover:bg-[#FBE8E6]',
-    'gray' => 'flex items-center text-sm justify-between py-2 px-4 w-full cursor-pointer border-[1px] border-[#BFBFBF] bg-[#FFFFFF] transition-all duration-200 rounded-lg'
+    'red' => 'flex items-center gap-2 py-2 px-4 bg-transparent border border-red-500 cursor-pointer text-red-500 transition-all duration-200 rounded-sm hover:bg-red-50 active:bg-red-100',
+    'gray' => 'flex items-center text-sm justify-between py-2 px-4 w-full cursor-pointer border border-gray-500 bg-white transition-all duration-200 rounded-sm'
   ];
 
   $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];
@@ -72,8 +72,8 @@
     </button>
     <div 
       class="
-      absolute top-[100%] bg-white border-[1px] border-[#DDD] rounded-md flex-col items-start max-h-[200px] overflow-y-auto z-10
-      {{ $variant === 'gray' ? 'min-w-[240px] right-0' : 'w-full right-0 left-0' }}
+      absolute top-full bg-white border border-gray-300 rounded-md flex-col items-start max-h-50 overflow-y-auto z-10
+      {{ $variant === 'gray' ? 'min-w-60 right-0' : 'w-full right-0 left-0' }}
       {{ $optionStyleClass }}
     " 
       id="{{ $dropdownId }}" 
@@ -94,7 +94,7 @@
       <template x-if="options !== null">
         <template x-for="(option, key) in options">
           <div 
-            class="item px-3 py-2 cursor-pointer hover:bg-[#DDD] transition-[background] duration-200 flex justify-between items-center text-sm w-full" 
+            class="item px-3 py-2 cursor-pointer hover:bg-gray-200 transition-[background] duration-200 flex justify-between items-center text-sm w-full" 
             x-on:click="
               value = option; 
               label = key;

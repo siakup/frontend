@@ -7,9 +7,7 @@
     <div class="breadcrumb-item active">Kelompok Perwalian</div>
 @endsection
 
-<script src="{{ asset('js/component-helpers/api.js')}}"></script>
 <script type="module">
-  import PerwalianKRS from "{{ asset('js/controllers/perwalianKrs.js') }}";
   document.addEventListener('alpine:init', () => {
     Alpine.store('listPage', { 
       periode: @js($periode),
@@ -20,17 +18,18 @@
       paginationData: @js($pagination)
     });
 
-    Alpine.data('listPerwalianKRS', PerwalianKRS.listPerwalianKRS);
+    Alpine.data('listPerwalianKRS', window.PerwalianKRSController.listPerwalianKRS);
   });
 </script>
 
 @section('content')
   <x-container
     :variant="'content-wrapper'"
+    class="pb-4"
     x-data="listPerwalianKRS({{ json_encode(route('tutelage-group.list-student')) }})"
   >
     <x-typography variant="body-large-semibold">Kelompok Perwalian - dosen</x-typography>
-    <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
+    <x-container :variant="'content-wrapper'" :class="'!gap-0 !px-0'">
       <x-tab 
         :tabItems="[
           (object)[
@@ -40,17 +39,17 @@
           ],
         ]"
       />
-      <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
+      <x-container :class="'flex flex-col gap-4 !rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
           <x-typography variant="body-medium-bold">Daftar Mahasiswa</x-typography>
           <x-container :class="'flex flex-row items-center justify-between'">
-            <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-start !px-0'">
-              <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+            <x-container :variant="'content-wrapper'" :class="'!flex-row items-center justify-start !px-0'">
+              <x-container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center !gap-2'">
                   <x-typography :variant="'body-medium-bold'">Periode Akademik</x-typography>
                   <x-form.dropdown 
                     :buttonId="'sortPeriode'"
                     :dropdownId="'periodeList'"
                     :label="'Pilih Periode'"
-                    :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+                    :imgSrc="asset('assets/icons/arrow-down/red-16.svg')"
                     :isIconCanRotate="true"
                     :isUsedForInputField="true"
                     :dropdownItem="array_merge(
@@ -66,13 +65,13 @@
                     x-model="$store.listPage.periode"
                   />
               </x-container>
-              <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+              <x-container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center !gap-2'">
                 <x-typography :variant="'body-medium-bold'">Tahun Masuk</x-typography>
                 <x-form.dropdown 
                   :buttonId="'sortButtonYear'"
                   :dropdownId="'sortYear'"
                   :label="'Pilih Tahun Masuk'"
-                  :imgSrc="asset('assets/active/icon-arrow-down.svg')"
+                  :imgSrc="asset('assets/icons/arrow-down/red-16.svg')"
                   :isIconCanRotate="true"
                   :isUsedForInputField="true"
                   :dropdownItem="array_merge(['Pilih Tahun' => ''], 
@@ -85,12 +84,12 @@
                 />
               </x-container>
             </x-container>
-            <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center justify-end'">
+            <x-container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center justify-end'">
               <x-form.dropdown 
                 :buttonId="'sortFilterButton'"
                 :dropdownId="'sortFilterDropdown'"
                 :label="'Filter'"
-                :imgSrc="asset('assets/icon-filter-v2.svg')"
+                :imgSrc="asset('assets/icons/filter/red-16.svg')"
                 :isIconCanRotate="false"
                 :dropdownItem="[
                   'Filter' => '',
@@ -111,7 +110,7 @@
                 :buttonId="'sortFilterButton'"
                 :dropdownId="'sortFilterDropdown'"
                 :label="'Urutkan'"
-                :imgSrc="asset('assets/icon-filter.svg')"
+                :imgSrc="asset('assets/icons/sort/red-16.svg')"
                 :isIconCanRotate="false"
                 :dropdownItem="[
                   'Urutkan' => '',
@@ -130,12 +129,12 @@
               />
             </x-container>
           </x-container>
-          <x-container class="flex flex-col gap-[10px] !bg-[#FAFAFA]">
+          <x-container class="flex flex-col gap-2.5 !bg-gray-100">
             <x-typography variant="caption-bold">Keterangan Status Persetujuan:</x-typography>
-            <x-container :variant="'content-wrapper'" class="grid grid-cols-2 gap-[10px]">
+            <x-container :variant="'flat'" class="grid grid-cols-2 gap-[10px]">
               <template x-for="[key, status] in Object.entries(statusList)">
-                <x-container :variant="'content-wrapper'" class="flex flex-row items-center gap-[6px]">
-                  <x-typography :variant="'caption-bold'" class="px-4 py-[2px] rounded-[4px]" x-bind:style="{color: `${status.textColor}`, backgroundColor: `${status.color}` }">
+                <x-container :variant="'content-wrapper'" class="!flex-row items-center !gap-1.5">
+                  <x-typography :variant="'caption-bold'" class="px-4 py-0.5 rounded-sm" x-bind:style="{color: `${status.textColor}`, backgroundColor: `${status.color}` }">
                       x
                   </x-typography>
                   <x-typography variant="caption-regular" x-html="': '+status.text"></x-typography>
@@ -143,63 +142,64 @@
               </template>
             </x-container>
           </x-container>
-          <x-table>
-              <x-table-head>
-                  <x-table-row>
-                      <x-table-header>No</x-table-header>
-                      <x-table-header>NIM</x-table-header>
-                      <x-table-header>Angkatan</x-table-header>
-                      <x-table-header>Nama</x-table-header>
-                      <x-table-header>IPS</x-table-header>
-                      <x-table-header>IPK</x-table-header>
-                      <x-table-header>SKS Lulus</x-table-header>
-                      <x-table-header>SKS Lulus MK Wajib</x-table-header>
-                      <x-table-header>Nilai PEM</x-table-header>
-                      <x-table-header>Status Akademik</x-table-header>
-                      <x-table-header>Status Persetujuan</x-table-header>
-                      <x-table-header>Aksi</x-table-header>
-                  </x-table-row>
-              </x-table-head>
+          <x-table.index>
+              <x-table.head>
+                  <x-table.row>
+                      <x-table.header-cell>No</x-table.header-cell>
+                      <x-table.header-cell>NIM</x-table.header-cell>
+                      <x-table.header-cell>Angkatan</x-table.header-cell>
+                      <x-table.header-cell>Nama</x-table.header-cell>
+                      <x-table.header-cell>IPS</x-table.header-cell>
+                      <x-table.header-cell>IPK</x-table.header-cell>
+                      <x-table.header-cell>SKS Lulus</x-table.header-cell>
+                      <x-table.header-cell>SKS Lulus MK Wajib</x-table.header-cell>
+                      <x-table.header-cell>Nilai PEM</x-table.header-cell>
+                      <x-table.header-cell>Status Akademik</x-table.header-cell>
+                      <x-table.header-cell>Status Persetujuan</x-table.header-cell>
+                      <x-table.header-cell>Aksi</x-table.header-cell>
+                  </x-table.row>
+              </x-table.head>
 
-              <x-table-body>
+              <x-table.body>
                   <template x-if="$store.listPage.datas && $store.listPage.datas.length > 0">
                     <template x-for="data in $store.listPage.datas">
-                      <x-table-row>
-                        <x-table-cell x-text="data.id"></x-table-cell>
-                        <x-table-cell x-text="data.nim"></x-table-cell>
-                        <x-table-cell x-text="data.angkatan"></x-table-cell>
-                        <x-table-cell x-text="data.nama"></x-table-cell>
-                        <x-table-cell x-text="data.ips.toFixed(2)"></x-table-cell>
-                        <x-table-cell x-text="data.ipk.toFixed(2)"></x-table-cell>
-                        <x-table-cell x-text="data.sks_lulus"></x-table-cell>
-                        <x-table-cell x-text="data.sks_lulus_wajib"></x-table-cell>
-                        <x-table-cell x-text="data.nilai_pem"></x-table-cell>
-                        <x-table-cell x-text="data.status_akademik"></x-table-cell>
-                        <x-table-cell>
-                            <x-container :variant="'content-wrapper'" class="flex flex-row justify-center gap-2">
+                      <x-table.row>
+                        <x-table.cell x-text="data.id"></x-table.cell>
+                        <x-table.cell x-text="data.nim"></x-table.cell>
+                        <x-table.cell x-text="data.angkatan"></x-table.cell>
+                        <x-table.cell x-text="data.nama"></x-table.cell>
+                        <x-table.cell x-text="data.ips.toFixed(2)"></x-table.cell>
+                        <x-table.cell x-text="data.ipk.toFixed(2)"></x-table.cell>
+                        <x-table.cell x-text="data.sks_lulus"></x-table.cell>
+                        <x-table.cell x-text="data.sks_lulus_wajib"></x-table.cell>
+                        <x-table.cell x-text="data.nilai_pem"></x-table.cell>
+                        <x-table.cell x-text="data.status_akademik"></x-table.cell>
+                        <x-table.cell>
+                            <x-container :variant="'content-wrapper'" class="!flex-row justify-center gap-2">
                                 <template x-for="persetujuan in data.status_persetujuan">
                                   <span 
-                                    class="flex items-center justify-center px-4 py-[2px] rounded-[4px] text-xs" 
+                                    class="flex items-center justify-center px-4 py-0.5 rounded-sm text-xs" 
                                     x-bind:style="{color: `${statusList[persetujuan.status].textColor}`, backgroundColor: `${statusList[persetujuan.status].color}` }"
                                     x-text="persetujuan.nilai"
                                   ></span>
                                 </template>
                             </x-container>
-                        </x-table-cell>
-                        <x-table-cell>
-                            <x-button.primary
+                        </x-table.cell>
+                        <x-table.cell>
+                            <x-button
+                              :variant="'primary'"
+                              :size="'md'"
                               x-on:click="window.location.href='{{route('tutelage-group.student-list.detail-krs', ['id' => ':id'])}}'.replace(':id', data.id)"
-                              {{-- href="{{ route('tutelage-group.student-list.detail-krs', ['id' => $student['id']]) }}" --}}
                               style="min-width: 0;"
                             >
                                 Detail
-                            </x-button.primary>
-                        </x-table-cell>
-                      </x-table-row>
+                            </x-button>
+                        </x-table.cell>
+                      </x-table.row>
                     </template>
                   </template>
-              </x-table-body>
-          </x-table>
+              </x-table.body>
+          </x-table.index>
       </x-container>
     </x-container>
     <template x-if="$store.listPage.datas.length !== 0">

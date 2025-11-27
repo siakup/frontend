@@ -9,13 +9,12 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="module">
-  import PerwalianKRS from "{{ asset('js/controllers/perwalianKrs.js') }}";
   document.addEventListener('alpine:init', () => {
     Alpine.store('detailPage', { 
       data: @js($data)
     });
 
-    Alpine.data('detailStudentData', PerwalianKRS.detailStudentData);
+    Alpine.data('detailStudentData', window.PerwalianKRSController.detailStudentData);
   });
 </script>
 
@@ -75,431 +74,461 @@
       <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
           <x-container :variant="'content-wrapper'" class="!px-0 space-y-4">
             <x-accordion :label="'Data Pribadi'" :isDefaultOpen="true">
-              <table class="min-w-full table-fixed text-sm text-[#262626]">
-                <tbody>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Mahasiswa</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.nama"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Induk Mahasiswa</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.nim"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Judul Tugas Akhir</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.judul_ta || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Induk Kependudukan</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.nik"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Kota Lahir</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.kota_lahir"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Tanggal Lahir</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.tanggal_lahir"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Agama</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.agama"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Jenis Kelamin</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.jenis_kelamin"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Kewarganegaraan</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.kewarganegaraan"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Alamat Asal (Jalan)</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.alamat_asal"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">RT</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.rt"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">RW</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.rw"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Dusun</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.dusun"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Kelurahan</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.kelurahan"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Kecamatan</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.kecamatan"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Kota Kabupaten</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.kota"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Provinsi</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.provinsi"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Kode Pos</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.kode_pos"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Jenis Tinggal</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.jenis_tinggal"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Jenis Tinggal Lainnya</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.jenis_tinggal_lain"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Alat Transportasi</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.transport"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Alat Transportasi Lainnya (Isi Jika Pilih Lainnya)</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.transport_lain"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Alamat Domisili</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.alamat_domisili"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Telepon Rumah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.telp_rumah"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nomor Telepon Seluler</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.telp_seluler"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Telepon Darurat</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.telp_darurat"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Email</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.email"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Penerima KPS</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.kps ? 'Ya' : 'Tidak'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nomor KPS (Jika Ya)</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.no_kps || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Kebutuhan Khusus</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.kebutuhan_khusus"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Ibu Kandung</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.nama"></x-table-cell>
-                  </x-table-row>
-                </tbody>
-              </table>
+              <x-table.index :isRoundedTop="false">
+                <x-table.body>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Nama Mahasiswa</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.student.nama">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nomor Induk Mahasiswa</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.student.nim"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Judul Tugas Akhir</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.judul_ta || '-'">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nomor Induk Kependudukan</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.nik"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Kota Lahir</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.kota_lahir">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Tanggal Lahir</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.tanggal_lahir"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Agama</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.agama">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Jenis Kelamin</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.jenis_kelamin"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Kewarganegaraan</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.kewarganegaraan">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Alamat Asal</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.alamat_asal"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">RT</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.rt">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">RW</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.rw"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Dusun</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.dusun">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Kelurahan</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.kelurahan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Kecamatan</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.kecamatan">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Kota Kabupaten</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.kota"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Provinsi</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.provinsi">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Kode Pos</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.kode_pos"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Jenis Tinggal</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.jenis_tinggal">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Jenis Tinggal Lainnya</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.jenis_tinggal_lain"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Alat Transportasi</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.transport">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Alat Transportasi Lainnya (Isi Jika Pilih Lainnya</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.transport_lain"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Alamat Domisili</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.alamat_domisili">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nomor Telepon Rumah</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.telp_rumah"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Nomor Telepon Seluler</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.telp_seluler">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nomor Telepon Darurat</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.telp_darurat"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Email</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.email">Cell 1</x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nomor KPS (Jika Ya)</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.no_kps"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Kebutuhan Khusus</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.kebutuhan_khusus"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nama Ibu Kandung</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.nama"></x-table.cell>
+                  </x-table.row>
+                </x-table.body>
+              </x-table.index>
             </x-accordion>
+            
             <x-accordion :label="'Data Orang Tua'">
-              <table class="min-w-full table-fixed text-sm text-[#262626]">
-                <tbody>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Ayah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ayah.nama"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Induk Kependudukan Ayah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ayah.nik"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Tanggal Lahir Ayah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ayah.tanggal_lahir"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Riwayat Pendidikan Ayah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ayah.pendidikan || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Pendidikan Ayah Lainnya (Isi Jika Pilih Lainnya)</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ayah.pendidikan_lain || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Pekerjaan Ayah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ayah.pekerjaan || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Pekerjaan Ayah Lainnya (Isi Jika Pilih Lainnya)</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ayah.pekerjaan_lain || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Penghasilan Ayah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ayah.penghasilan || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Ibu</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.nama"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor Induk Kependudukan Ibu</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.nik"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Tanggal Lahir Ibu</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.tanggal_lahir"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Riwayat Pendidikan Ibu</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.pendidikan || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Pendidikan Ibu Lainnya (Isi Jika Pilih Lainnya)</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.pendidikan_lain || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Pekerjaan Ibu</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.pekerjaan || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Pekerjaan Ibu Lainnya (Isi Jika Pilih Lainnya)</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.pekerjaan_lain || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Penghasilan Ibu</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.orang_tua.ibu.penghasilan || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Jumlah Tanggungan Orang Tua</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_tambahan.jumlah_tanggungan"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Alamat Orang Tua</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_tambahan.alamat_orang_tua"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Alamat Alternatif Orang Tua</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_tambahan.alamat_alternatif_orang_tua || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nomor HP Orang Tua</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_tambahan.no_hp_orang_tua"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Kecamatan Orang Tua</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_tambahan.kecamatan_orang_tua"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Kota Orang Tua</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_tambahan.kota_orang_tua"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Provinsi Orang Tua</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_tambahan.provinsi_orang_tua"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Email Orang Tua</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_tambahan.email_orang_tua"></x-table-cell>
-                  </x-table-row>
-                </tbody>
-              </table>
+              <x-table.index :isRoundedTop="false">
+                <x-table.body>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Nama Ayah</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.nik"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nomor Induk Kependudukan Ayah</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.nik"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Tanggal Lahir Ayah</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.tanggal_lahir"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Riwayat Pendidikan Ayah</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.pendidikan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Tanggal Lahir Ayah</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.tanggal_lahir"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Pendidikan Ayah Lainnya (Isi Jika Pilih Lainnya)</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.pendidikan_lain || '-'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Pekerjaan Ayah</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.pekerjaan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Pekerjaan Ayah Lainnya (Isi Jika Pilih Lainnya)</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.pekerjaan_lain || '-'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Penghasilan Ayah</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ayah.penghasilan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nama Ibu</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.nama"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Nomor Induk Kependudukan Ibu</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.nik"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Tanggal Lahir Ibu</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.tanggal_lahir"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Riwayat Pendidikan Ibu</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.pendidikan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Tanggal Lahir Ibu</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.tanggal_lahir"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Pendidikan Ibu Lainnya (Isi Jika Pilih Lainnya)</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.pendidikan_lain || '-'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Pekerjaan Ibu</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.pekerjaan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Pekerjaan Ibu Lainnya (Isi Jika Pilih Lainnya)</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.pekerjaan_lain || '-'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Penghasilan Ibu</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.penghasilan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Jumlah Tanggungan Orang Tua</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.jumlah_tanggungan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Alamat Orang Tua</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.alamat_orang_tua"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Alamat Alternatif Orang Tua</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.alamat_alternatif_orang_tua"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Nomor HP Orang Tua</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.no_hp_orang_tua"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Kecamatan Orang Tua</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.kecamatan_orang_tua"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Kota Orang Tua</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.kota_orang_tua"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'odd'" :position="'left'">Provinsi Orang Tua</x-table.header-cell>
+                      <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.provinsi_orang_tua"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                      <x-table.header-cell :variantColor="'even'" :position="'left'">Email Orang Tua</x-table.header-cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.orang_tua.ibu.email_orang_tua"></x-table.cell>
+                  </x-table.row>
+                </x-table.body>
+              </x-table.index>
             </x-accordion>
+
             <x-accordion :label="'Data SMTA'">
-              <table class="min-w-full table-fixed text-sm text-[#262626]">
-                <tbody>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nomor Induk Siswa Nasional</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.nisn"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Tahun Lulus</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.tahun_lulus"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Asal Sekolah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.asal"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Provinsi Sekolah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.provinsi"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Kota Sekolah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.kota"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Kecamatan Sekolah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.kecamatan"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Jenis Sekolah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.jenis"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Jurusan Sekolah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.jurusan"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nomor Ijazah</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.no_ijazah"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nilai UAN Matematika</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.uan_mtk"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nilai UAN Bahasa Inggris</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.uan_inggris"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nilai UAN Fisika</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.uan_fisika"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nilai Rapor Matematika</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.rapor_mtk"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Nilai Rapor Bahasa Inggris</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.data_sma.rapor_inggris"></x-table-cell>
-                  </x-table-row>
-                </tbody>
-              </table>
+              <x-table.index :isRoundedTop="false">
+                <x-table.body>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Nomor Induk Siswa Nasional</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.data_sma.nisn"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Tahun Lulus</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.data_sma.tahun_lulus"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Asal Sekolah</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.data_sma.asal"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Provinsi Sekolah</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.data_sma.provinsi"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Kota Sekolah</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.data_sma.kota"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Kecamatan Sekolah</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.data_sma.kecamatan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Jenis Sekolah</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.data_sma.jenis"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Jurusan Sekolah</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.data_sma.jurusan"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Nomor Ijazah</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.data_sma.no_ijazah"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Nilai UAN Matematika</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.data_sma.uan_mtk"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Nilai UAN Bahasa Inggris</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.data_sma.uan_inggris"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Nilai UAN Fisika</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.data_sma.uan_fisika"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Nilai Rapor Matematika</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.data_sma.rapor_mtk"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Nilai Rapor Bahasa Inggris</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.data_sma.rapor_inggris"></x-table.cell>
+                  </x-table.row>
+                </x-table.body>
+              </x-table.index>
             </x-accordion>
 
             <x-accordion :label="'Data Kesehatan'">
-              <table class="min-w-full table-fixed text-sm text-[#262626]">
-                <tbody>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Keterangan Bebas Buta Warna</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.health.buta_warna ? 'Ya' : 'Tidak'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Keterangan Napza</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.health.napza ? 'Ya' : 'Tidak'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Riwayat Kesehatan Pribadi</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.health.riwayat_pribadi ? 'Ya' : 'Tidak'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Riwayat Kesehatan Keluarga</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.health.riwayat_keluarga ? 'Ya' : 'Tidak'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Pernyataan Kesehatan</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.health.pernyataan_kesehatan || '-'"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Pernyataan Napza</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.health.pernyataan_napza ? 'Ya' : 'Tidak'"></x-table-cell>
-                  </x-table-row>
-                </tbody>
-              </table>
+              <x-table.index :isRoundedTop="false">
+                <x-table.body>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Keterangan Bebas Buta Warna</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.health.buta_warna ? 'Ya' : 'Tidak'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Keterangan Napza</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.health.napza ? 'Ya' : 'Tidak'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Riwayat Kesehatan Pribadi</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.health.riwayat_pribadi ? 'Ya' : 'Tidak'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Riwayat Kesehatan Keluarga</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.health.riwayat_keluarga ? 'Ya' : 'Tidak'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'">Pernyataan Kesehatan</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.health.pernyataan_kesehatan || '-'"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Pernyataan Napza</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.health.pernyataan_napza ? 'Ya' : 'Tidak'"></x-table.cell>
+                  </x-table.row>
+                </x-table.body>
+              </x-table.index>
             </x-accordion>
 
             <x-accordion :label="'Dokumen Pendukung'">
-              <table class="min-w-full table-fixed text-sm text-[#262626]">
-                <tbody>
+              <x-table.index :isRoundedTop="false">
+                <x-table.body>
                   <template x-for="([label, key], i) in Object.entries(docs)">
-                    <x-table-row class="text-[#262626]">
-                      <x-table-cell class="text-start w-[30%]" x-bind:class="{'bg-[#E8E8E8]': i % 2 == 0, 'bg-[#F5F5F5]': i % 2 !== 0}" x-text="label"></x-table-cell>
-                      <x-table-cell class="text-start font-bold w-[70%]" x-bind:class="{'bg-[#F5F5F5]': i % 2 == 0, 'bg-white': i % 2 !== 0}">
-                        <template x-if="loadingKey === key">
-                          <span class="text-gray-500">Memuat…</span>
-                        </template>
-                        <template x-if="loadingKey !== key">
-                          <a href="#"
-                            x-on:click.prevent="openDoc(key, $store.detailPage.data.nim)"
-                            class="underline text-[#1D4ED8] hover:opacity-80"
-                          >
-                            Dokumen
-                          </a>
-                        </template>
-                      </x-table-cell>
-                    </x-table-row>
+                    <template x-if="i % 2 != 0">
+                      <x-table.row>
+                        <x-table.header-cell :variantColor="'odd'" x-text="label"></x-table.header-cell>
+                        <x-table.cell :variantColor="'odd'">
+                          <template x-if="loadingKey === key">
+                            <span class="text-gray-500">Memuat…</span>
+                          </template>
+                          <template x-if="loadingKey !== key">
+                            <a href="#"
+                              x-on:click.prevent="openDoc(key, $store.detailPage.data.nim)"
+                              class="underline text-[#1D4ED8] hover:opacity-80"
+                            >
+                              Dokumen
+                            </a>
+                          </template>
+                        </x-table.cell>
+                      </x-table.row>
+                    </template>
+                    <template x-if="i % 2 == 0">
+                      <x-table.row>
+                        <x-table.header-cell :variantColor="'even'" x-text="label"></x-table.header-cell>
+                        <x-table.cell :variantColor="'even'">
+                          <template x-if="loadingKey === key">
+                            <span class="text-gray-500">Memuat…</span>
+                          </template>
+                          <template x-if="loadingKey !== key">
+                            <a href="#"
+                              x-on:click.prevent="openDoc(key, $store.detailPage.data.nim)"
+                              class="underline text-[#1D4ED8] hover:opacity-80"
+                            >
+                              Dokumen
+                            </a>
+                          </template>
+                        </x-table.cell>
+                      </x-table.row>
+                    </template>
                   </template>
-                </tbody>
-              </table>
+                </x-table.body>
+              </x-table.index>
             </x-accordion>
 
             <x-accordion :label="'Status Administrasi Akademik'">
-              <table class="min-w-full table-fixed text-sm text-[#262626]">
-                <tbody>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Status Administrasi</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]" x-text="$store.detailPage.data.statusAdministrasi.administrasi"></x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Status Akademik</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]" x-text="$store.detailPage.data.statusAdministrasi.akademik == 'active' ? 'Aktif' : 'Tidak Aktif'"></x-table-cell>
-                  </x-table-row>
-                </tbody>
-              </table>
+              <x-table.index :isRoundedTop="false">
+                <x-table.body>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'odd'" :position="'left'" >Status Administrasi</x-table.header-cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.statusAdministrasi.administrasi"></x-table.cell>
+                  </x-table.row>
+                  <x-table.row>
+                    <x-table.header-cell :variantColor="'even'" :position="'left'">Status Akademik</x-table.header-cell>
+                    <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.statusAdministrasi.akademik == 'active' ? 'Aktif' : 'Tidak Aktif'"></x-table.cell>
+                  </x-table.row>
+                </x-table.body>
+              </x-table.index>
             </x-accordion>
+
             <x-accordion :label="'Statistik IPK Mahasiswa'" x-on:click="initChart()">
               <x-container :variant="'content-wrapper'" :class="'!p-5'">
                 <x-typography :variant="'body-medium-bold'" class="w-full text-center">Statistik IPK dan IPS Mahasiswa</x-typography>
                 <x-container :variant="'content-wrapper'" class="!px-0 !h-[400px]">
                     <canvas class="w-full h-full"></canvas>
                 </x-container>
-                <x-container :variant="'content-wrapper'" class="flex flex-row justify-end gap-3">
-                  <x-button.primary x-on:click="printChart()">Cetak Grafik</x-button.secondary>
-                  <x-button.primary x-on:click="downloadChart()">Unduk Grafik</x-button.secondary>
+                <x-container :variant="'content-wrapper'" class="!flex-row justify-end gap-3">
+                  <x-button :variant="'primary'" x-on:click="printChart()">Cetak Grafik</x-button.secondary>
+                  <x-button :variant="'primary'" x-on:click="downloadChart()">Unduk Grafik</x-button.secondary>
                 </x-container>
               </x-container>
             </x-accordion>
+
             <x-accordion :label="'Catatan Akademis Mahasiswa'">
-              <x-table :isRoundedTop="false" :isRoundedBottom="false">
-                <x-table-head>
-                  <x-table-row>
-                      <x-table-header class="w-[160px]">Tahun / Term</x-table-header>
-                      <x-table-header class="w-[100px]">IPS</x-table-header>
-                      <x-table-header class="w-[100px]">IPK</x-table-header>
-                      <x-table-header class="w-[140px]">SKS Diambil</x-table-header>
-                      <x-table-header class="w-[140px]">SKS Diperoleh</x-table-header>
-                      <x-table-header class="w-[160px]">Opsi</x-table-header>
-                  </x-table-row>
-                </x-table-head>
-                <x-table-body>
+              <x-table.index :isRoundedTop="false" :isRoundedBottom="false">
+                <x-table.head>
+                  <x-table.row>
+                      <x-table.header-cell>Tahun / Term</x-table.header-cell>
+                      <x-table.header-cell>IPS</x-table.header-cell>
+                      <x-table.header-cell>IPK</x-table.header-cell>
+                      <x-table.header-cell>SKS Diambil</x-table.header-cell>
+                      <x-table.header-cell>SKS Diperoleh</x-table.header-cell>
+                      <x-table.header-cell>Opsi</x-table.header-cell>
+                  </x-table.row>
+                </x-table.head>
+                <x-table.body>
                   <template x-if="$store.detailPage.data.catatanAkademik && $store.detailPage.data.catatanAkademik.length > 0">
                     <template x-for="catatanAkademik in $store.detailPage.data.catatanAkademik">
-                      <x-table-row>
-                        <x-table-cell x-text="catatanAkademik.year+'/'+catatanAkademik.semester"></x-table-cell>
-                        <x-table-cell x-text="catatanAkademik.ips"></x-table-cell>
-                        <x-table-cell x-text="catatanAkademik.ipk"></x-table-cell>
-                        <x-table-cell x-text="catatanAkademik.sks_diambil+' SKS'"></x-table-cell>
-                        <x-table-cell x-text="catatanAkademik.sks_diperoleh+' SKS'"></x-table-cell>
-                        <x-table-cell>
-                          <button
-                              class="btn-detail inline-flex items-center gap-2 underline text-[#1D4ED8] hover:opacity-80"
-                              x-on:click="isModalOpen = true; selectedId = catatanAkademik.id"
+                      <x-table.row>
+                        <x-table.cell x-text="catatanAkademik.year+'/'+catatanAkademik.semester"></x-table.cell>
+                        <x-table.cell x-text="catatanAkademik.ips"></x-table.cell>
+                        <x-table.cell x-text="catatanAkademik.ipk"></x-table.cell>
+                        <x-table.cell x-text="catatanAkademik.sks_diambil+' SKS'"></x-table.cell>
+                        <x-table.cell x-text="catatanAkademik.sks_diperoleh+' SKS'"></x-table.cell>
+                        <x-table.cell>
+                          <x-button
+                            :variant="'text-link'"
+                            class="underline !text-blue-500"
+                            x-on:click="isModalOpen = true; selectedId = catatanAkademik.id"
+                            :icon="'search/blue-16'"
                           >
-                              <img src="{{ asset('assets/icon-search-blue.svg') }}" class="w-4 h-4" alt="detail">
-                              <span>Detail Akademis</span>
-                          </button>
-                        </x-table-cell>
-                      </x-table-row>
+                            Detail Akademis
+                          </x-button>
+                        </x-table.cell>
+                      </x-table.row>
                     </template>
                   </template>
                   <template x-if="!$store.detailPage.data.catatanAkademik && $store.detailPage.data.catatanAkademik.length == 0">
-                    <x-table-row>
-                      <x-table-cell colspan="6" class="text-center text-gray-500">
+                    <x-table.row>
+                      <x-table.cell colspan="6" class="text-center text-gray-500">
                         Belum Ada Data
-                      </x-table-cell>
-                    </x-table-row>
+                      </x-table.cell>
+                    </x-table.row>
                   </template>
-                </x-table-body>
-              </x-table>
+                </x-table.body>
+              </x-table.index>
             </x-accordion>
-            <x-button.secondary 
+            <x-button
+              :variant="'secondary'" 
               :href="url()->previous()"
               :class="'self-end'"
             >
               Kembali
-            </x-button.secondary>
+            </x-button>
           </x-container>
           <x-modal.container-pure-js x-bind:class="{'hidden': !isModalOpen, 'flex': isModalOpen}">
             <x-slot name="header">
@@ -514,25 +543,25 @@
               </x-container>
             </x-slot>
             <x-slot name="body">
-              <x-table>
-                <x-table-head>
-                  <x-table-row>
-                    <x-table-header>Nama Mata Kuliah</x-table-header>
-                    <x-table-header>Nama Kelas</x-table-header>
-                    <x-table-header>Nilai</x-table-header>
-                  </x-table-row>
-                </x-table-head>
-                <x-table-body>
+              <x-table.index>
+                <x-table.head>
+                  <x-table.row>
+                    <x-table.header-cell>Nama Mata Kuliah</x-table.header-cell>
+                    <x-table.header-cell>Nama Kelas</x-table.header-cell>
+                    <x-table.header-cell>Nilai</x-table.header-cell>
+                  </x-table.row>
+                </x-table.head>
+                <x-table.body>
                   <template x-if="
                     $store.detailPage.data.catatanAkademik.some(value => value.id == selectedId) && 
                     ($store.detailPage.data.catatanAkademik.find(value => value.id == selectedId)?.mataKuliah.length > 0)
                   ">
                     <template x-for="mataKuliah in $store.detailPage.data.catatanAkademik.find((value) => value.id == selectedId).mataKuliah">
-                      <x-table-row>
-                        <x-table-cell x-text="mataKuliah.nama"></x-table-cell>
-                        <x-table-cell x-text="mataKuliah.nama_kelas"></x-table-cell>
-                        <x-table-cell x-text="mataKuliah.nilai"></x-table-cell>
-                      </x-table-row>
+                      <x-table.row>
+                        <x-table.cell x-text="mataKuliah.nama"></x-table.cell>
+                        <x-table.cell x-text="mataKuliah.nama_kelas"></x-table.cell>
+                        <x-table.cell x-text="mataKuliah.nilai"></x-table.cell>
+                      </x-table.row>
                     </template>
                   </template>
                   <template x-if="
@@ -540,17 +569,17 @@
                     !$store.detailPage.data.catatanAkademik.find(v => v.id == selectedId)?.mataKuliah ||
                     $store.detailPage.data.catatanAkademik.find(v => v.id == selectedId)?.mataKuliah.length == 0
                   ">
-                    <x-table-row>
-                      <x-table-cell colspan="6" class="text-center text-gray-500">
+                    <x-table.row>
+                      <x-table.cell colspan="6" class="text-center text-gray-500">
                         Belum Ada Data
-                      </x-table-cell>
-                    </x-table-row>
+                      </x-table.cell>
+                    </x-table.row>
                   </template>
-                </x-table-body>
-              </x-table>
+                </x-table.body>
+              </x-table.index>
             </x-slot>
             <x-slot name="footer">
-              <x-button.secondary x-on:click="isModalOpen = false; selectedId = null">Kembali</x-button.secondary>
+              <x-button :variant="'secondary'" x-on:click="isModalOpen = false; selectedId = null">Kembali</x-button>
             </x-slot>
           </x-modal.container-pure-js>
       </x-container>
