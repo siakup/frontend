@@ -156,6 +156,19 @@
     </x-table.body>
   </x-table.index>
 
+  <x-typography :variant="'body-medium-bold'">Table Header and Table Cell in side by side</x-typography>
+  <x-table.index>
+    <x-table.body>
+      <x-table.row>
+          <x-table.header-cell :variantColor="'odd'" :position="'left'" :colspan="2">Header 1</x-table.header-cell>
+          <x-table.cell :variantColor="'odd'" :position="'left'" :colspan="4">Cell 1</x-table.cell>
+      </x-table-row>
+      <x-table.row>
+          <x-table.header-cell :variantColor="'even'" :position="'left'" :colspan="2">Header 2</x-table.header-cell>
+          <x-table.cell :variantColor="'even'" :position="'left'" :colspan="4" x-text="'Cell 2'"></x-table.cell>
+      </x-table-row>
+    </x-table.body>
+  </x-table.index>
 
 </x-container>
 

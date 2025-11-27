@@ -11,9 +11,9 @@
   x-data="{
     variants: {
       default: {
-        divClass: ({{json_encode($isRoundedTop)}} ? 'rounded-t-lg ' : '')
-          +({{json_encode($isRoundedBottom)}} ? 'rounded-b-lg ' : '')
-          +({{$isBordered}} ? 'border border-gray-400 ' : ''),
+        divClass: ({{json_encode($isRoundedTop)}} ? '!rounded-t-lg ' : '!rounded-t-none ')
+          +({{json_encode($isRoundedBottom)}} ? '!rounded-b-lg ' : '!rounded-b-none')
+          +({{json_encode($isBordered)}} ? 'border border-gray-400 ' : ''),
         tableClass:'border-separate border-spacing-0'
       },
       old: {
@@ -34,7 +34,7 @@
     isHaveTitle: {{json_encode($isHaveTitle)}},
     colorTypeTableTitle: {{json_encode($colorTypeTableTitle)}}
   }"
-  class="overflow-scroll w-full !p-0"
+  class="overflow-x-scroll scroll-hide w-full !p-0"
   x-bind:class="variants[variant].divClass"
 >
   <template x-if="isHaveTitle">
