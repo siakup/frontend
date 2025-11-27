@@ -1,4 +1,3 @@
-@import "tailwindcss";
 @layer base {
   h1 { @apply text-6xl leading-16 font-bold; }
   h2 { @apply text-5xl leading-13.5 font-bold; }
@@ -6,4 +5,5 @@
   h4 { @apply text-3xl leading-9.5 font-bold; }
   h5 { @apply text-2xl leading-8 font-bold; }
   h6 { @apply text-xl leading-7 font-bold; }
+  body { height: 100vh; width: 100vw; }
 }
