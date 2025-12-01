@@ -24,7 +24,7 @@
   }}
 >
     @if ($icon && $iconPosition === 'left')
-        <x-icon :iconUrl="$icon" class="w-5 h-5" />
+        <x-icon :name="$icon"/>
     @endif
 
     {{-- Slot sebagai prioritas, fallback ke label --}} 
@@ -33,6 +33,6 @@
     </x-typography>
 
     @if ($icon && $iconPosition === 'right')
-        <x-icon :iconUrl="$icon" class="w-5 h-5" />
+        <x-icon :name="$icon" />
     @endif
 </button>

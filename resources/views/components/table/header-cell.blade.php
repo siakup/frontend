@@ -1,9 +1,10 @@
 @props([
   'variant' => 'default',
   'variantColor' => 'default',
-  'colspan' => null,
-  'rowspan' => null,
-  'position' => 'center'
+  'colspan' => '',
+  'rowspan' => '',
+  'position' => 'center',
+  'class' => '',
 ])
 
 <th
@@ -28,8 +29,6 @@
     },
     variant: @js($variant),
     variantColor: @js($variantColor),
-    colSpan: @js($colspan),
-    rowSpan: @js($rowspan),
     positions: {
       left: 'text-left',
       center: 'text-center',
@@ -37,7 +36,9 @@
     },
     position: @js($position)
   }"
-  class="text-center align-middle font-semibold text-sm"
+  class="text-center align-middle font-semibold text-sm {{ $class }}"
+  colspan="{{ $colspan }}"
+  rowspan="{{ $rowspan }}"
   x-bind:class="[variants[variant], variantColors[variantColor][variant], positions[position]]"
   @if($attributes->has('x-text')) x-text="{{ $attributes->get('x-text') }}" @endif
 >

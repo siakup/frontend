@@ -1,29 +1,36 @@
-// public/js/controllers/cpl.js
-
-function cpl(cplListCount, cplListArray) {
+class Cpl {
+  /**
+   * Controller untuk halaman list CPL dengan select/unselect
+   * @param {number} cplListCount - Total jumlah CPL
+   * @param {array} cplListArray - Array data CPL
+   */
+  listCpl(cplListCount, cplListArray) {
     return {
-        selectAll: false,
-        selected: [],
-        isDisabled: true,
+      selectAll: false,
+      selected: [],
+      isDisabled: true,
+      cplListCount: cplListCount,
+      cplListArray: cplListArray,
 
-        toggleAll() {
-            this.selected = this.selectAll 
-                ? cplListArray.map((_, i) => i)
-                : [];
-        },
+      init() {
+        this.$watch('selected', value => {
+          this.isDisabled = value.length === 0;
+          this.selectAll = value.length === this.cplListCount;
+        });
+      },
 
-        reset() {
-            this.selectAll = false;
-            this.selected = [];
-        },
+      toggleAll() {
+        this.selected = this.selectAll
+          ? this.cplListArray.map((_, i) => i)
+          : [];
+      },
 
-        init() {
-            this.$watch('selected', value => {
-                this.isDisabled = value.length === 0;
-                this.selectAll = value.length === cplListCount;
-            });
-        }
+      reset() {
+        this.selectAll = false;
+        this.selected = [];
+      }
     }
+  }
 }
 
-window.cpl = cpl;
+window.CplController = new Cpl()

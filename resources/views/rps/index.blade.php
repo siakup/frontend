@@ -2,14 +2,9 @@
 
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">RPS</div>
-@endsection
-
 <script src="{{ asset('js/controllers/rps.js') }}" defer></script>
 
 @section('content')
-
     <x-container variant="content-wrapper">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-container variant="content" class="ml-3" x-data="rps()">
@@ -19,15 +14,14 @@
                     <x-slot name="input">
                         <x-form.dropdown variant="gray" buttonId="dropdownPeriodeRpsButton"
                             dropdownId="dropdownPeriodeRpsList" label="-Pilih Periode Akademik-" :dropdownItem="$periodeList"
-                            buttonStyleClass="text-sm" :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')" :isIconCanRotate="true" x-model="periode" />
+                            x-model="periode" />
                     </x-slot>
                 </x-form.input-container>
                 <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Program Studi</x-slot>
                     <x-slot name="input">
                         <x-form.dropdown variant="gray" buttonId="dropdownProdiButton" dropdownId="dropdownProdiList"
-                            label="-Pilih Program Studi-" :dropdownItem="$prodiList" buttonStyleClass="text-sm" :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
-                            :isIconCanRotate="true" x-model="prodi" />
+                            label="-Pilih Program Studi-" :dropdownItem="$prodiList" buttonStyleClass="text-sm" x-model="prodi" />
                     </x-slot>
                 </x-form.input-container>
                 <x-form.input-container labelClass="w-50" inputClass="flex flex-row gap-3">
@@ -35,7 +29,7 @@
                     <x-slot name="input">
                         <x-form.dropdown variant="gray" buttonId="dropdownMatkulButton" dropdownId="dropdownMatkulList"
                             label="-Pilih Mata Kuliah-" :dropdownItem="$matkulList" buttonStyleClass="text-sm"
-                            dropdownContainerClass="w-full" :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')" :isIconCanRotate="true" x-model="mata_kuliah" />
+                            dropdownContainerClass="w-full" x-model="mata_kuliah" />
                         <x-button.primary>Cari</x-button.primary>
                     </x-slot>
                 </x-form.input-container>
@@ -75,11 +69,11 @@
                                 </x-table.cell>
                                 <x-table.cell text_size="text-xs">{{ $rps['tanggal_upload'] }}</x-table.cell>
                                 <x-table.cell>
-                                    <div class="flex flex-nowrap inline-flex gap-3">
-                                        <x-button.base :icon="asset('assets/icons/copy/black-16.svg')" iconPosition="left" sizeText="caption-regular">
+                                    <div class="flex-nowrap inline-flex gap-3">
+                                        <x-button.base :icon="'copy/black-16'" iconPosition="left" sizeText="caption-regular">
                                             Salin
                                         </x-button.base>
-                                        <x-button.base :icon="asset('assets/icons/edit/red-16.svg')" iconPosition="left" class="text-red-500"
+                                        <x-button.base :icon="'edit/red-16'" iconPosition="left" class="text-red-500"
                                             sizeText="caption-regular">
                                             Ubah
                                         </x-button.base>
@@ -92,7 +86,7 @@
             </x-table.index>
 
             <div class="flex mt-5 justify-end gap-2">
-                <x-button.secondary iconPosition="right" icon="{{ asset('assets/icons/upload/red-20.svg') }}">
+                <x-button.secondary iconPosition="right" :icon="'upload/red-16'">
                     Unggah RPS
                 </x-button.secondary>
                 <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
