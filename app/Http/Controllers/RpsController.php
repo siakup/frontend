@@ -129,41 +129,30 @@ class RpsController extends Controller
         $cplList = [
             [
                 'cpl' => 'CPL-G',
-                'deskripsi' => 'Kemampuan menerapkan pengetahuan matematika dan ilmu pengetahuan dasar lainnya 
-                                terutama pada kekhususan bidang teknik dan memahami konteks ilmu pengetabuan 
-                                dan rekayasa multidisiplin yang lebih luas.',
+                'deskripsi' => 'Kemampuan menerapkan pengetahuan matematika dan ilmu pengetahuan dasar lainnya terutama pada kekhususan bidang teknik dan memahami konteks ilmu pengetabuan dan rekayasa multidisiplin yang lebih luas.',
             ],
             [
                 'cpl' => 'CPL-H',
-                'deskripsi' => 'Kemampuan untuk mengidentifikasi, merumuskan dan menyelesaikan permasalahan rekayasa
-                                di bidang studi masing nasing: dan memilih serta menerapkan metode-metode relevan 
-                                yang dibangun dari metode analitis, komputasi, da: chsnerimental vano telah dislani.',
+                'deskripsi' => 'Kemampuan untuk mengidentifikasi, merumuskan dan menyelesaikan permasalahan rekayasa di bidang studi masing nasing: dan memilih serta menerapkan metode-metode relevan yang dibangun dari metode analitis, komputasi, da: chsnerimental vano telah dislani.',
             ],
             [
                 'cpl' => 'CPL-I',
-                'deskripsi' => 'Kemampuan untuk memilih dan memakai teknik-teknik, sumber days, serta peralatan 
-                                rekayasa dan aplikasi IT modern yang sesuai, termasuk melakukan prediksi dan 
-                                pemodelan problem rekayasa .',
+                'deskripsi' => 'Kemampuan untuk memilih dan memakai teknik-teknik, sumber days, serta peralatan rekayasa dan aplikasi IT modern yang sesuai, termasuk melakukan prediksi dan pemodelan problem rekayasa .',
             ],
         ];
 
         $cpmkList = [
             [
                 'cpmk' => 'CPMK-1',
-                'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem 
-                                pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
+                'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
             ],
             [
                 'cpmk' => 'CPMK-2',
-                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk 
-                                menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun 
-                                kesetimbangan reaksi kimia.',
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
             ],
             [
                 'cpmk' => 'CPMK-3',
-                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk 
-                                menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun 
-                                kesetimbangan reaksi kimia',
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia',
             ],
 
         ];
@@ -617,6 +606,108 @@ class RpsController extends Controller
         ];
 
         return view('rps.submission.index', get_defined_vars());
+    }
+
+    public function submitSubmission()
+    {
+        $dosen = [
+            'nama' => 'Catia Angli Curie, MS.',
+            'nip' => '116071',
+        ];
+
+        $kaprodi = [
+            'nama' => 'Eduardus Budi Nursanto, PhD.',
+            'nip' => '116116',
+        ];
+
+        $dekan = [
+            'nama' => 'Khusnum Widiyanti, PhD.',
+            'nip' => '116053',
+        ];
+
+        $rencanaPerkuliahan = [
+            [
+                'minggu' => 1,
+                'cpmk' => 'CPMK-1',
+                'sub_cpmk' => '1. Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi steam power plant, seperti: menentukan laju alir steam, daya pompa/turbin, laju alir panas pada boiler/condenser).
+                2. Mahasiswa dapat menentukan efisiensi termal steam power plant yang beroperasi dengan siklus Rankine (ideal maupun aktual)',
+                'rencana' => '1. Rencana Pembelajaran Studi
+                            2. Steam power plant
+                                a. Review siklus Carnot
+                                b. Siklus Rankine ideal (ideal vapor power cycle)
+                                c. Siklus Rankine aktual',
+                'waktu_kuliah' => 100,
+                'waktu_diskusi_latihan' => 50,
+                'waktu_praktikum' => 180,
+                'waktu_mandiri' => 180,
+                'metode_penilaian' => 'Tugas 1, UTS',
+            ],
+            [
+                'minggu' => 2,
+                'cpmk' => 'CPMK-1',
+                'sub_cpmk' => '1. Mahasiswa memahami perbedaan antara siklus refrigerasi dan power plant \n
+                                2. Mahasiswa memahami siklus vapor compression ideal',
+                'rencana' => '2. Steam power plant
+                                a. Meningkatkan efisiensi siklus Ranking
+                                2. Refrigerasi
+                                a. Refrigerasi ideal: Carnot refrigerator & vapor compression cycle',
+                'waktu_kuliah' => 100,
+                'waktu_diskusi_latihan' => 50,
+                'waktu_praktikum' => 180,
+                'waktu_mandiri' => 180,
+                'metode_penilaian' => 'Tugas 2, UTS',
+            ],
+            [
+                'minggu' => 3,
+                'cpmk' => 'CPMK-1',
+                'sub_cpmk' => 'Mahasiswa mampu menggunakan prinsip neraca energi untuk mengevaluasi performa refrigerasi vapor compression cycle, seperti: menentukan laju alir refrigeran, daya kompresor, laju alir panas pada condenser/evaporator)',
+                'rencana' => 'Refrigerasi
+                                3.2. Efektivitas refrigerator (coefficient of performance)
+                                3.3. Actual vapor compression cycle
+                                3.4. Pemilihan refrigeran (pengayaan)',
+                'waktu_kuliah' => 100,
+                'waktu_diskusi_latihan' => 50,
+                'waktu_praktikum' => 180,
+                'waktu_mandiri' => 180,
+                'metode_penilaian' => 'Tugas 3, UTS',
+            ],
+            [
+                'minggu' => 4,
+                'cpmk' => 'CPMK-1',
+                'sub_cpmk' => 'Mahasiswa memahami prinsip pencairan gas berdasarkan diagram fasa',
+                'rencana' => 'Liquefaction
+                                4.1. Pengertian & diagram fasa
+                                4.2. Linde liquefaction',
+                'waktu_kuliah' => 100,
+                'waktu_diskusi_latihan' => 50,
+                'waktu_praktikum' => 180,
+                'waktu_mandiri' => 180,
+                'metode_penilaian' => 'UTS',
+            ],
+        ];
+
+        $rencanaPerkuliahan = collect($rencanaPerkuliahan)->map(function ($item) {
+            $item['total_waktu'] = collect($item)->only([
+                'waktu_kuliah', 'waktu_diskusi_latihan', 'waktu_praktikum', 'waktu_mandiri',
+            ])->sum();
+
+            return $item;
+        });
+
+        // Hitung total per jenis waktu
+        $waktuTotal = [
+            'kuliah' => $rencanaPerkuliahan->sum('waktu_kuliah'),
+            'diskusi_latihan' => $rencanaPerkuliahan->sum('waktu_diskusi_latihan'),
+            'praktikum' => $rencanaPerkuliahan->sum('waktu_praktikum'),
+            'mandiri' => $rencanaPerkuliahan->sum('waktu_mandiri'),
+        ];
+
+        // Hitung total keseluruhan
+        $waktuTotal['total'] = array_sum($waktuTotal);
+        $waktuStandarNasional = 140;
+        $sks = 3;
+
+        return view('rps.submission.submit', get_defined_vars());
     }
 
     /**

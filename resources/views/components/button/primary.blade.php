@@ -24,7 +24,7 @@
   ]) }}
 >
   @if ($icon && $iconPosition === 'left')
-      <x-icon :iconUrl="$icon" class="w-5 h-5 [filter:brightness(0)_invert(1)]" />
+      <x-icon :name="$icon" class="filter-[brightness(0)_invert(1)]" />
   @endif
 
     {{-- Slot sebagai prioritas, fallback ke label --}}
@@ -35,6 +35,6 @@
     @endif
 
     @if ($icon && $iconPosition === 'right')
-        <x-icon :iconUrl="$icon" class="w-5 h-5 [filter:brightness(0)_invert(1)]" />
+        <x-icon :name="$icon" class="filter-[brightness(0)_invert(1)]" />
     @endif
 </button>

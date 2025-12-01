@@ -147,8 +147,8 @@
           <x-menu.item
             :label="'RPS (Rencana Pembelajaran Semester)'"
             :haveIcon="true"
-            :iconInactive="asset('assets/base/icon-kurikulum.svg')"
-            :iconActive="asset('assets/base/icon-kurikulum.svg')"
+            :iconInactive="asset('assets/icons/curriculum/outline-black-24.svg')"
+            :iconActive="asset('assets/icons/curriculum/outline-red-24.svg')"
             :routeName="'rps.index'"
             :routeQuery="'rps*'"
             :variant="'parent'"

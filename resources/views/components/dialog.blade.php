@@ -22,7 +22,7 @@
     {{ $attributes->merge(['class' => $dialogClass]) }}>
     <x-icon :name="$iconName" />
 
-    <div class="flex-grow">
+    <div class="grow">
         @if (isset($header))
             <x-typography variant="body-medium-bold">
                 {{ $header }}
