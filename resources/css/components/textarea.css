@@ -1,0 +1,5 @@
+@layer utilities {
+    .textarea { @apply w-full pe-10 box-border ps-3 text-sm pt-3 border border-gray-400 rounded-sm leading-5 focus:outline-none disabled:bg-gray-200 disabled:text-gray-600 disabled:cursor-not-allowed; }
+    .textarea-helper { @apply flex flex-row items-center text-xs text-gray-600; }
+    .textarea-maxchar { @apply ml-auto right-0 text-gray-600; }
+}

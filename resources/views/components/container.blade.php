@@ -3,7 +3,7 @@
 @props([
     'variant' => 'content',
     'class' => '',
-    'borderRadius' => 'rounded-3xl',
+    'borderRadius' => '',
 ])
 
 @php
@@ -13,7 +13,9 @@
         'wide' => 'wide', // layar penuh
         'narrow' => 'narrow', // konten kecil
         'content-grey' => 'content-grey', // konten abu-abu,
-        'flat' => ''
+        'flat' => '',
+        'disable-red-gradient' => 'disable-red-gradient',
+        'content-under-navbar' =>  'content-under-navbar',
     ];
 
     $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];

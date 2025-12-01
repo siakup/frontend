@@ -1,0 +1,23 @@
+@layer utilities {
+    .badge-base { @apply inline-flex flex items-center justify-center w-max; }
+    .badge-xl { @apply text-base min-w-25 min-h-8 py-1 px-3; }
+    .badge-lg { @apply text-xs min-w-20 min-h-6 py-1 px-3; }
+    .badge-md { @apply text-[10px] min-w-15 min-h-4 py-1 px-4; }
+
+    /* Colors only */
+    .badge-red-bordered {@apply border bg-red-50 border-red-400 text-red-400;}
+    .badge-red-monochrome {@apply bg-red-50 border-red-400 text-red-400;}
+    .badge-red-filled {@apply bg-red-400 text-gray-50;}
+    .badge-yellow-bordered {@apply border bg-yellow-100 border-yellow-500 text-gray-800;}
+    .badge-yellow-monochrome {@apply bg-yellow-100 text-gray-800;}
+    .badge-yellow-filled {@apply bg-yellow-400 text-gray-800;}
+    .badge-blue-bordered {@apply border bg-blue-50 border-blue-400 text-blue-600;}
+    .badge-blue-monochrome {@apply bg-blue-50 text-blue-600;}
+    .badge-blue-filled {@apply bg-blue-400 text-gray-50;}
+    .badge-green-bordered {@apply border bg-green-50 border-green-400 text-green-700;}
+    .badge-green-monochrome {@apply bg-green-50 text-green-700;}
+    .badge-green-filled {@apply bg-green-400 text-gray-800;}
+
+    .badge-default { @apply rounded-xs; }
+    .badge-pill { @apply rounded-lg; }
+}

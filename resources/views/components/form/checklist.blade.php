@@ -29,14 +29,13 @@
   }
 </script>
 
-<div class="flex gap-3 items-center {{ $containerClass }}">
+<div class="checklist-container {{ $containerClass }}">
   <input 
     id="{{ $id }}" 
     type="checkbox" 
     {{
       $attributes->except('onchange')->merge([
-        'class' => "accent-red-500 w-fit pe-10 box-border flex items-center ps-3 border 
-        border-gray-400 rounded-lg text-sm leading-5 h-6 disabled:cursor-not-allowed"
+        'class' => "checklist"
       ])
     }}
     onchange="{{$onChange}}"

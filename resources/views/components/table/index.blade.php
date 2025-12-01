@@ -34,19 +34,19 @@
     isHaveTitle: {{json_encode($isHaveTitle)}},
     colorTypeTableTitle: {{json_encode($colorTypeTableTitle)}}
   }"
-  class="overflow-x-scroll scroll-hide w-full !p-0"
+  class="overflow-x-scroll scroll-hide w-full p-0!"
   x-bind:class="variants[variant].divClass"
 >
   <template x-if="isHaveTitle">
-    <x-container 
+    <div 
       :variant="'content-wrapper'"
-      class="border-b-[1px] border-b-gray-400 flex justify-between !p-4 !rounded-none"
+      class="sticky left-0 border-b border-b-gray-400 flex justify-between p-4! rounded-none! w-full"
       x-bind:class="variantColorsTableTitle[colorTypeTableTitle]"
     >
       {{ $tableTitleSlot ?? '' }}
-    </x-container>
+    </div>
   </template>
-  <table x-bind:class="variants[variant].tableClass" class="min-w-full w-max">
+  <table x-bind:class="variants[variant].tableClass" class="min-w-full table-fixed">
       {{ $slot }}
   </table>
 </x-container>

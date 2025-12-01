@@ -1,0 +1,40 @@
+@layer utilities {
+    .tooltip {
+        @apply absolute z-1100 p-2 text-xs text-left text-gray-50 bg-gray-800 w-max max-w-60 rounded-sm shadow;
+    }
+
+    .arrow {
+        @apply absolute w-2 h-2 bg-gray-900 rotate-45;
+    }
+
+    /* base */
+    .pos-top    { @apply bottom-full mb-2; }
+    .pos-bottom { @apply top-full mt-2; }
+    .pos-left   { @apply right-full mr-2; }
+    .pos-right  { @apply left-full ml-2; }
+
+    /* alignment horizontal */
+    .align-x-left  { @apply left-0; }
+    .align-x-center { @apply left-1/2 -translate-x-1/2; }
+    .align-x-right    { @apply right-0; }
+
+    /* alignment vertikal */
+    .align-y-top  { @apply top-0; }
+    .align-y-center { @apply top-1/2 -translate-y-1/2; }
+    .align-y-bottom    { @apply bottom-0; }
+
+    /* arrow */
+    .arrow-top    { @apply top-full -mt-1; }
+    .arrow-bottom { @apply bottom-full -mb-1; }
+    .arrow-left   { @apply left-full -ml-1; }
+    .arrow-right  { @apply right-full -mr-1; }
+
+    /* offset arrow */
+    .offset-x-left  { @apply left-3; }
+    .offset-x-center { @apply left-1/2 -translate-x-1/2; }
+    .offset-x-right    { @apply right-3; }
+
+    .offset-y-top  { @apply top-3; }
+    .offset-y-center { @apply top-1/2 -translate-y-1/2; }
+    .offset-y-bottom    { @apply bottom-3; }
+}
