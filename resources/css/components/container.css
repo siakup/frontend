@@ -11,4 +11,6 @@
   .blue-gradient { @apply bg-gradient-to-r from-white to-blue-50 flex; }
   .yellow-gradient { @apply bg-gradient-to-r from-white to-yellow-100 flex; }
   .disable-blue { @apply bg-disable-blue flex; }
+  .disable-red-gradient { @apply p-5 border border-gray-400 bg-linear-to-r from-disable-red to-white h-max rounded-t-lg; }
+  .content-under-navbar { @apply flex flex-col gap-5 p-5 items-stretch border border-gray-400 border-t-red-200 bg-white rounded-b-lg overflow-visible relative z-1;}
 }

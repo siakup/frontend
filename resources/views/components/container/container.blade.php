@@ -5,8 +5,6 @@
     'class' => '',
 ])
 
-
-
 @php
     $variants = [
         'content-wrapper' => 'content-wrapper', // konten utama
@@ -23,6 +21,8 @@
         'disable-blue' => 'disable-blue',
         'content-sender' => 'content-sender',
         'content-receiver' => 'content-receiver',
+        'disable-red-gradient' => 'disable-red-gradient',
+        'content-under-navbar' =>  'content-under-navbar',
     ];
 
     $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];

@@ -213,7 +213,6 @@
         /> --}}
       </x-menu.container>
     </x-container>
-
     <x-container.container :variant="'flat'" class="row-span-1 text-gray-800">
       <x-container.wrapper :rows="2">
         <x-container.container :variant="'flat'" class="row-span-1">

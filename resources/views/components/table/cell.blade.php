@@ -3,8 +3,9 @@
   'position' => 'center', 
   'rowspan' => null, 
   'colspan' => null, 
-  'text_size' => 'text-sm',
-  'variantColor' => 'default'
+  'text_size' => 'text-xs',
+  'variantColor' => 'default',
+  'class' => '',
 ])
 
 <td 
@@ -39,9 +40,11 @@
     },
     position: @js($position)
   }"
-  class="align-middle border-b text-gray-800"
+  class="align-middle border-b text-gray-800 {{ $class }}"
+  colspan="{{ $colspan }}"
+  rowspan="{{ $rowspan }}"
   x-bind:class="[variants[variant], variantColors[variantColor][variant], positions[position], textSize]"
   @if($attributes->has('x-text')) x-text="{{ $attributes->get('x-text') }}" @endif
 >
-    @if($slot->isNotEmpty()) {{ $slot }} @endif
+  {{ $slot }}
 </td>
