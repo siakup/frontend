@@ -2,10 +2,6 @@
 
 @section('title', 'RPS (Rencana Pembelajaran Dosen)')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Buat RPS (Rencana Pembelajaran Dosen)</div>
-@endsection
-
 @section('content')
     <div class="page-header pl-5">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>

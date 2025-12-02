@@ -2,10 +2,6 @@
 
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">RPS</div>
-@endsection
-
 <script src="{{ asset('js/controllers/rps.js') }}" defer></script>
 
 @section('content')

@@ -1,12 +1,15 @@
 @layer utilities {
-  .content { @apply bg-white border border-gray-400 rounded-md; }
   .wide { @apply max-w-screen max-h-screen; }
   .narrow { @apply max-w-lg; }
-  .content-grey { @apply bg-gray-400 rounded-md min-h-17; }
-  .content-disable-white { @apply bg-disable-white rounded-md min-h-17; }
-  .content-sender { @apply bg-green-100 w-full border border-gray-400 rounded-md rounded-tl-none; }
-  .content-receiver { @apply bg-blue-50 w-full border border-gray-400 rounded-md rounded-tl-none; }
-  .red-gradient { @apply bg-gradient-to-r from-white to-disable-red flex; }
+
+  .transparent { @apply bg-transparent flex; }
+  .content-white { @apply bg-white border border-gray-400 flex; }
+  .content-grey { @apply bg-gray-400 min-h-17 flex; }
+  .content-disable-white { @apply bg-disable-white min-h-17 flex; }
+  .content-sender { @apply bg-green-100 border border-gray-400 rounded-tl-none flex; }
+  .content-receiver { @apply bg-blue-50 border border-gray-400 rounded-tl-none flex; }
+  .disable-red-gradient { @apply bg-gradient-to-r from-white to-disable-red flex; }
+  .red-gradient { @apply bg-gradient-to-r from-white to-red-50 flex; }
   .green-gradient { @apply bg-gradient-to-r from-white to-green-400 flex; }
   .blue-gradient { @apply bg-gradient-to-r from-white to-blue-50 flex; }
   .yellow-gradient { @apply bg-gradient-to-r from-white to-yellow-100 flex; }

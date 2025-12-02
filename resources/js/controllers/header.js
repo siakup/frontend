@@ -25,4 +25,4 @@ class Header {
   }
 }
 
-export default new Header()
+window.HeaderController = new Header()

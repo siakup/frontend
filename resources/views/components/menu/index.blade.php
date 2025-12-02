@@ -1,7 +1,7 @@
-<x-container.container :variant="'flat'" class="w-full min-h-[calc(100vh-9rem)] h-full bg-white z-1000 border-r border-r-gray-400">
+<x-container.container :background="'white'" :radius="'none'" class="w-full h-full bg-white z-1000 border-r border-r-gray-400">
   <x-container.wrapper :padding="'p-0'" :rows="12">
 
-    <x-container.container :variant="'flat'" class="row-span-11">
+    <x-container.container :background="'transparent'" :radius="'none'" class="row-span-11 overflow-scroll">
       <x-menu.container :variant="'main'">
         <x-menu.item
           :label="'Beranda'"
@@ -212,18 +212,21 @@
           :variant="'parent'"
         /> --}}
       </x-menu.container>
-    </x-container>
+    </x-container.container>
 
-    <x-container.container :variant="'flat'" class="row-span-1 text-gray-800">
-      <x-container.wrapper :rows="2">
-        <x-container.container :variant="'flat'" class="row-span-1">
+    <x-container.container :background="'transparent'" :radius="'none'" class="row-span-1 text-gray-800">
+      <x-container.wrapper :rows="2" :gapY="4">
+
+        <x-container.container :background="'transparent'" :radius="'none'" class="row-span-1">
           <x-typography :variant="'caption-regular'">Copyright © 2025 Universitas Pertamina.</x-typography>
-        </x-container>
-        <x-container.container :variant="'flat'" class="row-span-1">
+        </x-container.container>
+
+        <x-container.container :background="'transparent'" :radius="'none'" class="row-span-1">
           <x-typography :variant="'caption-regular'">All Rights Reserved.</x-typography>
-        </x-container>
-      </x-wrapper>
-    </x-container>
+        </x-container.container>
+
+      </x-container.wrapper>
+    </x-container.container>
 
   </x-wrapper>
 </x-container>

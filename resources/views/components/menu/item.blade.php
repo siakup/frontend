@@ -53,7 +53,7 @@
       (isOpen) && 'bg-disable-red'
     ]"
   >
-    <div class="flex items-center gap-3 flex-1">
+    <x-container.container :background="'transparent'" :radius="'none'" class="flex items-center gap-3 flex-1">
       <template x-if="haveIcon">
         <img 
           x-bind:src="(isActive || isChildActive || isOpen) ? iconActive : iconInactive"
@@ -65,7 +65,7 @@
         x-bind:class="(isActive || isChildActive || isOpen) && 'text-red-500'"
         x-text="label"
       ></span>
-    </div>
+    </x-container.container>
     <template x-if="isSlotNotEmpty">
       <img 
         alt="Expand" 

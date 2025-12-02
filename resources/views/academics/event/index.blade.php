@@ -2,10 +2,6 @@
 
 @section('title', 'Event Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Akademik</div>
-@endsection
-
 @section('javascript')
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <script src="{{ asset('js/custom/event.js')}}"></script>

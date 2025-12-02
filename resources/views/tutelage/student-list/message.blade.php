@@ -2,11 +2,6 @@
 
 @section('title', 'Kelompok Perwalian')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item">Beranda</div>
-    <div class="breadcrumb-item active">Kelompok Perwalian</div>
-@endsection
-
 @section('content')
   <script type="module">
     document.addEventListener('alpine:init', () => {

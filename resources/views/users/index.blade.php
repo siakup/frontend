@@ -3,7 +3,7 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('javascript')
-    <script type="module">
+    <script>
       document.addEventListener('alpine:init', () => {
         Alpine.store('listPage', {
           datas: @js($response->data),

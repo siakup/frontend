@@ -2,10 +2,6 @@
 
 @section('title', 'Kalender Akademik')
 
-@section('breadcrumbs')
-  <div class="breadcrumb-item active">Lihat Event Kalender Akademik</div>
-@endsection
-
 @section('css')
   <link rel="stylesheet" href="{{ asset('css/plugins/flatpckr.css') }}" />
 @endsection

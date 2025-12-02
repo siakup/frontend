@@ -2,11 +2,11 @@
 
 @section('title', 'Kelompok Perwalian')
 
-@section('breadcrumbs')
+
     <div class="breadcrumb-item">Beranda</div>
     <div class="breadcrumb-item">Kelompok Perwalian</div>
     <div class="breadcrumb-item">Detail Kartu Mahasiswa</div>
-    <div class="breadcrumb-item active">Tambah Kelas Mata Kuliah</div>
+    Tambah Kelas Mata Kuliah</div>
 @endsection
 
 @section('content')

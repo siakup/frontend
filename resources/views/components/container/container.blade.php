@@ -3,30 +3,42 @@
 @props([
     'variant' => 'content',
     'class' => '',
+    'background' => 'transparent',
+    'radius' => 'md',
+    'padding' => 'p-0',
+    'gap' => 'gap-0',
+    'height' => 'full',
+    'width' => 'full'
 ])
 
-
-
 @php
-    $variants = [
-        'content-wrapper' => 'content-wrapper', // konten utama
-        'content' => 'content', // konten utama
-        'wide' => 'wide', // layar penuh
-        'narrow' => 'narrow', // konten kecil
-        'content-grey' => 'content-grey', // konten abu-abu,
-        'content-disable-white' => 'content-disable-white',
-        'flat' => '',
-        'red-gradient' => 'red-gradient',
-        'green-gradient' => 'green-gradient',
-        'yellow-gradient' => 'yellow-gradient',
-        'blue-gradient' => 'blue-gradient',
-        'disable-blue' => 'disable-blue',
-        'content-sender' => 'content-sender',
-        'content-receiver' => 'content-receiver',
+    // background guide
+    // 'transparent',
+    // 'content-white',
+    // 'content-grey',
+    // 'content-disable-white',
+    // 'disable-red-gradient',
+    // 'red-gradient',
+    // 'green-gradient',
+    // 'yellow-gradient',
+    // 'blue-gradient',
+    // 'disable-blue',
+    // 'content-sender',
+    // 'content-receiver',
+
+    $widthSize = [
+      'full' => 'w-full',
+      'maxContent' => 'w-max',
+      'auto' => 'w-auto',
     ];
 
-    $selectedVariant = isset($variants[$variant]) ? $variants[$variant] : $variants['content'];
-    $containerClass = "{$selectedVariant} {$class}";
+    $heightSize = [
+      'full' => 'h-full',
+      'maxContent' => 'h-max',
+      'auto' => 'h-auto',
+    ];
+
+    $containerClass = "{$background} {$class} rounded-{$radius} {$widthSize[$width]} {$heightSize[$height]} {$padding} {$gap}";
 @endphp
 
 <div {{ $attributes->merge(['class' => $containerClass]) }}>

@@ -2,10 +2,6 @@
 
 @section('title', 'Jadwal Kuliah Program Studi')
 
-@section('breadcrumbs')
-  <div class="breadcrumb-item">Beranda</div>
-@endsection
-
 <script type="module">
   import ProdiSchedule from "{{ asset('js/controllers/prodiSchedule.js') }}";
   document.addEventListener('alpine:init', () => {

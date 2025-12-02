@@ -2,8 +2,8 @@
 
 @section('title', 'Manajemen Staf Pengajar')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Manajemen Staf Pengajar</div>
+
+    Manajemen Staf Pengajar</div>
 @endsection
 
 @section('css')

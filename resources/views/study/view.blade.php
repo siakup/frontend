@@ -2,14 +2,6 @@
 
 @section('title', 'Mata Kuliah')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Lihat Mata Kuliah</div>
-@endsection
-
-@section('css')
-
-@endsection
-
 @section('javascript')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

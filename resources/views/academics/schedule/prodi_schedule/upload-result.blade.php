@@ -2,10 +2,6 @@
 
 @section('title', 'Preview Upload File FET')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Preview Upload File FET</div>
-@endsection
-
 <script type="module">
   import ProdiSchedule from "{{ asset('js/controllers/prodiSchedule.js') }}";
 

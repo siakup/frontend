@@ -2,13 +2,6 @@
 
 @section('title', 'Tetapkan Mata Kuliah Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Kurikulum</div>
-@endsection
-
-@section('css')
-@endsection
-
 <script src="{{asset('js/custom/curriculum.js')}}"></script>
 
 @section('content')

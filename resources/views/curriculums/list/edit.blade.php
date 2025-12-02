@@ -2,10 +2,6 @@
 
 @section('title', 'Ubah Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Kurikulum</div>
-@endsection
-
 <script src="{{ asset('js/custom/curriculum.js')}}"></script>
 <script>
   document.addEventListener('DOMContentLoaded', () => {

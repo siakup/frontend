@@ -2,11 +2,6 @@
 
 @section('title', 'Jadwal Kuliah Institusi Parent')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item">Beranda</div>
-    <div class="breadcrumb-item active">Jadwal Kuliah</div>
-@endsection
-
 <script type="module">
   import ParentInstitutionSchedule from "{{ asset('js/controllers/parentInstitutionSchedule.js') }}";
   document.addEventListener('alpine:init', () => {

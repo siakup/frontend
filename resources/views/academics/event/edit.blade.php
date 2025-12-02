@@ -2,10 +2,6 @@
 
 @section('title', 'Ubah Event Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Akademik Event</div>
-@endsection
-
 @section('content')
 <form action="{{route('academics-event.update', ['id' => $id])}}" method="POST">
   @csrf

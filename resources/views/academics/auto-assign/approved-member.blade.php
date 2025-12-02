@@ -2,10 +2,6 @@
 
 @section('title', 'Daftar Peserta Disetujui')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Daftar Peserta Disetujui</div>
-@endsection
-
 @section('javascript')
     <script>
         document.addEventListener('alpine:init', () => {

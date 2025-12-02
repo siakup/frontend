@@ -2,10 +2,6 @@
 
 @section('title', 'Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Akademik</div>
-@endsection
-
 @section('content')
   <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Tambah Event Akademik</x-typography>

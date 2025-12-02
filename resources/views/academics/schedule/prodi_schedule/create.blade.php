@@ -2,10 +2,6 @@
 
 @section('title', 'Tambah Jadwal Kuliah Program Studi')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Kurikulum</div>
-@endsection
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/plugins/flatpckr.css') }}" />
 @endsection

@@ -2,10 +2,6 @@
 
 @section('title', 'Upload Ekuivalensi Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Upload Ekuivalensi Kurikulum</div>
-@endsection
-
 @section('content')
   <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Upload Ekuivalensi Kurikulum</x-typography>

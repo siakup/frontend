@@ -2,10 +2,6 @@
 
 @section('title', 'Pemetaan CPL')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Pemetaan CPL</div>
-@endsection
-
 @section('css')
     <style>
         .right {

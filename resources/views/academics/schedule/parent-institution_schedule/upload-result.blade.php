@@ -2,10 +2,6 @@
 
 @section('title', 'Preview Upload File FET')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Preview Upload File FET</div>
-@endsection
-
 <script type="module">
   import ParentInstitutionSchedule from "{{ asset('js/controllers/parentInstitutionSchedule.js') }}";
 
