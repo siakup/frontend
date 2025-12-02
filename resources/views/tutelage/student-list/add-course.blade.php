@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="heading-h6">
             Tambah Kelas Mata Kuliah
         </x-typography>
@@ -19,7 +19,7 @@
             Detail Kartu Mahasiswa
         </x-button.back>
 
-        <x-container class="flex flex-col gap-5">
+        <x-container.container class="flex flex-col gap-5">
             <div class="grid grid-cols-10 items-center gap-5">
                 {{-- Program Studi --}}
                 <x-typography variant="body-small-semibold" class="col-span-2">Pilih Program Studi</x-typography>
@@ -46,51 +46,51 @@
             </div>
 
             {{-- Table --}}
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>Semester</x-table-header>
-                        <x-table-header>Nama Mata Kuliah</x-table-header>
-                        <x-table-header>Nama Kelas</x-table-header>
-                        <x-table-header>SKS</x-table-header>
-                        <x-table-header>Peserta / Kapasitas</x-table-header>
-                        <x-table-header>Jadwal</x-table-header>
-                        <x-table-header>Pengajar</x-table-header>
-                        <x-table-header></x-table-header>
-                    </x-table-row>
-                </x-table-head>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>Semester</x-table.header-cell>
+                        <x-table.header-cell>Nama Mata Kuliah</x-table.header-cell>
+                        <x-table.header-cell>Nama Kelas</x-table.header-cell>
+                        <x-table.header-cell>SKS</x-table.header-cell>
+                        <x-table.header-cell>Peserta / Kapasitas</x-table.header-cell>
+                        <x-table.header-cell>Jadwal</x-table.header-cell>
+                        <x-table.header-cell>Pengajar</x-table.header-cell>
+                        <x-table.header-cell></x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
 
-                <x-table-body>
+                <x-table.body>
                     @foreach ($courses as $course)
-                        <x-table-row>
-                            <x-table-cell>{{ $course['semester'] }}</x-table-cell>
-                            <x-table-cell>{{ $course['nama'] }}</x-table-cell>
-                            <x-table-cell>{{ $course['kelas'] }}</x-table-cell>
-                            <x-table-cell>{{ $course['sks'] }}</x-table-cell>
-                            <x-table-cell>{{ $course['peserta'] }} / {{ $course['kapasitas'] }}</x-table-cell>
-                            <x-table-cell class="text-left">
+                        <x-table.row>
+                            <x-table.cell>{{ $course['semester'] }}</x-table.cell>
+                            <x-table.cell>{{ $course['nama'] }}</x-table.cell>
+                            <x-table.cell>{{ $course['kelas'] }}</x-table.cell>
+                            <x-table.cell>{{ $course['sks'] }}</x-table.cell>
+                            <x-table.cell>{{ $course['peserta'] }} / {{ $course['kapasitas'] }}</x-table.cell>
+                            <x-table.cell class="text-left">
                                 <ul class="list-disc list-inside">
                                     @foreach ($course['jadwal'] as $jadwal)
                                         <li>{{ $jadwal }}</li>
                                     @endforeach
                                 </ul>
-                            </x-table-cell>
+                            </x-table.cell>
 
-                            <x-table-cell class="text-left">
+                            <x-table.cell class="text-left">
                                 <ul class="list-disc list-inside">
                                     @foreach ($course['pengajar'] as $pengajar)
                                         <li>{{ $pengajar }}</li>
                                     @endforeach
                                 </ul>
-                            </x-table-cell>
+                            </x-table.cell>
 
-                            <x-table-cell>
+                            <x-table.cell>
                                 <input type="checkbox" />
-                            </x-table-cell>
-                        </x-table-row>
+                            </x-table.cell>
+                        </x-table.row>
                     @endforeach
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
 
             <div class="box-border border rounded-xl border-[#D9D9D9] overflow-clip">
                 <x-full-calendar :events="$events" />

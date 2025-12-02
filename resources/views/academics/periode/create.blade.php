@@ -16,14 +16,14 @@
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Tambah Periode Akademik</x-typography>
     <x-button.back :href="route('academics-periode.index')">Periode Akademik</x-button.back>
     <form action="{{ route('academics-periode.store') }}" method="POST">
       @csrf
-      <x-container :class="'flex flex-col gap-4'">
+      <x-container.container :class="'flex flex-col gap-4'">
         <x-typography :variant="'body-medium-bold'">Buat Periode Akademik</x-typography>
-        <x-container :variant="'content-wrapper'" :class="'flex flex-col gap-4 !p-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-col gap-4 !p-0'">
           <input type="hidden" id="user_id" value="" />
           <x-form.input-container class="min-w-[150px]" id="year">
             <x-slot name="label">Tahun</x-slot>
@@ -56,7 +56,7 @@
           <x-form.input-container class="min-w-[150px]" id="semester">
             <x-slot name="label">Tahun Akademik</x-slot>
             <x-slot name="input">
-              <x-container :variant="'content-wrapper'" :class="'flex justify-between w-full !p-0'">
+              <x-container.container :variant="'content-wrapper'" :class="'flex justify-between w-full !p-0'">
                 <input 
                   type="text" 
                   id="tahun_akademik" 
@@ -69,7 +69,7 @@
               </x-container>
             </x-slot>
           </x-form.input-container>
-          <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between !p-0'">
+          <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between !p-0'">
             <x-form.input-container class="min-w-[150px]" id="semester">
               <x-slot name="label">Tanggal Mulai</x-slot>
               <x-slot name="input">
@@ -95,7 +95,7 @@
             </x-slot>
           </x-form.input-container>
           <x-form.toggle :id="'academic-periode-status'"/>
-          <x-container :variant="'content-wrapper'" class="flex flex-row gap-5 justify-end !p-0">
+          <x-container.container :variant="'content-wrapper'" class="flex flex-row gap-5 justify-end !p-0">
             <x-button.secondary :href="route('academics-periode.index')">Batal</x-button.secondary>
             <x-button.primary 
               onclick="
@@ -112,7 +112,7 @@
       </x-container>
       <x-modal.container-pure-js id="modalKonfirmasiSimpan">
         <x-slot name="header">
-          <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
             <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
             <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
           </x-container>

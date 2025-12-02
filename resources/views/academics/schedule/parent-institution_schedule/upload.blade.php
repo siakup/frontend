@@ -20,17 +20,17 @@
 
 @include('partials.success-notification-modal', ['route' => route('academics.schedule.parent-institution-schedule.upload')])
 @section('content')
-  <x-container :variant="'content-wrapper'" x-data="uploadParentInstitutionScheduleComponents">
+  <x-container.container :variant="'content-wrapper'" x-data="uploadParentInstitutionScheduleComponents">
     <x-typography :variant="'body-large-semibold'">Unggah Jadwal Kuliah Institusi Parent</x-typography>
     <x-button.back :href="route('academics.schedule.parent-institution-schedule.index')">Jadwal Kuliah Institusi Parent</x-button.back>
-    <x-container :class="'flex flex-col items-start !gap-8 self-stretch'">
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-start !px-0">
+    <x-container.container :class="'flex flex-col items-start !gap-8 self-stretch'">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-start !px-0">
         <x-typography :variant="'body-medium-bold'">Impor Pemetaan Jadwal Kuliah</x-typography>
         <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-auto h-[1.5em]'" />
       </x-container>
       <x-typography :variant="'body-small-italic'" :class="'text-[#E62129]'" x-bind:class="{'hidden': !checkValidity()}">Pilih Program Studi dan Periode terlebih dahulu!</x-typography>
-      <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center justify-start !mx-0 !gap-3 max-w-2/3'">
-        <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+      <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center justify-start !mx-0 !gap-3 max-w-2/3'">
+        <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
           <x-typography :variant="'body-medium-bold'">Periode</x-typography>
           <x-form.dropdown 
             :buttonId="'sortButtonCampus'"
@@ -51,7 +51,7 @@
             x-model="$store.uploadPage.periode"
           />
         </x-container>
-        <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+        <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
           <x-typography :variant="'body-medium-bold'">Program Studi</x-typography>
           <x-form.dropdown 
             :buttonId="'sortButtonStudyProgram'"
@@ -65,13 +65,13 @@
           />
         </x-container>
       </x-container>
-      <x-container :variant="'content-wrapper'" class="flex-row gap-10 justify-between !px-0" x-bind:class="{'hidden': checkValidity(), 'flex': !checkValidity()}">
-          <x-container :variant="'content-wrapper'" class="basis-[35%] shrink-0 grow-0 min-w-1/5 max-w-[35%] flex flex-col !gap-1 !px-0">
+      <x-container.container :variant="'content-wrapper'" class="flex-row gap-10 justify-between !px-0" x-bind:class="{'hidden': checkValidity(), 'flex': !checkValidity()}">
+          <x-container.container :variant="'content-wrapper'" class="basis-[35%] shrink-0 grow-0 min-w-1/5 max-w-[35%] flex flex-col !gap-1 !px-0">
             <x-typography>Allowed Type: [.xlsx, .xls, .csv]</x-typography>  
             <x-button.link href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'xlsx']) }}">Download Sample Data (.xlsx)</x-button.link>
             <x-button.link href="{{ route('academics.schedule.prodi-schedule.template', ['type' => 'csv']) }}">Download Sample Data (.csv)</x-button.link>
           </x-container>
-          <x-container :variant="'content-wrapper'" class="grow-1 shrink-1 basis-0 min-w-3/4 flex flex-col !gap-4 relative items-start w-full !px-0">
+          <x-container.container :variant="'content-wrapper'" class="grow-1 shrink-1 basis-0 min-w-3/4 flex flex-col !gap-4 relative items-start w-full !px-0">
             <x-typography :variant="'body-medium-regular'">Impor CSV Jadwal Kuliah File</x-typography>
             <form action="{{ route('academics.schedule.parent-institution-schedule.upload-result') }}" method="POST" enctype="multipart/form-data" id="uploadForm">
               @csrf
@@ -81,7 +81,7 @@
             </form>
           </x-container>
       </x-container>
-      <x-container class="my-0 mx-auto flex-col p-5 !gap-2.5 bg-[#FAFAFA]" x-bind:class="{'hidden': checkValidity(), 'flex': !checkValidity()}">
+      <x-container.container class="my-0 mx-auto flex-col p-5 !gap-2.5 bg-[#FAFAFA]" x-bind:class="{'hidden': checkValidity(), 'flex': !checkValidity()}">
         <x-typography :variant="'body-small-regular'">
           File yang diterima adalah file .csv dengan pemisah antar kolom berupa titik koma "," atau file .xlsx<br>
           Urutan kolom sebagai berikut:
@@ -145,7 +145,7 @@
   </x-container>
   <x-modal.container-pure-js id="modalKonfirmasiBatal">
     <x-slot name="header">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
         <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
       </x-container>

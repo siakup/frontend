@@ -14,8 +14,8 @@
     <div class="cpl-head border border-gray-400 ml-3 grad-peach">
         <x-typography variant="body-medium-bold">Tambah Rencana Evaluasi</x-typography>
     </div>
-    <x-container x-data variant="content" class="ml-3" borderRadius="rounded-b-xl">
-        <x-container variant="content" class="flex flex-col gap-3" borderRadius="rounded-xl">
+    <x-container.container x-data variant="content" class="ml-3" borderRadius="rounded-b-xl">
+        <x-container.container variant="content" class="flex flex-col gap-3" borderRadius="rounded-xl">
             <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Bentuk Ujian</x-slot>
                 <x-slot name="input">
@@ -93,20 +93,20 @@
         
         <div class="flex flex-col gap-4 my-5">
             <x-typography variant="body-medium-bold">Indikator, Kriteria dan Bobot Penilaian</x-typography>
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>Indikator dan Kriteria</x-table-header>
-                        <x-table-header>Bobot</x-table-header>
-                        <x-table-header>Aksi</x-table-header>
-                    </x-table-row>
-                </x-table-head>
-                <x-table-body>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>Indikator dan Kriteria</x-table.header-cell>
+                        <x-table.header-cell>Bobot</x-table.header-cell>
+                        <x-table.header-cell>Aksi</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
+                <x-table.body>
                     @foreach ($indikatorList as $index => $indikator)
-                    <x-table-row>
-                        <x-table-cell class="text-xs">{{ $indikator['indikator'] }}</x-table-cell>
-                        <x-table-cell class="text-xs">{{ $indikator['bobot'] }}</x-table-cell>
-                        <x-table-cell>
+                    <x-table.row>
+                        <x-table.cell class="text-xs">{{ $indikator['indikator'] }}</x-table.cell>
+                        <x-table.cell class="text-xs">{{ $indikator['bobot'] }}</x-table.cell>
+                        <x-table.cell>
                             <x-button.base                  
                                 :icon="asset('assets/icons/delete/grey-20.svg')"
                                 iconPosition="left"
@@ -116,11 +116,11 @@
                             >
                                 Hapus
                             </x-button.base>
-                        </x-table-cell>
-                    </x-table-row>
+                        </x-table.cell>
+                    </x-table.row>
                     @endforeach
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
             <div class="flex justify-end">
                 <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-indikator'})">Tambah Indikator dan Kriteria</x-button.primary>
             </div> 
@@ -128,20 +128,20 @@
 
         <div class="flex flex-col gap-4 my-5">
             <x-typography variant="body-medium-bold">Jadwal Pelaksanaan</x-typography>
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>Nama Kegiatan</x-table-header>
-                        <x-table-header>Minggu ke-</x-table-header>
-                        <x-table-header>Aksi</x-table-header>
-                    </x-table-row>
-                </x-table-head>
-                <x-table-body>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>Nama Kegiatan</x-table.header-cell>
+                        <x-table.header-cell>Minggu ke-</x-table.header-cell>
+                        <x-table.header-cell>Aksi</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
+                <x-table.body>
                     @foreach ($jadwalPelaksanaan as $index => $jadwal)
-                    <x-table-row>
-                        <x-table-cell class="text-xs">{{ $jadwal['nama_kegiatan'] }}</x-table-cell>
-                        <x-table-cell class="text-xs">{{ $jadwal['minggu_ke'] }}</x-table-cell>
-                        <x-table-cell>
+                    <x-table.row>
+                        <x-table.cell class="text-xs">{{ $jadwal['nama_kegiatan'] }}</x-table.cell>
+                        <x-table.cell class="text-xs">{{ $jadwal['minggu_ke'] }}</x-table.cell>
+                        <x-table.cell>
                             <x-button.base                  
                                 :icon="asset('assets/icons/delete/grey-20.svg')"
                                 iconPosition="left"
@@ -151,11 +151,11 @@
                             >
                                 Hapus
                             </x-button.base>
-                        </x-table-cell>
-                    </x-table-row>
+                        </x-table.cell>
+                    </x-table.row>
                     @endforeach
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
             <div class="flex justify-end">
                 <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-kegiatan'})">Tambah Kegiatan</x-button.primary>
             </div> 

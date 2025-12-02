@@ -41,16 +41,16 @@
 </script>
 
 @section('content')
-  <x-container 
+  <x-container.container 
     :variant="'content-wrapper'" 
     x-data='editProdiScheduleComponents()'
   >
     <x-typography :variant="'body-large-semibold'">Ubah Jadwal Program Studi</x-typography>
     <x-button.back :href="route('academics.schedule.prodi-schedule.index')">Jadwal Kuliah Program Studi</x-button.back>
-    <x-container>
+    <x-container.container>
       <x-typography :variant="'body-medium-bold'">Informasi Kelas</x-typography>
-      <x-container :variant="'content-wrapper'" class="flex flex-col gap-4 !p-0">
-        <x-container :variant="'content-wrapper'" class="flex flex-row justify-between !px-0">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-col gap-4 !p-0">
+        <x-container.container :variant="'content-wrapper'" class="flex flex-row justify-between !px-0">
             <x-form.input-container :class="'min-w-[170px]'">
               <x-slot name="label">Program Perkuliahan</x-slot>
               <x-slot name="input">
@@ -118,7 +118,7 @@
             />
           </x-slot>
         </x-form.input-container>
-        <x-container :variant="'content-wrapper'" :class="'!flex flex-row !p-0 justify-between items-center'">
+        <x-container.container :variant="'content-wrapper'" :class="'!flex flex-row !p-0 justify-between items-center'">
           <x-form.input-container :containerClass="'w-full'" class="min-w-[170px]">
             <x-slot name="label">Nama Mata Kuliah</x-slot>
             <x-slot name="input">
@@ -174,7 +174,7 @@
             />
           </x-slot>
         </x-form.input-container>
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center !px-0 justify-between'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row items-center !px-0 justify-between'">
           <x-form.input-container :class="'min-w-[170px]'">
             <x-slot name="label">Kapasitas Peserta</x-slot>
             <x-slot name="input">
@@ -212,7 +212,7 @@
             </x-slot>
           </x-form.input-container>
         </x-container>
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between !p-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between !p-0'">
           <x-form.input-container class="min-w-[170px]" id="tanggal_mulai">
             <x-slot name="label">Tanggal Mulai</x-slot>
             <x-slot name="input">
@@ -228,24 +228,24 @@
         </x-container>
       </x-container>
     </x-container>
-    <x-container :class="'flex flex-col !gap-4'">
-      <x-container :variant="'content-wrapper'" class="!px-0 flex flex-row items-center justify-between">
+    <x-container.container :class="'flex flex-col !gap-4'">
+      <x-container.container :variant="'content-wrapper'" class="!px-0 flex flex-row items-center justify-between">
           <x-typography :variant="'body-medium-bold'">Daftar Pengajar</x-typography>
           <x-button.primary x-on:click="showModal('{{ route('academics.schedule.prodi-schedule.add-lecture') }}', '#list-lecture', '#modalListLecture')">Tambah Pengajar</x-button.primary>
       </x-container>
-      <x-table id="selected-lecture">
-          <x-table-head>
-              <x-table-row>
-                  <x-table-header>Nama Pengajar</x-table-header>
-                  <x-table-header>Status Pengajar</x-table-header>
-                  <x-table-header>Aksi</x-table-header>
-              </x-table-row>
-          </x-table-head>
-          <x-table-body>
+      <x-table.index id="selected-lecture">
+          <x-table.head>
+              <x-table.row>
+                  <x-table.header-cell>Nama Pengajar</x-table.header-cell>
+                  <x-table.header-cell>Status Pengajar</x-table.header-cell>
+                  <x-table.header-cell>Aksi</x-table.header-cell>
+              </x-table.row>
+          </x-table.head>
+          <x-table.body>
             <template x-for="(lecture, index) in $store.editPage.lectureList">
-              <x-table-row>
-                <x-table-cell x-text="lecture.nama"></x-table-cell>
-                <x-table-cell>
+              <x-table.row>
+                <x-table.cell x-text="lecture.nama"></x-table.cell>
+                <x-table.cell>
                   <x-form.dropdown 
                     :buttonId="'sortMBKMClass'"
                     :dropdownId="'MBKMClassType'"
@@ -264,8 +264,8 @@
                     onclick=""
                     x-model="$store.editPage.lectureList[index].status_pengajar"
                   />
-                </x-table-cell>
-                <x-table-cell>
+                </x-table.cell>
+                <x-table.cell>
                   <x-button.base
                     :icon="asset('assets/icon-delete-gray-600.svg')"
                     class="text-[#8C8C8C] scale-75"
@@ -273,35 +273,35 @@
                   >
                     Hapus
                   </x-button.base>
-                </x-table-cell>
-              </x-table-row>
+                </x-table.cell>
+              </x-table.row>
             </template>
-          </x-table-body>
-      </x-table>
+          </x-table.body>
+      </x-table.index>
     </x-container>
-    <x-container :class="'flex flex-col !gap-4'">
-      <x-container :variant="'content-wrapper'" class="!px-0 flex flex-row items-center justify-between">
+    <x-container.container :class="'flex flex-col !gap-4'">
+      <x-container.container :variant="'content-wrapper'" class="!px-0 flex flex-row items-center justify-between">
           <x-typography :variant="'body-medium-bold'">Daftar Jadwal Kelas</x-typography>
           <x-button.primary x-on:click="showModal('{{ route('academics.schedule.prodi-schedule.add-class-schedule') }}', '#add-schedule', '#modalAddSchedule')">Tambah Jadwal Kelas</x-button.primary>
       </x-container>
-      <x-table id="class-schedule">
-          <x-table-head>
-              <x-table-row>
-                  <x-table-header>Hari</x-table-header>
-                  <x-table-header>Waktu Mulai Kelas</x-table-header>
-                  <x-table-header>Waktu Selesai Kelas</x-table-header>
-                  <x-table-header>Ruangan</x-table-header>
-                  <x-table-header>Aksi</x-table-header>
-              </x-table-row>
-          </x-table-head>
-          <x-table-body>
+      <x-table.index id="class-schedule">
+          <x-table.head>
+              <x-table.row>
+                  <x-table.header-cell>Hari</x-table.header-cell>
+                  <x-table.header-cell>Waktu Mulai Kelas</x-table.header-cell>
+                  <x-table.header-cell>Waktu Selesai Kelas</x-table.header-cell>
+                  <x-table.header-cell>Ruangan</x-table.header-cell>
+                  <x-table.header-cell>Aksi</x-table.header-cell>
+              </x-table.row>
+          </x-table.head>
+          <x-table.body>
             <template x-for="(schedule, index) in $store.editPage.scheduleList">
-              <x-table-row>
-                <x-table-cell x-text="schedule.hari"></x-table-cell>
-                <x-table-cell x-text="schedule.jam_mulai"></x-table-cell>
-                <x-table-cell x-text="schedule.jam_akhir"></x-table-cell>
-                <x-table-cell x-text="schedule.ruangan"></x-table-cell>
-                <x-table-cell>
+              <x-table.row>
+                <x-table.cell x-text="schedule.hari"></x-table.cell>
+                <x-table.cell x-text="schedule.jam_mulai"></x-table.cell>
+                <x-table.cell x-text="schedule.jam_akhir"></x-table.cell>
+                <x-table.cell x-text="schedule.ruangan"></x-table.cell>
+                <x-table.cell>
                   <x-button.base
                     :icon="asset('assets/icon-delete-gray-600.svg')"
                     class="text-[#8C8C8C] scale-75"
@@ -309,21 +309,21 @@
                   >
                     Hapus
                   </x-button.base>
-                </x-table-cell>
-              </x-table-row>
+                </x-table.cell>
+              </x-table.row>
             </template>
-          </x-table-body>
-      </x-table>
+          </x-table.body>
+      </x-table.index>
     </x-container>
-    <x-container>
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-end !px-0">
+    <x-container.container>
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-end !px-0">
           <x-button.secondary :href="route('academics.schedule.prodi-schedule.index')" x-bind:disabled="checkValidity">Batal</x-button.secondary>
           <x-button.primary x-on:click="editConfirmationModalOpen = true" x-bind:disabled="checkValidity">Simpan</x-button.primary>
       </x-container>
     </x-container>
     <x-modal.container-pure-js x-bind:class="{'hidden': !editConfirmationModalOpen, 'flex': editConfirmationModalOpen}">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
           <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
         </x-container>

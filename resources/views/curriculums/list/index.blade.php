@@ -13,9 +13,9 @@
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Kurikulum</x-typography>
-    <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0 !px-0">
+    <x-container.container :variant="'content-wrapper'" class="flex flex-col !gap-0 !px-0">
       <x-tab 
         :tabItems="[
           (object)[
@@ -35,12 +35,12 @@
           ],
         ]"
       />
-      <x-container :class="'flex flex-col !gap-8 rounded-tl-none items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
+      <x-container.container :class="'flex flex-col !gap-8 rounded-tl-none items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
         <x-typography variant="body-large-semibold">
           Daftar Kurikulum - {{array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama}}
         </x-typography>
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center !mx-0 !justify-start z-10 !px-0'">
-          <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row items-center !mx-0 !justify-start z-10 !px-0'">
+          <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
             <x-typography :variant="'body-medium-bold'">Program Perkuliahan</x-typography>
             <x-form.dropdown 
               :buttonId="'sortButtonCampus'"
@@ -72,7 +72,7 @@
               :dropdownItem="array_column($programPerkuliahanList, 'name', 'name')"
             />
           </x-container>
-          <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !w-max !px-0" id="StudyProgramSection">
+          <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !w-max !px-0" id="StudyProgramSection">
             <x-typography :variant="'body-medium-bold'">Program Studi</x-typography>
             <x-form.dropdown 
               :buttonId="'sortButtonStudyProgram'"
@@ -105,43 +105,43 @@
             />
           </x-container>
         </x-container>
-        <x-container :variant="'content-wrapper'" :class="'!px-0'">
-          <x-table>
-              <x-table-head>
-                  <x-table-row>
-                      <x-table-header>Nama</x-table-header>
-                      <x-table-header>Program Perkuliahan</x-table-header>
-                      <x-table-header>Deskripsi</x-table-header>
-                      <x-table-header>Total SKS</x-table-header>
-                      <x-table-header>Status</x-table-header>
-                      <x-table-header>Aksi</x-table-header>
-                  </x-table-row>
-              </x-table-head>
+        <x-container.container :variant="'content-wrapper'" :class="'!px-0'">
+          <x-table.index>
+              <x-table.head>
+                  <x-table.row>
+                      <x-table.header-cell>Nama</x-table.header-cell>
+                      <x-table.header-cell>Program Perkuliahan</x-table.header-cell>
+                      <x-table.header-cell>Deskripsi</x-table.header-cell>
+                      <x-table.header-cell>Total SKS</x-table.header-cell>
+                      <x-table.header-cell>Status</x-table.header-cell>
+                      <x-table.header-cell>Aksi</x-table.header-cell>
+                  </x-table.row>
+              </x-table.head>
               <tbody>
                   @forelse ($data as $d)
-                      <x-table-row>
-                          <x-table-cell>{{ $d->nama_kurikulum }}</x-table-cell>
-                          <x-table-cell class="{{
+                      <x-table.row>
+                          <x-table.cell>{{ $d->nama_kurikulum }}</x-table.cell>
+                          <x-table.cell class="{{
                             $d->perkuliahan == 'Double Degree' ? 'bg-[#E5EDAB]' :
                             ($d->perkuliahan == 'International Class' ? 'bg-[#99D8FF]' :
                             ($d->perkuliahan == 'Reguler' ? 'bg-[#FBDADB]' : 'bg-[#FEF3C0]'))
                           }}"
                           >
                             {{ $d->perkuliahan }}
-                          </x-table-cell>
-                          <x-table-cell>{{ $d->deskripsi }}</x-table-cell>
-                          <x-table-cell>{{ $d->sks_total }}</x-table-cell>
-                          <x-table-cell>
-                            <x-container :variant="'content-wrapper'" :class="'!px-0 !w-max'">
+                          </x-table.cell>
+                          <x-table.cell>{{ $d->deskripsi }}</x-table.cell>
+                          <x-table.cell>{{ $d->sks_total }}</x-table.cell>
+                          <x-table.cell>
+                            <x-container.container :variant="'content-wrapper'" :class="'!px-0 !w-max'">
                               @if ($d->status_aktif === 'active')
                                 <x-badge variant="green-filled">Aktif</x-badge>
                               @else
                                 <x-badge variant="green-bordered"></x-badge>
                               @endif
                             </x-container>
-                          </x-table-cell>
-                          <x-table-cell>
-                            <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center w-max">
+                          </x-table.cell>
+                          <x-table.cell>
+                            <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-center w-max">
                               <x-button.base :icon="asset('assets/icon-search.svg')" class=" scale-75" :href="route('curriculum.list.view', ['id' => $d->id])">Lihat</x-button.base>
                               <x-button.base :icon="asset('assets/icon-edit.svg')" :href="route('curriculum.list.edit', ['id' => $d->id])" class="text-[#E62129] scale-75">Ubah</x-button.base>
                               <x-button.base 
@@ -155,19 +155,19 @@
                                 Hapus
                               </x-button.base>
                             </x-container>
-                          </x-table-cell>
-                      </x-table-row>
+                          </x-table.cell>
+                      </x-table.row>
                   @empty
-                      <x-table-row>
-                        <x-table-cell colspan="6" class="text-center py-4">
+                      <x-table.row>
+                        <x-table.cell colspan="6" class="text-center py-4">
                           Tidak ada data ditemukan
-                        </x-table-cell>
-                      </x-table-row>
+                        </x-table.cell>
+                      </x-table.row>
                   @endforelse
               </tbody>
-          </x-table>
+          </x-table.index>
         </x-container>
-        <x-container :variant="'content-wrapper'" class="flex items-end justify-end !px-0">
+        <x-container.container :variant="'content-wrapper'" class="flex items-end justify-end !px-0">
           <x-button.primary :href="route('curriculum.list.create', ['program_studi' => $id_prodi])">Tambah Kurikulum</x-button.primary>
         </x-container>
       </x-container>
@@ -175,7 +175,7 @@
   </x-container>
   <x-modal.container-pure-js id="modalKonfirmasiHapus">
     <x-slot name="header">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Hapus Daftar kurikulum</x-typography>
         <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
       </x-container>

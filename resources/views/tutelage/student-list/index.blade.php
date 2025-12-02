@@ -23,13 +23,13 @@
 </script>
 
 @section('content')
-  <x-container
+  <x-container.container
     :variant="'content-wrapper'"
     class="pb-4"
     x-data="listPerwalianKRS({{ json_encode(route('tutelage-group.list-student')) }})"
   >
     <x-typography variant="body-large-semibold">Kelompok Perwalian - dosen</x-typography>
-    <x-container :variant="'content-wrapper'" :class="'!gap-0 !px-0'">
+    <x-container.container :variant="'content-wrapper'" :class="'!gap-0 !px-0'">
       <x-tab 
         :tabItems="[
           (object)[
@@ -39,11 +39,11 @@
           ],
         ]"
       />
-      <x-container :class="'flex flex-col gap-4 !rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
+      <x-container.container :class="'flex flex-col gap-4 !rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
           <x-typography variant="body-medium-bold">Daftar Mahasiswa</x-typography>
-          <x-container :class="'flex flex-row items-center justify-between'">
-            <x-container :variant="'content-wrapper'" :class="'!flex-row items-center justify-start !px-0'">
-              <x-container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center !gap-2'">
+          <x-container.container :class="'flex flex-row items-center justify-between'">
+            <x-container.container :variant="'content-wrapper'" :class="'!flex-row items-center justify-start !px-0'">
+              <x-container.container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center !gap-2'">
                   <x-typography :variant="'body-medium-bold'">Periode Akademik</x-typography>
                   <x-form.dropdown 
                     :buttonId="'sortPeriode'"
@@ -65,7 +65,7 @@
                     x-model="$store.listPage.periode"
                   />
               </x-container>
-              <x-container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center !gap-2'">
+              <x-container.container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center !gap-2'">
                 <x-typography :variant="'body-medium-bold'">Tahun Masuk</x-typography>
                 <x-form.dropdown 
                   :buttonId="'sortButtonYear'"
@@ -84,7 +84,7 @@
                 />
               </x-container>
             </x-container>
-            <x-container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center justify-end'">
+            <x-container.container :variant="'content-wrapper'" :class="'!px-0 !flex-row items-center justify-end'">
               <x-form.dropdown 
                 :buttonId="'sortFilterButton'"
                 :dropdownId="'sortFilterDropdown'"
@@ -129,11 +129,11 @@
               />
             </x-container>
           </x-container>
-          <x-container class="flex flex-col gap-2.5 !bg-gray-100">
+          <x-container.container class="flex flex-col gap-2.5 !bg-gray-100">
             <x-typography variant="caption-bold">Keterangan Status Persetujuan:</x-typography>
-            <x-container :variant="'flat'" class="grid grid-cols-2 gap-[10px]">
+            <x-container.container :variant="'flat'" class="grid grid-cols-2 gap-[10px]">
               <template x-for="[key, status] in Object.entries(statusList)">
-                <x-container :variant="'content-wrapper'" class="!flex-row items-center !gap-1.5">
+                <x-container.container :variant="'content-wrapper'" class="!flex-row items-center !gap-1.5">
                   <x-typography :variant="'caption-bold'" class="px-4 py-0.5 rounded-sm" x-bind:style="{color: `${status.textColor}`, backgroundColor: `${status.color}` }">
                       x
                   </x-typography>
@@ -175,7 +175,7 @@
                         <x-table.cell x-text="data.nilai_pem"></x-table.cell>
                         <x-table.cell x-text="data.status_akademik"></x-table.cell>
                         <x-table.cell>
-                            <x-container :variant="'content-wrapper'" class="!flex-row justify-center gap-2">
+                            <x-container.container :variant="'content-wrapper'" class="!flex-row justify-center gap-2">
                                 <template x-for="persetujuan in data.status_persetujuan">
                                   <span 
                                     class="flex items-center justify-center px-4 py-0.5 rounded-sm text-xs" 

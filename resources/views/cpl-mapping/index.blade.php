@@ -22,7 +22,7 @@
         </x-typography>
 
         <div class="flex flex-col gap-5" x-data="pemetaanCplTable" x-init="fetchData()">
-            <x-container variant="content" class="flex flex-col gap-5">
+            <x-container.container variant="content" class="flex flex-col gap-5">
                 <x-typography variant="heading-h6" class="mb-2">
                     Daftar Pemetaan CPL
                 </x-typography>
@@ -53,28 +53,28 @@
                     </div>
 
                     <!-- Table -->
-                    <x-table>
-                        <x-table-head>
-                            <x-table-row>
-                                <x-table-header>Kode Mata Kuliah</x-table-header>
-                                <x-table-header>Nama Mata Kuliah</x-table-header>
-                                <x-table-header>CPL-A</x-table-header>
-                                <x-table-header>CPL-B</x-table-header>
-                                <x-table-header>CPL-C</x-table-header>
-                                <x-table-header>CPL-D</x-table-header>
-                                <x-table-header>CPL-E</x-table-header>
-                                <x-table-header>CPL-F</x-table-header>
-                                <x-table-header>CPL-G</x-table-header>
-                                <x-table-header>CPL-H</x-table-header>
-                                <x-table-header>CPL-I</x-table-header>
-                                <x-table-header>CPL-J</x-table-header>
-                                <x-table-header>CPL-K</x-table-header>
-                                <x-table-header>CPL-L</x-table-header>
-                                <x-table-header>CPL-M</x-table-header>
-                            </x-table-row>
-                        </x-table-head>
+                    <x-table.index>
+                        <x-table.head>
+                            <x-table.row>
+                                <x-table.header-cell>Kode Mata Kuliah</x-table.header-cell>
+                                <x-table.header-cell>Nama Mata Kuliah</x-table.header-cell>
+                                <x-table.header-cell>CPL-A</x-table.header-cell>
+                                <x-table.header-cell>CPL-B</x-table.header-cell>
+                                <x-table.header-cell>CPL-C</x-table.header-cell>
+                                <x-table.header-cell>CPL-D</x-table.header-cell>
+                                <x-table.header-cell>CPL-E</x-table.header-cell>
+                                <x-table.header-cell>CPL-F</x-table.header-cell>
+                                <x-table.header-cell>CPL-G</x-table.header-cell>
+                                <x-table.header-cell>CPL-H</x-table.header-cell>
+                                <x-table.header-cell>CPL-I</x-table.header-cell>
+                                <x-table.header-cell>CPL-J</x-table.header-cell>
+                                <x-table.header-cell>CPL-K</x-table.header-cell>
+                                <x-table.header-cell>CPL-L</x-table.header-cell>
+                                <x-table.header-cell>CPL-M</x-table.header-cell>
+                            </x-table.row>
+                        </x-table.head>
 
-                        <x-table-body x-data="{
+                        <x-table.body x-data="{
                             getRowClass(idx, length) {
                                 let classes = idx % 2 === 1 ? 'bg-[#f5f5f5]' : 'bg-white';
                                 if (idx === length - 1) classes += ' border-b-0';
@@ -84,36 +84,36 @@
                             <template x-if="mataKuliahList.length > 0">
                                 <template x-for="(matkul, idx) in mataKuliahList" :key="matkul.kode">
                                     <tr :class="getRowClass(idx, mataKuliahList.length)">
-                                        <x-table-cell x-text="matkul.kode"></x-table-cell>
-                                        <x-table-cell x-text="matkul.nama_id"></x-table-cell>
+                                        <x-table.cell x-text="matkul.kode"></x-table.cell>
+                                        <x-table.cell x-text="matkul.nama_id"></x-table.cell>
 
                                         <!-- helper cell: tampilkan ✓ kalau true -->
-                                        <x-table-cell class="text-center"><span x-show="matkul.a">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.b">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.c">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.d">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.e">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.f">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.g">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.h">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.i">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.j">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.k">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.l">✓</span></x-table-cell>
-                                        <x-table-cell class="text-center"><span x-show="matkul.m">✓</span></x-table-cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.a">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.b">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.c">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.d">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.e">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.f">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.g">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.h">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.i">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.j">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.k">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.l">✓</span></x-table.cell>
+                                        <x-table.cell class="text-center"><span x-show="matkul.m">✓</span></x-table.cell>
                                     </tr>
                                 </template>
                             </template>
 
                             <template x-if="mataKuliahList.length === 0">
-                                <x-table-row>
-                                    <x-table-cell colspan="6" class="text-center py-4">
+                                <x-table.row>
+                                    <x-table.cell colspan="6" class="text-center py-4">
                                         Tidak ada data ditemukan
-                                    </x-table-cell>
-                                </x-table-row>
+                                    </x-table.cell>
+                                </x-table.row>
                             </template>
-                        </x-table-body>
-                    </x-table>
+                        </x-table.body>
+                    </x-table.index>
 
                     <!-- Action Buttons -->
                     <div class="flex justify-end items-center gap-5">

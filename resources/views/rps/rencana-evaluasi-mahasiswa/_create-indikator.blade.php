@@ -8,7 +8,7 @@
             </button>
         </div>
     </x-slot>
-    <x-container class="flex flex-col gap-4" borderRadius="rounded-lg">
+    <x-container.container class="flex flex-col gap-4" borderRadius="rounded-lg">
         <x-form.input-container labelClass="w-50">
             <x-slot name="label">Indikator dan Kriteria</x-slot>
             <x-slot name="input">

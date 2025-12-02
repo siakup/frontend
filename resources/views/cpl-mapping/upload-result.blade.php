@@ -85,7 +85,7 @@
             Unggah Pemetaan CPL
         </x-typography>
         <div class="flex flex-col gap-5">
-            <x-container variant="content" class="flex flex-col gap-5">
+            <x-container.container variant="content" class="flex flex-col gap-5">
                 <x-typography variant="heading-h6" class="mb-2 title">
                     Impor Pemetaan CPL
                     <img src="{{ asset('assets/base/icon-caution.svg') }}" alt="caution-icon"
@@ -93,41 +93,41 @@
                 </x-typography>
 
                 <div class="flex flex-col gap-5">
-                    <x-table>
-                        <x-table-head>
-                            <x-table-row>
-                                <x-table-header class="cursor-pointer">
+                    <x-table.index>
+                        <x-table.head>
+                            <x-table.row>
+                                <x-table.header-cell class="cursor-pointer">
                                     Kode Mata Kuliah
-                                </x-table-header>
-                                <x-table-header class="cursor-pointer">
+                                </x-table.header-cell>
+                                <x-table.header-cell class="cursor-pointer">
                                     Kode CPL
-                                </x-table-header>
-                                <x-table-header class="cursor-pointer">
+                                </x-table.header-cell>
+                                <x-table.header-cell class="cursor-pointer">
                                     Bobot
-                                </x-table-header>
-                            </x-table-row>
-                        </x-table-head>
+                                </x-table.header-cell>
+                            </x-table.row>
+                        </x-table.head>
 
-                        <x-table-body>
+                        <x-table.body>
                             @forelse ($file_data as $row)
-                                <x-table-row>
-                                    <x-table-cell>{{ $row['kode_matakuliah'] }}</x-table-cell>
-                                    <x-table-cell>{{ $row['kode_cpl'] }}</x-table-cell>
-                                    <x-table-cell>{{ $row['bobot'] }}</x-table-cell>
-                                </x-table-row>
+                                <x-table.row>
+                                    <x-table.cell>{{ $row['kode_matakuliah'] }}</x-table.cell>
+                                    <x-table.cell>{{ $row['kode_cpl'] }}</x-table.cell>
+                                    <x-table.cell>{{ $row['bobot'] }}</x-table.cell>
+                                </x-table.row>
                             @empty
-                                <x-table-row>
-                                    <x-table-cell colspan="3" class="text-center py-4">
+                                <x-table.row>
+                                    <x-table.cell colspan="3" class="text-center py-4">
                                         Tidak ada data ditemukan
-                                    </x-table-cell>
-                                </x-table-row>
+                                    </x-table.cell>
+                                </x-table.row>
                             @endforelse
-                        </x-table-body>
-                    </x-table>
+                        </x-table.body>
+                    </x-table.index>
 
                 </div>
             </x-container>
-            <x-container variant="content" class="flex flex-col gap-5">
+            <x-container.container variant="content" class="flex flex-col gap-5">
                 <div class="right">
                     <x-button.secondary label="Batal" />
                     <x-button.primary label="Simpan" />

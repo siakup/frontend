@@ -27,10 +27,10 @@
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'" x-data="editUser()">
+  <x-container.container :variant="'content-wrapper'" x-data="editUser()">
     <x-typography :variant="'body-large-semibold'">Ubah Informasi</x-typography>
     <x-button :variant="'tertiary'" :icon="asset('assets/icons/arrow-left/red-20.svg')" :href="route('users.index')">Manajemen Pengguna</x-button>
-    <x-container :class="'flex flex-col gap-4'">
+    <x-container.container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Ubah Informasi Data Pengguna</x-typography>
       <x-form.input-container class="min-w-[120px]" id="nip-search">
         <x-slot name="label">NIP</x-slot>
@@ -82,30 +82,30 @@
         </x-slot>
       </x-form.input-container>
       <x-form.toggle x-model="$store.editPage.status" />
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-end w-full !px-0">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-end w-full !px-0">
         <x-button :variant="'primary'" x-on:click="$store.editPage.isModalTambahPeranOpen = true;">Tambah Peran</x-button>
       </x-container>
     </x-container>
-    <x-container :class="'flex flex-col gap-4'">
+    <x-container.container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Daftar Peran</x-typography>
-      <x-table id="list-role" class="table" :variant="'old'">
-        <x-table-head :variant="'old'">
-          <x-table-row :variant="'old'">
-            <x-table-header :variant="'old'">Nama Peran</x-table-header>
-            <x-table-header :variant="'old'">Institusi</x-table-header>
-            <x-table-header :variant="'old'">Dibuat Pada</x-table-header>
-            <x-table-header :variant="'old'">Aksi</x-table-header>
-          </x-table-row>
-        </x-table-head>
+      <x-table.index id="list-role" class="table" :variant="'old'">
+        <x-table.head :variant="'old'">
+          <x-table.row :variant="'old'">
+            <x-table.header-cell :variant="'old'">Nama Peran</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Institusi</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Dibuat Pada</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
+          </x-table.row>
+        </x-table.head>
         <tbody>
           <template x-if="$store.editPage.peran && $store.editPage.peran.length > 0">
             <template x-for="(peran, index) in $store.editPage.peran">
-              <x-table-row :variant="'old'">
-                <x-table-cell :variant="'old'" x-text="peran.peranName"></x-table-cell>
-                <x-table-cell :variant="'old'" x-text="peran.institutionName"></x-table-cell>
-                <x-table-cell :variant="'old'" x-text="formatDateTime(peran.createdAt)"></x-table-cell>
-                <x-table-cell :variant="'old'">
-                  <x-container :variant="'content-wrapper'" class="w-full items-center">
+              <x-table.row :variant="'old'">
+                <x-table.cell :variant="'old'" x-text="peran.peranName"></x-table.cell>
+                <x-table.cell :variant="'old'" x-text="peran.institutionName"></x-table.cell>
+                <x-table.cell :variant="'old'" x-text="formatDateTime(peran.createdAt)"></x-table.cell>
+                <x-table.cell :variant="'old'">
+                  <x-container.container :variant="'content-wrapper'" class="w-full items-center">
                     <x-button
                       :variant="'tertiary'"
                       :size="'sm'"
@@ -116,13 +116,13 @@
                       Hapus
                     </x-button>
                   </x-container>
-                </x-table-cell>
-              </x-table-row>
+                </x-table.cell>
+              </x-table.row>
             </template>
           </template>
         </tbody>
-      </x-table>
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row !px-0 gap-3 justify-end'">
+      </x-table.index>
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row !px-0 gap-3 justify-end'">
         <x-button :variant="'secondary'" :href="route('users.index')">Batal</x-button>
         <x-button :variant="'primary'" x-on:click="isModalKonfirmasiSimpanOpen = true">Simpan</x-button>
       </x-container>
@@ -131,7 +131,7 @@
     <div x-data="createPeran('{{ route('institutions.role') }}', @js($roles->data))" x-effect="getData();">
       <x-modal.container-pure-js x-bind:class="{'hidden': !$store.editPage.isModalTambahPeranOpen, 'flex': $store.editPage.isModalTambahPeranOpen}">
         <x-slot name="header">
-          <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
             <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tambah Peran Pengguna</x-typography>
             <x-icon :iconUrl="asset('assets/icons/caution/outline-black-24.svg')" />
           </x-container>
@@ -188,7 +188,7 @@
   
     <x-modal.container-pure-js x-bind:class="{'hidden': !isModalKonfirmasiSimpanOpen, 'flex': isModalKonfirmasiSimpanOpen}">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
           <x-icon :iconUrl="asset('assets/icons/caution/outline-black-24.svg')" />
         </x-container>
@@ -202,7 +202,7 @@
   
     <x-modal.container-pure-js x-bind:class="{'hidden': !isModalKonfirmasiHapusOpen, 'flex': isModalKonfirmasiHapusOpen}">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Hapus Peran Pengguna</x-typography>
           <x-icon :iconUrl="asset('assets/icons/delete/grey-24.svg')" />
         </x-container>

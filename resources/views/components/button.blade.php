@@ -12,22 +12,26 @@
 
 @php
     $variants = [
-        'primary' => 'text-white bg-red-500 group/primary
-          not-disabled:hover:bg-red-600
-          active:bg-red-700 
-          disabled:bg-gray-300
-          transition-all duration-200 ease-in-out
-          not-disabled:hover:scale-[1.02] active:scale-[0.97] not-disabled:hover:shadow-md active:shadow-sm',
-        'secondary' => 'text-red-500 bg-white border border-red-500 group/secondary
-          not-disabled:hover:bg-red-50 active:bg-red-100 disabled:bg-white disabled:border-gray-300
-          transition-all duration-200 ease-in-out
-          not-disabled:hover:scale-[1.02] active:scale-[0.97]
-          not-disabled:hover:shadow-sm active:shadow-none',
-        'tertiary' => 'text-red-500 bg-transparent group/tertiary
-          not-disabled:hover:bg-red-50 active:bg-red-100 disabled:text-gray-400
-          transition-all duration-200 ease-in-out
-          not-disabled:hover:scale-[1.01] active:scale-[0.98]',
-        'text-link' => 'text-red-500 bg-transparent group/textlink',
+        'primary' => 'group/primary
+          text-white bg-red-500 
+          not-disabled:hover:bg-red-600 not-disabled:hover:scale-[1.02] not-disabled:hover:shadow-md
+          not-disabled:active:bg-red-700 not-disabled:active:scale-[0.97] active:shadow-sm
+          disabled:bg-gray-300 disabled:filter-gray
+          transition-all duration-200 ease-in-out',
+        'secondary' => 'group/secondary
+          text-red-500 bg-white border border-red-500 
+          not-disabled:hover:bg-red-50 not-disabled:hover:scale-[1.02] not-disabled:hover:shadow-sm 
+          not-disabled:active:scale-[0.97] not-disabled:active:bg-red-100 not-disabled:active:shadow-none
+          disabled:bg-white disabled:border-gray-300
+          transition-all duration-200 ease-in-out',
+        'tertiary' => 'group/tertiary
+          text-red-500 bg-transparent 
+          not-disabled:hover:bg-red-50 not-disabled:hover:scale-[1.01] 
+          not-disabled:active:bg-red-100 not-disabled:active:scale-[0.98]
+          disabled:text-gray-400
+          transition-all duration-200 ease-in-out',
+        'text-link' => 'group/textlink 
+          text-red-500 bg-transparent',
     ];
 
     $sizes = [
@@ -37,10 +41,10 @@
     ];
 
     $iconVariants = [
-        'primary' => 'filter brightness-0 invert group-disabled/primary:[filter:brightness(0)_invert(54%)]',
-        'secondary' => 'group-disabled/secondary:[filter:brightness(0)_invert(54%)]',
-        'tertiary' => 'group-disabled/tertiary:[filter:brightness(0)_invert(54%)]',
-        'text-link' => 'group-disabled/textlink:[filter:brightness(0)_invert(54%)]',
+        'primary' => 'filter-white',
+        'secondary' => 'filter-red',
+        'tertiary' => 'filter-red',
+        'text-link' => 'filter-red',
     ];
 
     $class = collect([

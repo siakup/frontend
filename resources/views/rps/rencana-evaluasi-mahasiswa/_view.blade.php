@@ -8,7 +8,7 @@
             </button>
         </div>
     </x-slot>
-    <x-container class="flex flex-col gap-3" borderRadius="rounded-xl">
+    <x-container.container class="flex flex-col gap-3" borderRadius="rounded-xl">
         <x-form.input-container labelClass="w-50">
             <x-slot name="label">Bentuk Ujian</x-slot>
             <x-slot name="input">
@@ -90,39 +90,39 @@
     </x-container>
     <div class="flex flex-col gap-4 my-5">
         <x-typography variant="body-medium-bold">Indikator, Kriteria dan Bobot Penilaian</x-typography>
-        <x-table>
-            <x-table-head>
-                <x-table-row>
-                    <x-table-header>Indikator dan Kriteria</x-table-header>
-                    <x-table-header>Bobot</x-table-header>
-                </x-table-row>
-            </x-table-head>
-            <x-table-body>
+        <x-table.index>
+            <x-table.head>
+                <x-table.row>
+                    <x-table.header-cell>Indikator dan Kriteria</x-table.header-cell>
+                    <x-table.header-cell>Bobot</x-table.header-cell>
+                </x-table.row>
+            </x-table.head>
+            <x-table.body>
                 @foreach ($indikatorList as $index => $indikator)
-                <x-table-row>
-                    <x-table-cell class="text-xs">{{ $indikator['indikator'] }}</x-table-cell>
-                    <x-table-cell class="text-xs">{{ $indikator['bobot'] }}</x-table-cell>
-                </x-table-row>
+                <x-table.row>
+                    <x-table.cell class="text-xs">{{ $indikator['indikator'] }}</x-table.cell>
+                    <x-table.cell class="text-xs">{{ $indikator['bobot'] }}</x-table.cell>
+                </x-table.row>
                 @endforeach
-            </x-table-body>
-        </x-table>
+            </x-table.body>
+        </x-table.index>
         <x-typography variant="body-medium-bold">Jadwal Pelaksanaan</x-typography>
-        <x-table>
-            <x-table-head>
-                <x-table-row>
-                    <x-table-header>Nama Kegiatan</x-table-header>
-                    <x-table-header>Minggu ke-</x-table-header>
-                </x-table-row>
-            </x-table-head>
-            <x-table-body>
+        <x-table.index>
+            <x-table.head>
+                <x-table.row>
+                    <x-table.header-cell>Nama Kegiatan</x-table.header-cell>
+                    <x-table.header-cell>Minggu ke-</x-table.header-cell>
+                </x-table.row>
+            </x-table.head>
+            <x-table.body>
                 @foreach ($jadwalPelaksanaan as $index => $jadwal)
-                <x-table-row>
-                    <x-table-cell class="text-xs">{{ $jadwal['nama_kegiatan'] }}</x-table-cell>
-                    <x-table-cell class="text-xs">{{ $jadwal['minggu_ke'] }}</x-table-cell>
-                </x-table-row>
+                <x-table.row>
+                    <x-table.cell class="text-xs">{{ $jadwal['nama_kegiatan'] }}</x-table.cell>
+                    <x-table.cell class="text-xs">{{ $jadwal['minggu_ke'] }}</x-table.cell>
+                </x-table.row>
                 @endforeach
-            </x-table-body>
-        </x-table>
+            </x-table.body>
+        </x-table.index>
     </div>
     <x-form.input-container labelClass="w-50">
         <x-slot name="label">Catatan dan Lainnya</x-slot>

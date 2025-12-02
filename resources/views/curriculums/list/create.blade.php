@@ -10,12 +10,12 @@
 @section('content')
   <form action="{{route('curriculum.list.store')}}" method="POST">
   @csrf
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Tambah Kurikulum</x-typography>
     <x-button.back :href="route('curriculum.list').'?program_studi='.$program_studi">Daftar Kurikulum</x-button.back>
-      <x-container>
+      <x-container.container>
         <x-typography :variant="'body-medium-bold'">Detail Kurikulum 2025 - {{array_values(array_filter($programStudiList, function($item) use($id_prodi) { return $item->id == $id_prodi; }))[0]->nama}}</x-typography>
-        <x-container :variant="'content-wrapper'" :class="'!px-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'!px-0'">
           <x-form.input-container :class="'min-w-[175px]'">
             <x-slot name="label">Program Studi</x-slot>
             <x-slot name="input">
@@ -52,7 +52,7 @@
           <x-form.input-container :class="'min-w-[175px]'">
             <x-slot name="label">Nama Kurikulum</x-slot>
             <x-slot name="input">
-              <x-container :class="'w-full  !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+              <x-container.container :class="'w-full  !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
                 <input 
                   oninput="
                     updateSaveButtonState();
@@ -76,7 +76,7 @@
           <x-form.input-container :class="'min-w-[175px]'">
             <x-slot name="label">Deskripsi</x-slot>
             <x-slot name="input">
-              <x-container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+              <x-container.container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
                 <input 
                   oninput="
                     updateSaveButtonState();
@@ -100,7 +100,7 @@
           <x-form.input-container :class="'min-w-[175px]'">
             <x-slot name="label">SKS Mata Kuliah Wajib</x-slot>
             <x-slot name="input">
-              <x-container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+              <x-container.container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
                 <input 
                   oninput="
                     updateSaveButtonState();
@@ -125,7 +125,7 @@
           <x-form.input-container :class="'min-w-[175px]'">
             <x-slot name="label">SKS Mata Kuliah Pilihan</x-slot>
             <x-slot name="input">
-              <x-container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+              <x-container.container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
                 <input 
                   oninput="
                     updateSaveButtonState();
@@ -150,7 +150,7 @@
           <x-form.input-container :class="'min-w-[175px]'">
             <x-slot name="label">Total SKS</x-slot>
             <x-slot name="input">
-              <x-container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+              <x-container.container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
                 <input 
                   oninput="
                     updateSaveButtonState();
@@ -175,23 +175,23 @@
           <x-form.toggle :id="'statusValue'" />
         </x-container>
       </x-container>
-      <x-container :class="'flex flex-col gap-4'">
+      <x-container.container :class="'flex flex-col gap-4'">
         <x-typography :variant="'body-medium-bold'">Jenis Mata Kuliah - Minimum SKS</x-typography>
-        <x-table :variant="'old'" id="list-matkul">
-          <x-table-head :variant="'old'">
-            <x-table-row :variant="'old'">
-              <x-table-header :variant="'old'">Jenis Mata Kuliah</x-table-header>
-              <x-table-header :variant="'old'"></x-table-header>
-              <x-table-header :variant="'old'">Minimum SKS</x-table-header>
-            </x-table-row>
-          </x-table-head>
+        <x-table.index :variant="'old'" id="list-matkul">
+          <x-table.head :variant="'old'">
+            <x-table.row :variant="'old'">
+              <x-table.header-cell :variant="'old'">Jenis Mata Kuliah</x-table.header-cell>
+              <x-table.header-cell :variant="'old'"></x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Minimum SKS</x-table.header-cell>
+            </x-table.row>
+          </x-table.head>
           <tbody>
             @foreach($jenis_mata_kuliah as $jenis)
-              <x-table-row :variant="'old'" class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
-                <x-table-cell :variant="'old'">{{$jenis}}</x-table-cell>
-                <x-table-cell :variant="'old'" class="py-[12px] !w-[25%]"></x-table-cell>
-                <x-table-cell :variant="'old'">
-                  <x-container class="!bg-transparent rounded-lg !py-[9px] flex">
+              <x-table.row :variant="'old'" class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
+                <x-table.cell :variant="'old'">{{$jenis}}</x-table.cell>
+                <x-table.cell :variant="'old'" class="py-[12px] !w-[25%]"></x-table.cell>
+                <x-table.cell :variant="'old'">
+                  <x-container.container class="!bg-transparent rounded-lg !py-[9px] flex">
                     <input 
                       class="w-full bg-transparent !border-transparent focus:outline-none text-[14px]" 
                       placeholder="Minimum SKS" 
@@ -209,13 +209,13 @@
                     />
                     <img onclick="this.previousElementSibling.value = '';this.classList.add('hidden');" class="hidden cursor-pointer" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </x-container>
-                </x-table-cell>
-              </x-table-row>
+                </x-table.cell>
+              </x-table.row>
             @endforeach
           </tbody>
-        </x-table>
+        </x-table.index>
       </x-container>
-      <x-container class="flex gap-4">
+      <x-container.container class="flex gap-4">
         <x-button.secondary id="btnBatal" :href="route('curriculum.list')" disabled>Batal</x-button.secondary>
         <x-button.primary 
           id="btnSimpan" 
@@ -230,7 +230,7 @@
       </x-container>
       <x-modal.container-pure-js id="modalKonfirmasiSimpan">
         <x-slot name="header">
-          <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
             <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
             <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
           </x-container>

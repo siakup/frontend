@@ -16,13 +16,13 @@
     </div>
 
     <div x-data="cpl({{ count($cplList) }}, @js($cplList))">
-        <x-container variant="content" class="ml-3" borderRadius="rounded-b-3xl" >
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header class="w-38">Kode</x-table-header>
-                        <x-table-header>Capaian</x-table-header>
-                        <x-table-header class="w-13">
+        <x-container.container variant="content" class="ml-3" borderRadius="rounded-b-3xl" >
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell class="w-38">Kode</x-table.header-cell>
+                        <x-table.header-cell>Capaian</x-table.header-cell>
+                        <x-table.header-cell class="w-13">
                             <x-form.checklist
                                 id="select-all"
                                 label=""
@@ -32,16 +32,16 @@
                                 x-on:change="toggleAll()"
                                 
                             />
-                        </x-table-header>
-                    </x-table-row>
-                </x-table-head>
+                        </x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
 
-                <x-table-body>
+                <x-table.body>
                     @foreach($cplList as $index => $cpl)
-                    <x-table-row :odd="$index % 2 === 0">
-                        <x-table-cell>{{ $cpl['kode'] }}</x-table-cell>
-                        <x-table-cell position="left">{{ $cpl['deskripsi']}}</x-table-cell>
-                        <x-table-cell>
+                    <x-table.row :odd="$index % 2 === 0">
+                        <x-table.cell>{{ $cpl['kode'] }}</x-table.cell>
+                        <x-table.cell position="left">{{ $cpl['deskripsi']}}</x-table.cell>
+                        <x-table.cell>
                             <x-form.checklist
                                 id="{{ $index }}"
                                 name="select"
@@ -49,11 +49,11 @@
                                 :value="$index"
                                 x-on:change="selectAll = selected.length === {{ count($cplList) }}"
                             />
-                        </x-table-cell>
-                    </x-table-row>
+                        </x-table.cell>
+                    </x-table.row>
                     @endforeach
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
             <div class="flex mt-5 justify-end gap-2">
                 <x-button.secondary x-bind:disabled="isDisabled">Batal</x-button.secondary>
                 <x-button.primary x-bind:disabled="isDisabled" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>

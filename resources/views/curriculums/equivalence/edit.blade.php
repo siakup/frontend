@@ -199,41 +199,41 @@
 @endsection
 
 @section('content')
-    <x-container :variant="'content-wrapper'" class="px-5 flex flex-col gap-5 box-border" x-data="mataKuliahForm">
+    <x-container.container :variant="'content-wrapper'" class="px-5 flex flex-col gap-5 box-border" x-data="mataKuliahForm">
       <x-typography :variant="'body-large-semibold'">Edit Ekuivalensi</x-typography>
       <x-button.back href="{{ route('curriculum.equivalence') }}">Ekuivalensi Kurikulum</x-button.back>
-        <x-container class="flex flex-col gap-5">
+        <x-container.container class="flex flex-col gap-5">
           <x-typography :variant="'body-medium-bold'">Edit Ekuivalensi</x-typography>
 
           <!-- Informasi Ekuivalensi -->
-            <x-container :class="'!px-0 !py-0 overflow-hidden'">
+            <x-container.container :class="'!px-0 !py-0 overflow-hidden'">
               <table class="w-full">
                 <tbody>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">ID Ekuivalensi</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">#{{ $id }}</x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Program Studi</x-table-cell>
-                    <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]">{{ $programPerkuliahan }}</x-table-cell>
-                  </x-table-row>
-                  <x-table-row class="text-[#262626]">
-                    <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Program Perkuliahan</x-table-cell>
-                    <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">{{ $prodi }}</x-table-cell>
-                  </x-table-row>
+                  <x-table.row class="text-[#262626]">
+                    <x-table.cell class="bg-[#E8E8E8] text-start w-[30%]">ID Ekuivalensi</x-table.cell>
+                    <x-table.cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">#{{ $id }}</x-table.cell>
+                  </x-table.row>
+                  <x-table.row class="text-[#262626]">
+                    <x-table.cell class="bg-[#F5F5F5] text-start w-[30%]">Program Studi</x-table.cell>
+                    <x-table.cell class="text-start bg-[#FFFFFF] font-bold w-[70%]">{{ $programPerkuliahan }}</x-table.cell>
+                  </x-table.row>
+                  <x-table.row class="text-[#262626]">
+                    <x-table.cell class="bg-[#E8E8E8] text-start w-[30%]">Program Perkuliahan</x-table.cell>
+                    <x-table.cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">{{ $prodi }}</x-table.cell>
+                  </x-table.row>
                 </tbody>
               </table>
             </x-container>
 
             <!-- Mata Kuliah Kurikulum Lama -->
-            <x-container :variant="'content-wrapper'" class="grid grid-cols-12 gap-5 items-center !px-0">
+            <x-container.container :variant="'content-wrapper'" class="grid grid-cols-12 gap-5 items-center !px-0">
                 <x-typography :variant="'body-small-semibold'" class="col-span-2">Mata Kuliah Kurikulum Lama</x-typography>
-                <x-container :variant="'content-wrapper'" class="col-span-10 flex flex-col !gap-2 !px-0">
+                <x-container.container :variant="'content-wrapper'" class="col-span-10 flex flex-col !gap-2 !px-0">
                     <input type="text" x-show="selectedOldCourses.length === 0" disabled placeholder="MK Kurikulum Lama"
                         class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-500" />
 
                     <template x-for="course in selectedOldCourses" :key="course.id">
-                        <x-container class="flex items-center justify-between !px-3 !py-2">
+                        <x-container.container class="flex items-center justify-between !px-3 !py-2">
                             <x-typography x-text="course.kode + ' - ' + course.nama_id"></x-typography>
                             <button type="button" class="cursor-pointer" x-on:click="removeCourse('old', course.id)">
                                 <img src="{{ asset('assets/icon-cleardata.svg') }}" alt="icon remove">
@@ -246,14 +246,14 @@
                 x-on:click="modalTarget = 'old'; $dispatch('open-modal', {id: 'modal-tambah-matakuliah'})" />
 
             <!-- Mata Kuliah Kurikulum Baru -->
-            <x-container :variant="'content-wrapper'" class="grid grid-cols-12 !gap-5 items-center !px-0">
+            <x-container.container :variant="'content-wrapper'" class="grid grid-cols-12 !gap-5 items-center !px-0">
                 <x-typography :variant="'body-small-semibold'" class="col-span-2">Mata Kuliah Kurikulum Baru</x-typography>
-                <x-container :variant="'content-wrapper'" class="col-span-10 flex flex-col !gap-2 !px-0">
+                <x-container.container :variant="'content-wrapper'" class="col-span-10 flex flex-col !gap-2 !px-0">
                     <input type="text" x-show="selectedNewCourses.length === 0" disabled placeholder="MK Kurikulum Baru"
                         class="w-full border rounded px-3 py-2 bg-gray-100 text-gray-500" />
 
                     <template x-for="course in selectedNewCourses" :key="course.id">
-                        <x-container
+                        <x-container.container
                             class="flex items-center justify-between !px-3 !py-2">
                             <x-typography x-text="course.kode + ' - ' + course.nama_id"></x-typography>
                             <button type="button" class="cursor-pointer" x-on:click="removeCourse('new', course.id)">
@@ -266,7 +266,7 @@
             <x-button.primary label="Tambah Mata Kuliah" class="self-end"
                 x-on:click="modalTarget = 'new'; $dispatch('open-modal', {id: 'modal-tambah-matakuliah'})" />
 
-            <x-container :variant="'content-wrapper'" class="flex flex-row gap-5 justify-end !px-0 mt-5">
+            <x-container.container :variant="'content-wrapper'" class="flex flex-row gap-5 justify-end !px-0 mt-5">
                 <x-button.secondary label="Batal"
                     x-on:click="window.location.href='{{ route('curriculum.equivalence') }}'" />
                 <x-button.primary label="Update"
@@ -286,7 +286,7 @@
             }"
             x-on:close-modal.window="if ($event.detail.id === 'modal-tambah-matakuliah') { show = false; }">
             <x-slot name="header">
-                <x-container :variant="'content-wrapper'" class="!px-0 relative">
+                <x-container.container :variant="'content-wrapper'" class="!px-0 relative">
                     <x-typography variant="heading-h5" class="w-full inline-block text-center text-gray-800">
                         Daftar Mata Kuliah
                     </x-typography>
@@ -296,11 +296,11 @@
                 </x-container>
             </x-slot>
 
-            <x-container :variant="'content-wrapper'" class="!p-4 text-gray-800 flex flex-col !gap-5">
+            <x-container.container :variant="'content-wrapper'" class="!p-4 text-gray-800 flex flex-col !gap-5">
                 <!-- Konten modal -->
-                <x-container :variant="'content-wrapper'" class="!px-0 grid grid-cols-12 !gap-5 items-center">
+                <x-container.container :variant="'content-wrapper'" class="!px-0 grid grid-cols-12 !gap-5 items-center">
                     <x-typography :variant="'body-small-semibold'" class="col-span-2">Jenis Mata Kuliah</x-typography>
-                    <x-container :variant="'content-wrapper'" class="!px-0 col-span-10">
+                    <x-container.container :variant="'content-wrapper'" class="!px-0 col-span-10">
                         <x-form.input name="jenis_matakuliah" type="select" placeholder="Pilih Jenis Mata Kuliah"
                             :options="[
                                 '' => 'Pilih Jenis Mata Kuliah',
@@ -311,76 +311,76 @@
                     </x-container>
                 </x-container>
 
-                <x-container :variant="'content-wrapper'" class="!px-0 grid grid-cols-12 gap-5 items-center">
+                <x-container.container :variant="'content-wrapper'" class="!px-0 grid grid-cols-12 gap-5 items-center">
                     <x-typography :variant="'body-small-semibold'" class="col-span-2">Mata Kuliah</x-typography>
-                    <x-container :variant="'content-wrapper'" class="col-span-10 !px-0">
+                    <x-container.container :variant="'content-wrapper'" class="col-span-10 !px-0">
                         <x-form.input name="matakuliah" type="text" placeholder="Ketik Mata Kuliah" />
                     </x-container>
                 </x-container>
 
-                <x-container :variant="'content-wrapper'" class="flex flex-row justify-end !gap-5 !px-0">
+                <x-container.container :variant="'content-wrapper'" class="flex flex-row justify-end !gap-5 !px-0">
                     <x-button.secondary label="Batal" x-on:click="" />
                     <x-button.primary label="Cari" x-on:click="" />
                 </x-container>
 
-                <x-table>
-                    <x-table-head>
-                        <x-table-row>
-                            <x-table-header></x-table-header>
-                            <x-table-header>Kode Mata Kuliah</x-table-header>
-                            <x-table-header>Nama</x-table-header>
-                            <x-table-header>Jumlah SKS</x-table-header>
-                            <x-table-header>Program Studi</x-table-header>
-                            <x-table-header>Jenis Mata Kuliah</x-table-header>
-                        </x-table-row>
-                    </x-table-head>
+                <x-table.index>
+                    <x-table.head>
+                        <x-table.row>
+                            <x-table.header-cell></x-table.header-cell>
+                            <x-table.header-cell>Kode Mata Kuliah</x-table.header-cell>
+                            <x-table.header-cell>Nama</x-table.header-cell>
+                            <x-table.header-cell>Jumlah SKS</x-table.header-cell>
+                            <x-table.header-cell>Program Studi</x-table.header-cell>
+                            <x-table.header-cell>Jenis Mata Kuliah</x-table.header-cell>
+                        </x-table.row>
+                    </x-table.head>
 
-                    <x-table-body>
+                    <x-table.body>
                         <template x-if="isLoading">
-                            <x-table-row>
-                                <x-table-cell colspan="7" class="text-center py-4">
+                            <x-table.row>
+                                <x-table.cell colspan="7" class="text-center py-4">
                                     Memuat data...
-                                </x-table-cell>
-                            </x-table-row>
+                                </x-table.cell>
+                            </x-table.row>
                         </template>
 
                         <template x-if="errorMessage">
-                            <x-table-row>
-                                <x-table-cell colspan="7" class="text-center py-4 text-red-500"
+                            <x-table.row>
+                                <x-table.cell colspan="7" class="text-center py-4 text-red-500"
                                     x-text="errorMessage">
-                                </x-table-cell>
-                            </x-table-row>
+                                </x-table.cell>
+                            </x-table.row>
                         </template>
 
                         <template x-if="!isLoading && courses.length > 0">
                             <template x-for="(item, index) in courses" :key="item.id">
-                                <x-table-row>
-                                    <x-table-cell>
+                                <x-table.row>
+                                    <x-table.cell>
                                         <input type="checkbox" name="selected[]"
                                             class="form-checkbox h-5 w-5 text-blue-600" :value="JSON.stringify(item)">
-                                    </x-table-cell>
-                                    <x-table-cell x-text="item.kode"></x-table-cell>
-                                    <x-table-cell x-text="item.nama_id"></x-table-cell>
-                                    <x-table-cell x-text="item.sks"></x-table-cell>
-                                    <x-table-cell x-text="item.semester"></x-table-cell>
-                                    <x-table-cell x-text="item.jenis"></x-table-cell>
-                                </x-table-row>
+                                    </x-table.cell>
+                                    <x-table.cell x-text="item.kode"></x-table.cell>
+                                    <x-table.cell x-text="item.nama_id"></x-table.cell>
+                                    <x-table.cell x-text="item.sks"></x-table.cell>
+                                    <x-table.cell x-text="item.semester"></x-table.cell>
+                                    <x-table.cell x-text="item.jenis"></x-table.cell>
+                                </x-table.row>
                             </template>
                         </template>
 
                         <template x-if="!isLoading && courses.length === 0">
-                            <x-table-row>
-                                <x-table-cell colspan="7" class="text-center py-4">
+                            <x-table.row>
+                                <x-table.cell colspan="7" class="text-center py-4">
                                     Tidak ada data mata kuliah
-                                </x-table-cell>
-                            </x-table-row>
+                                </x-table.cell>
+                            </x-table.row>
                         </template>
-                    </x-table-body>
-                </x-table>
+                    </x-table.body>
+                </x-table.index>
             </x-container>
 
             <x-slot name="footer">
-                <x-container :variant="'content-wrapper'" class="!px-0 flex justify-between !gap-4 w-full">
+                <x-container.container :variant="'content-wrapper'" class="!px-0 flex justify-between !gap-4 w-full">
                     {{-- TODO: Pagination --}}
                     <x-button.primary label="Simpan" x-on:click="saveSelectedCourses()" />
                 </x-container>

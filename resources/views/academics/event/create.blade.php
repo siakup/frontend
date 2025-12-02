@@ -7,17 +7,17 @@
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Tambah Event Akademik</x-typography>
     <x-button.back :href="route('academics-event.index')">Event Akademik</x-button.back>
-    <x-container :class="'flex flex-col gap-4'">
+    <x-container.container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Tambah Event Akademik</x-typography>
-      <x-container :variant="'content-wrapper'" class="flex flex-col gap-4 !p-0">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-col gap-4 !p-0">
         <input type="hidden" id="user_id" value="">
         <x-form.input-container class="min-w-[150px]" id="name-container">
           <x-slot name="label">Nama Event</x-slot>
           <x-slot name="input">
-            <x-container :variant="'content-wrapper'" class="flex justify-between w-full !p-0">
+            <x-container.container :variant="'content-wrapper'" class="flex justify-between w-full !p-0">
                 <input 
                   type="text" 
                   id="name" 
@@ -33,7 +33,7 @@
         <x-form.input-container class="min-w-[150px]" id="flag">
           <x-slot name="label">Flag</x-slot>
           <x-slot name="input">
-            <x-container :variant="'content-wrapper'" class="flex flex-row justify-items-start py-3 !p-0">
+            <x-container.container :variant="'content-wrapper'" class="flex flex-row justify-items-start py-3 !p-0">
               <x-form.checklist :id="'nilai'" :value="'nilai_on'" :label="'Nilai'" :name="'flag[]'" />
               <x-form.checklist :id="'irs'" :value="'irs_on'" :label="'IRS'" :name="'flag[]'" />
               <x-form.checklist :id="'lulus'" :value="'lulus_on'" :label="'Lulus'" :name="'flag[]'" />
@@ -45,7 +45,7 @@
           </x-slot>
         </x-form.input-container>
         <x-form.toggle :id="'statusValue'" />
-        <x-container :variant="'content-wrapper'" class="flex gap-5 justify-end flex-row !p-0">
+        <x-container.container :variant="'content-wrapper'" class="flex gap-5 justify-end flex-row !p-0">
           <x-button.secondary :href="route('academics-event.index')">Batal</x-button.secondary>
           <x-button.primary
             onclick="
@@ -64,7 +64,7 @@
 
   <x-modal.container-pure-js id="modalKonfirmasiSimpan">
     <x-slot name="header">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
         <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
       </x-container>

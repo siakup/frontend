@@ -16,7 +16,7 @@
 }, window.modalData)">
   <x-modal.container-pure-js id="modalResetPassword">
     <x-slot name="header">
-    <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+    <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
       <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Reset Password Pengguna</x-typography>
       <button 
         type="button" 
@@ -31,9 +31,9 @@
     </x-container>
     </x-slot>
     <x-slot name="body">
-      <x-container :class="'w-[40vw] !border-none !px-0 !py-0 flex flex-col'">
+      <x-container.container :class="'w-[40vw] !border-none !px-0 !py-0 flex flex-col'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Informasi Detail Pengguna</x-typography>
-        <x-container :class="'block w-full !border-none !px-0'">
+        <x-container.container :class="'block w-full !border-none !px-0'">
           <input type="hidden" id="user_id" x-model="user.id">
           <x-form.input-container id="nip" class="min-w-[110px]">
             <x-slot name="label">NIP</x-slot>
@@ -83,9 +83,9 @@
       </x-container>
     </x-slot>
     <x-slot name="footer">
-      <x-container :variant="'content-wrapper'" class="flex flex-col gap-3 w-full items-center !p-0">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-col gap-3 w-full items-center !p-0">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Reset Password</x-typography>
-        <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center gap-3">
+        <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-center gap-3">
           <x-button :variant="'secondary'" :href="route('users.index')">Batal</x-button>
           <x-button :variant="'primary'" x-on:click="resetPassword()">Reset Password</x-button>
         </x-container>

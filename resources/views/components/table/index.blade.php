@@ -7,7 +7,17 @@
   'colorTypeTableTitle' => 'pure-gray'
 ])
 
-<x-container 
+@php
+  $variantColorsTableTitle = [
+    'pure-gray'=> 'disable-blue',
+    'light-yellow-gradient'=> 'yellow-gradient',
+    'light-blue-gradient'=> 'blue-gradient',
+    'light-red-gradient'=> 'red-gradient',
+    'light-green-gradient'=> 'green-gradient',
+  ];
+@endphp
+
+<x-container.container 
   x-data="{
     variants: {
       default: {
@@ -23,13 +33,6 @@
         tableClass: 'border-collapse'
       },
     },
-    variantColorsTableTitle: {
-      'pure-gray': 'bg-disable-blue',
-      'light-yellow-gradient': 'bg-gradient-to-r from-white to-yellow-100',
-      'light-blue-gradient': 'bg-gradient-to-r from-white to-blue-50',
-      'light-red-gradient': 'bg-gradient-to-r from-white to-red-100',
-      'light-green-gradient': 'bg-gradient-to-r from-white to-green-400',
-    },
     variant: {{json_encode($variant)}},
     isHaveTitle: {{json_encode($isHaveTitle)}},
     colorTypeTableTitle: {{json_encode($colorTypeTableTitle)}}
@@ -38,10 +41,10 @@
   x-bind:class="variants[variant].divClass"
 >
   <template x-if="isHaveTitle">
-    <x-container 
-      :variant="'content-wrapper'"
-      class="border-b-[1px] border-b-gray-400 flex justify-between !p-4 !rounded-none"
-      x-bind:class="variantColorsTableTitle[colorTypeTableTitle]"
+    <x-container.container 
+      :variant="$variantColorsTableTitle[$colorTypeTableTitle]"
+      class="justify-between border-b-[1px] border-b-gray-400"
+      :borderRadius="'rounded-none'"
     >
       {{ $tableTitleSlot ?? '' }}
     </x-container>

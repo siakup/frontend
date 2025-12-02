@@ -32,6 +32,7 @@
         'green-bordered' => 'border bg-green-50 border-green-400 text-green-700',
         'green-monochrome' => 'bg-green-50 text-green-700',
         'green-filled' => 'bg-green-400 text-gray-800',
+        'gray-filled' => 'bg-disable-gray text-gray-800'
     ];
 
     $selectedVariant = $variants[$variant] ?? $variants['red-filled'];

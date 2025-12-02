@@ -37,4 +37,8 @@ class ComponentsDocumentationController extends Controller
     public function quantity(Request $request) {
       return view('components-documentation.quantity');
     }
+
+    public function container(Request $request) {
+      return view('components-documentation.container');
+    }
 }

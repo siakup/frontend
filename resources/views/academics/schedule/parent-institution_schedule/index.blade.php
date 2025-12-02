@@ -27,12 +27,12 @@
 
 
 @section('content')
-  <x-container
+  <x-container.container
     x-data="listParentInstitutionScheduleComponents({{ json_encode(route('academics.schedule.parent-institution-schedule.index')) }})"
     :variant="'content-wrapper'"
   >
     <x-typography :variant="'body-large-semibold'">Jadwal Kuliah</x-typography>
-    <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
+    <x-container.container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
       <x-tab 
         :tabItems="[
           (object)[
@@ -47,10 +47,10 @@
           ],
         ]"
       />
-      <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
+      <x-container.container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
           <x-typography variant="body-medium-bold">Jadwal Kuliah Institusi Parent</x-typography>
-          <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-3'">
-              <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+          <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-3'">
+              <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
                   <x-typography :variant="'body-medium-bold'">Peran</x-typography>
                   <x-form.dropdown 
                     :buttonId="'sortRole'"
@@ -63,7 +63,7 @@
                     x-model="$store.listPage.peran"
                   />
               </x-container>
-               <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+               <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
                 <x-typography :variant="'body-medium-bold'">Program Studi</x-typography>
                 <x-form.dropdown 
                   :buttonId="'sortButtonStudyProgram'"
@@ -77,7 +77,7 @@
                 />
               </x-container>
           </x-container>
-          <x-container :class="'flex flex-row items-center justify-between'">
+          <x-container.container :class="'flex flex-row items-center justify-between'">
             <div class="w-1/3">
               <x-form.search
                 :value="$search"
@@ -113,27 +113,27 @@
               x-model="$store.listPage.sort"
             />
           </x-container>
-          <x-table>
-              <x-table-head>
-                  <x-table-row>
-                      <x-table-header>Mata Kuliah</x-table-header>
-                      <x-table-header>Nama Kelas</x-table-header>
-                      <x-table-header>Kapasitas</x-table-header>
-                      <x-table-header>Jadwal</x-table-header>
-                      <x-table-header>Pengajar</x-table-header>
-                      <x-table-header>Aksi</x-table-header>
-                  </x-table-row>
-              </x-table-head>
-              <x-table-body>
+          <x-table.index>
+              <x-table.head>
+                  <x-table.row>
+                      <x-table.header-cell>Mata Kuliah</x-table.header-cell>
+                      <x-table.header-cell>Nama Kelas</x-table.header-cell>
+                      <x-table.header-cell>Kapasitas</x-table.header-cell>
+                      <x-table.header-cell>Jadwal</x-table.header-cell>
+                      <x-table.header-cell>Pengajar</x-table.header-cell>
+                      <x-table.header-cell>Aksi</x-table.header-cell>
+                  </x-table.row>
+              </x-table.head>
+              <x-table.body>
                 <template x-if="$store.listPage.data.length > 0">  
                   <template x-for="schedule in $store.listPage.data">
-                    <x-table-row>
-                        <x-table-cell x-text="schedule.mata_kuliah ?? '-'"></x-table-cell>
-                        <x-table-cell>
+                    <x-table.row>
+                        <x-table.cell x-text="schedule.mata_kuliah ?? '-'"></x-table.cell>
+                        <x-table.cell>
                           <x-typography :variant="'body-small-regular'" x-text="schedule.nama_kelas"></x-typography>
-                        </x-table-cell>
-                        <x-table-cell x-text="schedule.kapasitas ?? '-'"></x-table-cell>
-                        <x-table-cell>
+                        </x-table.cell>
+                        <x-table.cell x-text="schedule.kapasitas ?? '-'"></x-table.cell>
+                        <x-table.cell>
                           <ul class="list-disc text-left w-max">
                             <template x-for="jadwal in schedule.jadwal ?? []">
                               <li class="text-left">
@@ -144,14 +144,14 @@
                               </li>
                             </template>
                           </ul>
-                        </x-table-cell>
-                        <x-table-cell>
+                        </x-table.cell>
+                        <x-table.cell>
                           <template x-for="(pengajar, index) in schedule.pengajar ?? []" :key="index">
                             <x-typography :variant="'body-small-regular'" x-text="pengajar + (index !== (schedule.pengajar.length - 1) ? ', ' : '')"></x-typography>
                           </template>
-                        </x-table-cell>
-                        <x-table-cell>
-                            <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
+                        </x-table.cell>
+                        <x-table.cell>
+                            <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
                               <x-button.base
                                 :icon="asset('assets/icon-search.svg')"
                                 class="scale-75"
@@ -174,16 +174,16 @@
                                 Hapus
                               </x-button.base>
                             </x-container>
-                        </x-table-cell>
-                    </x-table-row>
+                        </x-table.cell>
+                    </x-table.row>
                   </template>
                 </template>
                 <template x-if="$store.listPage.data.length == 0">
                   @include('academics.periode.error-filter')
                 </template>
-              </x-table-body>
-          </x-table>
-          <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-end !px-0'">
+              </x-table.body>
+          </x-table.index>
+          <x-container.container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-end !px-0'">
             <x-button.secondary 
               :icon="asset('assets/icon-upload-red-500.svg')"
               :iconPosition="'right'"
@@ -219,7 +219,7 @@
     </template>
     <x-modal.container-pure-js x-bind:class="{'hidden': !modalConfirmationDeleteOpen, 'flex': modalConfirmationDeleteOpen}">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
           <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
         </x-container>

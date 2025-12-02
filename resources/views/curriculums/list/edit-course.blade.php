@@ -19,42 +19,42 @@
 @section('content')
 <form action="{{route('curriculum.list.edit.update-assign-study', ['id' => $id, 'course_id' => $course_id])}}" method="POST">
   @csrf
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Ubah Mata Kuliah Kurikulum</x-typography>
     <x-button.back :href="route('curriculum.list.edit.show-study', ['id' => $id])">Ubah Mata Kuliah</x-button.back>
-    <x-container :class="'!p-0 !overflow-hidden'">
+    <x-container.container :class="'!p-0 !overflow-hidden'">
       <x-typography :variant="'body-medium-bold'" :class="'bg-gradient-to-r from-[#FFECED] to-[#FFFFFF] w-full !flex p-[20px]'">Ubah Mata Kuliah Kurikulum</x-typography>
       <table class="w-full">
         <tbody>
-          <x-table-row class="text-[#262626]">
-            <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Kurikulum</x-table-cell>
-            <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]"></x-table-cell>
-          </x-table-row>
-          <x-table-row class="text-[#262626]">
-            <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">Kode Mata Kuliah</x-table-cell>
-            <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]">{{$data->kode_matakuliah}}</x-table-cell>
-          </x-table-row>
-          <x-table-row class="text-[#262626]">
-            <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Mata Kuliah</x-table-cell>
-            <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">{{$data->nama_matakuliah_id}}</x-table-cell>
-          </x-table-row>
-          <x-table-row class="text-[#262626]">
-            <x-table-cell class="bg-[#F5F5F5] text-start w-[30%]">SKS</x-table-cell>
-            <x-table-cell class="text-start bg-[#FFFFFF] font-bold w-[70%]">{{$data->sks}}</x-table-cell>
-          </x-table-row>
-          <x-table-row class="text-[#262626]">
-            <x-table-cell class="bg-[#E8E8E8] text-start w-[30%]">Semester Kurikulum</x-table-cell>
-            <x-table-cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">{{$data->semester}}</x-table-cell>
-          </x-table-row>
+          <x-table.row class="text-[#262626]">
+            <x-table.cell class="bg-[#E8E8E8] text-start w-[30%]">Nama Kurikulum</x-table.cell>
+            <x-table.cell class="text-start bg-[#F5F5F5] font-bold w-[70%]"></x-table.cell>
+          </x-table.row>
+          <x-table.row class="text-[#262626]">
+            <x-table.cell class="bg-[#F5F5F5] text-start w-[30%]">Kode Mata Kuliah</x-table.cell>
+            <x-table.cell class="text-start bg-[#FFFFFF] font-bold w-[70%]">{{$data->kode_matakuliah}}</x-table.cell>
+          </x-table.row>
+          <x-table.row class="text-[#262626]">
+            <x-table.cell class="bg-[#E8E8E8] text-start w-[30%]">Mata Kuliah</x-table.cell>
+            <x-table.cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">{{$data->nama_matakuliah_id}}</x-table.cell>
+          </x-table.row>
+          <x-table.row class="text-[#262626]">
+            <x-table.cell class="bg-[#F5F5F5] text-start w-[30%]">SKS</x-table.cell>
+            <x-table.cell class="text-start bg-[#FFFFFF] font-bold w-[70%]">{{$data->sks}}</x-table.cell>
+          </x-table.row>
+          <x-table.row class="text-[#262626]">
+            <x-table.cell class="bg-[#E8E8E8] text-start w-[30%]">Semester Kurikulum</x-table.cell>
+            <x-table.cell class="text-start bg-[#F5F5F5] font-bold w-[70%]">{{$data->semester}}</x-table.cell>
+          </x-table.row>
         </tbody>
       </table>
     </x-container>
-    <x-container :variant="'content-wrapper'">
+    <x-container.container :variant="'content-wrapper'">
       <ul class="text-[#0065A3] list-disc italic">
         <li>Setiap perubahan data akan memengaruhi seluruh portofolio mata kuliah</li>
       </ul>
     </x-container>
-    <x-container>
+    <x-container.container>
       <x-form.input-container>
         <x-slot name="label">Semester</x-slot>
         <x-slot name="input">
@@ -65,43 +65,43 @@
         </x-slot>
       </x-form.input-container>
     </x-container>
-    <x-container :class="'!overflow-hidden !p-0'">
+    <x-container.container :class="'!overflow-hidden !p-0'">
       <x-typography :variant="'body-medium-bold'" :class="'bg-gradient-to-r from-[#FFECED] to-[#FFFFFF] w-full !flex p-[20px]'">Capaian Pembelajaran Lulusan</x-typography>
-        <x-container class="border-none">
-          <x-table>
-            <x-table-head>
-              <x-table-row>
-                <x-table-header class="cursor-pointer">
+        <x-container.container class="border-none">
+          <x-table.index>
+            <x-table.head>
+              <x-table.row>
+                <x-table.header-cell class="cursor-pointer">
                   Kode
-                </x-table-header>
-                <x-table-header class="cursor-pointer">
+                </x-table.header-cell>
+                <x-table.header-cell class="cursor-pointer">
                   Capaian
-                </x-table-header>
-                <x-table-header class="cursor-pointer">
+                </x-table.header-cell>
+                <x-table.header-cell class="cursor-pointer">
                   <input type="checkbox" id="select-all" oninput="onClickSelectAll(event)">
-                </x-table-header>
-              </x-table-row>
-            </x-table-head>
-            <x-table-body>
+                </x-table.header-cell>
+              </x-table.row>
+            </x-table.head>
+            <x-table.body>
               @forelse ($cpls as $cpl)
-                <x-table-row>
-                  <x-table-cell>{{ $cpl->kode_cpl }}</x-table-cell>
-                  <x-table-cell class="text-start">{{ $cpl->deskripsi_cpl }}</x-table-cell>
-                  <x-table-cell>
+                <x-table.row>
+                  <x-table.cell>{{ $cpl->kode_cpl }}</x-table.cell>
+                  <x-table.cell class="text-start">{{ $cpl->deskripsi_cpl }}</x-table.cell>
+                  <x-table.cell>
                     <input type="checkbox" name="cpl[]" id="select-all" value="{{$cpl->id_cpl}}" @if($cpl->is_select) checked @endif>
-                  </x-table-cell>
-                </x-table-row>
+                  </x-table.cell>
+                </x-table.row>
               @empty
-                <x-table-row>
-                  <x-table-cell colspan="3" class="text-center py-4">
+                <x-table.row>
+                  <x-table.cell colspan="3" class="text-center py-4">
                     Tidak ada data ditemukan
-                  </x-table-cell>
-                </x-table-row>
+                  </x-table.cell>
+                </x-table.row>
               @endforelse
-            </x-table-body>
-          </x-table>
+            </x-table.body>
+          </x-table.index>
         </x-container>
-        <x-container :variant="'content-wrapper'" :class="'!flex !flex-row !justify-end !w-full py-4'">
+        <x-container.container :variant="'content-wrapper'" :class="'!flex !flex-row !justify-end !w-full py-4'">
           <x-button.secondary :href="route('curriculum.list.edit.show-study', ['id' => $id])">Batal</x-button.secondary>
           <x-button.primary 
             id="btnSimpan"
@@ -118,7 +118,7 @@
   </x-container>
   <x-modal.container-pure-js id="modalKonfirmasiSimpan">
     <x-slot name="header">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
         <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
       </x-container>

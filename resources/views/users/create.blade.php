@@ -29,10 +29,10 @@
 
 
 @section('content')
-  <x-container :variant="'content-wrapper'" x-data="createUser()">
+  <x-container.container :variant="'content-wrapper'" x-data="createUser()">
     <x-typography :variant="'body-large-semibold'">Pengguna Baru</x-typography>
     <x-button :variant="'tertiary'" :icon="asset('assets/icons/arrow-left/red-20.svg')" :href="route('users.index')">Manajemen Pengguna</x-button>
-    <x-container :class="'flex flex-col gap-4'">
+    <x-container.container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Pengguna Baru</x-typography>
       <x-form.input-container class="min-w-[120px]" for="nip-search">
         <x-slot name="label">NIP</x-slot>
@@ -47,9 +47,9 @@
               x-model="$store.createPage.nomor_induk"
             />
             <template x-if="$store.createPage.users && $store.createPage.users.length > 0 && $store.createPage.nomor_induk !== '' && $store.createPage.isOptionListOpen">
-              <x-container :class="'!px-0 !py-0 !p-0 flex flex-col !gap-0 absolute top-full left-0 right-0 overflow-hidden'">
+              <x-container.container :class="'!px-0 !py-0 !p-0 flex flex-col !gap-0 absolute top-full left-0 right-0 overflow-hidden'">
                 <template x-for="user in $store.createPage.users">
-                  <x-container 
+                  <x-container.container 
                     :variant="'content-wrapper'" 
                     :class="'!py-3 !px-4 flex flex-col justify-start !gap-2 cursor-pointer transition-[background] duration-150 hover:bg-[#E62129] group text-black hover:text-white'"
                     x-text="user.nomor_induk+' - '+user.nama"
@@ -95,7 +95,7 @@
         </x-slot>
       </x-form.input-container>
       <x-form.toggle x-model="$store.createPage.status" />
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-end !px-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-end !px-0'">
         <x-button
           :variant="'primary'" 
           x-on:click="$store.createPage.isModalTambahPeranOpen = true;"
@@ -105,26 +105,26 @@
         </x-button>
       </x-container>
     </x-container>
-    <x-container :class="'flex flex-col gap-4'">
+    <x-container.container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Daftar Peran</x-typography>
-      <x-table id="list-role" class="table" :variant="'old'">
-        <x-table-head :variant="'old'">
-          <x-table-row :variant="'old'">
-            <x-table-header :variant="'old'">Nama Peran</x-table-header>
-            <x-table-header :variant="'old'">Institusi</x-table-header>
-            <x-table-header :variant="'old'">Dibuat Pada</x-table-header>
-            <x-table-header :variant="'old'">Aksi</x-table-header>
-          </x-table-row>
-        </x-table-head>
+      <x-table.index id="list-role" class="table" :variant="'old'">
+        <x-table.head :variant="'old'">
+          <x-table.row :variant="'old'">
+            <x-table.header-cell :variant="'old'">Nama Peran</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Institusi</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Dibuat Pada</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
+          </x-table.row>
+        </x-table.head>
         <tbody>
           <template x-if="$store.createPage.peran && $store.createPage.peran.length > 0">
             <template x-for="(peran, index) in $store.createPage.peran">
-              <x-table-row :variant="'old'">
-                <x-table-cell :variant="'old'" x-text="peran.peranName"></x-table-cell>
-                <x-table-cell :variant="'old'" x-text="peran.institutionName"></x-table-cell>
-                <x-table-cell :variant="'old'" x-text="formatDateTime(peran.createdAt)"></x-table-cell>
-                <x-table-cell :variant="'old'">
-                  <x-container :variant="'content-wrapper'" class="w-full items-center">
+              <x-table.row :variant="'old'">
+                <x-table.cell :variant="'old'" x-text="peran.peranName"></x-table.cell>
+                <x-table.cell :variant="'old'" x-text="peran.institutionName"></x-table.cell>
+                <x-table.cell :variant="'old'" x-text="formatDateTime(peran.createdAt)"></x-table.cell>
+                <x-table.cell :variant="'old'">
+                  <x-container.container :variant="'content-wrapper'" class="w-full items-center">
                     <x-button
                       :variant="'tertiary'"
                       :size="'sm'"
@@ -135,13 +135,13 @@
                       Hapus
                     </x-button>
                   </x-container>
-                </x-table-cell>
-              </x-table-row>
+                </x-table.cell>
+              </x-table.row>
             </template>
           </template>
         </tbody>
-      </x-table>
-      <x-container :variant="'content-wrapper'" :class="'flex-row justify-end gap-4 !px-0'" x-bind:class="{'hidden': !$store.createPage.peran || $store.createPage.peran.length == 0, 'flex': $store.createPage.peran && $store.createPage.peran.length > 0 }">
+      </x-table.index>
+      <x-container.container :variant="'content-wrapper'" :class="'flex-row justify-end gap-4 !px-0'" x-bind:class="{'hidden': !$store.createPage.peran || $store.createPage.peran.length == 0, 'flex': $store.createPage.peran && $store.createPage.peran.length > 0 }">
         <x-button :variant="'secondary'" :href="route('users.index')">Batal</x-button.secondary>
         <x-button 
           :variant="'primary'" 
@@ -155,7 +155,7 @@
     <div x-data="createPeran('{{ route('institutions.role') }}',@js($roles->data))"  x-effect="getData();">
       <x-modal.container-pure-js x-bind:class="{'hidden': !$store.createPage.isModalTambahPeranOpen, 'flex': $store.createPage.isModalTambahPeranOpen}">
         <x-slot name="header">
-          <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
             <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tambah Peran Pengguna</x-typography>
             <x-icon :iconUrl="asset('assets/icons/caution/outline-black-24.svg')" />
           </x-container>
@@ -212,7 +212,7 @@
 
     <x-modal.container-pure-js x-bind:class="{'hidden': !isModalKonfirmasiSimpanOpen, 'flex': isModalKonfirmasiSimpanOpen}">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
           <x-icon :iconUrl="asset('assets/icons/caution/outline-black-24.svg')" />
         </x-container>
@@ -226,7 +226,7 @@
   
     <x-modal.container-pure-js x-bind:class="{'hidden': !isModalKonfirmasiHapusOpen, 'flex': isModalKonfirmasiHapusOpen}">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Hapus Peran Pengguna</x-typography>
           <x-icon :iconUrl="asset('assets/icons/delete/grey-24.svg')" />
         </x-container>

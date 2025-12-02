@@ -15,21 +15,21 @@
             <x-typography variant="body-medium-bold">Matriks Penilaian Kognitif</x-typography>
 
             @if($matriksList)
-                <x-table>
-                    <x-table-head>
-                        <x-table-row>
-                            <x-table-header class="w-[150px]">Nilai</x-table-header>
-                            <x-table-header>Kualitas Jawaban</x-table-header>
-                            <x-table-header>Aksi</x-table-header>
-                        </x-table-row>
-                    </x-table-head>
+                <x-table.index>
+                    <x-table.head>
+                        <x-table.row>
+                            <x-table.header-cell class="w-[150px]">Nilai</x-table.header-cell>
+                            <x-table.header-cell>Kualitas Jawaban</x-table.header-cell>
+                            <x-table.header-cell>Aksi</x-table.header-cell>
+                        </x-table.row>
+                    </x-table.head>
 
-                    <x-table-body>
+                    <x-table.body>
                         @foreach($matriksList as $index => $matriks)
-                        <x-table-row>
-                            <x-table-cell>{{ $matriks['nilai'] }}</x-table-cell>
-                            <x-table-cell position="left">{{ $matriks['jawaban'] }}</x-table-cell>
-                            <x-table-cell>
+                        <x-table.row>
+                            <x-table.cell>{{ $matriks['nilai'] }}</x-table.cell>
+                            <x-table.cell position="left">{{ $matriks['jawaban'] }}</x-table.cell>
+                            <x-table.cell>
                                 <div class="flex flex-nowrap gap-3">
                                     <x-button.base 
                                         :icon="asset('assets/base/icon-edit-16.svg')"
@@ -50,13 +50,13 @@
                                         Hapus
                                     </x-button.base>
                                 </div>
-                            </x-table-cell>
-                        </x-table-row>
+                            </x-table.cell>
+                        </x-table.row>
                         @endforeach
-                    </x-table-body>
-                </x-table>
+                    </x-table.body>
+                </x-table.index>
             @else
-                <x-container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
+                <x-container.container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
                     <x-typography variant="body-small-bold">Belum Ada Matriks Penilaian Kognitif, Silahkan Tambah Matriks Penilaian Terlebih Dahulu</x-typography>
                 </x-container>
             @endif
@@ -85,7 +85,7 @@
     >
         <p>Apakah Anda yakin ingin menyimpan <b>matriks peniliaian kognitif</b>?</p>
 
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+        <x-container.container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
             <div class="flex gap-4">
                 <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
                 <div class="flex flex-col text-left">
@@ -105,7 +105,7 @@
     >
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
 
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+        <x-container.container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
             <div class="flex gap-4">
                 <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
                 <div class="flex flex-col text-left">

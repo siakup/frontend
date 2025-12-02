@@ -23,11 +23,11 @@
 </script>
 
 @section('content')
-  <x-container
+  <x-container.container
     x-data="listProdiScheduleComponents({{ json_encode(route('academics.schedule.prodi-schedule.index')) }})"
     :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Jadwal Kuliah</x-typography>
-    <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
+    <x-container.container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
       <x-tab 
         :tabItems="[
           (object)[
@@ -42,10 +42,10 @@
           ],
         ]"
       />
-      <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
+      <x-container.container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
         <x-typography variant="body-medium-bold">Jadwal Kuliah Program Studi</x-typography>
-        <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-3'">
-          <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+        <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-3'">
+          <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
             <x-typography :variant="'body-medium-bold'">Program Perkuliahan</x-typography>
             <x-form.dropdown 
               :buttonId="'sortButtonCampus'"
@@ -58,7 +58,7 @@
               x-model="$store.listPage.program_perkuliahan"
             />
           </x-container>
-          <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
+          <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center !gap-2'">
             <x-typography :variant="'body-medium-bold'">Program Studi</x-typography>
             <x-form.dropdown 
               :buttonId="'sortButtonStudyProgram'"
@@ -72,7 +72,7 @@
             />
           </x-container>
         </x-container>
-        <x-container :class="'flex flex-row items-center justify-between'">
+        <x-container.container :class="'flex flex-row items-center justify-between'">
           <div class="w-1/3">
             <x-form.search
               :value="$search"
@@ -108,29 +108,29 @@
               x-model="$store.listPage.sort"
             />
         </x-container>
-        <x-table>
-          <x-table-head>
-            <x-table-row>
-                <x-table-header>Semester</x-table-header>
-                <x-table-header>Mata Kuliah</x-table-header>
-                <x-table-header>Nama Kelas</x-table-header>
-                <x-table-header>Kapasitas</x-table-header>
-                <x-table-header>Jadwal</x-table-header>
-                <x-table-header>Pengajar</x-table-header>
-                <x-table-header>Aksi</x-table-header>
-            </x-table-row>
-          </x-table-head>
+        <x-table.index>
+          <x-table.head>
+            <x-table.row>
+                <x-table.header-cell>Semester</x-table.header-cell>
+                <x-table.header-cell>Mata Kuliah</x-table.header-cell>
+                <x-table.header-cell>Nama Kelas</x-table.header-cell>
+                <x-table.header-cell>Kapasitas</x-table.header-cell>
+                <x-table.header-cell>Jadwal</x-table.header-cell>
+                <x-table.header-cell>Pengajar</x-table.header-cell>
+                <x-table.header-cell>Aksi</x-table.header-cell>
+            </x-table.row>
+          </x-table.head>
           <tbody>
             <template x-if="$store.listPage.schedules.length > 0">  
               <template x-for="schedule in $store.listPage.schedules">
-                <x-table-row>
-                    <x-table-cell x-text="schedule.periode ?? '-'"></x-table-cell>
-                    <x-table-cell>
+                <x-table.row>
+                    <x-table.cell x-text="schedule.periode ?? '-'"></x-table.cell>
+                    <x-table.cell>
                       <x-typography :variant="'body-small-regular'" x-text="schedule.nama_matakuliah.nama_matakuliah_id ?? '-'"></x-typography>
-                    </x-table-cell>
-                    <x-table-cell x-text="schedule.nama_kelas ?? '-'"></x-table-cell>
-                    <x-table-cell x-text="schedule.kapasitas_peserta ?? '-'"></x-table-cell>
-                    <x-table-cell>
+                    </x-table.cell>
+                    <x-table.cell x-text="schedule.nama_kelas ?? '-'"></x-table.cell>
+                    <x-table.cell x-text="schedule.kapasitas_peserta ?? '-'"></x-table.cell>
+                    <x-table.cell>
                       <ul class="list-disc text-left w-max">
                         <template x-for="jadwal in schedule.scheduleList ?? []" :key="jadwal.id ?? Math.random()">
                           <li class="text-left">
@@ -141,14 +141,14 @@
                           </li>
                         </template>
                       </ul>
-                    </x-table-cell>
-                    <x-table-cell>
+                    </x-table.cell>
+                    <x-table.cell>
                       <template x-for="(pengajar, index) in schedule.lectureList ?? []" :key="index">
                         <x-typography :variant="'body-small-regular'" x-text="pengajar.nama + (index !== (schedule.lectureList.length - 1) ? ', ' : '')"></x-typography>
                       </template>
-                    </x-table-cell>
-                    <x-table-cell>
-                        <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
+                    </x-table.cell>
+                    <x-table.cell>
+                        <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
                           <x-button
                             :variant="'tertiary'"
                             :size="'sm'"
@@ -177,16 +177,16 @@
                             Hapus
                           </x-button>
                         </x-container>
-                    </x-table-cell>
-                </x-table-row>
+                    </x-table.cell>
+                </x-table.row>
               </template>
             </template>
             <template x-if="$store.listPage.schedules.length == 0">
               @include('academics.periode.error-filter')
             </template>
           </tbody>
-        </x-table>
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-end !px-0'">
+        </x-table.index>
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row items-center justify-end !px-0'">
           <x-button 
             :variant="'secondary'"
             :icon="asset('assets/icons/upload/red-20.svg')"
@@ -223,7 +223,7 @@
     </template>
     <x-modal.container-pure-js x-bind:class="{'hidden': !modalConfirmationDeleteOpen, 'flex': modalConfirmationDeleteOpen}">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
           <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
         </x-container>

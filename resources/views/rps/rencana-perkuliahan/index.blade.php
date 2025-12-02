@@ -15,75 +15,75 @@
             <x-typography variant="body-medium-bold">Rencana Perkuliahan</x-typography>
 
             @if($rencanaPerkuliahan)
-                <x-table>
-                    <x-table-head>
-                        <x-table-row>
-                            <x-table-header rowspan="2">Minggu ke-</x-table-header>
-                            <x-table-header rowspan="2" class="w-[95px]">CPMK</x-table-header>
-                            <x-table-header rowspan="2">Sub CPMK</x-table-header>
-                            <x-table-header rowspan="2">Topik dan Konten Perkuliahan</x-table-header>
-                            <x-table-header colspan="3">
+                <x-table.index>
+                    <x-table.head>
+                        <x-table.row>
+                            <x-table.header-cell rowspan="2">Minggu ke-</x-table.header-cell>
+                            <x-table.header-cell rowspan="2" class="w-[95px]">CPMK</x-table.header-cell>
+                            <x-table.header-cell rowspan="2">Sub CPMK</x-table.header-cell>
+                            <x-table.header-cell rowspan="2">Topik dan Konten Perkuliahan</x-table.header-cell>
+                            <x-table.header-cell colspan="3">
                                 Total Waktu Kegiatan Tatap Muka & Terstruktur (Menit)
-                            </x-table-header>
-                            <x-table-header rowspan="2">Total Waktu Belajar Mandiri (Menit)</x-table-header>
-                            <x-table-header rowspan="2">Total Waktu (Menit)</x-table-header>
-                            <x-table-header rowspan="2">Metode Pembelajaran</x-table-header>
-                        </x-table-row>
+                            </x-table.header-cell>
+                            <x-table.header-cell rowspan="2">Total Waktu Belajar Mandiri (Menit)</x-table.header-cell>
+                            <x-table.header-cell rowspan="2">Total Waktu (Menit)</x-table.header-cell>
+                            <x-table.header-cell rowspan="2">Metode Pembelajaran</x-table.header-cell>
+                        </x-table.row>
 
-                        <x-table-row>
-                            <x-table-header>K</x-table-header>
-                            <x-table-header>DL</x-table-header>
-                            <x-table-header>T</x-table-header>
-                        </x-table-row>
-                    </x-table-head>
+                        <x-table.row>
+                            <x-table.header-cell>K</x-table.header-cell>
+                            <x-table.header-cell>DL</x-table.header-cell>
+                            <x-table.header-cell>T</x-table.header-cell>
+                        </x-table.row>
+                    </x-table.head>
 
 
-                    <x-table-body>
+                    <x-table.body>
                         @foreach($rencanaPerkuliahan as $index => $rencana)
-                        <x-table-row :odd="$index % 2 === 1" :last="$loop->last">
-                            <x-table-cell class="text-xs">{{ $rencana['minggu'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $rencana['cpmk'] }}</x-table-cell>
-                            <x-table-cell class="text-xs whitespace-pre-line" position="left">{{ $rencana['sub_cpmk'] }}</x-table-cell>
-                            <x-table-cell class="text-xs whitespace-pre-line" position="left">{{ $rencana['rencana'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $rencana['waktu_kuliah'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $rencana['waktu_diskusi_latihan'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $rencana['waktu_praktikum'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $rencana['waktu_mandiri'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $rencana['total_waktu'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $rencana['metode_penilaian'] }}</x-table-cell>
-                        </x-table-row>
+                        <x-table.row :odd="$index % 2 === 1" :last="$loop->last">
+                            <x-table.cell class="text-xs">{{ $rencana['minggu'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $rencana['cpmk'] }}</x-table.cell>
+                            <x-table.cell class="text-xs whitespace-pre-line" position="left">{{ $rencana['sub_cpmk'] }}</x-table.cell>
+                            <x-table.cell class="text-xs whitespace-pre-line" position="left">{{ $rencana['rencana'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $rencana['waktu_kuliah'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $rencana['waktu_diskusi_latihan'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $rencana['waktu_praktikum'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $rencana['waktu_mandiri'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $rencana['total_waktu'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $rencana['metode_penilaian'] }}</x-table.cell>
+                        </x-table.row>
                         @endforeach
-                        <x-table-row :odd="true" class="font-bold">
-                            <x-table-cell class="text-xs" colspan="4">Waktu Pembelajaran Total dalam 1 Semester (menit)</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $waktuTotal['kuliah'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $waktuTotal['diskusi_latihan'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $waktuTotal['praktikum'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $waktuTotal['mandiri'] }}</x-table-cell>
-                            <x-table-cell class="text-xs">{{ $waktuTotal['total'] }}</x-table-cell>
-                            <x-table-cell></x-table-cell>
-                        </x-table-row>
-                        <x-table-row :odd="true" class="font-bold">
-                            <x-table-cell class="text-xs" colspan="4">Waktu Pembelajaran Standar Nasional untuk 1 SKS (menit)</x-table-cell>
-                            <x-table-cell></x-table-cell>
-                            <x-table-cell></x-table-cell>
-                            <x-table-cell></x-table-cell>
-                            <x-table-cell></x-table-cell>
-                            <x-table-cell class="text-xs">{{ $waktuStandarNasional }}</x-table-cell>
-                            <x-table-cell></x-table-cell>
-                        </x-table-row>
-                        <x-table-row :odd="true" class="font-bold">
-                            <x-table-cell class="text-xs" colspan="4">Satuan Kredit Semester (SKS)</x-table-cell>
-                            <x-table-cell></x-table-cell>
-                            <x-table-cell></x-table-cell>
-                            <x-table-cell></x-table-cell>
-                            <x-table-cell></x-table-cell>
-                            <x-table-cell class="text-xs">{{ $sks }}</x-table-cell>
-                            <x-table-cell></x-table-cell>
-                        </x-table-row>
-                    </x-table-body>
-                </x-table>
+                        <x-table.row :odd="true" class="font-bold">
+                            <x-table.cell class="text-xs" colspan="4">Waktu Pembelajaran Total dalam 1 Semester (menit)</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $waktuTotal['kuliah'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $waktuTotal['diskusi_latihan'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $waktuTotal['praktikum'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $waktuTotal['mandiri'] }}</x-table.cell>
+                            <x-table.cell class="text-xs">{{ $waktuTotal['total'] }}</x-table.cell>
+                            <x-table.cell></x-table.cell>
+                        </x-table.row>
+                        <x-table.row :odd="true" class="font-bold">
+                            <x-table.cell class="text-xs" colspan="4">Waktu Pembelajaran Standar Nasional untuk 1 SKS (menit)</x-table.cell>
+                            <x-table.cell></x-table.cell>
+                            <x-table.cell></x-table.cell>
+                            <x-table.cell></x-table.cell>
+                            <x-table.cell></x-table.cell>
+                            <x-table.cell class="text-xs">{{ $waktuStandarNasional }}</x-table.cell>
+                            <x-table.cell></x-table.cell>
+                        </x-table.row>
+                        <x-table.row :odd="true" class="font-bold">
+                            <x-table.cell class="text-xs" colspan="4">Satuan Kredit Semester (SKS)</x-table.cell>
+                            <x-table.cell></x-table.cell>
+                            <x-table.cell></x-table.cell>
+                            <x-table.cell></x-table.cell>
+                            <x-table.cell></x-table.cell>
+                            <x-table.cell class="text-xs">{{ $sks }}</x-table.cell>
+                            <x-table.cell></x-table.cell>
+                        </x-table.row>
+                    </x-table.body>
+                </x-table.index>
             @else
-                <x-container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
+                <x-container.container variant="content-grey" class="!rounded-xl h-[88px] flex items-center justify-center">
                     <x-typography variant="body-small-bold">Belum Ada Rencana Perkuliahan, Silahkan Tambah Rencana Perkuliahan Terlebih Dahulu</x-typography>
                 </x-container>
             @endif
@@ -118,7 +118,7 @@
     >
         <p>Apakah Anda yakin ingin menyimpan <b>rencana perkuliahan</b>?</p>
 
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+        <x-container.container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
             <div class="flex gap-4">
                 <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
                 <div class="flex flex-col text-left">
@@ -138,7 +138,7 @@
     >
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
 
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+        <x-container.container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
             <div class="flex gap-4">
                 <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
                 <div class="flex flex-col text-left">

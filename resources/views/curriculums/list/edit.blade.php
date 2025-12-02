@@ -17,12 +17,12 @@
 @section('content')
 <form action="{{route('curriculum.list.update', ['id' => $id])}}" method="POST">
   @csrf
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Ubah Kurikulum</x-typography>
     <x-button.back :href="route('curriculum.list').'?program_studi='.$data->program_studi">Daftar Kurikulum</x-button.back>
-    <x-container>
+    <x-container.container>
       <x-typography :variant="'body-medium-bold'">Detail Kurikulum</x-typography>
-      <x-container :variant="'content-wrapper'" :class="'!px-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'!px-0'">
         <x-form.input-container :class="'min-w-[175px]'">
           <x-slot name="label">Program Studi</x-slot>
           <x-slot name="input">
@@ -60,7 +60,7 @@
         <x-form.input-container :class="'min-w-[175px]'">
           <x-slot name="label">Nama Kurikulum</x-slot>
           <x-slot name="input">
-            <x-container :class="'w-full  !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+            <x-container.container :class="'w-full  !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
               <input 
                 oninput="
                   updateSaveButtonState();
@@ -84,7 +84,7 @@
         <x-form.input-container :class="'min-w-[175px]'">
           <x-slot name="label">Deskripsi</x-slot>
           <x-slot name="input">
-            <x-container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+            <x-container.container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
               <input 
                 oninput="
                   updateSaveButtonState();
@@ -108,7 +108,7 @@
         <x-form.input-container :class="'min-w-[175px]'">
           <x-slot name="label">SKS Mata Kuliah Wajib</x-slot>
           <x-slot name="input">
-            <x-container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+            <x-container.container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
               <input 
                 oninput="
                   updateSaveButtonState();
@@ -133,7 +133,7 @@
         <x-form.input-container :class="'min-w-[175px]'">
           <x-slot name="label">SKS Mata Kuliah Pilihan</x-slot>
           <x-slot name="input">
-            <x-container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+            <x-container.container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
               <input 
                 oninput="
                   updateSaveButtonState();
@@ -158,7 +158,7 @@
         <x-form.input-container :class="'min-w-[175px]'">
           <x-slot name="label">Total SKS</x-slot>
           <x-slot name="input">
-            <x-container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
+            <x-container.container :class="'w-full !pe-10 box-border !ps-3 border-[1px] border-[#D9D9D9] rounded-lg leading-5 h-10 flex items-center'">
               <input 
                 oninput="
                   updateSaveButtonState();
@@ -183,23 +183,23 @@
         <x-form.toggle :id="'academic-periode-status'" :value="$data->status === 'active'" />
       </x-container>
     </x-container>
-    <x-container :class="'flex flex-col gap-4'">
+    <x-container.container :class="'flex flex-col gap-4'">
       <x-typography :variant="'body-medium-bold'">Jenis Mata Kuliah - Minimum SKS</x-typography>
-      <x-table :variant="'old'" id="list-matkul">
-        <x-table-head :variant="'old'">
-          <x-table-row :variant="'old'">
-            <x-table-header :variant="'old'">Jenis Mata Kuliah</x-table-header>
-            <x-table-header :variant="'old'"></x-table-header>
-            <x-table-header :variant="'old'">Minimum SKS</x-table-header>
-          </x-table-row>
-        </x-table-head>
+      <x-table.index :variant="'old'" id="list-matkul">
+        <x-table.head :variant="'old'">
+          <x-table.row :variant="'old'">
+            <x-table.header-cell :variant="'old'">Jenis Mata Kuliah</x-table.header-cell>
+            <x-table.header-cell :variant="'old'"></x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Minimum SKS</x-table.header-cell>
+          </x-table.row>
+        </x-table.head>
         <tbody>
           @foreach($jenis_mata_kuliah as $jenis)
-            <x-table-row class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
-                <x-table-cell :variant="'old'">{{$jenis}}</x-table-cell>
-                <x-table-cell :variant="'old'" class="py-[12px] !w-[25%]"></x-table-cell>
-                <x-table-cell :variant="'old'">
-                  <x-container class="!bg-transparent rounded-lg !py-[9px] flex">
+            <x-table.row class="bg-[#FAFAFA] border-1 border-[#D9D9D9]">
+                <x-table.cell :variant="'old'">{{$jenis}}</x-table.cell>
+                <x-table.cell :variant="'old'" class="py-[12px] !w-[25%]"></x-table.cell>
+                <x-table.cell :variant="'old'">
+                  <x-container.container class="!bg-transparent rounded-lg !py-[9px] flex">
                     @php
                       $filter = current(array_filter($data->details, function ($detail) use($jenis) { return $detail->jenis_mata_kuliah == $jenis; }));
                     @endphp
@@ -221,56 +221,56 @@
                     <img onclick="this.previousElementSibling.value = '';this.classList.add('hidden');" class="hidden cursor-pointer" src="{{asset('assets/icon-remove-text-input.svg')}}" alt="">
                   </x-container> 
                 </x-table-cel>
-            </x-table-row>
+            </x-table.row>
           @endforeach
         </tbody>
-      </x-table>
+      </x-table.index>
       <x-typography :variant="'body-medium-bold'">Daftar Mata Kuliah yang telah di assign</x-typography>
-      <x-table>
-        <x-table-head>
-            <x-table-row>
-                <x-table-header class="cursor-pointer">
+      <x-table.index>
+        <x-table.head>
+            <x-table.row>
+                <x-table.header-cell class="cursor-pointer">
                     <input type="checkbox" id="select-all" class="" checked disabled>
-                </x-table-header>
-                <x-table-header class="cursor-pointer">
+                </x-table.header-cell>
+                <x-table.header-cell class="cursor-pointer">
                     Kode Mata Kuliah
-                </x-table-header>
-                <x-table-header class="cursor-pointer">
+                </x-table.header-cell>
+                <x-table.header-cell class="cursor-pointer">
                     Nama
-                </x-table-header>
-                <x-table-header class="cursor-pointer">
+                </x-table.header-cell>
+                <x-table.header-cell class="cursor-pointer">
                     Jumlah SKS
-                </x-table-header>
-                <x-table-header class="cursor-pointer">
+                </x-table.header-cell>
+                <x-table.header-cell class="cursor-pointer">
                     Program Studi
-                </x-table-header>
-                <x-table-header>Jenis Mata Kuliah</x-table-header>
-            </x-table-row>
-        </x-table-head>
-        <x-table-body>
+                </x-table.header-cell>
+                <x-table.header-cell>Jenis Mata Kuliah</x-table.header-cell>
+            </x-table.row>
+        </x-table.head>
+        <x-table.body>
             @forelse ($assignCourseData as $d)
-                <x-table-row class="!bg-[#EFF4CD]">
-                    <x-table-cell>
+                <x-table.row class="!bg-[#EFF4CD]">
+                    <x-table.cell>
                       <input type="checkbox" name="course-list[]" value="{{$d['id']}}" checked disabled>
-                    </x-table-cell>
-                    <x-table-cell>{{ $d['kode_mata_kuliah'] }}</x-table-cell>
-                    <x-table-cell>{{ $d['nama'] }}</x-table-cell>
-                    <x-table-cell>{{ $d['sks'] }}</x-table-cell>
-                    <x-table-cell>{{ $d['program_studi'] }}</x-table-cell>
-                    <x-table-cell>{{ $d['jenis_mata_kuliah']}}</x-table-cell>
-                </x-table-row>
+                    </x-table.cell>
+                    <x-table.cell>{{ $d['kode_mata_kuliah'] }}</x-table.cell>
+                    <x-table.cell>{{ $d['nama'] }}</x-table.cell>
+                    <x-table.cell>{{ $d['sks'] }}</x-table.cell>
+                    <x-table.cell>{{ $d['program_studi'] }}</x-table.cell>
+                    <x-table.cell>{{ $d['jenis_mata_kuliah']}}</x-table.cell>
+                </x-table.row>
             @empty
-                <x-table-row>
-                    <x-table-cell colspan="6" class="text-center py-4">
+                <x-table.row>
+                    <x-table.cell colspan="6" class="text-center py-4">
                         Tidak ada data ditemukan
-                    </x-table-cell>
-                </x-table-row>
+                    </x-table.cell>
+                </x-table.row>
             @endforelse
-        </x-table-body>
-      </x-table>
+        </x-table.body>
+      </x-table.index>
     </x-container>
-    <x-container :class="'flex flex-row justify-between items-center'">
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center !px-0 w-full">
+    <x-container.container :class="'flex flex-row justify-between items-center'">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !px-0 w-full">
         <x-button.secondary :href="route('curriculum.list').'?program_studi='.$data->program_studi" id="btnBatal" disabled>Batal</x-button.secondary>
         <x-button.primary 
           id="btnSimpan" 
@@ -283,7 +283,7 @@
           Simpan
         </x-button.primary>
       </x-container>
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center !px-0 justify-end">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !px-0 justify-end">
         <x-button.secondary :href="route('curriculum.list.edit.show-study', ['id' => $id])" :icon="asset('assets/icon-eye-red.svg')" :iconPosition="'right'">
           Lihat Daftar Mata Kuliah
         </x-button.secondary>
@@ -295,7 +295,7 @@
   </x-container>
   <x-modal.container-pure-js id="modalKonfirmasiSimpan">
     <x-slot name="header">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
         <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
       </x-container>

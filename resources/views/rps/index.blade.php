@@ -10,10 +10,10 @@
 
 @section('content')
 
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-container variant="content" class="ml-3" x-data="rps()">
-            <x-container variant="content-wrapper" class="mb-5">
+        <x-container.container variant="content" class="ml-3" x-data="rps()">
+            <x-container.container variant="content-wrapper" class="mb-5">
                 <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Periode</x-slot>
                     <x-slot name="input">
@@ -57,7 +57,7 @@
                         <x-table.header-cell>Tanggal Upload</x-table.header-cell>
                         <x-table.header-cell>Status</x-table.header-cell>
                     </x-table.row>
-                    </x-table-head>
+                    </x-table.head>
 
                     <x-table.body>
                         @foreach ($rpsList as $index => $rps)

@@ -15,29 +15,29 @@
             <x-typography variant="body-medium-bold">Rencana Evaluasi Mahasiswa</x-typography>
 
             @if($rencanaList)
-                <x-table>
-                    <x-table-head>
-                        <x-table-row>
-                            <x-table-header>Bentuk Ujian</x-table-header>
-                            <x-table-header>Judul Evaluasi</x-table-header>
-                            <x-table-header>Sub - CPMK</x-table-header>
-                            <x-table-header>Metode Pengerjaan</x-table-header>
-                            <x-table-header>Aksi</x-table-header>
-                        </x-table-row>
-                    </x-table-head>
+                <x-table.index>
+                    <x-table.head>
+                        <x-table.row>
+                            <x-table.header-cell>Bentuk Ujian</x-table.header-cell>
+                            <x-table.header-cell>Judul Evaluasi</x-table.header-cell>
+                            <x-table.header-cell>Sub - CPMK</x-table.header-cell>
+                            <x-table.header-cell>Metode Pengerjaan</x-table.header-cell>
+                            <x-table.header-cell>Aksi</x-table.header-cell>
+                        </x-table.row>
+                    </x-table.head>
 
-                    <x-table-body>
+                    <x-table.body>
                         @foreach($rencanaList as $index => $rencana)
-                        <x-table-row>
-                            <x-table-cell text_size="text-xs">{{ $rencana['bentuk_ujian'] }}</x-table-cell>
-                            <x-table-cell text_size="text-xs">{{ $rencana['judul_evaluasi'] }}</x-table-cell>
-                            <x-table-cell text_size="text-xs" class="whitespace-pre-line">
+                        <x-table.row>
+                            <x-table.cell text_size="text-xs">{{ $rencana['bentuk_ujian'] }}</x-table.cell>
+                            <x-table.cell text_size="text-xs">{{ $rencana['judul_evaluasi'] }}</x-table.cell>
+                            <x-table.cell text_size="text-xs" class="whitespace-pre-line">
                                 @foreach ($rencana['sub_cpmk'] as $sub_cpmk)
                                     {{ $sub_cpmk }}
                                 @endforeach
-                            </x-table-cell>
-                            <x-table-cell text_size="text-xs" class="whitespace-pre-line">{{ $rencana['metode_pengerjaan'] }}</x-table-cell>
-                            <x-table-cell>
+                            </x-table.cell>
+                            <x-table.cell text_size="text-xs" class="whitespace-pre-line">{{ $rencana['metode_pengerjaan'] }}</x-table.cell>
+                            <x-table.cell>
                                 <div class="flex flex-nowrap gap-3">
                                     <x-button.base 
                                         :icon="asset('assets/icons/search/black-16.svg')"
@@ -67,13 +67,13 @@
                                         Hapus
                                     </x-button.base>
                                 </div>
-                            </x-table-cell>
-                        </x-table-row>
+                            </x-table.cell>
+                        </x-table.row>
                         @endforeach
-                    </x-table-body>
-                </x-table>
+                    </x-table.body>
+                </x-table.index>
             @else
-                <x-container variant="content-grey" class="h-22 flex items-center justify-center" borderRadius="rounded-xl">
+                <x-container.container variant="content-grey" class="h-22 flex items-center justify-center" borderRadius="rounded-xl">
                     <x-typography variant="body-small-bold">Belum Ada Rencana Evaluasi Mahasiswa, Silahkan Tambah Rencana Evaluasi Terlebih Dahulu</x-typography>
                 </x-container>
             @endif

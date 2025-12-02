@@ -25,7 +25,8 @@
     show: @js($show),
     id: @js($id),
     close() { this.show = false },
-    open() { this.show = true }
+    open() { this.show = true },
+    closeable: @js($closeable)
   }" 
   x-on:keydown.escape="close()" 
   x-on:open-modal.window="if ($event.detail.id === id) open()"
@@ -35,8 +36,8 @@
   style="display: none; z-index: 9999" 
   x-show="show" 
   x-cloak
-  {{-- x-modelable="close"
-  x-model="{{$attributes->get('x-model')}}" --}}
+  x-modelable="show"
+  x-model="{{$attributes->get('x-model')}}"
 >
     <!-- Overlay -->
     <div x-show="show" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"

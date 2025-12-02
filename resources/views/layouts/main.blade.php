@@ -8,25 +8,28 @@
 </head>
 
 <body>
-  <div x-data="{}">
+  <x-container.container :variant="'flat'" x-data="{}">
     <x-header />
     <main>
-      <div class="grid grid-cols-12">
-        <div x-bind:class="$store.mainLayout.isOpen ? 'col-span-3 col-start-1' : 'hidden'">
+      <x-container.wrapper :cols="12" :padding="'p-0'">
+        <x-container.container :variant="'flat'" x-bind:class="$store.mainLayout.isOpen ? 'col-span-3 col-start-1' : 'hidden'">
           <x-menu />
-        </div>
-        <div x-bind:class="$store.mainLayout.isOpen ? 'col-span-9 col-start-4' : 'col-span-12 col-start-1'">
-          <x-container 
-            :variant="'content-wrapper'" 
-            :class="'!p-0 bg-gray-200 !rounded-none'"
-          >
-            <x-breadcrumb />
-            @yield('content')
+        </x-container>
+        <x-container.container :variant="'flat'" x-bind:class="$store.mainLayout.isOpen ? 'col-span-9 col-start-4' : 'col-span-12 col-start-1'">
+          <x-container.container :variant="'wide'">
+            <x-container.wrapper :rows="12">
+              <x-container.container :variant="'flat'" class="row-span-1">
+                <x-breadcrumb />
+              </x-container>
+              <x-container.container :variant="'flat'" class="row-span-11">
+                @yield('content')
+              </x-container>
+            </x-wrapper>
           </x-container>
-        </div>
-      </div>
+        </x-container>
+      </x-wrapper>
     </main>
-  </div>
+  </x-container>
 
   <script type="module">
       document.addEventListener('alpine:init', () => {

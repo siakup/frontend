@@ -14,10 +14,10 @@
     ];
 
     $icon = [
-        'warning' => 'assets/icons/caution/outline-yellow-24.svg',
-        'danger' => 'assets/icons/caution/outline-red-24.svg',
-        'info' => 'assets/icons/caution/outline-grey-24.svg',
-        'success' => 'assets/icons/caution/outline-blue-24.svg',
+        'warning' => 'caution/outline-yellow-24',
+        'danger' => 'caution/outline-red-24',
+        'info' => 'caution/outline-grey-24',
+        'success' => 'caution/outline-blue-24',
     ];
 
     $selectedVariant = $variants[$variant] ?? $variants['warning'];
@@ -33,7 +33,7 @@
     x-transition:leave-end="opacity-0 max-h-0"
     {{ $attributes->merge(['class' => $dialogClass]) }}
 >
-    <x-icon iconUrl="{{ asset($selectedIcon) }}"/>
+    <x-icon :name="$selectedIcon"/>
 
     <div class="flex-grow">
         @if (isset($header))
@@ -53,7 +53,7 @@
             class="self-start cursor-pointer"
             x-on:click="open = false"
         >
-            <x-icon iconUrl="{{ asset('assets/icons/close-cancel/grey-16.svg') }}"/>
+            <x-icon :name="'close-cancel/grey-16'"/>
         </button>
     @endif
 </div>

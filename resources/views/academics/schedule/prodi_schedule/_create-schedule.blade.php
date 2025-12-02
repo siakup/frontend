@@ -7,7 +7,7 @@
 >
   <x-modal.container-pure-js id="modalAddSchedule">
     <x-slot name="header">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tambah Jadwal Kelas</x-typography>
         <x-button.base
             onclick="document.getElementById('modalAddSchedule').remove();
@@ -19,7 +19,7 @@
       </x-container>
     </x-slot>
     <x-slot name="body">
-      <x-container 
+      <x-container.container 
         :variant="'content-wrapper'" 
         class="flex flex-col gap-4 !p-0"
       >

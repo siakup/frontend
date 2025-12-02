@@ -1,6 +1,6 @@
 <x-modal.container-pure-js id="modalPeriodeAkademik">
   <x-slot name="header">
-    <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+    <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
       <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Lihat Periode Akademik</x-typography>
       <button 
         type="button" 
@@ -15,9 +15,9 @@
     </x-container>
   </x-slot>
   <x-slot name="body">
-    <x-container :variant="'content-wrapper'" :class="'!p-0 !gap-0 !m-0'" id="section-detail">
+    <x-container.container :variant="'content-wrapper'" :class="'!p-0 !gap-0 !m-0'" id="section-detail">
       <x-typography :variant="'body-medium-bold'" :class="'w-full flex items-start text-left'">Periode Akademik</x-typography>
-      <x-container :variant="'content-wrapper'" :class="'!p-0'" id="content-detail">
+      <x-container.container :variant="'content-wrapper'" :class="'!p-0'" id="content-detail">
         <x-form.input-container id="year" class="min-w-[175px]">
           <x-slot name="label">Tahun</x-slot>
           <x-slot name="input">

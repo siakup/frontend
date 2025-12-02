@@ -22,7 +22,7 @@
         'body-medium-regular' => 'body-medium',
         'body-medium-bold' => 'body-medium font-bold',
         'body-medium-italic' => 'body-medium italic',
-        'body-medium-semibold' => 'body-medium semibold',
+        'body-medium-semibold' => 'body-medium font-semibold',
         'body-small-regular' => 'body-small',
         'body-small-bold' => 'body-small font-bold',
         'body-small-semibold' => 'body-small font-semibold',

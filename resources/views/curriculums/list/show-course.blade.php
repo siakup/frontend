@@ -13,13 +13,13 @@
 @include('partials.success-notification-modal', ['route' => route('curriculum.list.edit.show-study', ['id' => $id])])
 
 @section('content')
-<x-container :variant="'content-wrapper'">
+<x-container.container :variant="'content-wrapper'">
   <x-typography :variant="'body-large-semibold'">{{Request::routeIs('curriculum.list.view.show-study') ? "Lihat Daftar Mata Kuliah" : "Ubah Mata Kuliah"}}</x-typography>
   <x-button.back :href="Request::routeIs('curriculum.list.view.show-study') ? route('curriculum.list.view', ['id' => $id]) : route('curriculum.list.edit', ['id' => $id])">{{Request::routeIs('curriculum.list.view.show-study') ? "Lihat Detail Kurikulum" : "Ubah Kurikulum"}}</x-button.back>
-  <x-container>
+  <x-container.container>
     <x-typography :variant="'body-medium-bold'">Daftar Mata Kuliah</x-typography>
     <form action="{{Request::routeIs('curriculum.list.view.show-study') ? route('curriculum.list.view.show-study', ['id' => $id]) : route('curriculum.list.edit.show-study', ['id' => $id])}}" method="GET">
-      <x-container :variant="'content-wrapper'" :class="'!px-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'!px-0'">
         <x-form.input-container :class="'min-w-[160px]'">
           <x-slot name="label">Program Perkuliahan</x-slot>
           <x-slot name="input">
@@ -49,7 +49,7 @@
         <x-form.input-container :class="'min-w-[160px]'">
           <x-slot name="label">Nama Mata Kuliah</x-slot>
           <x-slot name="input">
-            <x-container class="flex items-center rounded-lg !px-4 !py-2">
+            <x-container.container class="flex items-center rounded-lg !px-4 !py-2">
               <input 
                 placeholder="Ketik Mata Kuliah" 
                 name="nama" 
@@ -77,39 +77,39 @@
             </x-container>
           </x-slot>
         </x-form.input-container>
-        <x-container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center w-full justify-end'">
+        <x-container.container :variant="'content-wrapper'" :class="'!px-0 flex flex-row items-center w-full justify-end'">
           <x-button.secondary disabled="{{$jenis_mata_kuliah == '' && $nama_mata_kuliah == '' ? 'disabled': ''}}">Batal</x-button.secondary>
           <x-button.primary id="btnCari" type="submit" disabled="{{$jenis_mata_kuliah == '' && $nama_mata_kuliah == '' ? 'disabled': ''}}">Cari</x-button.primary>
         </x-container>
       </x-container>
     </form>
-    <x-container class="border-none !px-0">
-      <x-table>
-        <x-table-head>
-          <x-table-row>
-            <x-table-header class="cursor-pointer">Kode Mata Kuliah</x-table-header>
-            <x-table-header class="cursor-pointer">Nama</x-table-header>
-            <x-table-header class="cursor-pointer">SKS</x-table-header>
-            <x-table-header class="cursor-pointer">Semester</x-table-header>
-            <x-table-header>Jumlah CPL</x-table-header>
-            <x-table-header>Jenis Mata Kuliah</x-table-header>
+    <x-container.container class="border-none !px-0">
+      <x-table.index>
+        <x-table.head>
+          <x-table.row>
+            <x-table.header-cell class="cursor-pointer">Kode Mata Kuliah</x-table.header-cell>
+            <x-table.header-cell class="cursor-pointer">Nama</x-table.header-cell>
+            <x-table.header-cell class="cursor-pointer">SKS</x-table.header-cell>
+            <x-table.header-cell class="cursor-pointer">Semester</x-table.header-cell>
+            <x-table.header-cell>Jumlah CPL</x-table.header-cell>
+            <x-table.header-cell>Jenis Mata Kuliah</x-table.header-cell>
             @if(!Request::routeIs('curriculum.list.view.show-study'))
-              <x-table-header>Aksi</x-table-header>
+              <x-table.header-cell>Aksi</x-table.header-cell>
             @endif
-          </x-table-row>
-        </x-table-head>
-        <x-table-body>
+          </x-table.row>
+        </x-table.head>
+        <x-table.body>
           @forelse ($data as $d)
-            <x-table-row>
-              <x-table-cell>{{ $d->kode_matakuliah }}</x-table-cell>
-              <x-table-cell>{{ $d->nama_matakuliah_id }}</x-table-cell>
-              <x-table-cell>{{ $d->sks }}</x-table-cell>
-              <x-table-cell>{{ $d->semester }}</x-table-cell>
-              <x-table-cell>{{ count($d->cpls) }}</x-table-cell>
-              <x-table-cell>{{ $d->course->jenis }}</x-table-cell>
+            <x-table.row>
+              <x-table.cell>{{ $d->kode_matakuliah }}</x-table.cell>
+              <x-table.cell>{{ $d->nama_matakuliah_id }}</x-table.cell>
+              <x-table.cell>{{ $d->sks }}</x-table.cell>
+              <x-table.cell>{{ $d->semester }}</x-table.cell>
+              <x-table.cell>{{ count($d->cpls) }}</x-table.cell>
+              <x-table.cell>{{ $d->course->jenis }}</x-table.cell>
               @if(!Request::routeIs('curriculum.list.view.show-study'))
-                <x-table-cell>
-                  <x-container :variant="'content-wrapper'" :class="'flex flex-row gap-10 items-center justify-center'">
+                <x-table.cell>
+                  <x-container.container :variant="'content-wrapper'" :class="'flex flex-row gap-10 items-center justify-center'">
                     <x-button.base 
                       :href="route('curriculum.list.edit.edit-study', ['id' => $id, 'course_id' => $d->id])" 
                       :icon="asset('assets/icon-edit.svg')" 
@@ -129,18 +129,18 @@
                       Hapus
                     </x-button.base>
                   </x-container>
-                </x-table-cell>
+                </x-table.cell>
               @endif
-            </x-table-row>
+            </x-table.row>
           @empty
-            <x-table-row>
-              <x-table-cell colspan="6" class="text-center py-4">
+            <x-table.row>
+              <x-table.cell colspan="6" class="text-center py-4">
                 Tidak ada data ditemukan
-              </x-table-cell>
-            </x-table-row>
+              </x-table.cell>
+            </x-table.row>
           @endforelse
-        </x-table-body>
-      </x-table>
+        </x-table.body>
+      </x-table.index>
     </x-container>
   </x-container>
   @include('partials.pagination', [
@@ -153,7 +153,7 @@
 
 <x-modal.container-pure-js id="modalKonfirmasiHapus">
   <x-slot name="header">
-    <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+    <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
       <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Hapus Daftar Mata Kuliah</x-typography>
       <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
     </x-container>

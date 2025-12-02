@@ -19,12 +19,13 @@
 </script>
 
 @section('content')
-<x-container
+<x-container.container
   :variant="'content-wrapper'"
   x-data="detailStudentData()"
 >
   <x-typography variant="body-large-semibold">Detail Kartu Studi Mahasiswa</x-typography>
-  <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
+  <x-button :variant="'tertiary'" :icon="'arrow-left/red-16'" :href="route('tutelage-group.list-student')">Kelompok Perwalian</x-button>
+  <x-container.container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'">
     <x-tab 
       :tabItems="[
         (object)[
@@ -64,25 +65,27 @@
           'param' => ['id' => $id]
         ],
         (object)[
-          'routeName' => 'home',
-          'routeQuery' => 'home',
+          'routeName' => 'tutelage-group.student-list.message.add',
+          'routeQuery' => 'tutelage-group.student-list.message.add',
           'title' => 'Pesan untuk Mahasiswa',
-          'param' => ['id' => $id]
+          'param' => ['id' => $id],
+          'iconActive' => 'notification/red-24',
+          'iconInactive' => 'notification/grey-24'
         ],
       ]"
     />
-      <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1] border-t-[#F39194] relative !z-0'">
-          <x-container :variant="'content-wrapper'" class="!px-0 space-y-4">
+      <x-container.container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 !border-t-red-200 relative !z-0'">
+          <x-container.container :variant="'content-wrapper'" class="!px-0 space-y-4">
             <x-accordion :label="'Data Pribadi'" :isDefaultOpen="true">
               <x-table.index :isRoundedTop="false">
                 <x-table.body>
                   <x-table.row>
                     <x-table.header-cell :variantColor="'odd'" :position="'left'">Nama Mahasiswa</x-table.header-cell>
-                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.student.nama">Cell 1</x-table.cell>
+                    <x-table.cell :variantColor="'odd'" :position="'left'" x-text="$store.detailPage.data.nama">Cell 1</x-table.cell>
                   </x-table.row>
                   <x-table.row>
                       <x-table.header-cell :variantColor="'even'" :position="'left'">Nomor Induk Mahasiswa</x-table.header-cell>
-                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.student.nim"></x-table.cell>
+                      <x-table.cell :variantColor="'even'" :position="'left'" x-text="$store.detailPage.data.nim"></x-table.cell>
                   </x-table.row>
                   <x-table.row>
                     <x-table.header-cell :variantColor="'odd'" :position="'left'">Judul Tugas Akhir</x-table.header-cell>
@@ -466,12 +469,12 @@
             </x-accordion>
 
             <x-accordion :label="'Statistik IPK Mahasiswa'" x-on:click="initChart()">
-              <x-container :variant="'content-wrapper'" :class="'!p-5'">
+              <x-container.container :variant="'content-wrapper'" :class="'!p-5'">
                 <x-typography :variant="'body-medium-bold'" class="w-full text-center">Statistik IPK dan IPS Mahasiswa</x-typography>
-                <x-container :variant="'content-wrapper'" class="!px-0 !h-[400px]">
+                <x-container.container :variant="'content-wrapper'" class="!px-0 !h-[400px]">
                     <canvas class="w-full h-full"></canvas>
                 </x-container>
-                <x-container :variant="'content-wrapper'" class="!flex-row justify-end gap-3">
+                <x-container.container :variant="'content-wrapper'" class="!flex-row justify-end gap-3">
                   <x-button :variant="'primary'" x-on:click="printChart()">Cetak Grafik</x-button.secondary>
                   <x-button :variant="'primary'" x-on:click="downloadChart()">Unduk Grafik</x-button.secondary>
                 </x-container>
@@ -532,7 +535,7 @@
           </x-container>
           <x-modal.container-pure-js x-bind:class="{'hidden': !isModalOpen, 'flex': isModalOpen}">
             <x-slot name="header">
-              <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+              <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
                 <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Detail Akademis</x-typography>
                 <x-button.base
                   x-on:click="isModalOpen = false; selectedId = null"

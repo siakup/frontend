@@ -11,9 +11,9 @@
 @endsection
 
 @section('content')
-<x-container :variant="'content-wrapper'">
+<x-container.container :variant="'content-wrapper'">
   <x-typography :variant="'body-large-semibold'">Kurikulum</x-typography>
-  <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0 !px-0">
+  <x-container.container :variant="'content-wrapper'" class="flex flex-col !gap-0 !px-0">
     <x-tab 
       :tabItems="[
         (object)[
@@ -33,9 +33,9 @@
         ],
       ]"
     />
-    <x-container :class="'flex flex-col !gap-8 items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
+    <x-container.container :class="'flex flex-col !gap-8 items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
       <x-typography variant="body-large-semibold">Struktur Kurikulum</x-typography>
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
         <x-typography :variant="'body-medium-bold'">Program Perkuliahan</x-typography>
         <x-form.dropdown 
           :buttonId="'sortButtonCampus'"
@@ -67,7 +67,7 @@
           :dropdownItem="array_column($programPerkuliahanList, 'name', 'name')"
         />
       </x-container>
-      <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0 !px-0">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-col !gap-0 !px-0">
         <x-tab 
           :tabItems="[
             (object)[
@@ -83,23 +83,23 @@
           ]"
           :bgActive="'bg-[#F5F5F5]'"
         />
-        <x-container :class="'!bg-[#E8E8E8] rounded-tl-none'">
+        <x-container.container :class="'!bg-[#E8E8E8] rounded-tl-none'">
           @foreach($data as $d)
-            <x-container :variant="'content-wrapper'" :class="'flex flex-col gap-[10px] !px-0'">
-              <x-container 
+            <x-container.container :variant="'content-wrapper'" :class="'flex flex-col gap-[10px] !px-0'">
+              <x-container.container 
                 :variant="'content-wrapper'" 
                 :class="'flex flex-row py-[18px] justify-between detail-clickable cursor-pointer !px-0'"
                 onclick=""
               >
-                <x-container :variant="'content-wrapper'" :class="'flex flex-row gap-1 !px-0'">
+                <x-container.container :variant="'content-wrapper'" :class="'flex flex-row gap-1 !px-0'">
                   <x-typography :variant="'body-medium-bold'">Semester {{$d['semester']}}</x-typography>
                   <x-typography :variant="'body-medium-regular'">(Total {{$d['total_sks']}} SKS)</x-typography>
                 </x-container>
                 <img src="{{asset('assets/icon-arrow-down-black-20.svg')}}" alt="">
               </x-container>
-              <x-container :variant="'content-wrapper'" class="hidden grid-cols-3 grid-rows-3 gap-2.5">
+              <x-container.container :variant="'content-wrapper'" class="hidden grid-cols-3 grid-rows-3 gap-2.5">
                 @foreach($d['matkul_list'] as $matkulList)
-                  <x-container :class="'bg-cover bg-center bg-no-repeat flex flex-col gap-1'" style="background-image: url('/images/bg-study-list.png')">
+                  <x-container.container :class="'bg-cover bg-center bg-no-repeat flex flex-col gap-1'" style="background-image: url('/images/bg-study-list.png')">
                     <x-typography :variant="'body-large-bold'">{{$matkulList['nama_matkul']}}</x-typography>
                     <x-typography :variant="'body-small-bold'">{{$matkulList['sks']}} SKS </x-typography> | 
                     <x-typography :variant="'body-small-regular'">{{$matkulList['kode']}}</x-typography>
@@ -110,7 +110,7 @@
           @endforeach
         </x-container>
       </x-container>
-      <x-container :variant="'content-wrapper'" :class="'!px-0 !mx-0 flex items-end'">
+      <x-container.container :variant="'content-wrapper'" :class="'!px-0 !mx-0 flex items-end'">
         <x-button.primary>Tambah Kurikulum</x-button.primary>
       </x-container>
     </x-container>

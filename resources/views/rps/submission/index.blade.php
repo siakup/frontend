@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-button.back class="ml-2" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
 
@@ -13,7 +13,7 @@
 
             <div
                 class="flex flex-col gap-5 p-5 items-stretch mx-4 mb-5 border border-gray-400 border-t-red-200 bg-white rounded-b-xl overflow-visible relative z-[1]">
-                <x-container variant="content-wrapper" class="flex flex-row justify-between py-2">
+                <x-container.container variant="content-wrapper" class="flex flex-row justify-between py-2">
                     <x-typography variant="body-medium-bold" class="self-center">Submit RPS</x-typography>
                     <x-button.primary x-on:click="$dispatch('open-modal', {id: 'preview-rps'})">
                         Pratinjau
@@ -71,7 +71,7 @@
         cancelText="Cek Kembali" :redirectConfirm="route('rps.matriks-penilaian-kognitif')">
         <p>Apakah Anda yakin ingin menyimpan <b>rencana perkuliahan</b>?</p>
 
-        <x-container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+        <x-container.container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
             <div class="flex gap-4">
                 <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}" />
                 <div class="flex flex-col text-left">

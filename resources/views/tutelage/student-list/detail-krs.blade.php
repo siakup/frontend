@@ -19,12 +19,13 @@
 </script>
 
 @section('content')
-  <x-container
+  <x-container.container
     :variant="'content-wrapper'"
     x-data="detailKRSPerwalianKRS()"
   >
     <x-typography variant="body-large-semibold">Detail Kartu Studi Mahasiswa</x-typography>
-    <x-container :variant="'content-wrapper'" :class="'!gap-0 !px-0'">
+    <x-button :variant="'tertiary'" :icon="'arrow-left/red-16'" :href="route('tutelage-group.list-student')">Kelompok Perwalian</x-button>
+    <x-container.container :variant="'content-wrapper'" :class="'!gap-0 !px-0'">
       <x-tab 
         :tabItems="[
           (object)[
@@ -64,14 +65,16 @@
             'param' => ['id' => $id]
           ],
           (object)[
-            'routeName' => 'home',
-            'routeQuery' => 'home',
+            'routeName' => 'tutelage-group.student-list.message.add',
+            'routeQuery' => 'tutelage-group.student-list.message.add',
             'title' => 'Pesan untuk Mahasiswa',
-            'param' => ['id' => $id]
+            'param' => ['id' => $id],
+            'iconActive' => 'notification/red-24',
+            'iconInactive' => 'notification/grey-24'
           ],
         ]"
       />
-        <x-container :class="'flex flex-col gap-4 !rounded-tl-none items-stretch my-0 border-t border-t-red-200 relative !z-0'">
+        <x-container.container :class="'flex flex-col gap-4 !rounded-tl-none items-stretch my-0 border-t !border-t-red-200 relative !z-0'">
             <x-typography variant="body-medium-bold">Kartu Rencana Studi Mahasiswa</x-typography>
             <x-table.index>
                 <x-table.body>
@@ -104,10 +107,10 @@
                   </x-table.row>
                 </x-table.body>
             </x-table.index>
-            <x-container :variant="'content-wrapper'" :class="'!px-0'">
-                <x-container class="!border-yellow-300 !bg-yellow-50 text-sm leading-relaxed flex flex-row items-center gap-3">
+            <x-container.container :variant="'content-wrapper'" :class="'!px-0'">
+                <x-container.container class="!border-yellow-300 !bg-yellow-50 text-sm leading-relaxed flex flex-row items-center gap-3">
                     <x-icon :iconUrl="asset('assets/icon-caution-warning.svg')" :iconAlt="'caution'" />
-                    <x-container :variant="'content-wrapper'" class="!flex-1 !p-0 !gap-0">
+                    <x-container.container :variant="'content-wrapper'" class="!flex-1 !p-0 !gap-0">
                         <x-typography variant="body-medium-bold">Perhatian!</x-typography>
                         <x-typography>
                             Mahasiswa kurang
@@ -130,10 +133,10 @@
                 </x-container>
             </x-container>
             <template x-for="([key, section]) in Object.entries(sections)">
-                <x-container :class="'!p-0 overflow-hidden'">
-                    <x-container :variant="'content-wrapper'" class="h-20 rounded-none flex flex-row justify-between items-center !py-2.5 !px-3" x-bind:class="{[section.grad]: section.grad}">
+                <x-container.container :class="'!p-0 overflow-hidden'">
+                    <x-container.container :variant="'content-wrapper'" class="h-20 rounded-none flex flex-row justify-between items-center !py-2.5 !px-3" x-bind:class="{[section.grad]: section.grad}">
                         <x-typography :variant="'body-small-bold'" class="w-full" x-text="'Mata Kuliah '+section.title"></x-typography>
-                        <x-container :variant="'content-wrapper'" class="flex flex-row justify-end gap-2">
+                        <x-container.container :variant="'content-wrapper'" class="flex flex-row justify-end gap-2">
                             <template x-for="([action, label]) in Object.entries(section.btns)">
                                 <template x-if="action.includes('approve')">
                                     <x-button.primary
@@ -195,7 +198,7 @@
                     </x-table.index>
                 </x-container>
             </template>
-            <x-container>
+            <x-container.container>
               <x-button
                 :variant="'primary'"
                 :href="route('tutelage-group.student-list.detail-krs.add-course',['id'=>1])"
@@ -207,11 +210,11 @@
             </x-container>
 
             {{-- TODO: Tambah Kalender--}}
-            <x-container class="!p-0 box-border overflow-clip">
+            <x-container.container class="!p-0 box-border overflow-clip">
               <x-full-calendar :events="$events" />
             </x-container>
 
-            <x-container :variant="'content-wrapper'" class="flex flex-row justify-end !px-0">
+            <x-container.container :variant="'content-wrapper'" class="flex flex-row justify-end !px-0">
               <x-button.secondary href="{{route('tutelage-group.list-student')}}">Kembali</x-button.secondary>
             </x-container>
         </x-container>

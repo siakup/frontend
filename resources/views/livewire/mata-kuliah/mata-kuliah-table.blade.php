@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-5" x-data="mataKuliahTable">
-    <x-container variant="content" class="flex flex-col gap-5">
+    <x-container.container variant="content" class="flex flex-col gap-5">
         <x-typography variant="heading-h6" class="mb-2">
             Daftar Mata Kuliah
         </x-typography>
@@ -48,35 +48,35 @@
             </div>
 
             <!-- Table -->
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>Kode Mata Kuliah</x-table-header>
-                        <x-table-header>Nama Mata Kuliah</x-table-header>
-                        <x-table-header>Jumlah SKS</x-table-header>
-                        <x-table-header>Semester</x-table-header>
-                        <x-table-header>Jenis Mata Kuliah</x-table-header>
-                        <x-table-header>Aksi</x-table-header>
-                    </x-table-row>
-                </x-table-head>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>Kode Mata Kuliah</x-table.header-cell>
+                        <x-table.header-cell>Nama Mata Kuliah</x-table.header-cell>
+                        <x-table.header-cell>Jumlah SKS</x-table.header-cell>
+                        <x-table.header-cell>Semester</x-table.header-cell>
+                        <x-table.header-cell>Jenis Mata Kuliah</x-table.header-cell>
+                        <x-table.header-cell>Aksi</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
 
-                <x-table-body>
+                <x-table.body>
                     <template x-if="mataKuliahList.length > 0">
                         <template x-for="(matkul, idx) in mataKuliahList" :key="matkul.kode">
-                            <x-table-row x-bind:odd="idx % 2 === 1" x-bind:last="idx === mataKuliahList.length - 1">
-                                <x-table-cell x-text="matkul.kode"></x-table-cell>
-                                <x-table-cell x-text="matkul.nama_id"></x-table-cell>
-                                <x-table-cell x-text="matkul.sks"></x-table-cell>
-                                <x-table-cell x-text="matkul.semester"></x-table-cell>
-                                <x-table-cell>
+                            <x-table.row x-bind:odd="idx % 2 === 1" x-bind:last="idx === mataKuliahList.length - 1">
+                                <x-table.cell x-text="matkul.kode"></x-table.cell>
+                                <x-table.cell x-text="matkul.nama_id"></x-table.cell>
+                                <x-table.cell x-text="matkul.sks"></x-table.cell>
+                                <x-table.cell x-text="matkul.semester"></x-table.cell>
+                                <x-table.cell>
                                     <span class="px-2 py-1 rounded-full text-xs"
                                         :class="matkul.jenis === 'Wajib' ?
                                             'bg-blue-100 text-blue-800' :
                                             'bg-purple-100 text-purple-800'">
                                         <span x-text="matkul.id_jenis"></span>
                                     </span>
-                                </x-table-cell>
-                                <x-table-cell>
+                                </x-table.cell>
+                                <x-table.cell>
                                     <div class="flex gap-3 justify-center">
                                         <a :href="`{{ route('study.view', ':id') }}`.replace(':id', matkul.id)">
                                             <x-button.action type="view" label="Lihat" />
@@ -90,20 +90,20 @@
                         detail: { id: matkul.kode, name: matkul.nama }
                     })" />
                                     </div>
-                                </x-table-cell>
-                            </x-table-row>
+                                </x-table.cell>
+                            </x-table.row>
                         </template>
                     </template>
 
                     <template x-if="mataKuliahList.length === 0">
-                        <x-table-row>
-                            <x-table-cell colspan="6" class="text-center py-4">
+                        <x-table.row>
+                            <x-table.cell colspan="6" class="text-center py-4">
                                 Tidak ada data ditemukan
-                            </x-table-cell>
-                        </x-table-row>
+                            </x-table.cell>
+                        </x-table.row>
                     </template>
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
 
             <!-- Action Buttons -->
             <div class="flex justify-end items-center gap-5">

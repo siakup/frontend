@@ -37,9 +37,9 @@
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Kurikulum</x-typography>
-    <x-container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'" x-data="ekuivalensiKurikulum">
+    <x-container.container :variant="'content-wrapper'" :class="'flex flex-col !gap-0 !px-0'" x-data="ekuivalensiKurikulum">
         <x-tab 
           :tabItems="[
             (object)[
@@ -59,10 +59,10 @@
             ],
           ]"
         />
-        <x-container :class="'flex flex-col !gap-8 items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
+        <x-container.container :class="'flex flex-col !gap-8 items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
             <x-typography variant="body-large-semibold">Ekuivalensi Mata Kuliah</x-typography>
-            <x-container :variant="'content-wrapper'" :class="'flex flex-row items-center !mx-0 !justify-start z-10 !px-0'">
-              <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
+            <x-container.container :variant="'content-wrapper'" :class="'flex flex-row items-center !mx-0 !justify-start z-10 !px-0'">
+              <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
                 <x-typography :variant="'body-medium-bold'">Program Perkuliahan</x-typography>
                 <x-form.dropdown 
                   :buttonId="'sortButtonCampus'"
@@ -82,7 +82,7 @@
                   :dropdownItem="array_column($programPerkuliahanList, 'name', 'name')"
                 />
               </x-container>
-              <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !w-max !px-0" id="StudyProgramSection">
+              <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !w-max !px-0" id="StudyProgramSection">
                 <x-typography :variant="'body-medium-bold'">Program Studi</x-typography>
                 <x-form.dropdown 
                   :buttonId="'sortButtonStudyProgram'"
@@ -115,48 +115,48 @@
                 />
               </x-container>
             </x-container>
-            <x-container :variant="'content-wrapper'" :class="'!px-0'">
-              <x-table>
-                  <x-table-head>
-                      <x-table-row>
-                          <x-table-header class="cursor-pointer">Kode Lama</x-table-header>
-                          <x-table-header class="cursor-pointer">Matkul Kurikulum Lama</x-table-header>
-                          <x-table-header class="cursor-pointer">SKS Lama</x-table-header>
-                          <x-table-header class="cursor-pointer">Kode Baru</x-table-header>
-                          <x-table-header class="cursor-pointer">Matkul Kurikulum Baru</x-table-header>
-                          <x-table-header class="cursor-pointer">SKS Baru</x-table-header>
-                          <x-table-header class="cursor-pointer">Program Studi</x-table-header>
-                          <x-table-header class="cursor-pointer">Aksi</x-table-header>
-                      </x-table-row>
-                  </x-table-head>
-                  <x-table-body>
+            <x-container.container :variant="'content-wrapper'" :class="'!px-0'">
+              <x-table.index>
+                  <x-table.head>
+                      <x-table.row>
+                          <x-table.header-cell class="cursor-pointer">Kode Lama</x-table.header-cell>
+                          <x-table.header-cell class="cursor-pointer">Matkul Kurikulum Lama</x-table.header-cell>
+                          <x-table.header-cell class="cursor-pointer">SKS Lama</x-table.header-cell>
+                          <x-table.header-cell class="cursor-pointer">Kode Baru</x-table.header-cell>
+                          <x-table.header-cell class="cursor-pointer">Matkul Kurikulum Baru</x-table.header-cell>
+                          <x-table.header-cell class="cursor-pointer">SKS Baru</x-table.header-cell>
+                          <x-table.header-cell class="cursor-pointer">Program Studi</x-table.header-cell>
+                          <x-table.header-cell class="cursor-pointer">Aksi</x-table.header-cell>
+                      </x-table.row>
+                  </x-table.head>
+                  <x-table.body>
                       @forelse ($data as $i => $d)
-                          <x-table-row :odd="$i % 2 === 1" :last="$loop->last">
-                              <x-table-cell>{{ $d['kode_lama'] }}</x-table-cell>
-                              <x-table-cell>{{ $d['matkul_kurikulum_lama'] }}</x-table-cell>
-                              <x-table-cell>{{ $d['sks_lama'] }}</x-table-cell>
-                              <x-table-cell>{{ $d['kode_baru'] !== null ? $d['kode_baru'] : '-' }}</x-table-cell>
-                              <x-table-cell>{{ $d['matkul_kurikulum_baru'] !== null ? $d['matkul_kurikulum_baru'] : '-' }}</x-table-cell>
-                              <x-table-cell>{{ $d['sks_baru'] !== null ? $d['sks_baru'] : '-' }}</x-table-cell>
-                              <x-table-cell>{{ $d['program_studi'] }}</x-table-cell>
-                              <x-table-cell x-data="{ showModalDeleteConfirmation: false }">
-                                <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center w-max">
+                          <x-table.row :odd="$i % 2 === 1" :last="$loop->last">
+                              <x-table.cell>{{ $d['kode_lama'] }}</x-table.cell>
+                              <x-table.cell>{{ $d['matkul_kurikulum_lama'] }}</x-table.cell>
+                              <x-table.cell>{{ $d['sks_lama'] }}</x-table.cell>
+                              <x-table.cell>{{ $d['kode_baru'] !== null ? $d['kode_baru'] : '-' }}</x-table.cell>
+                              <x-table.cell>{{ $d['matkul_kurikulum_baru'] !== null ? $d['matkul_kurikulum_baru'] : '-' }}</x-table.cell>
+                              <x-table.cell>{{ $d['sks_baru'] !== null ? $d['sks_baru'] : '-' }}</x-table.cell>
+                              <x-table.cell>{{ $d['program_studi'] }}</x-table.cell>
+                              <x-table.cell x-data="{ showModalDeleteConfirmation: false }">
+                                <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-center w-max">
                                   <x-button.base  :icon="asset('assets/icon-edit.svg')" :class="'scale-75 text-[#E62129]'" :href="route('curriculum.equivalence.edit', ['id' => 1])">Ubah</x-button.base>
                                   <x-button.action type="delete" label="Hapus" x-on:click="$dispatch('open-modal', {id: 'delete-confirmation'})" />
                                 </x-container>
-                              </x-table-cell>
-                          </x-table-row>
+                              </x-table.cell>
+                          </x-table.row>
                       @empty
-                          <x-table-row>
-                              <x-table-cell colspan="6" class="text-center py-4">
+                          <x-table.row>
+                              <x-table.cell colspan="6" class="text-center py-4">
                                   Tidak ada data ditemukan
-                              </x-table-cell>
-                          </x-table-row>
+                              </x-table.cell>
+                          </x-table.row>
                       @endforelse
-                  </x-table-body>
-              </x-table>
+                  </x-table.body>
+              </x-table.index>
             </x-container>
-            <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-end !px-0 !py-0">       
+            <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-end !px-0 !py-0">       
               <x-button.secondary :href="route('curriculum.equivalence.upload')" label="Upload Ekuivalensi" icon="{{ asset('assets/icon-upload-red-500.svg') }}" iconPosition="right" />
               <x-button.primary :href="route('curriculum.equivalence.create', ['prodi' => 'Ilmu Komputer', 'programPerkuliahan' => 'Regular'])">Tambah Ekuivalensi</x-button.primary>  
             </x-container>

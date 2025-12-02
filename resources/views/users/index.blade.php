@@ -18,12 +18,12 @@
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'" x-data="listUser({{ json_encode(route('users.index')) }})">
+  <x-container.container :variant="'content-wrapper'" x-data="listUser({{ json_encode(route('users.index')) }})">
     <x-typography :variant="'body-large-semibold'">Manajemen Pengguna</x-typography>
-    <x-container :variant="'flat'" class="flex items-center justify-end w-full">
+    <x-container.container :variant="'flat'" class="flex items-center justify-end w-full">
       <x-button :variant="'primary'" :size="'lg'" :href="route('users.create')">Tambah Pengguna Baru</x-button>
     </x-container>
-    <x-container :class="'flex justify-between'">
+    <x-container.container :class="'flex justify-between'">
       <div class="w-64">
         <x-form.search
           :value="$search"
@@ -82,7 +82,7 @@
                   <template x-if="user.status !== 'active'"><x-badge :variant="'green-bordered'"  x-text="'Tidak Aktif'"></x-badge></template>
                 </x-table.cell>
                 <x-table.cell :variant="'old'">
-                  <x-container :class="'!px-0 w-full items-center'" :variant="'content-wrapper'">
+                  <x-container.container :class="'!px-0 w-full items-center'" :variant="'content-wrapper'">
                     <x-button 
                       x-on:click="window.api.requestDisplayTemplate(
                         '{{ route('users.resetPassword') }}',
@@ -94,7 +94,7 @@
                   </x-container>
                 </x-table.cell>
                 <x-table.cell :variant="'old'">
-                    <x-container :variant="'content-wrapper'" :class="'flex !flex-row gap-10 items-center justify-center'">
+                    <x-container.container :variant="'content-wrapper'" :class="'flex !flex-row gap-10 items-center justify-center'">
                       <x-button
                           :variant="'tertiary'"
                           :size="'sm'"

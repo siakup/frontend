@@ -11,7 +11,7 @@
                 </button>
             </div>
         </x-slot>
-        <x-container class="!rounded-lg">
+        <x-container.container class="!rounded-lg">
             <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Kode</x-slot>
                 <x-slot  name="input">
