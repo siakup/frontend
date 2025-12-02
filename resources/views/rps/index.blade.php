@@ -5,12 +5,8 @@
 <script src="{{ asset('js/controllers/rps.js') }}" defer></script>
 
 @section('content')
-<<<<<<< HEAD
 
     <x-container.container variant="content-wrapper">
-=======
-    <x-container variant="content-wrapper">
->>>>>>> d965f5f35489ca988f9a23e75a3072665d01481a
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-container.container variant="content" class="ml-3" x-data="rps()">
             <x-container.container variant="content-wrapper" class="mb-5">
@@ -38,7 +34,7 @@
                         <x-button.primary>Cari</x-button.primary>
                     </x-slot>
                 </x-form.input-container>
-            </x-container>
+            </x-container.container>
             <x-dialog variant="warning" isCloseable>
                 <x-slot name="header">Catatan!</x-slot>
                 Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah) <br> <br>
@@ -96,8 +92,8 @@
                 </x-button.secondary>
                 <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
             </div>
-        </x-container>
-    </x-container>
+        </x-container.container>
+    </x-container.container>
     <x-pagination></x-pagination>
 
 @endsection
