@@ -2,11 +2,6 @@
 
 @section('title', 'Edit Ekuivalensi')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active"><a href="{{ route('curriculum.equivalence') }}">Ekuivalensi Kurikulum</a></div>
-    <div class="breadcrumb-item active">Edit Ekuivalensi</div>
-@endsection
-
 @section('javascript')
     <script>
         document.addEventListener('alpine:init', () => {

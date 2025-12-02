@@ -2,10 +2,6 @@
 
 @section('title', 'Ubah Periode Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Akademik</div>
-@endsection
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('css/plugins/flatpckr.css') }}" />
 @endsection

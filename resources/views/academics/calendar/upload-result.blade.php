@@ -2,10 +2,6 @@
 
 @section('title', 'Kalender Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Lihat Event Kalender Akademik</div>
-@endsection
-
 @section('content')
   <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Unggah Event Kalender Akademik</x-typography>

@@ -2,9 +2,9 @@
 
 @section('title', 'Kelompok Perwalian')
 
-@section('breadcrumbs')
+
   <div class="breadcrumb-item">Beranda</div>
-  <div class="breadcrumb-item active">Kelompok Perwalian</div>
+  Kelompok Perwalian</div>
 @endsection
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

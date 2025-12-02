@@ -2,10 +2,6 @@
 
 @section('title', 'Kurikulum Mata Kuliah Wajib')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Daftar Kurikulum</div>
-@endsection
-
 @section('javascript')
   <script src="{{asset('js/custom/curriculum.js')}}"></script>
 @endsection

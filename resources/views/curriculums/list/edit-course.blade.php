@@ -2,10 +2,6 @@
 
 @section('title', Request::routeIs('curriculum.list.view.show-study') ? 'Lihat Mata Kuliah Kurikulum' : 'Ubah Mata Kuliah Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Kurikulum</div>
-@endsection
-
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <script src="{{asset('js/custom/curriculum.js')}}"></script>
 <script>

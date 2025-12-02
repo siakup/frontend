@@ -27,7 +27,6 @@
   </script>
 @endsection
 
-
 @section('content')
   <x-container.container :variant="'content-wrapper'" x-data="createUser()">
     <x-typography :variant="'body-large-semibold'">Pengguna Baru</x-typography>

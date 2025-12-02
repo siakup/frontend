@@ -2,10 +2,6 @@
 
 @section('title', 'Riwayat Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Generate Riwayat Akademik</div>
-@endsection
-
 @section('javascript')
     <script>
         document.addEventListener('alpine:init', () => {

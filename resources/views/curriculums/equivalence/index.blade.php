@@ -2,10 +2,6 @@
 
 @section('title', 'Ekuivalensi Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Daftar Kurikulum</div>
-@endsection
-
 @section('javascript')
 
     <script>

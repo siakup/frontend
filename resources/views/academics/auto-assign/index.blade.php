@@ -2,10 +2,6 @@
 
 @section('title', 'Auto Assign')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Auto Assign</div>
-@endsection
-
 @section('javascript')
     <script>
         function autoAssignForm() {

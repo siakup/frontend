@@ -2,10 +2,6 @@
 
 @section('title', 'Tambah Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Kurikulum</div>
-@endsection
-
 <script src="{{ asset('js/custom/curriculum.js') }}"></script>
 @section('content')
   <form action="{{route('curriculum.list.store')}}" method="POST">

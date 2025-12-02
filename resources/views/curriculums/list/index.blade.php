@@ -2,10 +2,6 @@
 
 @section('title', 'Daftar Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Daftar Kurikulum</div>
-@endsection
-
 @section('javascript')
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <script src="{{ asset('js/custom/curriculum.js')}}"></script>

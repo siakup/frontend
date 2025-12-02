@@ -2,10 +2,6 @@
 
 @section('title', 'Tambah Ekuivalensi')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Tambah Ekuivalensi</div>
-@endsection
-
 @section('javascript')
     <script>
         document.addEventListener('alpine:init', () => {

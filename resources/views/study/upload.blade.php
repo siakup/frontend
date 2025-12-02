@@ -2,10 +2,6 @@
 
 @section('title', 'Upload Mata Kuliah')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Upload Mata Kuliah</div>
-@endsection
-
 @section('css')
 <style>
     .content-card {

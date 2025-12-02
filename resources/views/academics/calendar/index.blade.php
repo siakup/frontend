@@ -2,10 +2,6 @@
 
 @section('title', 'Kalender Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Kalender Akademik</div>
-@endsection
-
 @section('content')
 <x-container.container :variant="'content-wrapper'">
   <x-typography :variant="'body-large-semibold'">Kalender Akademik - Universitas Pertamina</x-typography>

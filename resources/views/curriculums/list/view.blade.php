@@ -2,10 +2,6 @@
 
 @section('title', 'Lihat Detail Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Kurikulum</div>
-@endsection
-
 @include('partials.success-notification-modal')
 @section('content')
   <x-container.container :variant="'content-wrapper'">

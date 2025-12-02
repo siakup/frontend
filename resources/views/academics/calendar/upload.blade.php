@@ -2,10 +2,6 @@
 
 @section('title', 'Upload Mata Kuliah')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Upload Mata Kuliah</div>
-@endsection
-
 @include('partials.success-notification-modal', ['route' => route('calendar.upload', ['id' => $id])])
 @section('content')
   <x-container.container :variant="'content-wrapper'">
