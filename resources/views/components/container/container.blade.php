@@ -30,12 +30,14 @@
       'full' => 'w-full',
       'maxContent' => 'w-max',
       'auto' => 'w-auto',
+      'fitContent' => 'w-fit'
     ];
 
     $heightSize = [
       'full' => 'h-full',
       'maxContent' => 'h-max',
       'auto' => 'h-auto',
+      'fitContent' => 'H-fit'
     ];
 
     $containerClass = "{$background} {$class} rounded-{$radius} {$widthSize[$width]} {$heightSize[$height]} {$padding} {$gap}";

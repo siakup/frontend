@@ -1,17 +1,22 @@
 @props(['containerClass' => '', 'labelClass' => '', 'inputClass' => '', 'labelWrap' => false])
 
-<div class="flex flex-row items-center gap-3 mt-2 {{ $containerClass }}">
-  <label 
-      {{ $attributes->merge([
-          'class' => "text-[#262626] text-sm font-semibold flex items-center gap-2 flex-shrink-0 " 
-                    . ($labelWrap ? 'whitespace-normal' : 'whitespace-nowrap') 
-                    . " $labelClass"
-      ]) }}
-      for="{{ $attributes->get('for') }}"
-  >
-      {{ $label }}
-  </label>
-  <div class="flex-grow {{ $inputClass }}">
+<x-container.wrapper :padding="'p-0'" :cols="9">
+
+  <x-container.container class="col-start-1 col-end-2">
+    <label 
+        {{ $attributes->merge([
+            'class' => "text-[#262626] text-sm font-semibold flex items-center gap-2 flex-shrink-0 " 
+                      . ($labelWrap ? 'whitespace-normal' : 'whitespace-nowrap') 
+                      . " $labelClass"
+        ]) }}
+        for="{{ $attributes->get('for') }}"
+    >
+        {{ $label }}
+    </label>
+  </x-container.container>
+
+  <x-container.container class="col-start-3 col-end-10">
       {{ $input }}
-  </div>
-</div>
+  </x-container.container>
+
+</x-container.wrapper>

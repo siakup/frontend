@@ -23,7 +23,7 @@ class User {
       },
 
       async fetchData(sortData) {
-        await requestGetData(
+        await window.api.requestGetData(
           this.route, {
             ...sortData,
             display: 'false'
@@ -50,7 +50,7 @@ class User {
         this.$store.createPage.nama = user.nama;
         this.$store.createPage.email = user.email;
         this.$store.createPage.nomor_induk = user.nomor_induk;
-        await requestGetData(
+        await window.api.requestGetData(
           route, {
           search: user.nama,
           display: 'false'
@@ -62,7 +62,7 @@ class User {
       },
 
       async saveData(route, redirectUri) {
-        requestPostData(route, {
+        window.api.requestPostData(route, {
           nip: this.$store.createPage.nomor_induk,
           nama_lengkap: this.$store.createPage.nama,
           username: this.$store.createPage.username,
@@ -117,8 +117,22 @@ class User {
         successToast("Peran berhasil dihapus");
       },
 
+      async getUser(route, user) {
+        this.$store.editPage.nama = user.nama;
+        this.$store.editPage.email = user.email;
+        this.$store.editPage.nomor_induk = user.nomor_induk;
+        await window.api.requestGetData(route, {
+            search: user.nama,
+            display: 'false'
+          }, (response) => {
+            this.$store.editPage.username = response.data.users[0].username;
+        });
+        this.$store.editPage.users = [];
+        this.$store.editPage.isOptionListOpen = false;
+      },
+
       async saveData(route, redirectUri) {
-        requestPostData(route, {
+        window.api.requestPostData(route, {
           nip: this.$store.editPage.nomor_induk,
           nama_lengkap: this.$store.editPage.nama,
           username: this.$store.editPage.username,
@@ -152,7 +166,7 @@ class User {
 
       async getData() {
         if(this.peran !== '') 
-          await requestGetData(
+          await window.api.requestGetData(
             institutionRoute, 
             { role: this.peran }, 
             (response) => { 

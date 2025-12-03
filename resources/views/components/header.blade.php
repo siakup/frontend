@@ -30,25 +30,17 @@
                 <img src="{{ asset('images/uper.png') }}" alt="Logo" class="w-fit h-auto block my-0">
               </x-container.container>
 
-              <x-container.container :class="'row-start-11 row-end-12'">
+              <x-container.container :class="'row-start-11 row-end-13'">
                 <x-container.container :background="'transparent'" :gap="'gap-1'" class="items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="5" viewBox="0 0 40 5" fill="none">
-                        <path d="M0.5 2.5H39.5" stroke="#0076BE" stroke-width="8" />
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="5" viewBox="0 0 56 5" fill="none">
-                        <path d="M0.5 2.5H55.5" stroke="#E62129" stroke-width="8" />
-                    </svg>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="5" viewBox="0 0 60 5" fill="none">
-                        <path d="M0.5 2.5H59.5" stroke="#98A725" stroke-width="8" />
-                    </svg>
-                </x-container.container>
-              </x-container.container>
-
-              <x-container.container :class="'row-start-12 row-end-13'">
-                <x-container.container :background="'transparent'" :gap="'gap-1'" class="items-center justify-center">
+                  <x-container.container :radius="'none'" :width="'maxContent'" class="justify-center border-t-5 border-blue-500">
                     <x-typography :variant="'caption-regular'" class="text-blue-500">Sistem</x-typography>
+                  </x-container.container>
+                  <x-container.container :radius="'none'" :width="'maxContent'" class="justify-center border-t-5 border-red-500">
                     <x-typography :variant="'caption-regular'" class="text-red-500">Informasi</x-typography>
+                  </x-container.container>
+                  <x-container.container :radius="'none'" :width="'maxContent'" class="justify-center border-t-5 border-green-700">
                     <x-typography :variant="'caption-regular'" class="text-green-700">Akademik</x-typography>
+                  </x-container.container>
                 </x-container.container>
               </x-container.container>
 

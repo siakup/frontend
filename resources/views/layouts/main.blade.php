@@ -10,11 +10,11 @@
 <body>
   <x-container.wrapper :padding="'p-0'" :rows="12" class="h-full w-full" x-data="{}">
 
-    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" class="row-start-1 row-end-4">
+    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" class="row-start-1 row-end-3">
       <x-header />
     </x-container.container>
 
-    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" class="row-start-4 row-end-13">
+    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" class="row-start-3 row-end-13">
         <x-container.wrapper :cols="12" :padding="'p-0'">
 
           <template x-if="$store.mainLayout.isOpen">
@@ -24,13 +24,13 @@
           </template>
           
           <x-container.container :width="'full'" :height="'full'" :rounded="'none'" :rounded="'none'" :background="'transparent'" class="overflow-scroll" x-bind:class="$store.mainLayout.isOpen ? 'col-start-4 col-span-9' : 'col-start-1 col-span-12'">
-              <x-container.wrapper :rows="9">
+              <x-container.wrapper :rows="16">
 
-                <x-container.container :width="'full'" :height="'full'" :background="'transparent'" :rounded="'none'" class="row-start-1 row-span-1">
+                <x-container.container :width="'full'" :height="'maxContent'" :background="'transparent'" :rounded="'none'" class="row-start-1 row-span-1">
                   <x-breadcrumb />
                 </x-container.container>
 
-                <x-container.container :width="'full'" :height="'full'" :background="'transparent'" :rounded="'none'" class="row-start-2 row-span-8">
+                <x-container.container :width="'full'" :height="'full'" :background="'transparent'" :rounded="'none'" class="row-start-2 row-span-15">
                   @yield('content')
                 </x-container.container>
 

@@ -8,7 +8,6 @@
     'responseKeyData' => '',
     'responseKeyPaginationData' => 'pagination',
 ])
-<script src="{{ asset('js/component-helpers/api.js')}}"></script>
 
 <x-container.container 
   :background="'content-white'"
@@ -19,20 +18,22 @@
   class="gap-2"
   x-data="{
     key: '',
-    storeName: @js($storeName),
-    storeKey: @js($storeKey),
-    responseKeyData: @js($responseKeyData),
-    responseKeyPaginationData: @js($responseKeyPaginationData),
+    storeName: '{{$storeName}}',
+    storeKey: '{{$storeKey}}',
+    responseKeyData: '{{$responseKeyData}}',
+    responseKeyPaginationData: '{{$responseKeyPaginationData}}',
     async onSearch() {
       if($store[this.storeName].isOptionListOpen || $store[this.storeName].isOptionListOpen === undefined) {
-        await requestGetData(
+        await window.api.requestGetData(
           '{{ $requestRoute }}', {
             search: this.key,
             display: 'false'
           }, (response) => {
             if ($store[this.storeName][this.storeKey]) {
               $store[this.storeName][this.storeKey] = response.data[this.responseKeyData];
-              $store[this.storeName].paginationData = response.data[this.responseKeyPaginationData];
+              if(response.data[this.responseKeyPaginationData]) {
+                $store[this.storeName].paginationData = response.data[this.responseKeyPaginationData];
+              }
             }
         });
       } else {
