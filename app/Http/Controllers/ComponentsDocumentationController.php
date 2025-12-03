@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PDO;
 
 class ComponentsDocumentationController extends Controller
 {
@@ -34,7 +35,33 @@ class ComponentsDocumentationController extends Controller
       return view('components-documentation.button');
     }
 
-    public function quantity(Request $request) {
-      return view('components-documentation.quantity');
-    }
+  public function quantity(Request $request)
+  {
+    return view('components-documentation.quantity');
+  }
+
+  public function breadcrumb(Request $request)
+  {
+    return view('components-documentation.breadcrumb');
+  }
+
+  public function tab(Request $request)
+  {
+    return view('components-documentation.tab');
+  }
+
+  public function input(Request $request)
+  {
+    return view('components-documentation.input');
+  }
+
+  public function checkbox(Request $request)
+  {
+    return view('components-documentation.checkbox');
+  }
+
+  public function file(Request $request)
+  {
+    return view('components-documentation.file');
+  }
 }

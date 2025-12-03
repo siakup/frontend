@@ -1,0 +1,31 @@
+@layer utilities {
+    .breadcrumb-list {
+        @apply flex items-center gap-2 m-0 p-0 list-none;
+    }
+    .breadcrumb-item {
+        @apply flex items-center gap-2;
+    }
+
+    .breadcrumb-active {
+        @apply text-gray-800;
+    }
+
+    .breadcrumb-inactive {
+        @apply text-red-500;
+    }
+
+    .breadcrumb-ellipsis {
+        @apply cursor-pointer;
+    }
+    
+    .breadcrumb-dropdown {
+        @apply absolute top-8 left-10 mt-1 bg-white border border-gray-200 
+               rounded-xl p-2 z-50 w-48 shadow-lg origin-top-left;
+    }
+
+    .breadcrumb-dropdown-item {
+        @apply block px-3 py-2 text-gray-700 rounded-md text-sm
+               hover:bg-red-50 hover:text-red-500 
+               transition-colors duration-200 truncate;
+    }
+}
