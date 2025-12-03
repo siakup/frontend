@@ -11,5 +11,9 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/typography', [ComponentsDocumentationController::class, 'typography'])->name('components-documentation.typography');
     Route::get('/button', [ComponentsDocumentationController::class, 'button'])->name('components-documentation.button');
     Route::get('/quantity', [ComponentsDocumentationController::class, 'quantity'])->name('components-documentation.quantity');
-    Route::get('/container', [ComponentsDocumentationController::class, 'container'])->name('components-documentation.container');
+    Route::get('/breadcrumb', [ComponentsDocumentationController::class, 'breadcrumb'])->name('components-documentation.breadcrumb');
+    Route::get('/tab', [ComponentsDocumentationController::class, 'tab'])->name('components-documentation.tab');
+    Route::get('/input', [ComponentsDocumentationController::class, 'input'])->name('components-documentation.input');
+    Route::get('/checkbox', [ComponentsDocumentationController::class, 'checkbox'])->name('components-documentation.checkbox');
+    Route::get('/file', [ComponentsDocumentationController::class, 'file'])->name('components-documentation.file');
 });
