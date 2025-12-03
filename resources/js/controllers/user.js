@@ -110,10 +110,15 @@ class User {
 
       },
 
+      checkValidity() {
+        try {
+          return this.$store.editPage.nama == '' || this.$store.editPage.email == '' || this.$store.editPage.nomor_induk == '';
+        } catch (e) {}
+      },
+
       onDeletePeran() {
-        const newPeran = this.$store.editPage.peran.filter((value, i) => i !== this.selectedId);;
+        const newPeran = this.$store.editPage.peran.filter((value, i) => i !== this.selectedId);
         this.$store.editPage.peran = newPeran;
-        this.isModalKonfirmasiHapusOpen = false;
         successToast("Peran berhasil dihapus");
       },
 

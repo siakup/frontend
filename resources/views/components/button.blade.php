@@ -48,7 +48,7 @@
     ];
 
     $class = collect([
-        'flex items-center gap-1 rounded-sm cursor-pointer w-max select-none whitespace-nowrap',
+        'flex items-center justify-center gap-1 rounded-sm cursor-pointer w-max text-center select-none whitespace-nowrap',
         'disabled:cursor-not-allowed disabled:text-gray-600',
         $variants[$variant] ?? '',
         $sizes[$size]['padding'] ?? '',
@@ -75,7 +75,7 @@
     </label>
 @else
     <button type="{{ $type }}"
-        @if ($href) onclick="window.location.href='{{ $href }}'" @endif
+        @if ($href && trim($href)) onclick="window.location.href='{{ $href }}'" @endif
         @if ($wireClick) wire:click="{{ $wireClick }}" @endif
         {{ $attributes->merge(['class' => $class]) }}>
 

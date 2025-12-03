@@ -3,11 +3,7 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('javascript')
-  <script src="{{ asset('js/component-helpers/api.js')}}"></script>
-  <script src="{{ asset('js/component-helpers/formatter.js')}}"></script>
   <script type="module">
-    import User from "{{ asset('js/controllers/user.js') }}";
-
     document.addEventListener('alpine:init', () => {
       Alpine.store('createPage', {
         users: [],
@@ -21,135 +17,181 @@
         isModalTambahPeranOpen: false
       });
 
-      Alpine.data('createUser', User.createUser);
-      Alpine.data('createPeran', User.createPeran);
+      Alpine.data('createUser', window.UserController.createUser);
+      Alpine.data('createPeran', window.UserController.createPeran);
     });
   </script>
 @endsection
 
 @section('content')
-  <x-container.container :variant="'content-wrapper'" x-data="createUser()">
-    <x-typography :variant="'body-large-semibold'">Pengguna Baru</x-typography>
-    <x-button :variant="'tertiary'" :icon="asset('assets/icons/arrow-left/red-20.svg')" :href="route('users.index')">Manajemen Pengguna</x-button>
-    <x-container.container :class="'flex flex-col gap-4'">
-      <x-typography :variant="'body-medium-bold'">Pengguna Baru</x-typography>
-      <x-form.input-container class="min-w-[120px]" for="nip-search">
-        <x-slot name="label">NIP</x-slot>
-        <x-slot name="input">
-          <div class="w-full flex-1 relative">
-            <x-form.search
-              :placeholder="'Username / Nama / Status'"
-              :storeName="'createPage'"
-              :storeKey="'users'"
-              :requestRoute="route('users.search-nip')"
-              :responseKeyData="'users'"
-              x-model="$store.createPage.nomor_induk"
-            />
-            <template x-if="$store.createPage.users && $store.createPage.users.length > 0 && $store.createPage.nomor_induk !== '' && $store.createPage.isOptionListOpen">
-              <x-container.container :class="'!px-0 !py-0 !p-0 flex flex-col !gap-0 absolute top-full left-0 right-0 overflow-hidden'">
-                <template x-for="user in $store.createPage.users">
-                  <x-container.container 
-                    :variant="'content-wrapper'" 
-                    :class="'!py-3 !px-4 flex flex-col justify-start !gap-2 cursor-pointer transition-[background] duration-150 hover:bg-[#E62129] group text-black hover:text-white'"
-                    x-text="user.nomor_induk+' - '+user.nama"
-                    x-on:click="getUser('{{ route('users.index') }}', user)"
-                  ></x-container>
+  <x-container.wrapper :rows="7" :padding="'p-0'" :gapY="4" x-data="createUser()">
+
+    <x-container.container :background="'transparent'" class="row-start-1 row-end-2 items-center">
+      <x-typography :variant="'body-large-semibold'">Pengguna Baru</x-typography>
+    </x-container.container>
+
+    <x-container.container :background="'transparent'" :width="'full'" class="row-start-2 row-end-3 items-center">
+      <x-button :variant="'tertiary'" :icon="'arrow-left/red-20'" :href="route('users.index')">Manajemen Pengguna</x-button>
+    </x-container.container>
+
+    <x-container.container :background="'content-white'" :class="'row-start-3 row-end-10 items-center justify-between'">
+      <x-container.wrapper :rows="7">
+
+        <x-container.container :background="'transparent'" :width="'full'" class="row-start-1 row-end-2">
+          <x-typography :variant="'body-medium-bold'">Pengguna Baru</x-typography>
+        </x-container.container>
+
+        <x-container.container :background="'transparent'" :width="'full'" class="row-start-2 row-end-3">
+          <x-form.input-container>
+            <x-slot name="label">NIP</x-slot>
+            <x-slot name="input">
+              <x-container.container :background="'transparent'" :width="'full'" class="relative">
+                <x-form.search
+                  :placeholder="'Username / Nama / Status'"
+                  :storeName="'createPage'"
+                  :storeKey="'users'"
+                  :requestRoute="route('users.search-nip')"
+                  :responseKeyData="'users'"
+                  x-model="$store.createPage.nomor_induk"
+                />
+                <template x-if="$store.createPage.users && $store.createPage.users.length > 0 && $store.createPage.nomor_induk !== '' && $store.createPage.isOptionListOpen">
+                  <x-container.container :class="'!px-0 !py-0 !p-0 flex flex-col !gap-0 absolute top-full left-0 right-0 overflow-hidden'">
+                    <template x-for="user in $store.createPage.users">
+                      <x-container.container 
+                        :background="'content-white'"
+                        :padding="'py-3 px-4'"
+                        :gap="'gap-2'"
+                        :class="'flex-col justify-start cursor-pointer transition-[background] duration-150 hover:bg-red-500 group text-black hover:text-white'"
+                        x-text="user.nomor_induk+' - '+user.nama"
+                        x-on:click="getUser('{{ route('users.index') }}', user)"
+                      ></x-container.container>
+                    </template>
+                  </x-container.container>
                 </template>
-              </x-container>
-            </template>
-          </div>
-        </x-slot>
-      </x-form.input-container>
-      <x-form.input-container class="min-w-[120px]" for="nama_lengkap">
-        <x-slot name="label">Nama Lengkap</x-slot>
-        <x-slot name="input">
-          <x-form.input 
-            :placeholder="'Auto Generate'" 
-            :name="'nama'" 
-            readonly
-            x-model="$store.createPage.nama"
-          />
-        </x-slot>
-      </x-form.input-container>
-      <x-form.input-container class="min-w-[120px]" for="username">
-        <x-slot name="label">Username</x-slot>
-        <x-slot name="input">
-          <x-form.input 
-            :placeholder="'Auto Generate'" 
-            :name="'username'" 
-            readonly
-            x-model="$store.createPage.username"
-          />
-        </x-slot>
-      </x-form.input-container>
-      <x-form.input-container class="min-w-[120px]" for="email">
-        <x-slot name="label">Email</x-slot>
-        <x-slot name="input">
-          <x-form.input 
-            :placeholder="'Auto Generate'" 
-            :name="'email'" 
-            readonly
-            x-model="$store.createPage.email"
-          />
-        </x-slot>
-      </x-form.input-container>
-      <x-form.toggle x-model="$store.createPage.status" />
-      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-end !px-0'">
-        <x-button
-          :variant="'primary'" 
-          x-on:click="$store.createPage.isModalTambahPeranOpen = true;"
-          x-bind:disabled="checkValidity()"
-        >
-          Tambah Peran
-        </x-button>
-      </x-container>
-    </x-container>
-    <x-container.container :class="'flex flex-col gap-4'">
-      <x-typography :variant="'body-medium-bold'">Daftar Peran</x-typography>
-      <x-table.index id="list-role" class="table" :variant="'old'">
-        <x-table.head :variant="'old'">
-          <x-table.row :variant="'old'">
-            <x-table.header-cell :variant="'old'">Nama Peran</x-table.header-cell>
-            <x-table.header-cell :variant="'old'">Institusi</x-table.header-cell>
-            <x-table.header-cell :variant="'old'">Dibuat Pada</x-table.header-cell>
-            <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
-          </x-table.row>
-        </x-table.head>
-        <tbody>
-          <template x-if="$store.createPage.peran && $store.createPage.peran.length > 0">
-            <template x-for="(peran, index) in $store.createPage.peran">
+              </x-container.container>
+            </x-slot>
+          </x-form.input-container>
+        </x-container.container>
+
+        <x-container.container :background="'transparent'" :width="'full'" class="row-start-3 row-end-4">
+          <x-form.input-container>
+            <x-slot name="label">Nama Lengkap</x-slot>
+            <x-slot name="input">
+              <x-form.input 
+                :placeholder="'Auto Generate'" 
+                :name="'nama'" 
+                readonly
+                x-model="$store.createPage.nama"
+              />
+            </x-slot>
+          </x-form.input-container>
+        </x-container.container>
+
+        <x-container.container :background="'transparent'" :width="'full'" class="row-start-4 row-end-5">
+          <x-form.input-container>
+            <x-slot name="label">Username</x-slot>
+            <x-slot name="input">
+              <x-form.input 
+                :placeholder="'Auto Generate'" 
+                :name="'username'" 
+                readonly
+                x-model="$store.createPage.username"
+              />
+            </x-slot>
+          </x-form.input-container>
+        </x-container.container>
+
+        <x-container.container :background="'transparent'" :width="'full'" class="row-start-5 row-end-6">
+          <x-form.input-container>
+            <x-slot name="label">Email</x-slot>
+            <x-slot name="input">
+              <x-form.input 
+                :placeholder="'Auto Generate'" 
+                :name="'email'" 
+                readonly
+                x-model="$store.createPage.email"
+              />
+            </x-slot>
+          </x-form.input-container>
+        </x-container.container>
+
+        <x-container.container :background="'transparent'" :width="'full'" class="row-start-6 row-end-7">
+          <x-form.input-container>
+            <x-slot name="label">Status</x-slot>
+            <x-slot name="input">
+              <x-form.toggle x-model="$store.createPage.status" />
+            </x-slot>
+          </x-form.input-container>
+        </x-container.container>
+
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-end !px-0'">
+          <x-button
+            :variant="'primary'" 
+            x-on:click="$store.createPage.isModalTambahPeranOpen = true;"
+            x-bind:disabled="checkValidity()"
+          >
+            Tambah Peran
+          </x-button>
+        </x-container.container>
+
+      </x-container.wrapper>
+    </x-container.container>
+
+    <x-container.container :background="'content-white'" :height="'maxContent'" class="row-start-10 row-end-13 items-center justify-between">
+      <x-container.wrapper :rows="11">
+
+        <x-container.container :background="'transparent'" :width="'full'" class="row-start-1 row-end-2">
+          <x-typography :variant="'body-medium-bold'">Daftar Peran</x-typography>
+        </x-container.container>
+
+        <x-container.container :background="'transparent'" :width="'full'" :height="'maxContent'" class="row-start-3 row-end-12 flex-col gap-4">
+          <x-table.index id="list-role" class="table" :variant="'old'">
+            <x-table.head :variant="'old'">
               <x-table.row :variant="'old'">
-                <x-table.cell :variant="'old'" x-text="peran.peranName"></x-table.cell>
-                <x-table.cell :variant="'old'" x-text="peran.institutionName"></x-table.cell>
-                <x-table.cell :variant="'old'" x-text="formatDateTime(peran.createdAt)"></x-table.cell>
-                <x-table.cell :variant="'old'">
-                  <x-container.container :variant="'content-wrapper'" class="w-full items-center">
-                    <x-button
-                      :variant="'tertiary'"
-                      :size="'sm'"
-                      :icon="asset('assets/icons/delete/grey-20.svg')"
-                      class="!text-[#8C8C8C]"
-                      x-on:click="selectedId = index; isModalKonfirmasiHapusOpen = true;"
-                    >
-                      Hapus
-                    </x-button>
-                  </x-container>
-                </x-table.cell>
+                <x-table.header-cell :variant="'old'">Nama Peran</x-table.header-cell>
+                <x-table.header-cell :variant="'old'">Institusi</x-table.header-cell>
+                <x-table.header-cell :variant="'old'">Dibuat Pada</x-table.header-cell>
+                <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
               </x-table.row>
-            </template>
-          </template>
-        </tbody>
-      </x-table.index>
-      <x-container.container :variant="'content-wrapper'" :class="'flex-row justify-end gap-4 !px-0'" x-bind:class="{'hidden': !$store.createPage.peran || $store.createPage.peran.length == 0, 'flex': $store.createPage.peran && $store.createPage.peran.length > 0 }">
-        <x-button :variant="'secondary'" :href="route('users.index')">Batal</x-button.secondary>
-        <x-button 
-          :variant="'primary'" 
-          x-on:click="isModalKonfirmasiSimpanOpen = true"
-        >
-          Simpan
-        </x-button>
-      </x-container>
-    </x-container>
+            </x-table.head>
+            <x-table.body>
+              <template x-if="$store.createPage.peran && $store.createPage.peran.length > 0">
+                <template x-for="(peran, index) in $store.createPage.peran">
+                  <x-table.row :variant="'old'">
+                    <x-table.cell :variant="'old'" x-text="peran.peranName"></x-table.cell>
+                    <x-table.cell :variant="'old'" x-text="peran.institutionName"></x-table.cell>
+                    <x-table.cell :variant="'old'" x-text="formatDateTime(peran.createdAt)"></x-table.cell>
+                    <x-table.cell :variant="'old'">
+                      <x-container.container :variant="'content-wrapper'" class="w-full items-center">
+                        <x-button
+                          :variant="'tertiary'"
+                          :size="'sm'"
+                          :icon="'delete/grey-20'"
+                          class="!text-gray-600"
+                          x-on:click="selectedId = index; isModalKonfirmasiHapusOpen = true;"
+                        >
+                          Hapus
+                        </x-button>
+                      </x-container>
+                    </x-table.cell>
+                  </x-table.row>
+                </template>
+              </template>
+            </x-table.body>
+          </x-table.index>
+          <x-container.container :variant="'content-wrapper'" :class="'flex-row justify-end gap-4 !px-0'" x-bind:class="{'hidden': !$store.createPage.peran || $store.createPage.peran.length == 0, 'flex': $store.createPage.peran && $store.createPage.peran.length > 0 }">
+            <x-button :variant="'secondary'" :href="route('users.index')">Batal</x-button.secondary>
+            <x-button 
+              :variant="'primary'" 
+              x-on:click="isModalKonfirmasiSimpanOpen = true"
+            >
+              Simpan
+            </x-button>
+          </x-container.container>
+        </x-container.container>
+
+      </x-container.wrapper>
+    </x-container.container>
 
     <div x-data="createPeran('{{ route('institutions.role') }}',@js($roles->data))"  x-effect="getData();">
       <x-modal.container-pure-js x-bind:class="{'hidden': !$store.createPage.isModalTambahPeranOpen, 'flex': $store.createPage.isModalTambahPeranOpen}">
@@ -236,6 +278,7 @@
         <x-button :variant="'primary'" x-on:click="onDeletePeran()">Ya, Hapus Sekarang</x-button>
       </x-slot>
     </x-modal.container-pure-js>
-  </x-container>
+
+  </x-container.wrapper>
   <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
