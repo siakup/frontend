@@ -11,7 +11,7 @@
                 </button>
             </div>
         </x-slot>
-        <x-container class="!rounded-lg">
+        <x-container.container class="!rounded-lg">
             <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">Range Nilai</x-slot>
                 <x-slot name="input">

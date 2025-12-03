@@ -2,17 +2,13 @@
 
 @section('title', 'Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Akademik</div>
-@endsection
-
 @section('javascript')
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <script src="{{asset('js/custom/periode.js')}}"></script>
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0">
+  <x-container.container :variant="'content-wrapper'" class="flex flex-col !gap-0">
     <x-tab 
       :tabItems="[
         (object)[
@@ -27,9 +23,9 @@
         ],
       ]"
     />
-    <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
+    <x-container.container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
       <x-button.primary :href="route('academics-periode.create')" class="self-end">Tambah Periode Akademik</x-button.primary>
-      <x-container :class="'flex justify-between items-center p-4'">
+      <x-container.container :class="'flex justify-between items-center p-4'">
         <x-form.search-v2 
           class="w-80"
           :inputParentClass="'w-max'"
@@ -40,33 +36,33 @@
         />
         <x-filter-button />
       </x-container>
-      <x-table :variant="'old'">
-        <x-table-head :variant="'old'">
-          <x-table-row :variant="'old'">
-            <x-table-header :variant="'old'">Tahun</x-table-header>
-            <x-table-header :variant="'old'">Semester</x-table-header>
-            <x-table-header :variant="'old'">Tahun Akademik</x-table-header>
-            <x-table-header :variant="'old'">Status</x-table-header>
-            <x-table-header :variant="'old'">Aksi</x-table-header>
-          </x-table-row>
-        </x-table-head>
+      <x-table.index :variant="'old'">
+        <x-table.head :variant="'old'">
+          <x-table.row :variant="'old'">
+            <x-table.header-cell :variant="'old'">Tahun</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Semester</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Tahun Akademik</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Status</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
+          </x-table.row>
+        </x-table.head>
         <tbody>
           @if (empty($data->data) || count($data->data) === 0)
             @include('academics.periode.error-filter')
           @else
             @foreach ($data->data as $periode)
-              <x-table-row :variant="'old'">
-                <x-table-cell :variant="'old'">{{ $periode->tahun }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $namaSemester[$periode->semester] ?? 'Tidak Diketahui' }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $periode->tahun }}/{{ $periode->tahun + 1 }}</x-table-cell>
-                <x-table-cell :variant="'old'">
+              <x-table.row :variant="'old'">
+                <x-table.cell :variant="'old'">{{ $periode->tahun }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $namaSemester[$periode->semester] ?? 'Tidak Diketahui' }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $periode->tahun }}/{{ $periode->tahun + 1 }}</x-table.cell>
+                <x-table.cell :variant="'old'">
                     @if ($periode->status === 'active')
                       <x-badge variant="green-filled">Aktif</x-badge>
                     @else
                       <x-badge variant="green-bordered">Tidak Aktif</x-badge>
                     @endif
-                </x-table-cell>
-                <x-table-cell :variant="'old'" class="flex items-center justify-center gap-6 center">
+                </x-table.cell>
+                <x-table.cell :variant="'old'" class="flex items-center justify-center gap-6 center">
                   <x-button.base
                     :icon="asset('assets/icon-search.svg')"
                     class="scale-75"
@@ -94,12 +90,12 @@
                   >
                     Hapus
                   </x-button.base>
-                </x-table-cell>
-              </x-table-row>
+                </x-table.cell>
+              </x-table.row>
             @endforeach
           @endif
         </tbody>
-      </x-table>
+      </x-table.index>
     </x-container>
     @include('partials.pagination', [
       'currentPage' => $data->pagination->current_page ?? 1,
@@ -113,7 +109,7 @@
 
   <x-modal.container-pure-js id="modalKonfirmasiHapus">
     <x-slot name="header">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
         <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
       </x-container>

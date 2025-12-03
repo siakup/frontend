@@ -17,7 +17,7 @@ function createEvaluasi() {
                 </button>
             </div>
         </x-slot>
-        <x-container class="!rounded-lg mb-5">
+        <x-container.container class="!rounded-lg mb-5">
             <x-form.input-container containerClass="!gap-6">
                 <x-slot name="label">Capaian Pembelajaran Lulusan</x-slot>
                 <x-slot name="input">
@@ -38,25 +38,25 @@ function createEvaluasi() {
             </x-form.input-container>
         </x-container>
         <template x-if="cpl">
-        <x-table>
-            <x-table-head>
-                <x-table-row>
-                    <x-table-header colspan="2" rowspan="2">Capaian Mata Kuliah (CPMK)</x-table-header>
-                    <x-table-header colspan="3" x-text="cpl"></x-table-header>
-                </x-table-row>
+        <x-table.index>
+            <x-table.head>
+                <x-table.row>
+                    <x-table.header-cell colspan="2" rowspan="2">Capaian Mata Kuliah (CPMK)</x-table.header-cell>
+                    <x-table.header-cell colspan="3" x-text="cpl"></x-table.header-cell>
+                </x-table.row>
 
-                <x-table-row>
-                    <x-table-header>Tugas</x-table-header>
-                    <x-table-header>UTS</x-table-header>
-                    <x-table-header>UAS</x-table-header>
-                </x-table-row>         
-            </x-table-head>
-            <x-table-body>
+                <x-table.row>
+                    <x-table.header-cell>Tugas</x-table.header-cell>
+                    <x-table.header-cell>UTS</x-table.header-cell>
+                    <x-table.header-cell>UAS</x-table.header-cell>
+                </x-table.row>         
+            </x-table.head>
+            <x-table.body>
                 @foreach ($evaluasiList as $index => $eval)
-                <x-table-row>
-                    <x-table-cell class="w-[200px] !text-xs">{{ $eval['cpmk'] }}</x-table-cell>
-                    <x-table-cell position="left" class="text-xs">{{ $eval['deskripsi'] }}</x-table-cell>
-                    <x-table-cell>
+                <x-table.row>
+                    <x-table.cell class="w-[200px] !text-xs">{{ $eval['cpmk'] }}</x-table.cell>
+                    <x-table.cell position="left" class="text-xs">{{ $eval['deskripsi'] }}</x-table.cell>
+                    <x-table.cell>
                         <x-form.checklist
                             id="tugas-{{ $index }}"
                             name="select_tugas"
@@ -64,8 +64,8 @@ function createEvaluasi() {
                             :value="$index"
                             containerClass="justify-center"
                         />
-                    </x-table-cell>
-                    <x-table-cell>
+                    </x-table.cell>
+                    <x-table.cell>
                         <x-form.checklist
                             id="uts-{{ $index }}"
                             name="select_uts"
@@ -73,8 +73,8 @@ function createEvaluasi() {
                             :value="$index"
                             containerClass="justify-center"
                         />
-                    </x-table-cell>
-                    <x-table-cell>
+                    </x-table.cell>
+                    <x-table.cell>
                         <x-form.checklist
                             id="uas-{{ $index }}"
                             name="select_uas"
@@ -82,33 +82,33 @@ function createEvaluasi() {
                             :value="$index"
                             containerClass="justify-center"
                         />
-                    </x-table-cell>                   
-                </x-table-row>   
+                    </x-table.cell>                   
+                </x-table.row>   
                 @endforeach
-            </x-table-body>
-        </x-table>
+            </x-table.body>
+        </x-table.index>
         </template>
 
         <template x-if="!cpl">
-        <x-table>
-            <x-table-head>
-                <x-table-row>
-                    <x-table-header colspan="2" rowspan="2">Capaian Mata Kuliah (CPMK)</x-table-header>
-                    <x-table-header></x-table-header>
-                </x-table-row>        
-            </x-table-head>
-            <x-table-body>
+        <x-table.index>
+            <x-table.head>
+                <x-table.row>
+                    <x-table.header-cell colspan="2" rowspan="2">Capaian Mata Kuliah (CPMK)</x-table.header-cell>
+                    <x-table.header-cell></x-table.header-cell>
+                </x-table.row>        
+            </x-table.head>
+            <x-table.body>
                 @foreach ($evaluasiList as $index => $eval)
-                <x-table-row>
-                    <x-table-cell class="w-[200px] !text-xs">{{ $eval['cpmk'] }}</x-table-cell>
-                    <x-table-cell position="left" class="text-xs">{{ $eval['deskripsi'] }}</x-table-cell>
+                <x-table.row>
+                    <x-table.cell class="w-[200px] !text-xs">{{ $eval['cpmk'] }}</x-table.cell>
+                    <x-table.cell position="left" class="text-xs">{{ $eval['deskripsi'] }}</x-table.cell>
                     @if($loop->first)
-                        <x-table-cell rowspan="{{ $loop->count }}" class="bg-[#D9D9D9] font-semibold text-xs">Belum Ada Evaluasi Pemetaan, Silahkan Tambah Evaluasi Pemetaan Terlebih Dahulu</x-table-cell>
+                        <x-table.cell rowspan="{{ $loop->count }}" class="bg-[#D9D9D9] font-semibold text-xs">Belum Ada Evaluasi Pemetaan, Silahkan Tambah Evaluasi Pemetaan Terlebih Dahulu</x-table.cell>
                     @endif                  
-                </x-table-row>   
+                </x-table.row>   
                 @endforeach
-            </x-table-body>
-        </x-table>
+            </x-table.body>
+        </x-table.index>
         </template>
         
 

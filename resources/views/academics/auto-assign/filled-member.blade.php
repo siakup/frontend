@@ -2,10 +2,6 @@
 
 @section('title', 'Daftar Peserta Kelas')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Daftar Peserta Kelas</div>
-@endsection
-
 @section('javascript')
     <script>
         document.addEventListener('alpine:init', () => {
@@ -35,7 +31,7 @@
 @endsection
 
 @section('content')
-    <x-container variant="content-wrapper" x-data="daftarPeserta">
+    <x-container.container variant="content-wrapper" x-data="daftarPeserta">
 {{--        TODO: ambil nama kelas dr db--}}
         <x-typography variant="heading-h6" bold class="">
             Daftar Peserta Kelas - {{$makul}}
@@ -45,44 +41,44 @@
             Daftar Kelas
         </x-button.back>
 
-        <x-container class="gap-5 flex flex-col">
+        <x-container.container class="gap-5 flex flex-col">
             {{--        TODO: ambil nama kelas dr db--}}
             <x-typography variant="heading-h6" class="mb-2">
                 Daftar Peserta Kelas - {{$makul}}
             </x-typography>
 
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>No</x-table-header>
-                        <x-table-header>Nomor Induk Mahasiswa</x-table-header>
-                        <x-table-header>Nama Mahasiswa</x-table-header>
-                        <x-table-header>Status</x-table-header>
-                        <x-table-header>Status Akademik</x-table-header>
-                        <x-table-header>Aksi</x-table-header>
-                    </x-table-row>
-                </x-table-head>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>No</x-table.header-cell>
+                        <x-table.header-cell>Nomor Induk Mahasiswa</x-table.header-cell>
+                        <x-table.header-cell>Nama Mahasiswa</x-table.header-cell>
+                        <x-table.header-cell>Status</x-table.header-cell>
+                        <x-table.header-cell>Status Akademik</x-table.header-cell>
+                        <x-table.header-cell>Aksi</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
 
-                <x-table-body>
+                <x-table.body>
                     @foreach($data as $idx => $row)
-                        <x-table-row
+                        <x-table.row
                             :odd="$idx % 2 === 1"
                             :last="$idx === count($data) - 1"
                         >
-                            <x-table-cell>{{ $idx + 1 }}</x-table-cell>
-                            <x-table-cell>{{ $row['nim'] }}</x-table-cell>
-                            <x-table-cell>{{ $row['nama'] }}</x-table-cell>
-                            <x-table-cell>{{ $row['status'] }}</x-table-cell>
-                            <x-table-cell>{{ $row['status_akademik'] }}</x-table-cell>
+                            <x-table.cell>{{ $idx + 1 }}</x-table.cell>
+                            <x-table.cell>{{ $row['nim'] }}</x-table.cell>
+                            <x-table.cell>{{ $row['nama'] }}</x-table.cell>
+                            <x-table.cell>{{ $row['status'] }}</x-table.cell>
+                            <x-table.cell>{{ $row['status_akademik'] }}</x-table.cell>
 
-                            <x-table-cell class="flex justify-center">
+                            <x-table.cell class="flex justify-center">
                                 <x-button.action type="delete" label="Hapus"
                                                  x-on:click="$dispatch('open-modal', {id: 'delete-confirmation'})" />
-                            </x-table-cell>
-                        </x-table-row>
+                            </x-table.cell>
+                        </x-table.row>
                     @endforeach
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
 
         </x-container>
 

@@ -2,14 +2,6 @@
 
 @section('title', 'Mata Kuliah')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Lihat Mata Kuliah</div>
-@endsection
-
-@section('css')
-
-@endsection
-
 @section('javascript')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -92,7 +84,7 @@
         <x-typography variant="heading-h6" bold class="">
             Lihat Mata Kuliah
         </x-typography>
-        <x-container variant="content" class="gap-5 flex flex-col">
+        <x-container.container variant="content" class="gap-5 flex flex-col">
             <x-typography variant="body-medium-bold" class="">Detail Mata Kuliah</x-typography>
 
             <div class="space-y-5">
@@ -369,7 +361,7 @@
 
         </x-container>
 
-        <x-container variant="content">
+        <x-container.container variant="content">
             <div class="flex justify-between mb-5" x-data="{ showTambahPrasyaratModal: false }">
                 <x-typography variant="body-medium-bold" class="mb-5">Mata Kuliah Prasyarat</x-typography>
                 <x-button.primary label="Tambah Mata Kuliah Prasyarat"
@@ -377,23 +369,23 @@
             </div>
 
             <!-- Table -->
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>
                             Kode Mata Kuliah
-                        </x-table-header>
-                        <x-table-header>
+                        </x-table.header-cell>
+                        <x-table.header-cell>
                             Nama Mata Kuliah Prasyarat
-                        </x-table-header>
-                        <x-table-header>
+                        </x-table.header-cell>
+                        <x-table.header-cell>
                             Tipe Prasyarat
-                        </x-table-header>
-                        <x-table-header>Aksi</x-table-header>
-                    </x-table-row>
-                </x-table-head>
+                        </x-table.header-cell>
+                        <x-table.header-cell>Aksi</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
 
-                <x-table-body x-data="{
+                <x-table.body x-data="{
                     getRowClass(idx, length) {
                         let classes = idx % 2 === 1 ? 'bg-[#f5f5f5]' : 'bg-white';
                         if (idx === length - 1) classes += ' border-b-0';
@@ -403,10 +395,10 @@
                     <template x-if="subject.prasyarat && subject.prasyarat.length > 0">
                         <template x-for="(matkul, idx) in subject.prasyarat" :key="matkul.kode_matakuliah">
                             <tr :class="getRowClass(idx, subject.prasyarat.length)">
-                                <x-table-cell x-text="matkul.kode_matakuliah"></x-table-cell>
-                                <x-table-cell x-text="matkul.nama_matakuliah_id"></x-table-cell>
-                                <x-table-cell x-text="matkul.tipe_prasyarat"></x-table-cell>
-                                <x-table-cell>
+                                <x-table.cell x-text="matkul.kode_matakuliah"></x-table.cell>
+                                <x-table.cell x-text="matkul.nama_matakuliah_id"></x-table.cell>
+                                <x-table.cell x-text="matkul.tipe_prasyarat"></x-table.cell>
+                                <x-table.cell>
                                     <div class="flex gap-3 justify-center">
                                         <a href="#" class="">
                                             <x-button.action type="edit" label="Edit" />
@@ -422,7 +414,7 @@
                                 });
                             " />
                                     </div>
-                                </x-table-cell>
+                                </x-table.cell>
                             </tr>
                         </template>
                     </template>
@@ -434,13 +426,13 @@
                             </td>
                         </tr>
                     </template>
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
         </x-container>
 
         <div x-data="{ showCancelConfirm: false, showSaveConfirm: false }">
             <!-- Container Tombol -->
-            <x-container>
+            <x-container.container>
                 <div class="flex justify-end gap-5">
                     <!-- Tombol Batal -->
                     <x-button.secondary label="Batal"
@@ -525,36 +517,36 @@
             <div class="p-4">
                 <!-- Konten modal -->
                 <div>
-                    <x-table>
-                        <x-table-head>
-                            <x-table-row>
-                                <x-table-header></x-table-header>
-                                <x-table-header>Kode Mata Kuliah</x-table-header>
-                                <x-table-header>Nama Mata Kuliah</x-table-header>
-                                <x-table-header>SKS</x-table-header>
-                                <x-table-header>Semester</x-table-header>
-                                <x-table-header>Jenis Mata Kuliah</x-table-header>
-                                <x-table-header>Tipe Prasyarat</x-table-header>
-                            </x-table-row>
-                        </x-table-head>
-                        <x-table-body>
+                    <x-table.index>
+                        <x-table.head>
+                            <x-table.row>
+                                <x-table.header-cell></x-table.header-cell>
+                                <x-table.header-cell>Kode Mata Kuliah</x-table.header-cell>
+                                <x-table.header-cell>Nama Mata Kuliah</x-table.header-cell>
+                                <x-table.header-cell>SKS</x-table.header-cell>
+                                <x-table.header-cell>Semester</x-table.header-cell>
+                                <x-table.header-cell>Jenis Mata Kuliah</x-table.header-cell>
+                                <x-table.header-cell>Tipe Prasyarat</x-table.header-cell>
+                            </x-table.row>
+                        </x-table.head>
+                        <x-table.body>
                             {{-- @foreach ($prasyaratMataKuliahList as $index => $item)
-                                <x-table-row :odd="$loop->odd" :last="$loop->last">
-                                    <x-table-cell>
+                                <x-table.row :odd="$loop->odd" :last="$loop->last">
+                                    <x-table.cell>
                                         <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
                                             name="selected[]" value="{{ $item['kode'] }}">
-                                    </x-table-cell>
-                                    <x-table-cell>{{ $item['kode'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['nama'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['sks'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['semester'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['jenis'] }}</x-table-cell>
-                                    <x-table-cell>{{ $item['tipe'] }}</x-table-cell>
-                                </x-table-row>
+                                    </x-table.cell>
+                                    <x-table.cell>{{ $item['kode'] }}</x-table.cell>
+                                    <x-table.cell>{{ $item['nama'] }}</x-table.cell>
+                                    <x-table.cell>{{ $item['sks'] }}</x-table.cell>
+                                    <x-table.cell>{{ $item['semester'] }}</x-table.cell>
+                                    <x-table.cell>{{ $item['jenis'] }}</x-table.cell>
+                                    <x-table.cell>{{ $item['tipe'] }}</x-table.cell>
+                                </x-table.row>
                             @endforeach --}}
 
-                        </x-table-body>
-                    </x-table>
+                        </x-table.body>
+                    </x-table.index>
                 </div>
             </div>
 

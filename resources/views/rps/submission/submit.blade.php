@@ -3,7 +3,7 @@
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-button.back href="{{ route('rps.submission') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
         <x-container class="flex flex-col gap-5">

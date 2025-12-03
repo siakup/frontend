@@ -250,6 +250,15 @@ class PerwalianKRS {
       init() { }
     }
   }
+
+  studentMessage() {
+    return {
+      isModalCreateOpen: false,
+      isModalUpdateOpen: false,
+      chatId: null,
+      init() { }
+    }
+  }
 }
 
 window.PerwalianKRSController = new PerwalianKRS();

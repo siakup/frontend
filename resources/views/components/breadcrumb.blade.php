@@ -16,7 +16,7 @@
     }
 @endphp
 
-<div class="py-4 px-6 relative"
+<div class="relative"
      x-data="{
         mode: 'compact',
         full: @js($full),

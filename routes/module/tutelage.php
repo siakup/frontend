@@ -15,6 +15,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/transkrip-kurikulum/{id}', action: [TutelageController::class, 'showTranskripKurikulum'])->name('tutelage-group.student-list.detail-transkrip-kurikulum');
                 Route::get('/transkrip-pem/{id}', action: [TutelageController::class, 'showTranskripPem'])->name('tutelage-group.student-list.detail-transkrip-pem');
                 Route::get('/krs/add-course/{id}', action: [TutelageController::class, 'addCourse'])->name('tutelage-group.student-list.detail-krs.add-course');
+                Route::get('/message/{id}', action: [TutelageController::class, 'addMessage'])->name('tutelage-group.student-list.message.add');
             });
         });
     });

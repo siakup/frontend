@@ -8,9 +8,9 @@
     {{-- position: posisi dari tooltip --}}
 
 
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="body-large-semibold">Penggunaan tooltip pada element</x-typography>
-        <x-container class="grid grid-cols-3 gap-10 justify-items-center-safe" borderRadius="rounded-lg">
+        <x-container.container class="grid grid-cols-3 gap-10 justify-items-center-safe" borderRadius="rounded-lg">
             {{-- Posisi Top Left --}}
             <x-tooltip text="Content for tooltip, don’t forget to use simple," position="top-left">
                 <x-button.primary>Top Left</x-button.primary>

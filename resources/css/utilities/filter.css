@@ -1,0 +1,11 @@
+@layer utilities {
+  .filter-white {
+    @apply filter brightness-0 invert
+  }
+
+  button:disabled .filter-white,
+  button:disabled .filter-red {
+    @apply [filter:brightness(0)_invert(54%)]
+  }
+
+}

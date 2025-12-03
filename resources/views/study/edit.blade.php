@@ -2,14 +2,6 @@
 
 @section('title', 'Mata Kuliah')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Edit Mata Kuliah</div>
-@endsection
-
-@section('css')
-
-@endsection
-
 @section('javascript')
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -23,7 +15,7 @@
         <x-typography variant="heading-h6" bold class="">
             Edit Mata Kuliah
         </x-typography>
-        <x-container variant="content" class="gap-5 flex flex-col">
+        <x-container.container variant="content" class="gap-5 flex flex-col">
             <x-typography variant="body-medium-bold" class="">Detail Mata Kuliah</x-typography>
 
             <div class="space-y-5">
@@ -424,7 +416,7 @@
 
         </x-container>
 
-        <x-container variant="content">
+        <x-container.container variant="content">
             <div class="flex justify-between mb-5" x-data="{ showTambahPrasyaratModal: false }">
                 <x-typography variant="body-medium-bold" class="mb-5">Mata Kuliah Prasyarat</x-typography>
                 <x-button.primary label="Tambah Mata Kuliah Prasyarat"
@@ -433,43 +425,43 @@
 
             {{-- TODO: Table prasyarat --}}
             <!-- Table -->
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>
                             Kode Mata Kuliah
-                        </x-table-header>
-                        <x-table-header>
+                        </x-table.header-cell>
+                        <x-table.header-cell>
                             Nama Mata Kuliah Prasyarat
-                        </x-table-header>
-                        <x-table-header>
+                        </x-table.header-cell>
+                        <x-table.header-cell>
                             Tipe Prasyarat
-                        </x-table-header>
-                        <x-table-header>
+                        </x-table.header-cell>
+                        <x-table.header-cell>
                             Jumlah SKS
-                        </x-table-header>
-                        <x-table-header>Aksi</x-table-header>
-                    </x-table-row>
-                </x-table-head>
+                        </x-table.header-cell>
+                        <x-table.header-cell>Aksi</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
 
-                <x-table-body x-data="{ showDeleteConfirmation: false, item: null }">
+                <x-table.body x-data="{ showDeleteConfirmation: false, item: null }">
                     @if (count($addedPrasyarat) > 0)
                         @foreach ($addedPrasyarat as $matkul)
-                            <x-table-row :odd="$loop->odd" :last="$loop->last">
+                            <x-table.row :odd="$loop->odd" :last="$loop->last">
                                 {{-- Kode Mata Kuliah --}}
-                                <x-table-cell>{{ $matkul->kode_matakuliah }}</x-table-cell>
+                                <x-table.cell>{{ $matkul->kode_matakuliah }}</x-table.cell>
 
                                 {{-- Nama Mata Kuliah (ID) --}}
-                                <x-table-cell>{{ $matkul->nama_matakuliah_id }}</x-table-cell>
+                                <x-table.cell>{{ $matkul->nama_matakuliah_id }}</x-table.cell>
 
                                 {{-- Jenis MK --}}
-                                <x-table-cell>{{ $matkul->id_jenis }}</x-table-cell>
+                                <x-table.cell>{{ $matkul->id_jenis }}</x-table.cell>
 
                                 {{-- SKS --}}
-                                <x-table-cell class="text-center">{{ $matkul->sks }}</x-table-cell>
+                                <x-table.cell class="text-center">{{ $matkul->sks }}</x-table.cell>
 
                                 {{-- Aksi --}}
-                                <x-table-cell>
+                                <x-table.cell>
                                     <div class="flex gap-3 justify-center">
                                         <a href="{{ route('subject.edit', ['id' => $matkul->id_matakuliah]) }}">
                                             <x-button.action type="edit" label="Edit"/>
@@ -488,25 +480,25 @@
                     "
                                         />
                                     </div>
-                                </x-table-cell>
-                            </x-table-row>
+                                </x-table.cell>
+                            </x-table.row>
                         @endforeach
 
                     @else
-                        <x-table-row>
-                            <x-table-cell colspan="5" class="text-center py-4">
+                        <x-table.row>
+                            <x-table.cell colspan="5" class="text-center py-4">
                                 Tidak ada data prasyarat yang ditambahkan
-                            </x-table-cell>
-                        </x-table-row>
+                            </x-table.cell>
+                        </x-table.row>
                     @endif
-                </x-table-body>
+                </x-table.body>
 
-            </x-table>
+            </x-table.index>
         </x-container>
 
         <div x-data="{ showCancelConfirm: false, showSaveConfirm: false }">
             <!-- Container Tombol -->
-            <x-container>
+            <x-container.container>
                 <div class="flex justify-end gap-5">
                     <!-- Tombol Batal -->
                     <x-button.secondary label="Batal"
@@ -591,57 +583,57 @@
             <div class="p-4">
                 <!-- Konten modal -->
                 <div>
-                    <x-table>
-                        <x-table-head>
-                            <x-table-row>
-                                <x-table-header></x-table-header>
-                                <x-table-header>Kode Mata Kuliah</x-table-header>
-                                <x-table-header>Nama Mata Kuliah</x-table-header>
-                                <x-table-header>SKS</x-table-header>
-                                <x-table-header>Semester</x-table-header>
-                                <x-table-header>Jenis Mata Kuliah</x-table-header>
-                                <x-table-header>Tipe Prasyarat</x-table-header>
-                            </x-table-row>
-                        </x-table-head>
+                    <x-table.index>
+                        <x-table.head>
+                            <x-table.row>
+                                <x-table.header-cell></x-table.header-cell>
+                                <x-table.header-cell>Kode Mata Kuliah</x-table.header-cell>
+                                <x-table.header-cell>Nama Mata Kuliah</x-table.header-cell>
+                                <x-table.header-cell>SKS</x-table.header-cell>
+                                <x-table.header-cell>Semester</x-table.header-cell>
+                                <x-table.header-cell>Jenis Mata Kuliah</x-table.header-cell>
+                                <x-table.header-cell>Tipe Prasyarat</x-table.header-cell>
+                            </x-table.row>
+                        </x-table.head>
                         @php
                             $addedCodes = collect($addedPrasyarat)->pluck('kode_matakuliah')->toArray();
                         @endphp
 
-                        <x-table-body>
+                        <x-table.body>
                             @foreach ($prasyaratMataKuliahList as $index => $item)
-                                <x-table-row :odd="$loop->odd" :last="$loop->last">
+                                <x-table.row :odd="$loop->odd" :last="$loop->last">
                                     {{-- Checkbox --}}
-                                    <x-table-cell>
+                                    <x-table.cell>
                                         <input
                                             type="checkbox"
                                             class="form-checkbox h-5 w-5 text-blue-600"
                                             name="selected[]"
                                             value="{{ $item->kode }}"
                                             {{ in_array($item->kode, $addedCodes, true) ? 'checked' : '' }}>
-                                    </x-table-cell>
+                                    </x-table.cell>
 
                                     {{-- Kode Mata Kuliah --}}
-                                    <x-table-cell>{{ $item->kode }}</x-table-cell>
+                                    <x-table.cell>{{ $item->kode }}</x-table.cell>
 
                                     {{-- Nama Mata Kuliah --}}
-                                    <x-table-cell>{{ $item->nama_id }}</x-table-cell>
+                                    <x-table.cell>{{ $item->nama_id }}</x-table.cell>
 
                                     {{-- SKS --}}
-                                    <x-table-cell>{{ $item->sks }}</x-table-cell>
+                                    <x-table.cell>{{ $item->sks }}</x-table.cell>
 
                                     {{-- Semester --}}
-                                    <x-table-cell>{{ $item->semester }}</x-table-cell>
+                                    <x-table.cell>{{ $item->semester }}</x-table.cell>
 
                                     {{-- Jenis Mata Kuliah --}}
-                                    <x-table-cell>{{ $item->id_jenis }}</x-table-cell>
+                                    <x-table.cell>{{ $item->id_jenis }}</x-table.cell>
 
                                     {{-- Tipe (opsional) --}}
-                                    <x-table-cell>{{ $item->tipe ?? '' }}</x-table-cell>
-                                </x-table-row>
+                                    <x-table.cell>{{ $item->tipe ?? '' }}</x-table.cell>
+                                </x-table.row>
                             @endforeach
-                        </x-table-body>
+                        </x-table.body>
 
-                    </x-table>
+                    </x-table.index>
                 </div>
             </div>
 

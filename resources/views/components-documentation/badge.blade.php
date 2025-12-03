@@ -8,9 +8,9 @@
     {{-- size: ukuran dari badge (terdapat tiga ukuran yaitu xl, lg, dan md) --}}
     {{-- border: radius border dari badge (default dan pill) --}}
 
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="body-large-semibold">Penggunaan badge/tag pada element</x-typography>
-        <x-container class="flex flex-col gap-5" borderRadius="rounded-lg">
+        <x-container.container class="flex flex-col gap-5" borderRadius="rounded-lg">
 
             {{-- Red Bordered --}}
             <x-typography variant="body-medium-semibold">Red Bordered</x-typography>

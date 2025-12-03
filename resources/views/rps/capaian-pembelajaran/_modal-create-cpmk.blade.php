@@ -10,7 +10,11 @@
                 </button>
             </x-container>
         </x-slot>
+<<<<<<< HEAD
+        <x-container.container class="!rounded-lg">
+=======
         <x-container>
+>>>>>>> d965f5f35489ca988f9a23e75a3072665d01481a
             <x-form.input-container labelClass="w-50">
                 <x-slot name="label">Kode</x-slot>
                 <x-slot name="input">

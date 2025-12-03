@@ -16,7 +16,7 @@
     </div>
 
     <div x-data="rencanaPerkuliahan()">
-        <x-container variant="content" class="ml-3 flex flex-col gap-3" borderRadius="rounded-b-3xl" >
+        <x-container.container variant="content" class="ml-3 flex flex-col gap-3" borderRadius="rounded-b-3xl" >
             <x-form.input-container labelClass="w-[200px]">
                 <x-slot name="label">Minggu ke-</x-slot>
                 <x-slot name="input">

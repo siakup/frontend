@@ -7,9 +7,9 @@
     {{-- isCloseable pada dialog dipergunakan untuk menampilkan close button untuk menutup dialog --}}
     {{-- Terdapat slot untuk header, dipergunakan untuk message utama seperti "Perhatian!" atau "Catatan!" --}}
 
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="body-large-semibold">Penggunaan Dialog</x-typography>
-        <x-container class="flex flex-col gap-5" borderRadius="rounded-lg">
+        <x-container.container class="flex flex-col gap-5" borderRadius="rounded-lg">
 
             <x-typography variant="body-medium-semibold">Warning</x-typography>
             <x-typography variant="body-small-regular">Dengan Header (Bisa Ditutup)</x-typography>

@@ -8,27 +8,41 @@
 </head>
 
 <body>
-  <div x-data="{}">
-    <x-header />
-    <main>
-      <div class="grid grid-cols-12">
-        <div x-bind:class="$store.mainLayout.isOpen ? 'col-span-3 col-start-1' : 'hidden'">
-          <x-menu />
-        </div>
-        <div x-bind:class="$store.mainLayout.isOpen ? 'col-span-9 col-start-4' : 'col-span-12 col-start-1'">
-          <x-container 
-            :variant="'content-wrapper'" 
-            :class="'!p-0 bg-gray-200 !rounded-none'"
-          >
-            <x-breadcrumb />
-            @yield('content')
-          </x-container>
-        </div>
-      </div>
-    </main>
-  </div>
+  <x-container.wrapper :padding="'p-0'" :rows="12" class="h-full w-full" x-data="{}">
 
-  <script type="module">
+    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" class="row-start-1 row-end-3">
+      <x-header />
+    </x-container.container>
+
+    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" class="row-start-3 row-end-13">
+        <x-container.wrapper :cols="12" :padding="'p-0'">
+
+          <template x-if="$store.mainLayout.isOpen">
+            <x-container.container :width="'full'" :height="'full'" :rounded="'none'" :background="'transparent'" x-bind:class="$store.mainLayout.isOpen ? 'col-start-1 col-span-3' : 'opacity-0 max-w-0'">
+              <x-menu />
+            </x-container.container>
+          </template>
+          
+          <x-container.container :width="'full'" :height="'full'" :rounded="'none'" :rounded="'none'" :background="'transparent'" class="overflow-scroll" x-bind:class="$store.mainLayout.isOpen ? 'col-start-4 col-span-9' : 'col-start-1 col-span-12'">
+              <x-container.wrapper :rows="16">
+
+                <x-container.container :width="'full'" :height="'maxContent'" :background="'transparent'" :rounded="'none'" class="row-start-1 row-span-1">
+                  <x-breadcrumb />
+                </x-container.container>
+
+                <x-container.container :width="'full'" :height="'full'" :background="'transparent'" :rounded="'none'" class="row-start-2 row-span-15">
+                  @yield('content')
+                </x-container.container>
+
+              </x-container.wrapper>
+          </x-container.container>
+
+        </x-container.wrapper>
+    </x-container.container>
+
+  </x-container.wrapper>
+
+  <script>
       document.addEventListener('alpine:init', () => {
         Alpine.store('mainLayout', { 
           isOpen: true

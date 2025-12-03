@@ -2,10 +2,6 @@
 
 @section('title', 'Riwayat Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Generate Riwayat Akademik</div>
-@endsection
-
 @section('javascript')
     <script>
         document.addEventListener('alpine:init', () => {
@@ -54,59 +50,59 @@
 
 
 @section('content')
-    <x-container variant="content-wrapper" x-data="riwayatAkademik">
+    <x-container.container variant="content-wrapper" x-data="riwayatAkademik">
         <x-typography variant="heading-h6">
             Generate Riwayat Akademik
         </x-typography>
 
         <x-button.back href="{{route('calendar.index')}}">Kalender Akademik</x-button.back>
 
-        <x-container class="flex flex-col gap-5">
+        <x-container.container class="flex flex-col gap-5">
             <x-typography variant="heading-h6">Tahun Akademik 2025-2026</x-typography>
 
             <div class="grid grid-cols-2 gap-5 items-start">
                 {{-- tabel kiri --}}
                 <div>
-                    <x-table>
-                        <x-table-head>
-                            <x-table-row>
-                                <x-table-header class="bg-[#E9EDF4]" colspan="2">
+                    <x-table.index>
+                        <x-table.head>
+                            <x-table.row>
+                                <x-table.header-cell class="bg-[#E9EDF4]" colspan="2">
                                     Periode Akademik Sebelumnya 2025-2026
-                                </x-table-header>
-                            </x-table-row>
-                        </x-table-head>
-                        <x-table-body>
+                                </x-table.header-cell>
+                            </x-table.row>
+                        </x-table.head>
+                        <x-table.body>
                             @foreach($dataSebelumnya as $idx => $row)
-                                <x-table-row :odd="$idx % 2 === 1" :last="$idx === count($dataSebelumnya) - 1">
-                                    <x-table-cell class="text-left">{{ $row['indikator'] }}</x-table-cell>
-                                    <x-table-cell>{{ $row['nilai'] }}</x-table-cell>
-                                </x-table-row>
+                                <x-table.row :odd="$idx % 2 === 1" :last="$idx === count($dataSebelumnya) - 1">
+                                    <x-table.cell class="text-left">{{ $row['indikator'] }}</x-table.cell>
+                                    <x-table.cell>{{ $row['nilai'] }}</x-table.cell>
+                                </x-table.row>
                             @endforeach
-                        </x-table-body>
-                    </x-table>
+                        </x-table.body>
+                    </x-table.index>
                 </div>
 
                 {{-- tabel kanan --}}
                 <div>
-                    <x-table>
-                        <x-table-head>
-                            <x-table-row>
-                                <x-table-header class="bg-[#E9EDF4]" colspan="2">
+                    <x-table.index>
+                        <x-table.head>
+                            <x-table.row>
+                                <x-table.header-cell class="bg-[#E9EDF4]" colspan="2">
                                     Periode Akademik Aktif 2025-1
-                                </x-table-header>
-                            </x-table-row>
-                        </x-table-head>
-                        <x-table-body>
+                                </x-table.header-cell>
+                            </x-table.row>
+                        </x-table.head>
+                        <x-table.body>
                             @foreach($dataAktif as $idx => $row)
-                                <x-table-row :odd="$idx % 2 === 1" :last="$idx === count($dataAktif) - 1">
-                                    <x-table-cell class="text-left">{{ $row['indikator'] }}</x-table-cell>
-                                    <x-table-cell>{{ $row['nilai'] }}</x-table-cell>
-                                </x-table-row>
+                                <x-table.row :odd="$idx % 2 === 1" :last="$idx === count($dataAktif) - 1">
+                                    <x-table.cell class="text-left">{{ $row['indikator'] }}</x-table.cell>
+                                    <x-table.cell>{{ $row['nilai'] }}</x-table.cell>
+                                </x-table.row>
                             @endforeach
 
                             {{-- tombol unduh --}}
-                            <x-table-row>
-                                <x-table-cell colspan="2" class="py-6 px-2 bg-[#FBE8E6]">
+                            <x-table.row>
+                                <x-table.cell colspan="2" class="py-6 px-2 bg-[#FBE8E6]">
                                     <div class="flex items-center justify-between">
                                         <x-typography variant="body-small-semibold">
                                             Download jumlah mahasiswa
@@ -116,10 +112,10 @@
                                             <img src="{{ asset('assets/icon-download-red-500.svg') }}" alt="download" />
                                         </a>
                                     </div>
-                                </x-table-cell>
-                            </x-table-row>
-                        </x-table-body>
-                    </x-table>
+                                </x-table.cell>
+                            </x-table.row>
+                        </x-table.body>
+                    </x-table.index>
                 </div>
             </div>
 

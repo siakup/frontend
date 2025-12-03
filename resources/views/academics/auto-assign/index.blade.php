@@ -2,10 +2,6 @@
 
 @section('title', 'Auto Assign')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Auto Assign</div>
-@endsection
-
 @section('javascript')
     <script>
         function autoAssignForm() {
@@ -77,7 +73,7 @@
 
 
 @section('content')
-    <x-container variant="content-wrapper" x-data="autoAssign">
+    <x-container.container variant="content-wrapper" x-data="autoAssign">
         <x-typography variant="heading-h6" bold>
             Auto Assign Peserta Kelas Perkuliahan
         </x-typography>
@@ -92,7 +88,7 @@
         >
             @csrf
 
-            <x-container class="grid grid-cols-3 grid-rows-4 py-[31px] gap-4">
+            <x-container.container class="grid grid-cols-3 grid-rows-4 py-[31px] gap-4">
                 <x-typography variant="body-small-semibold">Program Studi</x-typography>
                 <div class="col-span-2">
                     <x-form.input name="prodi" type="select" :options="$prodis" />
@@ -114,7 +110,7 @@
                 </div>
             </x-container>
 
-            <x-container class="flex justify-between">
+            <x-container.container class="flex justify-between">
                 <div class="flex gap-5">
                     <x-button.secondary type="button" href="{{route('academics.schedule.prodi-schedule.index')}}">Kembali</x-button.secondary>
 
@@ -142,33 +138,33 @@
             </x-container>
         </form>
 
-        <x-container>
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header>No</x-table-header>
-                        <x-table-header>Nama Program</x-table-header>
-                        <x-table-header>Periode</x-table-header>
-                        <x-table-header>Angkatan</x-table-header>
-                    </x-table-row>
-                </x-table-head>
-                <x-table-body>
+        <x-container.container>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>No</x-table.header-cell>
+                        <x-table.header-cell>Nama Program</x-table.header-cell>
+                        <x-table.header-cell>Periode</x-table.header-cell>
+                        <x-table.header-cell>Angkatan</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
+                <x-table.body>
                     @forelse ($assignments as $index => $row)
-                        <x-table-row>
-                            <x-table-cell>{{ $index + 1 }}</x-table-cell>
-                            <x-table-cell>{{ $row['program'] }}</x-table-cell>
-                            <x-table-cell>{{ $row['periode'] }}</x-table-cell>
-                            <x-table-cell>{{ $row['angkatan'] }}</x-table-cell>
-                        </x-table-row>
+                        <x-table.row>
+                            <x-table.cell>{{ $index + 1 }}</x-table.cell>
+                            <x-table.cell>{{ $row['program'] }}</x-table.cell>
+                            <x-table.cell>{{ $row['periode'] }}</x-table.cell>
+                            <x-table.cell>{{ $row['angkatan'] }}</x-table.cell>
+                        </x-table.row>
                     @empty
-                        <x-table-row>
-                            <x-table-cell colspan="4" class="text-center">
+                        <x-table.row>
+                            <x-table.cell colspan="4" class="text-center">
                                 Tidak ada data
-                            </x-table-cell>
-                        </x-table-row>
+                            </x-table.cell>
+                        </x-table.row>
                     @endforelse
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
         </x-container>
 
         {{-- Modal Loading --}}
