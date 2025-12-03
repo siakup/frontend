@@ -66,9 +66,9 @@
                         x-text="user.nomor_induk+' - '+user.nama"
                         x-on:click="getUser('{{ route('users.index') }}', user)"
                         :width="'full'"
-                      ></x-container>
+                      ></x-container.container>
                     </template>
-                  </x-container>
+                  </x-container.container>
                 </template>
               </x-container.container>
             </x-slot>
