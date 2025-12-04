@@ -1,0 +1,83 @@
+@layer utilities {
+    .file-root {
+        @apply w-full;
+    }
+
+    .file-label {
+        @apply block text-sm font-semibold mb-2 transition-colors duration-200;
+    }
+    
+    .file-label-error { @apply text-red-500; }
+    .file-label-normal { @apply text-gray-700; }
+
+    .file-dropzone {
+        @apply relative flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded-lg transition-colors duration-200 bg-gray-50;
+    }
+
+    .file-dropzone-error {
+        @apply border-red-500 bg-red-50;
+    }
+
+    .file-dropzone-idle {
+        @apply border-gray-300 ;
+    }
+
+    .file-dropzone-drag {
+        @apply border-blue-500 bg-blue-50;
+    }
+
+    .file-dropzone-disabled {
+        @apply opacity-50 cursor-not-allowed;
+    }
+
+    .file-placeholder-container {
+        @apply text-center cursor-pointer;
+    }
+
+    .file-text-title {
+        @apply mt-2 text-sm font-semibold text-gray-700;
+    }
+
+    .file-text-subtitle {
+        @apply text-sm text-gray-500 mt-1 mb-3;
+    }
+
+    .file-text-format {
+        @apply mx-auto text-xs text-gray-500 mt-3;
+    }
+
+    .file-btn-browse {
+        @apply mx-auto bg-gray-100 text-red-500 border border-red-500 hover:text-gray-400;
+    }
+
+    .file-list-group {
+        @apply mt-4 space-y-2;
+    }
+
+    .file-list-item {
+        @apply flex items-center justify-between p-2 bg-white border border-gray-200 rounded-md shadow-sm;
+    }
+
+    .file-item-wrapper {
+        @apply flex items-center space-x-2 truncate;
+    }
+
+    .file-item-name {
+        @apply text-sm text-gray-700 truncate;
+    }
+
+    .file-item-size {
+        @apply text-xs text-gray-500;
+    }
+
+    .file-btn-remove {
+        @apply text-gray-400 ;
+    }
+
+    .file-message {
+        @apply mt-1 ml-1 text-xs font-medium transition-colors duration-200 min-h-[1.25rem];
+    }
+    
+    .file-message-error { @apply text-red-500; }
+    .file-message-normal { @apply text-gray-500; }
+}

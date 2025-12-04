@@ -1,0 +1,61 @@
+@layer utilities {
+    .modal-root {
+        @apply fixed inset-0 z-[9999];
+    }
+    
+    .modal-root[x-cloak] {
+        display: none !important;
+    }
+
+    .modal-backdrop {
+        @apply fixed inset-0 bg-black/50;
+    }
+
+    .modal-scroll-area {
+        @apply fixed inset-0 overflow-y-auto;
+    }
+
+    .modal-layout-center {
+        @apply flex min-h-full items-center justify-center p-4;
+    }
+
+    .modal-card {
+        @apply w-full transform overflow-hidden rounded-[14px] bg-white shadow-xl transition-all;
+    }
+
+    .modal-overlay-enter       { @apply ease-out duration-300; }
+    .modal-overlay-enter-start { @apply opacity-0; }
+    .modal-overlay-enter-end   { @apply opacity-100; }
+    .modal-overlay-leave       { @apply ease-in duration-200; }
+    .modal-overlay-leave-start { @apply opacity-100; }
+    .modal-overlay-leave-end   { @apply opacity-0; }
+
+    .modal-card-enter       { @apply ease-out duration-300; }
+    .modal-card-enter-start { @apply opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95; }
+    .modal-card-enter-end   { @apply opacity-100 translate-y-0 sm:scale-100; }
+    .modal-card-leave       { @apply ease-in duration-200; }
+    .modal-card-leave-start { @apply opacity-100 translate-y-0 sm:scale-100; }
+    .modal-card-leave-end   { @apply opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95; }
+
+    .modal-max-w-sm  { @apply sm:max-w-sm; }
+    .modal-max-w-md  { @apply sm:max-w-md; }
+    .modal-max-w-lg  { @apply sm:max-w-lg; }
+    .modal-max-w-xl  { @apply sm:max-w-xl; }
+    .modal-max-w-2xl { @apply sm:max-w-2xl; }
+    .modal-max-w-3xl { @apply sm:max-w-3xl; }
+    .modal-max-w-4xl { @apply sm:max-w-4xl; }
+    .modal-max-w-5xl { @apply sm:max-w-5xl; }
+    .modal-max-w-6xl { @apply sm:max-w-6xl; }
+    .modal-max-w-7xl { @apply sm:max-w-7xl; }
+
+    .modal-slot-header { @apply border-b border-[#d9d9d9] p-5 w-full; }
+    .modal-slot-content { @apply p-5 sm:p-6 w-full; }
+    .modal-slot-footer { @apply p-5 w-full; }
+
+    .modal-header-wrapper { @apply w-full relative flex items-center justify-center; }
+    .modal-title { @apply w-full text-center text-gray-800; }
+    .modal-close-btn { @apply text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0 top-0 cursor-pointer transition-colors duration-200; }
+    .modal-body { @apply text-gray-700 text-center py-4; }
+    .modal-footer-wrapper { @apply w-full flex justify-center gap-4; }
+    .modal-btn-action { @apply !w-full sm:!w-auto min-w-[120px]; }
+}

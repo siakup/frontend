@@ -64,4 +64,9 @@ class ComponentsDocumentationController extends Controller
   {
     return view('components-documentation.file');
   }
+
+  public function modal(Request $request)
+  {
+    return view('components-documentation.modal');
+  }
 }
