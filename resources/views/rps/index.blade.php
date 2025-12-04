@@ -5,10 +5,11 @@
 <script src="{{ asset('js/controllers/rps.js') }}" defer></script>
 
 @section('content')
-    <x-container variant="content-wrapper">
+
+    <x-container.container variant="content-wrapper">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-container variant="content" class="ml-3" x-data="rps()">
-            <x-container variant="content-wrapper" class="mb-5">
+        <x-container.container variant="content" class="ml-3" x-data="rps()">
+            <x-container.container variant="content-wrapper" class="mb-5">
                 <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Periode Akademik</x-slot>
                     <x-slot name="input">
@@ -39,7 +40,7 @@
                         <x-button.primary>Cari</x-button.primary>
                     </x-slot>
                 </x-form.input-container>
-            </x-container>
+            </x-container.container>
             <x-dialog variant="warning" isCloseable>
                 <x-slot name="header">Catatan!</x-slot>
                 Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah) <br> <br>
@@ -57,7 +58,7 @@
                         <x-table.header-cell>Tanggal Upload</x-table.header-cell>
                         <x-table.header-cell>Status</x-table.header-cell>
                     </x-table.row>
-                    </x-table-head>
+                    </x-table.head>
 
                     <x-table.body>
                         @foreach ($rpsList as $index => $rps)
@@ -97,8 +98,8 @@
                 </x-button.secondary>
                 <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
             </div>
-        </x-container>
-    </x-container>
+        </x-container.container>
+    </x-container.container>
     <x-pagination></x-pagination>
 
 @endsection

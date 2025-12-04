@@ -30,7 +30,6 @@
   x-modelable="value"
   x-model="{{$attributes->whereStartsWith('x-model')->first()}}"
 >
-  <label class="whitespace-nowrap text-[#262626] text-sm font-semibold flex w-[200px] items-center gap-2" for="status">Status</label>
   <button 
     type="button"
     class="p-0 border-none bg-transparent outline-none flex items-center cursor-pointer gap-4" 

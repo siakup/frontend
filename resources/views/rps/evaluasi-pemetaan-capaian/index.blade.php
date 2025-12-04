@@ -98,20 +98,44 @@
         cancelText="Cek Kembali" :redirectConfirm="route('rps.rencana-perkuliahan')">
         <p>Apakah Anda yakin ingin menyimpan <b>komponen penilaian</b>?</p>
 
+<<<<<<< HEAD
         <x-dialog>
             <x-slot name="header">Perhatian!</x-slot>
             Seluruh perubahan pada halaman ini akan disimpan dan anda
             secara otomatis dialihkan ke halaman berikutnya.
         </x-dialog>
+=======
+        <x-container.container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+            <div class="flex gap-4">
+                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
+                <div class="flex flex-col text-left">
+                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
+                    <x-typography variant="body-small-regular">Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman berikutnya.</x-typography>
+                </div>
+            </div>
+        </x-container>
+>>>>>>> 4e44e843cf501265a8bab98c8f1143665889e502
     </x-modal.confirmation>
 
     <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali" cancelText="Tidak"
         :redirectConfirm="route('rps.capaian-pembelajaran')">
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+<<<<<<< HEAD
         <x-dialog>
             <x-slot name="header">Perhatian!</x-slot>
             Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
             nanti.
         </x-dialog>
+=======
+
+        <x-container.container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
+            <div class="flex gap-4">
+                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
+                <div class="flex flex-col text-left">
+                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
+                    <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.</p>
+            </div>
+        </x-container>
+>>>>>>> 4e44e843cf501265a8bab98c8f1143665889e502
     </x-modal.confirmation>
 @endsection

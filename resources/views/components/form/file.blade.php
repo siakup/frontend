@@ -1,92 +1,166 @@
 @props([
-  'cancelConfirmationModalButtonId',
-  'name' => 'file',
+    'name',
+    'label' => '',
+    'multiple' => false,
+    'accept' => '*/*',
+    'helperText' => '',
+    'error' => null,
+    'disabled' => false,
+    'inputClass' => '',
+    'required' => false, 
+    'maxSize' => null,  
 ])
 
-<script type="module">
-  import fileUploadComponent from "{{ asset('js/component-helpers/file.js') }}";
-
-  document.addEventListener('alpine:init', () => {
-    Alpine.data('fileUploadComponent', fileUploadComponent);
-  });
-</script>
-
 @php
-  $extraOnClick = $attributes->get('onclick') ?? null;
+    $hasServerError = $errors->has($name) || !empty($error);
+    $serverErrorMessage = $error ?? $errors->first($name);
 @endphp
 
-<div 
-  class="flex justify-between w-full gap-[100px] items-start"
-  :class="{ 'gap-5': drop }"
-  x-data="fileUploadComponent('{{$name}}')"
+<div class="w-full"
+    x-data="{
+        files: [],
+        isDragging: false,
+        serverError: @js($serverErrorMessage),
+        clientError: '',
+        helperText: @js($helperText),
+        maxSize: @js($maxSize),
+        
+        get hasError() {
+            return (this.serverError && this.serverError.length > 0) || (this.clientError && this.clientError.length > 0);
+        },
+
+        get message() {
+            if (this.serverError) return this.serverError;
+            if (this.clientError) return this.clientError;
+            return this.helperText;
+        },
+
+        validateFile(file) {
+            if (this.maxSize && (file.size / 1024) > this.maxSize) {
+                this.clientError = `File '${file.name}' terlalu besar. Maksimal ${this.maxSize / 1024} MB.`;
+                return false;
+            }
+            return true;
+        },
+
+        handleFiles(fileList) {
+            if (!fileList.length) return;
+            
+            this.clientError = '';
+            this.serverError = ''; 
+
+            let newFiles = Array.from(fileList);
+            let validFiles = [];
+
+            for (let i = 0; i < newFiles.length; i++) {
+                if (this.validateFile(newFiles[i])) {
+                    validFiles.push(newFiles[i]);
+                } else {
+                    if (!@js($multiple)) {
+                        this.files = []; // Reset jika single upload
+                        $refs.fileInput.value = '';
+                    }
+                    return; 
+                }
+            }
+            
+            if (@js($multiple)) {
+                this.files = [...this.files, ...validFiles];
+            } else {
+                this.files = [validFiles[0]];
+            }
+        },
+
+        removeFile(index) {
+            this.files.splice(index, 1);
+            this.clientError = '';
+            
+            if (this.files.length === 0) {
+                $refs.fileInput.value = '';
+            }
+        },
+
+        browseFiles() {
+            $refs.fileInput.click();
+        }
+    }"
 >
-  <input type="hidden" name="filename" id="filenameInput" x-model="fileName">
-  <div 
-    class="rounded-lg border-2 border-dashed border-[#D9D9D9] bg-white px-8 py-4 text-center w-7/10 mb-4 flex-1 flex flex-col gap-3 items-center max-[70%]:max-w-full max-[70%]:w-full max-[70%]:items-stretch"
-    :class="{ 
-      'border-[#E62129]': drag,
-      'bg-[#FDF4F4]': drag,
-      'hidden': drop,
-      'flex': !drop
-    }"
-    x-on:dragover.prevent="onDrag"
-    x-on:dragleave="onLeaveDrag"
-    x-on:drop.prevent="onLeaveDrag();setFileName($event);"
-  >
-    <div class="text-md-bd flex flex-col items-center w-max">
-      <img src="{{ asset('assets/icon-upload-gray-600.svg') }}" alt="upload" class="h-[1.5em] w-auto mb-2" />
-      <br>
-      Tarik & letakkan file di sini
+    @if ($label)
+        <label for="{{ $name }}" class="block text-sm font-semibold mb-2" 
+               :class="hasError ? 'text-red-500' : 'text-gray-700'">
+            {{ $label }}
+            @if($required) <span class="text-red-500">*</span> @endif
+        </label>
+    @endif
+
+    <div 
+        class="relative flex flex-col items-center justify-center w-full p-6 border-2 border-dashed rounded-lg transition-colors duration-200 bg-gray-50 {{ $inputClass }}"
+        :class="{
+            'border-red-500 bg-red-50': hasError,
+            'border-gray-300 hover:bg-gray-100': !hasError && !isDragging,
+            'border-blue-500 bg-blue-50': isDragging && !hasError,
+            'opacity-50 cursor-not-allowed': @js($disabled)
+        }"
+        @dragover.prevent="if(!@js($disabled)) isDragging = true"
+        @dragleave.prevent="isDragging = false"
+        @drop.prevent="if(!@js($disabled)) { isDragging = false; handleFiles($event.dataTransfer.files); }"
+    >
+        <input 
+            x-ref="fileInput"
+            type="file" 
+            name="{{ $name }}" 
+            id="{{ $name }}"
+            accept="{{ $accept }}"
+            class="hidden"
+            {{ $multiple ? 'multiple' : '' }}
+            {{ $disabled ? 'disabled' : '' }}
+            {{ $required ? 'required' : '' }}
+            @change="handleFiles($event.target.files)"
+        />
+
+        <div class="text-center cursor-pointer" @click="if(!@js($disabled)) browseFiles()">
+            <x-icon :name="'upload/grey-24'" :class="'w-8 h-8 mx-auto'" />
+            
+            <p class="mt-2 text-sm font-semibold text-black-700">
+                Tarik & letakkan file di sini
+            </p>
+            <p class="text-sm text-gray-800 mt-1 mb-3">
+                Atau
+            </p>
+            
+            <x-button 
+                type="button" 
+                size="sm" 
+                class="mx-auto bg-gray-100"
+                @click.stop="if(!@js($disabled)) browseFiles()" 
+                :disabled="$disabled"
+            >
+                Pilih file
+            </x-button>
+
+            <p class="mx-auto text-xs text-gray-500 mt-3">
+            {{ $accept === '*/*' ? 'Semua File' : $accept }}
+            </p>
+        </div>
     </div>
-    <div>Atau</div>
-    <x-button 
-      :isUsedWithLabelTagForFileInput="true"
-      :variant="'secondary'"
-      name="{{ $name }}"
-      x-on:change="onChangeFile"
-      x-ref="fileInput"
-      accept=".xlsx,.xls,.csv"
-    >
-      Pilih File
-    </x-button.secondary>
-    <div>
-      .xsl & .csv | 5MB
+
+    <ul class="mt-4 space-y-2" x-show="files.length > 0">
+        <template x-for="(file, index) in files" :key="index">
+            <li class="flex items-center justify-between p-2 bg-white border border-gray-200 rounded-md shadow-sm">
+                <div class="flex items-center space-x-2 truncate">
+                    <x-icon name="document/outline-grey-16" class="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <span class="text-sm text-gray-700 truncate" x-text="file.name"></span>
+                    <span class="text-xs text-gray-500" x-text="(file.size / 1024).toFixed(1) + ' KB'"></span>
+                </div>
+                <button type="button" @click="removeFile(index)" class="text-gray-400 hover:text-red-500 transition-colors" :disabled="@js($disabled)">
+                    <x-icon name="trash/outline-grey-16" class="w-4 h-4" />
+                </button>
+            </li>
+        </template>
+    </ul>
+
+    <div class="mt-1 ml-1 text-xs font-medium transition-colors duration-200 min-h-[1.25rem]"
+         :class="hasError ? 'text-red-500' : 'text-gray-500'">
+        <span x-text="message"></span>
     </div>
-  </div>
-  <div 
-    id="filePreview" 
-    class="items-center gap-3 py-2 px-3 border-[1px] border-[#DCDCDC] rounded-lg bg-white mb-4 max-w-7/10"
-    :class="{
-      'flex': drop,
-      'hidden': !drop
-    }"
-  >
-    <img src="{{ asset('assets/icon-file-gray.svg') }}" alt="File Icon">
-    <x-typography :variant="'body-medium-regular'" x-text="fileName"></x-typography>
-    <span class="w-[1.5em] h-[1em] ms-2 cursor-pointer"><img src="{{ asset('assets/icon-eye-gray.svg') }}" alt="Eye Icon"></span>
-    <button 
-      type="button" 
-      id="removeFileBtn" 
-      class="cursor-pointer"
-      aria-label="Remove"
-      x-on:click="onRemoveFile"
-    >
-      &times;
-    </button>
-  </div>
-  <div class="flex ms-auto items-end gap-3 -mt-[7%]" :class="{ 'w-90/100': drop }">
-    <x-button.secondary
-      onclick="
-        document.getElementById('{{ $cancelConfirmationModalButtonId }}').classList.add('flex');
-        document.getElementById('{{ $cancelConfirmationModalButtonId }}').classList.remove('hidden');
-      "
-      id="btnBatalUnggah"
-      x-bind:disabled="!drop"
-    >
-      Batal
-    </x-button.secondary>
-    <x-button.primary type="submit" onclick="{{ $extraOnClick }}" :icon="asset('assets/icon-upload-gray-600.svg')" :iconPosition="'right'" x-bind:disabled="!drop">
-      Unggah 
-    </x-button.primary>
-  </div>
 </div>

@@ -2,10 +2,6 @@
 
 @section('title', 'Event Akademik')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Akademik</div>
-@endsection
-
 @section('javascript')
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <script src="{{ asset('js/custom/event.js')}}"></script>
@@ -13,7 +9,7 @@
 @endsection
 
 @section('content')
-  <x-container :variant="'content-wrapper'" class="flex flex-col !gap-0">
+  <x-container.container :variant="'content-wrapper'" class="flex flex-col !gap-0">
     <x-tab 
       :tabItems="[
         (object)[
@@ -28,12 +24,12 @@
         ],
       ]"
     />
-    <x-container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
-      <x-container :variant="'content-wrapper'" class="self-end flex flex-row items-end justify-end w-full gap-5 m-5 !px-0">
+    <x-container.container :class="'flex flex-col gap-4 rounded-tl-none items-stretch my-0 border-t-[1px] border-t-[#F39194] relative !z-0'">
+      <x-container.container :variant="'content-wrapper'" class="self-end flex flex-row items-end justify-end w-full gap-5 m-5 !px-0">
         <x-button.primary :icon="asset('assets/icon-upload-red-500.svg')" :iconPosition="'right'" :href="route('academics-event.upload')">Unggah Event Akademik</x-button.primary>
         <x-button.primary :href="route('academics-event.create')">Tambah Event Akademik</x-button.primary>
       </x-container>
-      <x-container :class="'flex justify-between items-center p-4'">
+      <x-container.container :class="'flex justify-between items-center p-4'">
         <x-form.search-v2 
           class="w-80"
           :inputParentClass="'w-max'"
@@ -44,41 +40,41 @@
         />
         <x-filter-button />
       </x-container>
-      <x-table :variant="'old'">
-        <x-table-head :variant="'old'">
-          <x-table-row :variant="'old'">
-            <x-table-header :variant="'old'">Nama Event</x-table-header>
-            <x-table-header :variant="'old'">Event <br> Nilai</x-table-header>
-            <x-table-header :variant="'old'">Event <br> IRS</x-table-header>
-            <x-table-header :variant="'old'">Event <br> Lulus</x-table-header>
-            <x-table-header :variant="'old'">Event <br> Registrasi</x-table-header>
-            <x-table-header :variant="'old'">Event <br> Yudisium</x-table-header>
-            <x-table-header :variant="'old'">Event <br> Survei</x-table-header>
-            <x-table-header :variant="'old'">Event <br> Dosen</x-table-header>
-            <x-table-header :variant="'old'">Status</x-table-header>
-            <x-table-header :variant="'old'">Aksi</x-table-header>
-          </x-table-row>
-        </x-table-head>
+      <x-table.index :variant="'old'">
+        <x-table.head :variant="'old'">
+          <x-table.row :variant="'old'">
+            <x-table.header-cell :variant="'old'">Nama Event</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Event <br> Nilai</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Event <br> IRS</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Event <br> Lulus</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Event <br> Registrasi</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Event <br> Yudisium</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Event <br> Survei</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Event <br> Dosen</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Status</x-table.header-cell>
+            <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
+          </x-table.row>
+        </x-table.head>
         <tbody>
           @foreach ($data['data'] ?? [] as $event)
-            <x-table-row :variant="'old'">
-                <x-table-cell :variant="'old'">{{ $event['nama_event'] }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $event['nilai_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $event['irs_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $event['lulus_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $event['registrasi_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $event['yudisium_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $event['survei_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
-                <x-table-cell :variant="'old'">{{ $event['dosen_on'] ? 'Ya' : 'Tidak' }}</x-table-cell>
-                <x-table-cell :variant="'old'">
+            <x-table.row :variant="'old'">
+                <x-table.cell :variant="'old'">{{ $event['nama_event'] }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $event['nilai_on'] ? 'Ya' : 'Tidak' }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $event['irs_on'] ? 'Ya' : 'Tidak' }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $event['lulus_on'] ? 'Ya' : 'Tidak' }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $event['registrasi_on'] ? 'Ya' : 'Tidak' }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $event['yudisium_on'] ? 'Ya' : 'Tidak' }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $event['survei_on'] ? 'Ya' : 'Tidak' }}</x-table.cell>
+                <x-table.cell :variant="'old'">{{ $event['dosen_on'] ? 'Ya' : 'Tidak' }}</x-table.cell>
+                <x-table.cell :variant="'old'">
                   @if ($event['status'] === 'active')
                     <x-badge variant="green-filled">Aktif</x-badge>
                   @else
                     <x-badge variant="green-bordered">Tidak Aktif</x-badge>
                   @endif
-                </x-table-cell>
-                <x-table-cell :variant="'old'">
-                    <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
+                </x-table.cell>
+                <x-table.cell :variant="'old'">
+                    <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-center">
                       <x-button.base
                           :icon="asset('assets/icon-search.svg')"
                           class=" scale-75"
@@ -106,11 +102,11 @@
                         Hapus
                       </x-button.base>
                     </x-container>
-                </x-table-cell>
-            </x-table-row>
+                </x-table.cell>
+            </x-table.row>
           @endforeach
         </tbody>
-      </x-table>
+      </x-table.index>
     </x-container>
 
     @if (isset($data['data']))
@@ -126,7 +122,7 @@
 
     <x-modal.container-pure-js id="modalKonfirmasiHapus">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
           <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
         </x-container>

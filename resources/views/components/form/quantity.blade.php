@@ -3,7 +3,7 @@
   'max' => null,
   'disabled' => false
 ])
-<x-container 
+<x-container.container 
   x-data="{
     value: 0,
     min: {{ json_encode($min) }},

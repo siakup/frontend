@@ -2,10 +2,6 @@
 
 @section('title', 'Upload Pemetaan CPL')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Upload Pemetaan CPL</div>
-@endsection
-
 @section('css')
     <style>
         .content-card {

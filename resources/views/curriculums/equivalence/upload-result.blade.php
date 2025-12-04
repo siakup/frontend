@@ -2,36 +2,32 @@
 
 @section('title', 'Ekuivalensi Kurikulum')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Ekuivalensi Kurikulum</div>
-@endsection
-
 @section('content')
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">Unggah Ekuivalensi Kurikulum</x-typography>
     <x-button.back :href="route('curriculum.equivalence.upload')">Unggah Ekuivalensi Kurikulum</x-button.back>
-    <x-container :class="'flex flex-col gap-4'">
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center !px-0">
+    <x-container.container :class="'flex flex-col gap-4'">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !px-0">
         <x-typography :variant="'body-medium-bold'">Impor Ekuivalensi Kurikulum</x-typography>
         <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-auto h-[1.5em]'" />
       </x-container>
-      <x-table>
-        <x-table-head>
-          <x-table-row>
-            <x-table-header>Kode Mata Kuliah Lama</x-table-header>
-            <x-table-header>Kode Mata Kuliah Baru</x-table-header>
-          </x-table-row>
-        </x-table-head>
+      <x-table.index>
+        <x-table.head>
+          <x-table.row>
+            <x-table.header-cell>Kode Mata Kuliah Lama</x-table.header-cell>
+            <x-table.header-cell>Kode Mata Kuliah Baru</x-table.header-cell>
+          </x-table.row>
+        </x-table.head>
         <tbody>
           @foreach($datas as $data)
-            <x-table-row>
-                <x-table-cell>{{$data['Kode MK Lama']}}</x-table-cell>
-                <x-table-cell>{{$data['Kode MK Baru']}}</x-table-cell>
-            </x-table-row>
+            <x-table.row>
+                <x-table.cell>{{$data['Kode MK Lama']}}</x-table.cell>
+                <x-table.cell>{{$data['Kode MK Baru']}}</x-table.cell>
+            </x-table.row>
             @endforeach
         </tbody>
-      </x-table>
-      <x-container :variant="'content-wrapper'" class="flex flex-row !p-0 items-center justify-end gap-3 w-full">
+      </x-table.index>
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row !p-0 items-center justify-end gap-3 w-full">
         <x-button.secondary :href="route('curriculum.equivalence.upload')">Batal</x-button.secondary>
         <x-button.primary
           onclick="
@@ -52,7 +48,7 @@
     @endforeach
     <x-modal.container-pure-js id="modalKonfirmasiUpload">
       <x-slot name="header">
-        <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
           <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
           <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
         </x-container>

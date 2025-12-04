@@ -2,10 +2,6 @@
 
 @section('title', 'Mata Kuliah')
 
-@section('breadcrumbs')
-    <div class="breadcrumb-item active">Mata Kuliah</div>
-@endsection
-
 @section('css')
 <style>
   .right {
@@ -80,59 +76,59 @@
             Unggah Mata Kuliah
         </x-typography>
         <div class="flex flex-col gap-5">
-            <x-container variant="content" class="flex flex-col gap-5 overflow-scroll max-h-[70vh] min-h-[50vh]">
+            <x-container.container variant="content" class="flex flex-col gap-5 overflow-scroll max-h-[70vh] min-h-[50vh]">
                 <x-typography variant="heading-h6" class="mb-2 title">
                     Impor Mata Kuliah
                     <img src="{{ asset('assets/base/icon-caution.svg')}}" alt="caution-icon" style="height: 1em; width: auto; margin-left: 12px; vertical-align: middle;">
                 </x-typography>
         
                 <div class="flex flex-col gap-5">
-                    <x-table>
-                        <x-table-head>
-                            <x-table-row>
-                                <x-table-header class="cursor-pointer">
+                    <x-table.index>
+                        <x-table.head>
+                            <x-table.row>
+                                <x-table.header-cell class="cursor-pointer">
                                     Kode Mata Kuliah
-                                </x-table-header>
-                                <x-table-header class="cursor-pointer">
+                                </x-table.header-cell>
+                                <x-table.header-cell class="cursor-pointer">
                                     Nama Mata Kuliah
-                                </x-table-header>
-                                <x-table-header class="cursor-pointer">
+                                </x-table.header-cell>
+                                <x-table.header-cell class="cursor-pointer">
                                     Jumlah SKS
-                                </x-table-header>
-                                <x-table-header class="cursor-pointer">
+                                </x-table.header-cell>
+                                <x-table.header-cell class="cursor-pointer">
                                     Semester
-                                </x-table-header>
-                                <x-table-header>Jenis Mata Kuliah</x-table-header>
-                            </x-table-row>
-                        </x-table-head>
+                                </x-table.header-cell>
+                                <x-table.header-cell>Jenis Mata Kuliah</x-table.header-cell>
+                            </x-table.row>
+                        </x-table.head>
         
-                        <x-table-body>
+                        <x-table.body>
                             @forelse ($file_data as $matkul)
-                                <x-table-row>
-                                    <x-table-cell>{{ $matkul['kode'] }}</x-table-cell>
-                                    <x-table-cell>{{ $matkul['nama'] }}</x-table-cell>
-                                    <x-table-cell>{{ $matkul['sks'] }}</x-table-cell>
-                                    <x-table-cell>{{ $matkul['semester'] }}</x-table-cell>
-                                    <x-table-cell>
+                                <x-table.row>
+                                    <x-table.cell>{{ $matkul['kode'] }}</x-table.cell>
+                                    <x-table.cell>{{ $matkul['nama'] }}</x-table.cell>
+                                    <x-table.cell>{{ $matkul['sks'] }}</x-table.cell>
+                                    <x-table.cell>{{ $matkul['semester'] }}</x-table.cell>
+                                    <x-table.cell>
                                         <span
                                             class="px-2 py-1 rounded-full text-xs
                                     {{ $matkul['jenis'] === 'Wajib' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800' }}">
                                             {{ $matkul['jenis'] }}
                                         </span>
-                                    </x-table-cell>
-                                </x-table-row>
+                                    </x-table.cell>
+                                </x-table.row>
                             @empty
-                                <x-table-row>
-                                    <x-table-cell colspan="6" class="text-center py-4">
+                                <x-table.row>
+                                    <x-table.cell colspan="6" class="text-center py-4">
                                         Tidak ada data ditemukan
-                                    </x-table-cell>
-                                </x-table-row>
+                                    </x-table.cell>
+                                </x-table.row>
                             @endforelse
-                        </x-table-body>
-                    </x-table>
+                        </x-table.body>
+                    </x-table.index>
                 </div>
               </x-container>
-              <x-container variant="content" class="flex flex-col gap-5" >
+              <x-container.container variant="content" class="flex flex-col gap-5" >
                 <div class="right">
                   <a href="" class="button-clean" id="">
                       <span>Batal</span>

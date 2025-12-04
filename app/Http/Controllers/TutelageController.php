@@ -1057,6 +1057,113 @@ class TutelageController extends Controller
         return view('tutelage.student-list.add-course', get_defined_vars());
     }
 
+    public function addMessage(Request $request, $id) 
+    {
+      try {
+        $subject_id = $request->input('subject', 1);
+        $subjectData = (object)[
+          'id' => 1,
+          'subject_name' => "Konsultasi KRS Semester 2"
+        ];
+        $subjectList = [
+          [
+            'id' => 1,
+            'subject_name' => 'Konsultasi KRS Semester 2', 
+            'student_name' => 'Dian Sastro W', 
+            'student_nim' => '17720001', 
+            'program_studi' => 'Ilmu Komputer',
+            'latest_chat_at' => '2025-05-21 10:30:00+1',
+            'latest_chat_by' => 'Dian Sastro W'
+          ],
+          [
+            'id' => 2,
+            'subject_name' => 'Konsultasi KRS Semester 1', 
+            'student_name' => 'Dian Sastro W', 
+            'student_nim' => '17720001', 
+            'program_studi' => 'Ilmu Komputer',
+            'latest_chat_at' => '2024-05-21 10:30:00+1',
+            'latest_chat_by' => 'Dian Sastro W'
+          ],
+        ];
+
+        $receiverData = (object)[
+          'id' => 1,
+          'name' => 'Dian Sastro W',
+          'nim' => '1720001',
+          'program_studi' => 'Ilmu Komputer'
+        ];
+
+        $senderData = (object)[
+          'name' => session('nama'),
+          'role' => 'Dosen',
+          'program_studi' => 'Ilmu Komputer'
+        ];
+
+        $listStudent = [
+          (object)[
+            'id' => 1,
+            'nama' => 'Dian Sastro W',
+            'nim' => '17720001'
+          ],
+          (object)[
+            'id' => 2,
+            'nama' => 'Putri Marino',
+            'nim' => '17720002'
+          ],
+        ];
+
+        $messages = [
+          (object)[
+            'id' => 1,
+            'type' => 'sender',
+            'name' => 'Meredita Susanty',
+            'role' => 'Dosen',
+            'message' => "Hay,\nDian kamu jadi konsultasi KRS Semester 2 mau kapan ya, saya bisa hari seni pagi jam 10, kamu bisa?",
+            'last_updated' =>  "2025-05-21 10:30:00+1",
+            'imgProfile' => asset('assets/icons/human/women.svg')
+          ],
+          (object)[
+            'id' => 2,
+            'type' => 'receiver',
+            'name' => 'Dian Sastro W',
+            'role' => 'Mahasiswa',
+            'message' => "Ohh boleh bu nanti saya langsung ke ruangan ibu",
+            'last_updated' =>  "2025-05-21 11:00:00+1",
+            'imgProfile' => asset('assets/icons/human/women.svg'),
+            'nim' => '17720001'
+          ],
+          (object)[
+            'id' => 3,
+            'type' => 'sender',
+            'name' => 'Meredita Susanty',
+            'role' => 'Dosen',
+            'message' => "Sipp,\nDi nanti langsung saja.",
+            'last_updated' =>  "2025-05-21 13:40:00+1",
+            'imgProfile' => asset('assets/icons/human/women.svg')
+          ],
+        ];
+
+        return view('tutelage.student-list.message', get_defined_vars());
+
+      } catch (\Throwable $err) {
+        $decoded = json_decode($err->getMessage());
+
+        Log::error('Gagal memuat halaman pesan untuk mahasiswa', [
+          'url' => $url ?? null,
+          'request_data' => $request->all(),
+          'response' => $decoded->system_error,
+        ]);
+
+        if ($request->ajax()) {
+          return $this->errorResponse($decoded->message ?? 'Gagal mendapatkan Data pesan untuk mahasiswa');
+        }
+
+        return redirect()
+          ->route('tutelage-group.list-student')
+          ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman pesan untuk mahasiswa']);
+      }
+    }
+
     public function edit(Request $request, $id)
     {
         return view('students.show', get_defined_vars());

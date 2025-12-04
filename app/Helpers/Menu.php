@@ -405,6 +405,15 @@ class Menu
 
                         ],
                     ],
+                    'tutelage-group-student-list-message' => [
+                      'name' => 'Pesan untuk Mahasiswa',
+                      'url' => '/tutelage-group/student-list/detail/message/*',
+                      'parent' => 'tutelage-group.student-list.message.add',
+                      'isExpandable' => false,
+                      'children' => [
+                        
+                      ]
+                    ]
                 ],
             ],
             'rps' => [

@@ -16,7 +16,7 @@
     }
 @endphp
 
-<div class="py-4 px-6 relative"
+<div class="relative"
      x-data="{
         mode: 'compact',
         full: @js($full),
@@ -29,12 +29,13 @@
      @click.outside="openDropdown = false">
 
     <nav aria-label="breadcrumb">
-        <ol class="flex items-center gap-2 m-0 p-0 list-none">
+        <ol class="breadcrumb-list">
             <template x-for="(breadcrumb, index) in breadcrumbs" :key="index">
-                <li class="flex items-center gap-2"
-                    :class="breadcrumb.active ? 'text-[#333333]' : 'text-[#E62129]'">
+                <li class="breadcrumb-item"
+                    :class="breadcrumb.active ? 'breadcrumb-active' : 'breadcrumb-inactive'">
+                    
                     <template x-if="breadcrumb.name.trim() === '…'">
-                        <span class="cursor-pointer"
+                        <span class="breadcrumb-ellipsis"
                               @click="openDropdown = !openDropdown">
                             <img 
                                 src="{{ asset('assets/icons/more/red-12.svg') }}" 
@@ -55,13 +56,14 @@
             </template>
         </ol>
     </nav>
+
     <div x-show="openDropdown"
          x-transition
-         class="absolute mt-2 bg-white border border-transparent rounded-xl p-4 z-50 w-56">
+         class="breadcrumb-dropdown">
         <template x-for="item in full.slice(1, full.length - 1)" :key="item.name">
             <a :href="item.url"
-            class="block py-1 hover:text-[#E62129]"
-            x-text="item.name">
+               class="breadcrumb-dropdown-item"
+               x-text="item.name">
             </a>
         </template>
     </div>

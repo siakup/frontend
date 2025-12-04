@@ -13,37 +13,37 @@
         <x-typography variant="body-medium-bold">Komponen Penilaian</x-typography>
 
         @if($komponenList)
-            <x-table>
-                <x-table-head>
-                    <x-table-row>
-                        <x-table-header class="w-25">Nama Komponen</x-table-header>
-                        <x-table-header class="w-25">Bobot Komponen</x-table-header>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell class="w-25">Nama Komponen</x-table.header-cell>
+                        <x-table.header-cell class="w-25">Bobot Komponen</x-table.header-cell>
                         @foreach($cpmkList as $cpmk)
-                        <x-table-header class="w-21">{{ $cpmk }}</x-table-header>
+                        <x-table.header-cell class="w-21">{{ $cpmk }}</x-table.header-cell>
                         @endforeach
-                    </x-table-row>
-                </x-table-head>
+                    </x-table.row>
+                </x-table.head>
 
-                <x-table-body>
+                <x-table.body>
                     @foreach($komponenList as $index => $komponen)
-                    <x-table-row>
-                        <x-table-cell>{{ $komponen['nama'] }}</x-table-cell>
-                        <x-table-cell>{{ $komponen['bobot'] }}</x-table-cell>
+                    <x-table.row>
+                        <x-table.cell>{{ $komponen['nama'] }}</x-table.cell>
+                        <x-table.cell>{{ $komponen['bobot'] }}</x-table.cell>
                         @foreach($komponen['cpmk'] as $nilaiCpmk)
-                            <x-table-cell>
+                            <x-table.cell>
                                 <div class="flex justify-center items-center">
                                     @if ($nilaiCpmk)
                                         <x-icon iconUrl="{{ asset('assets/base/icon-tick-20.svg') }}" />
                                     @endif
                                 </div>
-                            </x-table-cell>
+                            </x-table.cell>
                         @endforeach
-                    </x-table-row>
+                    </x-table.row>
                     @endforeach
-                </x-table-body>
-            </x-table>
+                </x-table.body>
+            </x-table.index>
         @else
-            <x-container variant="content-grey" class="!rounded-xl h-22 flex items-center justify-center">
+            <x-container.container variant="content-grey" class="!rounded-xl h-22 flex items-center justify-center">
                 <x-typography variant="body-small-bold">Belum Ada Komponen Penilaian, Silahkan Tambah Komponen Terlebih Dahulu</x-typography>
             </x-container>
         @endif

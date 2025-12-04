@@ -2,10 +2,6 @@
 
 @section('title', 'Kalender Akademik')
 
-@section('breadcrumbs')
-  <div class="breadcrumb-item active">Lihat Event Kalender Akademik</div>
-@endsection
-
 @section('css')
   <link rel="stylesheet" href="{{ asset('css/plugins/flatpckr.css') }}" />
 @endsection
@@ -20,7 +16,7 @@
 @section('content')
   @include('academics.calendar.create', ['id' => $id, 'id_program' => $id_program, 'id_prodi' => $id_prodi]) 
   @include('academics.calendar.edit', ['id' => $id, 'data' => $data])
-  <x-container :variant="'content-wrapper'">
+  <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-large-semibold'">
       Lihat Event Kalender Akademik - Universitas Pertamina - Periode Akademik
       {{
@@ -37,9 +33,9 @@
       }}
     </x-typography>
     <x-button.back :href="route('calendar.index')">Kalender Akademik</x-button.back>
-    <x-container :class="'flex flex-col gap-4'">
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !justify-start z-10 !px-0">
-        <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
+    <x-container.container :class="'flex flex-col gap-4'">
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !justify-start z-10 !px-0">
+        <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !px-0 !w-max" id="CampusProgramSection">
           <x-typography :variant="'body-medium-bold'">Program Perkuliahan</x-typography>
           <x-form.dropdown 
             :buttonId="'sortButtonCampus'"
@@ -71,7 +67,7 @@
             :dropdownItem="array_column($programPerkuliahanList, 'name', 'name')"
           />
         </x-container>
-        <x-container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !w-max !px-0" id="StudyProgramSection">
+        <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center !mx-0 !w-max !px-0" id="StudyProgramSection">
           <x-typography :variant="'body-medium-bold'">Program Studi</x-typography>
           <x-form.dropdown 
             :buttonId="'sortButtonStudyProgram'"
@@ -104,28 +100,28 @@
           />
         </x-container>
       </x-container>
-      <x-table :variant="'old'" :isHaveTitle="true" :tableTitle="'Event Kalender Akademik'">
+      <x-table.index :variant="'old'" :isHaveTitle="true" :tableTitle="'Event Kalender Akademik'">
         <x-slot name="tableTitleSlot">
-          <x-container :variant="'content-wrapper'">
+          <x-container.container :variant="'content-wrapper'">
             <x-typography :variant="'body-medium-bold'" class="text-center">Event Kalender Akademik</x-typography>
           </x-container>
         </x-slot>
-        <x-table-head :variant="'old'">
-          <x-table-row :variant="'old'">
-              <x-table-header :variant="'old'">Nama Event</x-table-header>
-              <x-table-header :variant="'old'">Tanggal Mulai</x-table-header>
-              <x-table-header :variant="'old'">Tanggal Selesai</x-table-header>
-              <x-table-header :variant="'old'">Aksi</x-table-header>
-          </x-table-row>
-        </x-table-head>
+        <x-table.head :variant="'old'">
+          <x-table.row :variant="'old'">
+              <x-table.header-cell :variant="'old'">Nama Event</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Tanggal Mulai</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Tanggal Selesai</x-table.header-cell>
+              <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
+          </x-table.row>
+        </x-table.head>
         <tbody>
           @foreach ($data as $d)
-            <x-table-row :variant="'old'">
-              <x-table-cell :variant="'old'">{{ $d->nama_event }}</x-table-cell>
-              <x-table-cell :variant="'old'">{{ formatDateTime($d->tanggal_awal) }}</x-table-cell>
-              <x-table-cell :variant="'old'">{{ formatDateTime($d->tanggal_akhir) }}</x-table-cell>
-              <x-table-cell :variant="'old'">
-                <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-center gap-6">
+            <x-table.row :variant="'old'">
+              <x-table.cell :variant="'old'">{{ $d->nama_event }}</x-table.cell>
+              <x-table.cell :variant="'old'">{{ formatDateTime($d->tanggal_awal) }}</x-table.cell>
+              <x-table.cell :variant="'old'">{{ formatDateTime($d->tanggal_akhir) }}</x-table.cell>
+              <x-table.cell :variant="'old'">
+                <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-center gap-6">
                   <x-button.base 
                     class="text-[#E62129] scale-75 !min-w-max"
                     data-id="{{$d->id}}"
@@ -149,14 +145,14 @@
                     Sync
                   </x-button.base>
                 </x-container>
-              </x-table-cell>
-            </x-table-row>
+              </x-table.cell>
+            </x-table.row>
           @endforeach
         </tbody>
-      </x-table>
-      <x-container :variant="'content-wrapper'" class="flex flex-row items-center justify-between !p-0">
+      </x-table.index>
+      <x-container.container :variant="'content-wrapper'" class="flex flex-row items-center justify-between !p-0">
         <x-button.secondary :href="route('calendar.index')">Kembali</x-button.secondary>
-        <x-container :variant="'content-wrapper'" class="flex flex-row !w-max !px-0 !mx-0 items-center gap-3">
+        <x-container.container :variant="'content-wrapper'" class="flex flex-row !w-max !px-0 !mx-0 items-center gap-3">
           <x-button.secondary 
             :icon="asset('assets/icon-upload-red-500.svg')"
             :iconPosition="'right'"
@@ -176,7 +172,7 @@
       </x-container>
       <x-modal.container-pure-js id="modalKonfirmasiHapus">
         <x-slot name="header">
-          <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+          <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
             <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Hapus Event Kalender Akademik</x-typography>
             <x-icon :iconUrl="asset('assets/icon-delete-gray-800.svg')" :class="'w-8 h-8'" />
           </x-container>

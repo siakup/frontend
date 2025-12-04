@@ -10,6 +10,7 @@
     x-data="{{ $attributes->get('x-data') }}"
     x-effect="{{ $attributes->get('x-effect') }}"
     x-init="{{ $attributes->get('x-init') }}"
+    class="w-full"
   >
     <template x-if="pagination !== null">
       <div 

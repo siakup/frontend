@@ -66,7 +66,7 @@
   </x-modal.container-pure-js>
   <x-modal.container-pure-js id="modalKonfirmasiEdit">
     <x-slot name="header">
-      <x-container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
+      <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-between items-center !px-0 !ps-5 !gap-0'">
         <x-typography :variant="'body-medium-bold'" :class="'flex-1 text-center'">Tunggu Sebentar</x-typography>
         <x-icon :iconUrl="asset('assets/icon-caution.svg')" :class="'w-8 h-8'" />
       </x-container>

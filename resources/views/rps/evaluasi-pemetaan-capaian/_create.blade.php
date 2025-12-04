@@ -91,7 +91,6 @@
             </template>
         </x-container>
 
-
         <x-slot name="footer" class="flex justify-end gap-3">
             <x-button.secondary x-bind:disabled="isDisabled"
                 x-on:click="$dispatch('close-modal', { id: 'create-evaluasi-pemetaan' })">Batal</x-button.secondary>

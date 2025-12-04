@@ -8,7 +8,7 @@
 
 @section('content')
 
-<x-container :variant="'content-wrapper'" class="!w-max !mx-0 !pb-10 !flex !flex-col !items-start !justify-start" x-data="{num: 0, num1: 0, num2: 0, num3: 0}">
+<x-container.container :variant="'content-wrapper'" class="!w-max !mx-0 !pb-10 !flex !flex-col !items-start !justify-start" x-data="{num: 0, num1: 0, num2: 0, num3: 0}">
   <x-typography :variant="'body-small-bold'">Quantity Min: 0</x-typography>
   <x-form.quantity x-model="num" :min="0" />
   <x-typography :variant="'body-small-bold'">Quantity Max: 0</x-typography>

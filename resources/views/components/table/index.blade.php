@@ -7,7 +7,17 @@
   'colorTypeTableTitle' => 'pure-gray'
 ])
 
-<x-container 
+{{-- @php
+  $variantColorsTableTitle = [
+    'pure-gray'=> 'disable-blue',
+    'light-yellow-gradient'=> 'yellow-gradient',
+    'light-blue-gradient'=> 'blue-gradient',
+    'light-red-gradient'=> 'red-gradient',
+    'light-green-gradient'=> 'green-gradient',
+  ];
+@endphp --}}
+
+<x-container.container 
   x-data="{
     variants: {
       default: {
@@ -23,25 +33,22 @@
         tableClass: 'border-collapse'
       },
     },
-    variantColorsTableTitle: {
-      'pure-gray': 'bg-disable-blue',
-      'light-yellow-gradient': 'bg-gradient-to-r from-white to-yellow-100',
-      'light-blue-gradient': 'bg-gradient-to-r from-white to-blue-50',
-      'light-red-gradient': 'bg-gradient-to-r from-white to-red-100',
-      'light-green-gradient': 'bg-gradient-to-r from-white to-green-400',
-      'light-red-white-gradient': 'bg-gradient-to-r from-disable-red to-white',
-      
-    },
     variant: {{json_encode($variant)}},
+    variantColorsTableTitle: {
+      'pure-gray': 'disable-blue',
+      'light-yellow-gradient': 'yellow-gradient',
+      'light-blue-gradient': 'blue-gradient',
+      'light-red-gradient': 'red-gradient',
+      'light-green-gradient': 'green-gradient',
+    },
     isHaveTitle: {{json_encode($isHaveTitle)}},
     colorTypeTableTitle: {{json_encode($colorTypeTableTitle)}}
   }"
-  class="overflow-x-scroll scroll-hide w-full p-0!"
+  class="overflow-x-scroll flex-col scroll-hide w-full p-0!"
   x-bind:class="variants[variant].divClass"
 >
   <template x-if="isHaveTitle">
     <div 
-      :variant="'content-wrapper'"
       class="sticky left-0 border-b border-b-gray-400 flex justify-between p-4! rounded-none! w-full"
       x-bind:class="variantColorsTableTitle[colorTypeTableTitle]"
     >

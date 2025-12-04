@@ -11,7 +11,9 @@
 
 {{-- isRounderedTop = true: radius di sisi atas --}}
 {{-- isRounderedBottom = true: radius di sisi atas --}}
+<x-container.wrapper :rows="12">
 
+<<<<<<< HEAD
 <x-container :variant="'content-wrapper'">
   <x-typography :variant="'body-medium-bold'">Table variant default tanpa tableTitle (isHaveTitle = false)</x-typography>
   <x-table.index>
@@ -32,149 +34,168 @@
       </x-table.row>
     </x-table.body>
   </x-table.index>
+=======
+  <x-container.container class="flex-col">
+    <x-typography :variant="'body-medium-bold'">Table variant default tanpa tableTitle (isHaveTitle = false)</x-typography>
+    <x-table.index>
+      <x-table.head>
+        <x-table.row>
+          <x-table.header-cell>header1</x-table.header-cell>
+          <x-table.header-cell>header2</x-table.header-cell>
+        </x-table.row>
+      </x-table.head>
+      <x-table.body>
+        <x-table.row>
+          <x-table.cell>Cell 1</x-table.cell>
+          <x-table.cell>Cell 2</x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
+    
+    <x-typography :variant="'body-medium-bold'">Table variant default dengan tableTitle (isHaveTitle = true)</x-typography>
+    <x-table.index :isHaveTitle="true">
+      <x-slot name="tableTitleSlot">
+        <x-container.container class="flex-col" class="!px-0">Title</x-container>
+      </x-slot>
+      <x-table.head>
+        <x-table.row>
+          <x-table.header-cell>header1</x-table.header-cell>
+          <x-table.header-cell>header2</x-table.header-cell>
+        </x-table.row>
+      </x-table.head>
+      <x-table.body>
+        <x-table.row>
+          <x-table.cell>Cell 1</x-table.cell>
+          <x-table.cell>Cell 2</x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
+    
+    <x-typography :variant="'body-medium-bold'">Table variant old tanpa tableTitle (isHaveTitle = false)</x-typography>
+    <x-table.index :variant="'old'">
+      <x-table.head :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
+          <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
+        </x-table.row>
+      </x-table.head>
+      <x-table.body :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.cell :variant="'old'">Cell 1</x-table.cell>
+          <x-table.cell :variant="'old'">Cell 2</x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
+    
+    <x-typography :variant="'body-medium-bold'">Table variant old dengan tableTitle (isHaveTitle = true)</x-typography>
+    <x-table.index :variant="'old'" :isHaveTitle="true">
+      <x-slot name="tableTitleSlot">
+        <x-container.container class="flex-col" class="!p-0">Title</x-container>
+      </x-slot>
+      <x-table.head :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
+          <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
+        </x-table.row>
+      </x-table.head>
+      <x-table.body :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.cell :variant="'old'">Cell 1</x-table.cell>
+          <x-table.cell :variant="'old'">Cell 2</x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
+>>>>>>> 4e44e843cf501265a8bab98c8f1143665889e502
   
-  <x-typography :variant="'body-medium-bold'">Table variant default dengan tableTitle (isHaveTitle = true)</x-typography>
-  <x-table.index :isHaveTitle="true">
-    <x-slot name="tableTitleSlot">
-      <x-container :variant="'content-wrapper'" class="!px-0">Title</x-container>
-    </x-slot>
-    <x-table.head>
-      <x-table.row>
-        <x-table.header-cell>header1</x-table.header-cell>
-        <x-table.header-cell>header2</x-table.header-cell>
-      </x-table.row>
-    </x-table.head>
-    <x-table.body>
-      <x-table.row>
-        <x-table.cell>Cell 1</x-table.cell>
-        <x-table.cell>Cell 2</x-table.cell>
-      </x-table.row>
-    </x-table.body>
-  </x-table.index>
+    <x-typography :variant="'body-medium-bold'">Another variants color of Table Title</x-typography>
+    <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-yellow-gradient'">
+      <x-slot name="tableTitleSlot">
+        <x-container.container class="flex-col" class="!p-0">Yellow Gradient</x-container>
+      </x-slot>
+      <x-table.head :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
+          <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
+        </x-table.row>
+      </x-table.head>
+      <x-table.body :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.cell :variant="'old'">Cell 1</x-table.cell>
+          <x-table.cell :variant="'old'">Cell 2</x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
   
-  <x-typography :variant="'body-medium-bold'">Table variant old tanpa tableTitle (isHaveTitle = false)</x-typography>
-  <x-table.index :variant="'old'">
-    <x-table.head :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
-        <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
-      </x-table.row>
-    </x-table.head>
-    <x-table.body :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.cell :variant="'old'">Cell 1</x-table.cell>
-        <x-table.cell :variant="'old'">Cell 2</x-table.cell>
-      </x-table.row>
-    </x-table.body>
-  </x-table.index>
+    <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-blue-gradient'">
+      <x-slot name="tableTitleSlot">
+        <x-container.container class="flex-col" class="!p-0">Blue Gradient</x-container>
+      </x-slot>
+      <x-table.head :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
+          <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
+        </x-table.row>
+      </x-table.head>
+      <x-table.body :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.cell :variant="'old'">Cell 1</x-table.cell>
+          <x-table.cell :variant="'old'">Cell 2</x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
   
-  <x-typography :variant="'body-medium-bold'">Table variant old dengan tableTitle (isHaveTitle = true)</x-typography>
-  <x-table.index :variant="'old'" :isHaveTitle="true">
-    <x-slot name="tableTitleSlot">
-      <x-container :variant="'content-wrapper'" class="!p-0">Title</x-container>
-    </x-slot>
-    <x-table.head :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
-        <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
-      </x-table.row>
-    </x-table.head>
-    <x-table.body :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.cell :variant="'old'">Cell 1</x-table.cell>
-        <x-table.cell :variant="'old'">Cell 2</x-table.cell>
-      </x-table.row>
-    </x-table.body>
-  </x-table.index>
-
-  <x-typography :variant="'body-medium-bold'">Another variants color of Table Title</x-typography>
-  <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-yellow-gradient'">
-    <x-slot name="tableTitleSlot">
-      <x-container :variant="'content-wrapper'" class="!p-0">Yellow Gradient</x-container>
-    </x-slot>
-    <x-table.head :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
-        <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
-      </x-table.row>
-    </x-table.head>
-    <x-table.body :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.cell :variant="'old'">Cell 1</x-table.cell>
-        <x-table.cell :variant="'old'">Cell 2</x-table.cell>
-      </x-table.row>
-    </x-table.body>
-  </x-table.index>
-
-  <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-blue-gradient'">
-    <x-slot name="tableTitleSlot">
-      <x-container :variant="'content-wrapper'" class="!p-0">Blue Gradient</x-container>
-    </x-slot>
-    <x-table.head :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
-        <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
-      </x-table.row>
-    </x-table.head>
-    <x-table.body :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.cell :variant="'old'">Cell 1</x-table.cell>
-        <x-table.cell :variant="'old'">Cell 2</x-table.cell>
-      </x-table.row>
-    </x-table.body>
-  </x-table.index>
-
-  <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-red-gradient'">
-    <x-slot name="tableTitleSlot">
-      <x-container :variant="'content-wrapper'" class="!p-0">Red Gradient</x-container>
-    </x-slot>
-    <x-table.head :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
-        <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
-      </x-table.row>
-    </x-table.head>
-    <x-table.body :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.cell :variant="'old'">Cell 1</x-table.cell>
-        <x-table.cell :variant="'old'">Cell 2</x-table.cell>
-      </x-table.row>
-    </x-table.body>
-  </x-table.index>
-
-  <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-green-gradient'">
-    <x-slot name="tableTitleSlot">
-      <x-container :variant="'content-wrapper'" class="!p-0">Green Gradient</x-container>
-    </x-slot>
-    <x-table.head :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
-        <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
-      </x-table.row>
-    </x-table.head>
-    <x-table.body :variant="'old'">
-      <x-table.row :variant="'old'">
-        <x-table.cell :variant="'old'">Cell 1</x-table.cell>
-        <x-table.cell :variant="'old'">Cell 2</x-table.cell>
-      </x-table.row>
-    </x-table.body>
-  </x-table.index>
-
-  <x-typography :variant="'body-medium-bold'">Table Header and Table Cell in side by side</x-typography>
-  <x-table.index>
-    <x-table.body>
-      <x-table.row>
-          <x-table.header-cell :variantColor="'odd'" :position="'left'" :colspan="2">Header 1</x-table.header-cell>
-          <x-table.cell :variantColor="'odd'" :position="'left'" :colspan="4">Cell 1</x-table.cell>
-      </x-table-row>
-      <x-table.row>
-          <x-table.header-cell :variantColor="'even'" :position="'left'" :colspan="2">Header 2</x-table.header-cell>
-          <x-table.cell :variantColor="'even'" :position="'left'" :colspan="4" x-text="'Cell 2'"></x-table.cell>
-      </x-table-row>
-    </x-table.body>
-  </x-table.index>
-
-</x-container>
+    <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-red-gradient'">
+      <x-slot name="tableTitleSlot">
+        <x-container.container class="flex-col" class="!p-0">Red Gradient</x-container>
+      </x-slot>
+      <x-table.head :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
+          <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
+        </x-table.row>
+      </x-table.head>
+      <x-table.body :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.cell :variant="'old'">Cell 1</x-table.cell>
+          <x-table.cell :variant="'old'">Cell 2</x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
+  
+    <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-green-gradient'">
+      <x-slot name="tableTitleSlot">
+        <x-container.container class="flex-col" class="!p-0">Green Gradient</x-container>
+      </x-slot>
+      <x-table.head :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.header-cell :variant="'old'">header1</x-table.header-cell>
+          <x-table.header-cell :variant="'old'">header2</x-table.header-cell>
+        </x-table.row>
+      </x-table.head>
+      <x-table.body :variant="'old'">
+        <x-table.row :variant="'old'">
+          <x-table.cell :variant="'old'">Cell 1</x-table.cell>
+          <x-table.cell :variant="'old'">Cell 2</x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
+  
+    <x-typography :variant="'body-medium-bold'">Table Header and Table Cell in side by side</x-typography>
+    <x-table.index>
+      <x-table.body>
+        <x-table.row>
+            <x-table.header-cell :variantColor="'odd'" :position="'left'" :colspan="2">Header 1</x-table.header-cell>
+            <x-table.cell :variantColor="'odd'" :position="'left'" :colspan="4">Cell 1</x-table.cell>
+        </x-table.row>
+        <x-table.row>
+            <x-table.header-cell :variantColor="'even'" :position="'left'" :colspan="2">Header 2</x-table.header-cell>
+            <x-table.cell :variantColor="'even'" :position="'left'" :colspan="4" x-text="'Cell 2'"></x-table.cell>
+        </x-table.row>
+      </x-table.body>
+    </x-table.index>
+  
+  </x-container>
+</x-container.wrapper>
 
 
 @endsection
