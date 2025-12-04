@@ -26,6 +26,10 @@
         <x-table.cell>Cell 1</x-table.cell>
         <x-table.cell>Cell 2</x-table.cell>
       </x-table.row>
+      <x-table.row>
+        <x-table.cell>Cell 1</x-table.cell>
+        <x-table.cell>Cell 2</x-table.cell>
+      </x-table.row>
     </x-table.body>
   </x-table.index>
   

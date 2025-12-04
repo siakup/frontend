@@ -29,6 +29,8 @@
       'light-blue-gradient': 'bg-gradient-to-r from-white to-blue-50',
       'light-red-gradient': 'bg-gradient-to-r from-white to-red-100',
       'light-green-gradient': 'bg-gradient-to-r from-white to-green-400',
+      'light-red-white-gradient': 'bg-gradient-to-r from-disable-red to-white',
+      
     },
     variant: {{json_encode($variant)}},
     isHaveTitle: {{json_encode($isHaveTitle)}},

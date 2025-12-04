@@ -22,6 +22,6 @@
     $containerClass = "{$selectedVariant} {$class} {$borderRadius}";
 @endphp
 
-<div {{ $attributes->merge(['class' => $containerClass]) }}>
+<div {{ $attributes->except('class')->merge(['class' => $containerClass]) }}>
     {{ $slot }}
 </div>

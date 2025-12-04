@@ -25,16 +25,29 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dialog');
     }
-    
-    public function typography(Request $request) {
-      return view('components-documentation.typography');
+
+    public function typography(Request $request)
+    {
+        return view('components-documentation.typography');
     }
 
-    public function button(Request $request) {
-      return view('components-documentation.button');
+    public function button(Request $request)
+    {
+        return view('components-documentation.button');
     }
 
-    public function quantity(Request $request) {
-      return view('components-documentation.quantity');
+    public function quantity(Request $request)
+    {
+        return view('components-documentation.quantity');
+    }
+
+    public function cardMataKuliah(Request $request)
+    {
+        return view('components-documentation.card-mata-kuliah');
+    }
+
+    public function kalendarJadwalKuliah(Request $request)
+    {
+        return view('components-documentation.jadwal-kuliah');
     }
 }

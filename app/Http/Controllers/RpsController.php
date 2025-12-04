@@ -595,6 +595,16 @@ class RpsController extends Controller
 
     public function submitSubmission()
     {
+        $infoRps = [
+            'mata_kuliah' => 'Termodinamika Teknik Kimia 2',
+            'kode' => '23219',
+            'bobot' => 3,
+            'semester' => '4',
+            'rumpun_mk' => 'Mata Kuliah Prodi',
+            'level_program' => 'S1',
+            'tgl_penyusunan' => 'Desember 2021',
+        ];
+
         $dosen = [
             'nama' => 'Catia Angli Curie, MS.',
             'nip' => '116071',
@@ -639,10 +649,40 @@ class RpsController extends Controller
         $deskripsiUmum = [
             'deskripsi' => 'Mata kuliah ini mempelajari aplikasi hukum pertama dan kedua termodinamika dalam lingkup teknik kimia terkait produksi daya dari energi panas (steam power plant) serta sistem refrigerasi dan pencairan gas. Selain itu, mata kuliah ini juga mempelajari kesetimbangan fasa senyawa dalam campuran dan kesetimbangan reaksi kimia dengan pendekatan termodinamika',
             'materi' => 'Produksi Daya dari Energi Panas (steam power plant), Refrigerasi dan Liquefaction, Kesetimbangan Fasa (Uap-Cair), Prinsip Termodinamika pada Larutan dan Aplikasinya, Kesetimbangan Reaksi Kimia.',
-            'pustaka' => 'Smith, J. M., Van Ness, H.C., Abbott, M. M.,"Introduction to Chemical Engineering Thermodynamics" 7th ed., McGraw-Hill Co-Singapore. 2005. <br> Cengel, Y.A. dan Boles, M.A., “Thermodynamics: An Engineering Approach” 5th ed., McGraw-Hill, 2006. <br> Atkins, de Paula., “Atkin’s Physical Chemistry”, 9th ed., Oxford University Press, 2009.',
+            'pustaka' => 'Smith, J. M., Van Ness, H.C., Abbott, M. M.,"Introduction to Chemical Engineering Thermodynamics" 7th ed., McGraw-Hill Co-Singapore. 2005.  <br>  Cengel, Y.A. dan Boles, M.A., “Thermodynamics: An Engineering Approach” 5th ed., McGraw-Hill, 2006.  <br>  Atkins, de Paula., “Atkin’s Physical Chemistry”, 9th ed., Oxford University Press, 2009.',
             'metode' => 'Kuliah (K) <br> Diskusi & Latihan (DL) <br> Tugas (T take home assignments yang dinilai maupun yang tidak dinilai  (misal: mahasiswa diberi pre-course reading material, dsb)',
             'media' => '<b> Perangkat lunak </b> <br> Ms. Office (Power Point,  Word, Excel) <br> Nitro PDF <br> <br> <b>Perangkat keras</b> <br> Laptop <br> Proyektor',
+            'pengajar' => 'Catia Angli Curie, MS',
+            'mk_syarat' => 'Termodinamika 1',
         ];
+
+        $penilaianList = [
+            'penilaian' => [
+                [
+                    'metode' => 'Tugas',
+                    'bobot' => 20,
+                    'cpmk' => [true, true],
+                ],
+                [
+                    'metode' => 'Kuis',
+                    'bobot' => 20,
+                    'cpmk' => [true, true],
+                ],
+                [
+                    'metode' => 'UTS',
+                    'bobot' => 30,
+                    'cpmk' => [true, true],
+                ],
+                [
+                    'metode' => 'UAS',
+                    'bobot' => 30,
+                    'cpmk' => [true, true],
+                ],
+            ],
+
+            'total' => 100,
+        ];
+
         $rencanaPerkuliahan = [
             [
                 'minggu' => 1,
@@ -705,9 +745,9 @@ class RpsController extends Controller
         ];
 
         $rencanaPerkuliahan = collect($rencanaPerkuliahan)->map(function ($item) {
-            $item['total_waktu'] = collect($item)->only([
-                'waktu_kuliah', 'waktu_diskusi_latihan', 'waktu_praktikum', 'waktu_mandiri',
-            ])->sum();
+            $item['total_waktu'] = collect($item)
+                ->only(['waktu_kuliah', 'waktu_diskusi_latihan', 'waktu_praktikum', 'waktu_mandiri'])
+                ->sum();
 
             return $item;
         });
@@ -724,6 +764,48 @@ class RpsController extends Controller
         $waktuTotal['total'] = array_sum($waktuTotal);
         $waktuStandarNasional = 140;
         $sks = 3;
+
+        $matriksList = [
+            [
+                'nilai' => '40 < X <= 60',
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman konsep dan teknik pemecahan masalah, tapi masih ada gap dalam penjelasan atau alasannya.',
+            ],
+            [
+                'nilai' => '60 < X <= 80',
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman sebagian dari konsep atau mahasiswa telah memulai jawaban dengan benar namun salah pada bagian penyelesaian masalah.',
+            ],
+            [
+                'nilai' => '80 < X <= 100',
+                'jawaban' => 'Jabawan mahasiswa menunjukan pemahaman tentang bagaimana memecahkan masalah dan hasilnya benar. Kesalahan kecil dapat diterima sepanjang tidak mengindikasıkan kesalahpahaman konsep.',
+            ],
+        ];
+
+        $evaluasiList = [
+            [
+                'id' => 1,
+                'cpmk' => 'CPMK-1',
+                'deskripsi' => 'Mahasiswa dapat mengevaluasi performa steam power plant, sistem refrigerasi dan sistem pencairan gas dalam hal kebutuhan energi, aliran massa yang terlibat, dan efisiensinya.',
+                'rincian' => [
+                    'tugas' => true,
+                    'kuis' => true,
+                    'uts' => false,
+                    'uas' => true,
+                ],
+            ],
+            [
+                'id' => 2,
+                'cpmk' => 'CPMK-2',
+                'deskripsi' => 'Mahasiswa mampu menentukan dan menggunakan persamaan kesetimbangan yang sesuai untuk menyelesaikan permasalahan teknik kimia sederhana terkait kesetimbangan fasa maupun kesetimbangan reaksi kimia.',
+                'rincian' => [
+                    'tugas' => false,
+                    'kuis' => true,
+                    'uts' => true,
+                    'uas' => false,
+                ],
+            ],
+        ];
+
+        $cpl = 'CPL-G';
 
         return view('rps.submission.submit', get_defined_vars());
     }
