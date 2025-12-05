@@ -85,7 +85,7 @@
                     <template x-if="user.status !== 'active'"><x-badge :variant="'green-bordered'"  x-text="'Tidak Aktif'"></x-badge></template>
                   </x-table.cell>
                   <x-table.cell :variant="'old'">
-                    <x-container.container :class="'!px-0 w-full items-center'" :variant="'content-wrapper'">
+                    <x-container.container :class="'items-center justify-center'" :background="'transparent'">
                       <x-button 
                         x-on:click="window.api.requestDisplayTemplate(
                           '{{ route('users.resetPassword') }}',
@@ -97,10 +97,10 @@
                       >
                         Reset Password
                       </x-button>
-                    </x-container>
+                    </x-container.container>
                   </x-table.cell>
                   <x-table.cell :variant="'old'">
-                      <x-container.container :variant="'content-wrapper'" :class="'flex !flex-row gap-10 items-center justify-center'">
+                      <x-container.container :background="'transparent'" :class="'gap-10 items-center justify-center'">
                         <x-button
                             :variant="'text-link'"
                             :size="'sm'"

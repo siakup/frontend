@@ -18,7 +18,7 @@
 
           <x-button 
             x-on:click="$store.mainLayout.isOpen = !$store.mainLayout.isOpen" 
-            :variant="'tertiary'" 
+            :variant="'text-link'" 
             :icon="'arrow-left/black-32'"
             class="row-start-2 row-end-3 col-start-1 col-end-2"
           />

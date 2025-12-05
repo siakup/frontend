@@ -5,7 +5,7 @@
     'default' => [
       'other-class' => '',
       'odd' => $odd ? 'bg-gray-200' : 'bg-white',
-      'last' => $last ? 'border-b-0' : ''
+      'last' => $last ? 'border-b-none' : ''
     ],
     'old' => [
       'other-class' => "items-center",

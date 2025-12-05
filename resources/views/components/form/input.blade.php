@@ -19,9 +19,10 @@
     $max = $attributes->get('maxlength') ?? $attributes->get('max');
 @endphp
 
-<div class="w-full"
+<div class="w-full h-max"
     x-data="{
         value: @js($value ?? ''),
+        showRemoveIcon: @js($showRemoveIcon ?? false),
         removeButton: false,
         serverError: @js($serverErrorMessage),
         clientError: '',
@@ -101,14 +102,14 @@
             {{ $attributes->except(['placeholder', 'name', 'type', 'id', 'class', 'error', 'helperText', 'minlength', 'maxlength']) }} 
         />
 
-        @if ($showRemoveIcon)
+        <template x-if="showRemoveIcon">
             <button type="button" 
                     x-show="removeButton && !{{ $disabled ? 'true' : 'false' }}" 
                     x-on:click="value = ''; removeButton = false; clientError = ''; serverError = '';"
                     class="cursor-pointer">
                 <x-icon :name="'multiplication-sign-circle/solid-grey-16'"></x-icon>
             </button>
-        @endif
+        </template>
         
         <div x-show="hasError" x-cloak class="pr-2">
              <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -117,7 +118,7 @@
         </div>
     </div>
 
-    <div class="mt-1 ml-1 text-xs font-medium transition-colors duration-200 min-h-[1.25rem]"
+    <div x-show="hasError" class="mt-1 ml-1 text-xs font-medium transition-colors duration-200 min-h-[1.25rem]"
          :class="hasError ? 'text-red-500' : 'text-gray-500'">
         <span x-text="message"></span>
     </div>

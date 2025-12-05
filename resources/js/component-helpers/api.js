@@ -1,5 +1,5 @@
 function requestDisplayTemplate(route, idParent, idRenderChild, data = null) {
-  console.log(route, idParent, idRenderChild, data);
+  // route (tautan), idParent (id dari parentnya display yang dirender), idRenderChild (id dari display yang dirender)
   $.ajax({
       url: route,
       method: 'GET',
@@ -9,7 +9,7 @@ function requestDisplayTemplate(route, idParent, idRenderChild, data = null) {
       },
       success: function(html) {
           $(idParent).html(html);
-          $(idRenderChild).addClass('flex').removeClass('hidden');
+          console.log(Alpine.initTree($(idParent)[0]));
       },
   });
 }

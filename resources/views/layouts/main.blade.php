@@ -4,7 +4,6 @@
 <head>
     @include('partials.head')
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.19/index.global.min.js'></script>
-    @vite(['resources/js/app.js'])
 </head>
 
 <body>
@@ -41,14 +40,6 @@
     </x-container.container>
 
   </x-container.wrapper>
-
-  <script>
-      document.addEventListener('alpine:init', () => {
-        Alpine.store('mainLayout', { 
-          isOpen: true
-        });
-      });
-  </script>
   
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="{{ asset('js') }}"></script>
@@ -57,6 +48,14 @@
   @yield('javascript')
   @yield('modals')
   @fluxScripts
+  @vite(['resources/js/app.js'])
+  <script>
+      document.addEventListener('alpine:init', () => {
+        Alpine.store('mainLayout', { 
+          isOpen: true
+        });
+      });
+  </script>
 </body>
 
 </html>

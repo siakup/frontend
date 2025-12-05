@@ -36,7 +36,7 @@
     </x-container.container>
 
     <x-container.container :background="'content-white'" class="row-start-3 row-end-10 items-center justify-between">
-      <x-container.wrapper :rows="7">
+      <x-container.wrapper :rows="7" :gapY="4">
 
         <x-container.container :background="'transparent'" :width="'full'" class="row-start-1 row-end-2">
           <x-typography :variant="'body-medium-bold'">Ubah Informasi Data Pengguna</x-typography>
@@ -46,7 +46,7 @@
           <x-form.input-container>
             <x-slot name="label">NIP</x-slot>
             <x-slot name="input">
-              <x-container.container :background="'transparent'" :width="'full'" class="relative">
+              <x-container.container :background="'transparent'" :width="'full'" :height="'maxContent'" class="relative">
                 <x-form.search
                   :placeholder="'Username / Nama / Status'"
                   :storeName="'editPage'"
@@ -62,7 +62,8 @@
                         :background="'content-white'"
                         :padding="'py-3 px-4'"
                         :gap="'gap-2'"
-                        :class="'flex-col justify-start cursor-pointer transition-[background] duration-150 hover:bg-red-500 group text-black hover:text-white'"
+                        :radius="'none'"
+                        :class="'flex-col justify-start cursor-pointer transition-[background] duration-150 hover:bg-red-500 group text-black hover:text-white border-none'"
                         x-text="user.nomor_induk+' - '+user.nama"
                         x-on:click="getUser('{{ route('users.index') }}', user)"
                         :width="'full'"
@@ -121,7 +122,7 @@
           <x-form.input-container>
             <x-slot name="label">Status</x-slot>
             <x-slot name="input">
-              <x-form.toggle x-model="$store.editPage.status" />
+              <x-form.switch name="status" x-model="$store.editPage.status" externalOnLabel="Aktif" externalOffLabel="Tidak Aktif" />
             </x-slot>
           </x-form.input-container>
         </x-container.container>

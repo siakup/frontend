@@ -3,7 +3,7 @@
 @section('title', 'Manajemen Pengguna')
 
 @section('javascript')
-  <script type="module">
+  <script>
     document.addEventListener('alpine:init', () => {
       Alpine.store('createPage', {
         users: [],
@@ -35,7 +35,7 @@
     </x-container.container>
 
     <x-container.container :background="'content-white'" :class="'row-start-3 row-end-10 items-center justify-between'">
-      <x-container.wrapper :rows="7">
+      <x-container.wrapper :rows="7" :gapY="4">
 
         <x-container.container :background="'transparent'" :width="'full'" class="row-start-1 row-end-2">
           <x-typography :variant="'body-medium-bold'">Pengguna Baru</x-typography>
@@ -120,12 +120,12 @@
           <x-form.input-container>
             <x-slot name="label">Status</x-slot>
             <x-slot name="input">
-              <x-form.toggle x-model="$store.createPage.status" />
+              <x-form.switch name="status" x-model="$store.createPage.status" externalOnLabel="Aktif" externalOffLabel="Tidak Aktif" />
             </x-slot>
           </x-form.input-container>
         </x-container.container>
 
-        <x-container.container :variant="'content-wrapper'" :class="'flex flex-row justify-end !px-0'">
+        <x-container.container :variant="'content-wrapper'" :class="'justify-end'">
           <x-button
             :variant="'primary'" 
             x-on:click="$store.createPage.isModalTambahPeranOpen = true;"
@@ -255,7 +255,7 @@
           <x-container.wrapper :cols="2" :gapX="4">
 
             <x-container.container :background="'transparent'" class="col-start-1 col-end-2">
-              <x-button :variant="'secondary'" x-on:click="$store.editPage.isModalTambahPeranOpen = false" class="!w-full">Cek Kembali</x-button>
+              <x-button :variant="'secondary'" x-on:click="$store.createPage.isModalTambahPeranOpen = false" class="!w-full">Cek Kembali</x-button>
             </x-container.container>
 
             <x-container.container :background="'transparent'" class="col-start-2 col-end-3">
@@ -269,7 +269,7 @@
 
           </x-container.wrapper>
         </x-slot>
-      </x-modal.container-pure-js>
+      </x-modal.container>
     </div>
 
     <div 

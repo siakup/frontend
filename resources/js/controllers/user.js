@@ -7,15 +7,11 @@ class User {
         this.$watch(
           () => ({
             sort: this.$store.listPage.sort,
-            program_perkuliahan: this.$store.listPage.program_perkuliahan,
-            program_studi: this.$store.listPage.program_studi,
             search: this.$store.listPage.search,
           }),
           (newFilters) => {
             this.fetchData({
               sort: newFilters.sort,
-              program_perkuliahan: newFilters.program_perkuliahan,
-              program_studi: newFilters.program_studi,
               search: newFilters.search
             });
           }

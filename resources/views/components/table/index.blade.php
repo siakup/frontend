@@ -7,17 +7,8 @@
   'colorTypeTableTitle' => 'pure-gray'
 ])
 
-{{-- @php
-  $variantColorsTableTitle = [
-    'pure-gray'=> 'disable-blue',
-    'light-yellow-gradient'=> 'yellow-gradient',
-    'light-blue-gradient'=> 'blue-gradient',
-    'light-red-gradient'=> 'red-gradient',
-    'light-green-gradient'=> 'green-gradient',
-  ];
-@endphp --}}
-
-<x-container.container 
+<x-container.wrapper 
+  :rows="3"
   x-data="{
     variants: {
       default: {
@@ -44,18 +35,26 @@
     isHaveTitle: {{json_encode($isHaveTitle)}},
     colorTypeTableTitle: {{json_encode($colorTypeTableTitle)}}
   }"
-  class="overflow-x-scroll flex-col scroll-hide w-full p-0!"
+  :padding="'p-0'"
+  class="overflow-hidden h-auto"
   x-bind:class="variants[variant].divClass"
 >
-  <template x-if="isHaveTitle">
-    <div 
-      class="sticky left-0 border-b border-b-gray-400 flex justify-between p-4! rounded-none! w-full"
-      x-bind:class="variantColorsTableTitle[colorTypeTableTitle]"
-    >
-      {{ $tableTitleSlot ?? '' }}
-    </div>
-  </template>
-  <table x-bind:class="variants[variant].tableClass" class="min-w-full table-fixed">
-      {{ $slot }}
-  </table>
-</x-container>
+  <x-container.container :background="'transparent'" x-bind:class="{'row-start-1': isHaveTitle, 'row-end-2': isHaveTitle, 'hidden': !isHaveTitle}">
+    <template x-if="isHaveTitle">
+      <x-container.wrapper x-bind:class="variantColorsTableTitle[colorTypeTableTitle]">
+
+        <x-container.container :background="'transparent'" class="col-start-1 col-end-2 row-start-1 row-end-2">
+          {{ $tableTitleSlot ?? '' }}
+        </x-container.container>
+
+      </x-container.wrapper>
+    </template>
+  </x-container.container>
+
+  <x-container.container :background="'transparent'" :radius="'none'" class="row-end-4 overflow-scroll scroll-hide" x-bind:class="{'row-start-2': isHaveTitle, 'row-start-1': !isHaveTitle}">
+    <table x-bind:class="variants[variant].tableClass" class="min-w-full table-fixed">
+        {{ $slot }}
+    </table>
+  </x-container.container>
+
+</x-container.wrapper>
