@@ -11,13 +11,19 @@
         <x-container.container variant="content" class="ml-3" x-data="rps()">
             <x-container.container variant="content-wrapper" class="mb-5">
                 <x-form.input-container labelClass="w-50">
+                    <x-slot name="label">Periode Akademik</x-slot>
+                    <x-slot name="input">
+                        <x-dropdown.periode-akademik x-model="periode"></x-dropdown.periode-akademik>
+                    </x-slot>
+                </x-form.input-container>
+                {{-- <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Periode</x-slot>
                     <x-slot name="input">
                         <x-form.dropdown variant="gray" buttonId="dropdownPeriodeRpsButton"
                             dropdownId="dropdownPeriodeRpsList" label="-Pilih Periode Akademik-" :dropdownItem="$periodeList"
                             x-model="periode" />
                     </x-slot>
-                </x-form.input-container>
+                </x-form.input-container> --}}
                 <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Program Studi</x-slot>
                     <x-slot name="input">

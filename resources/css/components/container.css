@@ -4,7 +4,8 @@
 
   .transparent { @apply bg-transparent flex; }
   .content-white { @apply bg-white border border-gray-400 flex; }
-  .content-grey { @apply bg-gray-400 min-h-17 flex; }
+  .content-gray { @apply bg-gray-400 flex; }
+  .content-red { @apply bg-red-400 flex; }
   .content-disable-white { @apply bg-disable-white min-h-17 flex; }
   .content-sender { @apply bg-green-100 border border-gray-400 rounded-tl-none flex; }
   .content-receiver { @apply bg-blue-50 border border-gray-400 rounded-tl-none flex; }
@@ -14,6 +15,8 @@
   .blue-gradient { @apply bg-gradient-to-r from-white to-blue-50 flex; }
   .yellow-gradient { @apply bg-gradient-to-r from-white to-yellow-100 flex; }
   .disable-blue { @apply bg-disable-blue flex; }
+  .disable-gray { @apply bg-disable-gray flex; }
+  .disable-white { @apply bg-disable-white flex; }
   .disable-red-gradient-inverse { @apply border border-gray-400 bg-linear-to-r from-disable-red via-disable-red to-white; }
   .content-under-navbar { @apply flex flex-col gap-5 p-5 items-stretch border border-gray-400 border-t-red-200 bg-white rounded-b-lg overflow-visible relative z-1;}
 }

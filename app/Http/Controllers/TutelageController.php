@@ -174,7 +174,7 @@ class TutelageController extends Controller
                     'title' => 'Pemrograman Web',
                     'start_date' => '2025-09-27', // mulai semester
                     'end_date' => '2026-01-27', // akhir semester
-                    'day_of_week' => 0, // Senin (0=minggu, 1=senin, dst)
+                    'day_of_week' => 4, // Senin (0=minggu, 1=senin, dst)
                     'start_time' => '09:00:00',
                     'end_time' => '12:00:00',
                     'color' => '#EB474D',

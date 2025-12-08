@@ -26,47 +26,78 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dialog');
     }
-    
-    public function typography(Request $request) {
-      return view('components-documentation.typography');
+
+    public function typography(Request $request)
+    {
+        return view('components-documentation.typography');
     }
 
-    public function button(Request $request) {
-      return view('components-documentation.button');
+    public function button(Request $request)
+    {
+        return view('components-documentation.button');
     }
 
-  public function quantity(Request $request)
-  {
-    return view('components-documentation.quantity');
-  }
+    public function card(Request $request)
+    {
+        return view('components-documentation.card');
+    }
 
-  public function breadcrumb(Request $request)
-  {
-    return view('components-documentation.breadcrumb');
-  }
+    public function cardJadwalKuliah(Request $request)
+    {
+        $data1 = [
+            'mataKuliah' => 'Proyek Multi Disiplin',
+            'kode' => 'CS7',
+            'periode' => '2024',
+            'kodeRuangan' => '2705',
+            'date' => 'Senin, 17 Juli',
+            'startTime' => '10.00',
+            'endTime' => '11.40',
+        ];
 
-  public function tab(Request $request)
-  {
-    return view('components-documentation.tab');
-  }
+        $data2 = [
+            'mataKuliah' => 'Basis Data',
+            'kode' => 'CS7',
+            'periode' => '2024',
+            'kodeRuangan' => '2705',
+            'date' => 'Senin, 17 Juli',
+            'startTime' => '10.00',
+            'endTime' => '11.40',
+        ];
 
-  public function input(Request $request)
-  {
-    return view('components-documentation.input');
-  }
+        return view('components-documentation.card-jadwal-kuliah', get_defined_vars());
+    }
+    public function quantity(Request $request)
+    {
+        return view('components-documentation.quantity');
+    }
 
-  public function checkbox(Request $request)
-  {
-    return view('components-documentation.checkbox');
-  }
+    public function breadcrumb(Request $request)
+    {
+        return view('components-documentation.breadcrumb');
+    }
 
-  public function file(Request $request)
-  {
-    return view('components-documentation.file');
-  }
+    public function tab(Request $request)
+    {
+        return view('components-documentation.tab');
+    }
 
-  public function modal(Request $request)
-  {
-    return view('components-documentation.modal');
-  }
+    public function input(Request $request)
+    {
+        return view('components-documentation.input');
+    }
+
+    public function checkbox(Request $request)
+    {
+        return view('components-documentation.checkbox');
+    }
+
+    public function file(Request $request)
+    {
+        return view('components-documentation.file');
+    }
+
+    public function modal(Request $request)
+    {
+        return view('components-documentation.modal');
+    }
 }

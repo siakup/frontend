@@ -13,6 +13,28 @@
 {{-- isRounderedBottom = true: radius di sisi atas --}}
 <x-container.wrapper :rows="12">
 
+<<<<<<< HEAD
+<x-container :variant="'content-wrapper'">
+  <x-typography :variant="'body-medium-bold'">Table variant default tanpa tableTitle (isHaveTitle = false)</x-typography>
+  <x-table.index>
+    <x-table.head>
+      <x-table.row>
+        <x-table.header-cell>header1</x-table.header-cell>
+        <x-table.header-cell>header2</x-table.header-cell>
+      </x-table.row>
+    </x-table.head>
+    <x-table.body>
+      <x-table.row>
+        <x-table.cell>Cell 1</x-table.cell>
+        <x-table.cell>Cell 2</x-table.cell>
+      </x-table.row>
+      <x-table.row>
+        <x-table.cell>Cell 1</x-table.cell>
+        <x-table.cell>Cell 2</x-table.cell>
+      </x-table.row>
+    </x-table.body>
+  </x-table.index>
+=======
   <x-container.container class="flex-col">
     <x-typography :variant="'body-medium-bold'">Table variant default tanpa tableTitle (isHaveTitle = false)</x-typography>
     <x-table.index>
@@ -83,6 +105,7 @@
         </x-table.row>
       </x-table.body>
     </x-table.index>
+>>>>>>> 4e44e843cf501265a8bab98c8f1143665889e502
   
     <x-typography :variant="'body-medium-bold'">Another variants color of Table Title</x-typography>
     <x-table.index :variant="'old'" :isHaveTitle="true" :colorTypeTableTitle="'light-yellow-gradient'">

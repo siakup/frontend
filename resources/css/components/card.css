@@ -1,0 +1,16 @@
+@layer utilities {
+    .card-mk-base { @apply w-full max-w-85.5 h-full max-h-25 rounded-md border p-4 bg-cover bg-center bg-no-repeat flex flex-col gap-1; }
+    .card-mk-primary { @apply text-white bg-top; }
+    .card-mk-secondary { @apply border-disable-gray bg-gray-50; }
+
+    .card-jadwal { @apply max-h-20 min-h-14 rounded-sm p-2 cursor-pointer; }
+    .card-jadwal.week  { @apply max-w-33.75; }
+    .card-jadwal.day  { @apply max-w-241; }
+
+    .card-jadwal.disable { @apply border border-gray-400 bg-disable-gray; }
+    .card-jadwal.active { @apply bg-red-400 text-white; }
+    .card-jadwal .time.disable { @apply text-red-500 self-center; }
+    .card-jadwal .time.active { @apply text-white; }
+
+    .card-jadwal-popup { @apply absolute z-1000 shadow-high bg-disable-gray w-xs rounded-md max-h-56 left-1/2 -translate-x-1/2 top-5; }
+}
