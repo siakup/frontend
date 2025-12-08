@@ -1,5 +1,6 @@
 @props([
     'variant' => 'secondary',
+    'data'=> null,
 ])
 
 @php
@@ -20,8 +21,8 @@
 
 <div class="card-mk-base {{ $selectedVariant }}"
     style="{{ $selectedBg }}">
-    <x-typography variant="body-large-bold">{{ $mataKuliah }}</x-typography>
+    <x-typography variant="body-large-bold">{{ $data['nama'] }}</x-typography>
     <div>
-        <x-typography variant="body-medium-bold">{{ $sks }} SKS | {{ $kode }}</x-typography>
+        <x-typography variant="body-medium-bold">{{ $data['sks'] }} SKS | {{ $data['kode'] }}</x-typography>
     </div>
 </div>

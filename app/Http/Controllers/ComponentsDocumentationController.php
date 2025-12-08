@@ -37,9 +37,9 @@ class ComponentsDocumentationController extends Controller
         return view('components-documentation.button');
     }
 
-    public function cardMataKuliah(Request $request)
+    public function card(Request $request)
     {
-        return view('components-documentation.card-mata-kuliah');
+        return view('components-documentation.card');
     }
 
     public function cardJadwalKuliah(Request $request)
