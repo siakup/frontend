@@ -24,7 +24,7 @@
           startPage: Math.max(2, pagination.currentPage - 1),
           endPage: Math.min(pagination.last - 1, pagination.currentPage + 1),
           async onChangePage(page, limit) {
-            await requestGetData(
+            await window.api.requestGetData(
               '{{ $requestRoute }}', {
                 page: page,
                 limit: limit,
@@ -38,7 +38,7 @@
             });
           },
           async onChangeLimit(limit) {
-            await requestGetData(
+            await window.api.requestGetData(
               '{{ $requestRoute }}', {
                 limit: limit,
                 display: 'false',

@@ -21,33 +21,40 @@
 @endphp
 
 <x-container.wrapper :rows="$rowsTotal-1" :cols="12" :padding="'p-0'">
+
   <x-container.container :width="'auto'" :height="'auto'" :variant="'flat'" class="col-start-1 {{isset($onlineSlot) ? 'col-end-3' : 'col-end-4' }} 
     {{$variantRowPosition['imageSlot']}} 
     self-center justify-self-center"
   >
     {{ $imageSlot}}
-  </x-container>
+  </x-container.container>
+
   @if(isset($onlineSlot))
   <x-container.container :width="'auto'" :height="'auto'" :variant="'flat'" class="col-start-3 col-end-4 {{$variantRowPosition['nameSlot']}} self-center justify-self-center">
     {{ $onlineSlot }}
-  </x-container>
+  </x-container.container>
   @endif
+
   <x-container.container :width="'auto'" :height="'auto'" :variant="'flat'" class="col-start-4 col-span-9 {{$variantRowPosition['nameSlot']}} self-center">
     {{ $nameSlot }}
-  </x-container>
+  </x-container.container>
+
   @if(isset($roleSlot))
     <x-container.container :width="'auto'" :height="'auto'" :variant="'flat'" class="col-start-4 col-span-9 {{$variantRowPosition['roleSlot']}} self-end">
       {{ $roleSlot }}
-    </x-container>
+    </x-container.container>
   @endif
+
   @if(isset($programStudiSlot))
     <x-container.container :width="'auto'" :height="'auto'" :variant="'flat'" class="col-start-4 col-span-9 {{$variantRowPosition['programStudiSlot']}}">
       {{ $programStudiSlot }}
-    </x-container>
+    </x-container.container>
   @endif
+
   @if(isset($footerSlot))
     <x-container.container :width="'auto'" :height="'auto'" :variant="'flat'" class="col-start-1 col-span-12 {{$variantRowPosition['footerSlot']}}">
       {{ $footerSlot }}
-    </x-container>
+    </x-container.container>
   @endif
-</x-container>
+
+</x-container.wrapper>

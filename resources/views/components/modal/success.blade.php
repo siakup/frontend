@@ -5,50 +5,40 @@
     'closeText' => 'Close',
 ])
 
-@php
-    $id = $id ?? 'success-modal-' . uniqid();
-@endphp
-
-<x-modal.container
-    :id="$id"
-    :show="$show"
-    x-data="{
-        open: @js($show),
-        closeModal() {
-            this.open = false;
-            this.$dispatch('close-success');
-        }
-    }"
-    x-show="open"
-    x-on:keydown.escape="closeModal()"
-    x-transition
->
+<x-modal.container :id="$id" :show="$show">
     <!-- Header -->
-    <x-slot name="header" class="relative text-center">
-        <x-typography variant="heading-h3">{{ $title }}</x-typography>
+    <x-slot name="header">
+        <div class="modal-header-wrapper">
+            <x-typography variant="heading-h3" class="modal-title">
+                {{ $title }}
+            </x-typography>
 
-        <button
-            x-on:click="closeModal()"
-            class="absolute top-[20px] right-[20px] cursor-pointer w-8 h-8 flex items-center justify-center"
-            type="button"
-        >
-            <img
-                src="{{ asset('assets/icon-tick-circle.svg') }}"
-                alt="close"
-                class="w-[32px] h-[32px]"
-            />
-        </button>
+            {{-- Tombol Close --}}
+            <button 
+                x-on:click="$dispatch('close-modal', { id: '{{ $id }}' })"
+                class="modal-close-btn"
+                type="button"
+            >
+                <x-icon name="close-cancel/grey-24" class="w-[32px] h-[32px]" />
+            </button>
+        </div>
     </x-slot>
 
     <!-- Content -->
-    <div class="text-gray-700">
+    <div class="modal-body">
         {{ $slot }}
     </div>
 
     <!-- Footer -->
-    <x-slot name="footer" class="text-center">
-        <x-button.primary x-on:click="closeModal()" type="button">
-            {{ $closeText }}
-        </x-button.primary>
+    <x-slot name="footer">
+        <div class="modal-footer-wrapper">
+            <x-button.primary 
+                x-on:click="$dispatch('close-modal', { id: '{{ $id }}' })" 
+                type="button"
+                class="modal-btn-action"
+            >
+                {{ $closeText }}
+            </x-button.primary>
+        </div>
     </x-slot>
 </x-modal.container>

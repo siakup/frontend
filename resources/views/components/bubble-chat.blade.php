@@ -1,7 +1,7 @@
 <x-container.container 
   :variant="'content-wrapper'"
   x-data="{{$attributes->get('x-data')}}"
-  class="w-full !flex-row !gap-1"
+  :gap="'gap-1'"
   x-bind:class="{
     'justify-end': type === 'sender',
     'justify-start': type === 'receiver'
@@ -9,8 +9,8 @@
 >
   <img x-bind:src="imgProfile" class="w-8 h-8 rounded-full" />
   <x-container.container 
-    :variant="'content-wrapper'" 
-    class="!gap-0 w-1/2" 
+    :variant="'content-wrapper'"
+    class="!w-1/2" 
     x-bind:class="{
     'items-end': type === 'sender',
     'items-start': type === 'receiver',

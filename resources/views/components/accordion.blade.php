@@ -25,10 +25,7 @@
 
 <div 
   x-data="{ open: {{ json_encode($isDefaultOpen) }} }"
-  class="rounded-lg border border-[#E8E8E8] overflow-hidden"
-  @if($attributes->has('x-on:click'))
-    x-on:click="{{$attributes->get('x-on:click')}}"
-  @endif
+  {{ $attributes->merge(['class' => 'rounded-lg border border-[#E8E8E8] overflow-hidden'])}}
 >
   <button 
     type="button"
