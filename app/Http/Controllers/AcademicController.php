@@ -33,12 +33,19 @@ class AcademicController extends Controller
             $url = PeriodAcademicService::getInstance()->getListAllPeriode();
             $response = getCurl($url, $params, getHeaders());
 
+            $pagination = [
+              'currentPage' => $response->pagination->current_page,
+              'from' => $response->pagination->from,
+              'last' => ceil($response->pagination->total / $response->pagination->per_page),
+              'limit' => $limit
+            ];
+
             if (! isset($response->success) || ! $response->success) {
                 throw new \Exception($response);
             }
 
             if ($request->ajax()) {
-                return $this->successResponse($response->data ?? [], 'Berhasil mendapatkan data');
+                return $this->successResponse(['periode' => $response->data, 'pagination' => $pagination], 'Berhasil mendapatkan data');
             }
 
             $namaSemester = [
@@ -54,6 +61,7 @@ class AcademicController extends Controller
                 'page' => $page,
                 'limit' => $limit,
                 'namaSemester' => $namaSemester,
+                'pagination' => $pagination
             ]);
         } catch (\Throwable $err) {
             $decoded = json_decode($err->getMessage());

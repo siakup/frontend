@@ -7,16 +7,15 @@
     'alpineModel' => null,
 ])
 
-<div x-data="{ on: @json((bool) $value) }" x-init="@if ($alpineModel) $watch('on', val => { {{ $alpineModel }} = val }) @endif" class="flex items-center gap-3">
-    <button type="button" x-on:click="on = !on" :aria-checked="on" role="switch"
+<div x-data="{ on: @json((bool) $value) }" x-modelable="on" x-model="{{ $attributes->whereStartsWith('x-model')->first() }}" class="flex items-center gap-3 cursor-pointer">
+    <button type="button" x-on:click="on = !on" role="switch"
         :class="{
-            'bg-[#B6C92C]': on,
-            'bg-white border border-[#d9d9d9]': !on
+            'bg-green-600': on,
+            'bg-white border border-gray-400': !on
         }"
         class="relative inline-flex h-7 w-16 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-0"
         {{ $disabled ? 'disabled' : '' }}>
-        <input type="hidden" name="{{ $name }}" x-bind:value="on ? '1' : '0'"
-            @if ($alpineModel) x-model="{{ $alpineModel }}" @endif>
+        <input type="hidden" name="{{ $name }}" x-bind:value="on ? '1' : '0'" x-model="on">
 
         <!-- Toggle Circle -->
         <span

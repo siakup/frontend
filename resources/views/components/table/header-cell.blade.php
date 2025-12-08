@@ -10,7 +10,7 @@
 <th
   x-data="{
     variants: {
-      default: 'px-6 py-5.5 text-gray-800 border-b border-r border-gray-400 last:border-r-0',
+      default: 'px-6 py-5.5 text-gray-800 border-b border-r border-gray-400 last:border-r-none',
       old: 'py-4 px-2',
     },
     variantColors: {

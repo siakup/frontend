@@ -5,8 +5,6 @@
 ])
 
 @php
-    $base = 'font-poppins';
-
     $sizes = [
         'heading-h1' => 'h1',
         'heading-h2' => 'h2',
@@ -38,7 +36,7 @@
         'pixie-semibold' => 'pixie font-semibold',
     ];
 
-    $typographyClass = "$base {$sizes[$variant]} $class";
+    $typographyClass = "{$sizes[$variant]} $class";
 @endphp
 
 <{{ $tag }} {{ $attributes->merge(['class' => $typographyClass]) }}>

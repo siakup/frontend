@@ -6,19 +6,25 @@
 ])
 
 <div 
-    x-data="{
-        show: @js($show),
-        id: @js($id),
-        close() { this.show = false },
-        open() { this.show = true }
-    }" 
-    x-on:keydown.escape="close()" 
-    x-on:open-modal.window="if ($event.detail.id === id) open()"
-    x-on:close-modal.window="if ($event.detail.id === id) close()" 
-    {!! $id ? 'x-id="[\'' . $id . '\']"' : '' !!} 
-    class="modal-root"
-    x-show="show" 
-    x-cloak
+  x-data="{
+    show: @js($show),
+    id: @js($id),
+    close() { this.show = false },
+    open() { this.show = true },
+    closeable: @js($closeable)
+  }" 
+  x-on:keydown.escape="close()" 
+  x-on:open-modal.window="if ($event.detail.id === id) open()"
+  x-on:close-modal.window="if ($event.detail.id === id) close()" 
+  {!! $id ? 'x-id="[\'' . $id . '\']"' : '' !!} 
+  class="modal-root"
+  x-show="show" 
+  x-cloak
+  x-modelable="show"
+  x-model="{{$attributes->get('x-model')}}"
+  x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
+  x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200"
+  x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
 >
     <!-- Overlay -->
     <div x-show="show" 
