@@ -12,7 +12,7 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/button', [ComponentsDocumentationController::class, 'button'])->name('components-documentation.button');
     Route::get('/quantity', [ComponentsDocumentationController::class, 'quantity'])->name('components-documentation.quantity');
     Route::get('/card/mata-kuliah', [ComponentsDocumentationController::class, 'cardMataKuliah'])->name('components-documentation.card.mata-kuliah');
-    Route::get('/jadwal-kuliah', [ComponentsDocumentationController::class, 'kalendarJadwalKuliah'])->name('components-documentation.jadwal-kuliah');
+    Route::get('/card/jadwal-kuliah', [ComponentsDocumentationController::class, 'cardJadwalKuliah'])->name('components-documentation.card.jadwal-kuliah');
     Route::get('/breadcrumb', [ComponentsDocumentationController::class, 'breadcrumb'])->name('components-documentation.breadcrumb');
     Route::get('/tab', [ComponentsDocumentationController::class, 'tab'])->name('components-documentation.tab');
     Route::get('/input', [ComponentsDocumentationController::class, 'input'])->name('components-documentation.input');

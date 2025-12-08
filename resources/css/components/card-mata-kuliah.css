@@ -1,5 +1,0 @@
-@layer utilities {
-    .card-mk-base { @apply w-full max-w-85.5 h-full max-h-25 rounded-md border p-4 bg-cover bg-center bg-no-repeat flex flex-col gap-1; }
-    .card-mk-primary { @apply text-white bg-top; }
-    .card-mk-secondary { @apply border-disable-gray bg-gray-50; }
-}

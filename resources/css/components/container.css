@@ -4,7 +4,8 @@
 
   .transparent { @apply bg-transparent flex; }
   .content-white { @apply bg-white border border-gray-400 flex; }
-  .content-grey { @apply bg-gray-400 min-h-17 flex; }
+  .content-gray { @apply bg-gray-400 flex; }
+  .content-red { @apply bg-red-400 flex; }
   .content-disable-white { @apply bg-disable-white min-h-17 flex; }
   .content-sender { @apply bg-green-100 border border-gray-400 rounded-tl-none flex; }
   .content-receiver { @apply bg-blue-50 border border-gray-400 rounded-tl-none flex; }

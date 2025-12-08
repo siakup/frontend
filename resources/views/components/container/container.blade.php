@@ -1,10 +1,9 @@
 {{-- resources\views\components\container.blade.php --}}
 
 @props([
-    'variant' => 'content',
     'class' => '',
     'background' => 'transparent',
-    'radius' => 'md',
+    'radius' => 'md', //ada sm, md, dan lg
     'padding' => 'p-0',
     'gap' => 'gap-0',
     'height' => 'full',
@@ -37,7 +36,7 @@
       'full' => 'h-full',
       'maxContent' => 'h-max',
       'auto' => 'h-auto',
-      'fitContent' => 'H-fit'
+      'fitContent' => 'h-fit'
     ];
 
     $containerClass = "{$background} {$class} rounded-{$radius} {$widthSize[$width]} {$heightSize[$height]} {$padding} {$gap}";

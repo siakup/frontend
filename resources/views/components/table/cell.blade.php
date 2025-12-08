@@ -16,7 +16,7 @@
     },
     variantColors: {
       default: {
-        default: 'bg-white',
+        default: 'bg-transparent',
         old: ''
       },
       odd: {
