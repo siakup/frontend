@@ -100,4 +100,8 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.modal');
     }
+    public function switch(Request $request)
+    {
+        return view('components-documentation.switch');
+    }
 }

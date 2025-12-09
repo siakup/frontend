@@ -7,10 +7,12 @@
     'alpineModel' => null,
 ])
 
-<div x-data="{ on: @json((bool) $value) }" x-modelable="on" x-model="{{ $attributes->whereStartsWith('x-model')->first() }}" class="flex items-center gap-3 cursor-pointer">
+<div x-data="{ on: @json((bool) $value) }" x-modelable="on" x-model="{{ $attributes->whereStartsWith('x-model')->first() }}"
+    class="flex items-center gap-3 cursor-pointer">
     <button type="button" x-on:click="on = !on" role="switch"
         :class="{
-            'bg-green-600': on,
+            'bg-green-600': on && !{{ $disabled ? 'true' : 'false' }},
+            'bg-gray-600': on && {{ $disabled ? 'true' : 'false' }},
             'bg-white border border-gray-400': !on
         }"
         class="relative inline-flex h-7 w-16 items-center rounded-full transition-colors duration-200 ease-in-out focus:outline-0"
@@ -27,7 +29,14 @@
 
         <!-- Internal Labels -->
         <span x-show="!on" class="absolute right-2 text-xs font-medium text-gray-600">OFF</span>
-        <span x-show="on" class="absolute left-2 text-xs font-medium text-black">ON</span>
+        <span x-show="on"
+            :class="{
+                'text-black': !{{ $disabled ? 'true' : 'false' }},
+                'text-gray-50': {{ $disabled ? 'true' : 'false' }}
+            }"
+            class="absolute left-2 text-xs font-medium">
+            ON
+        </span>
     </button>
 
     <!-- External Label -->
