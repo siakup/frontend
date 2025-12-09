@@ -3,7 +3,7 @@
     .card-mk-primary { @apply text-white bg-top; }
     .card-mk-secondary { @apply border-disable-gray bg-gray-50; }
 
-    .card-jadwal { @apply max-h-20 min-h-14 rounded-sm p-2 cursor-pointer; }
+    .card-jadwal { @apply max-h-20 min-h-14 rounded-sm p-2 cursor-pointer w-full; }
     .card-jadwal.week  { @apply max-w-33.75; }
     .card-jadwal.day  { @apply max-w-241; }
 

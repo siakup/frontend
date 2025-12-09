@@ -12,7 +12,7 @@
 {{-- isRounderedTop = true: radius di sisi atas --}}
 {{-- isRounderedBottom = true: radius di sisi atas --}}
 
-<x-container.container :variant="'content-wrapper'" class="!pb-10">
+<x-container.wrapper :gapY="4" :rows="12">
   <x-container.container :variant="'content-wrapper'">
     <x-typography :variant="'body-medium-bold'">Button without icons ></x-typography>
     <x-container.container :variant="'content-wrapper'" class="!flex-row gap-2">
