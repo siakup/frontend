@@ -40,6 +40,11 @@
             'helperText' => 'Format: Dokumen (PDF, Word, Excel). Maks 10MB.',
             'placeholder' => 'Upload dokumen di sini',
         ],
+        'excel' => [
+            'accept' => '.csv, .xls, .xlsx',
+            'maxSize' => 10240,
+            'helperText' => 'Format: Excel (.xls, .xlsx) atau CSV.',
+        ],
     ];
 
     $finalAccept = '*/*';
@@ -260,7 +265,7 @@
                 </div>
                 <button type="button" @click="removeFile(index)" class="file-btn-remove"
                     :disabled="@js($disabled)">
-                    <x-icon name="delete/grey-16" class="w-4 h-4" />
+                    <x-icon name="delete/outline-grey-16" class="w-4 h-4" />
                 </button>
             </li>
         </template>

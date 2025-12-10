@@ -3,7 +3,7 @@
 @section('title', 'File Upload Documentation')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <x-container.wrapper variant="content-wrapper">
         <x-typography variant="body-large-semibold">Komponen File Upload</x-typography>
 
         <div class="mb-8">
@@ -15,7 +15,7 @@
 
         {{-- Demo Playground --}}
         <div x-data="{}">
-            <x-container class="flex flex-col gap-10 p-6 bg-white border border-gray-200" borderRadius="rounded-lg">
+            <x-container.wrapper class="flex flex-col gap-10 p-6 bg-white border border-gray-200" borderRadius="rounded-lg">
 
                 <div>
                     <x-typography variant="body-medium-semibold" class="mb-4">1. Penggunaan Dasar</x-typography>
@@ -189,7 +189,7 @@
                     </div>
                 @endif
 
-            </x-container>
+            </x-container.wrapper>
         </div>
-    </x-container>
+    </x-container.wrapper>
 @endsection

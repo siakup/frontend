@@ -18,20 +18,6 @@
     $hasServerError = $errors->has($name) || !empty($error);
     $serverErrorMessage = $error ?? $errors->first($name);
     $presets = [
-        'nip' => [
-            'minlength' => 5,
-            'maxlength' => 30,
-            'helperText' => 'Wajib diisi, angka 5-30 digit.',
-            'pattern' => '[0-9]+',
-            'patternMessage' => 'NIP hanya boleh berisi angka.',
-        ],
-        'ktp' => [
-            'minlength' => 16,
-            'maxlength' => 16,
-            'helperText' => 'NIK harus 16 digit angka sesuai KTP.',
-            'pattern' => '[0-9]+',
-            'patternMessage' => 'NIK hanya boleh berisi angka.',
-        ],
         'username' => [
             'minlength' => 3,
             'maxlength' => 20,
@@ -47,14 +33,6 @@
             'type' => 'password',
             'minlength' => 8,
             'helperText' => 'Minimal 8 karakter.',
-        ],
-        'phone' => [
-            'type' => 'tel',
-            'pattern' => '[0-9]+',
-            'minlength' => 10,
-            'maxlength' => 15,
-            'helperText' => 'Nomor HP (10-15 digit).',
-            'patternMessage' => 'Hanya boleh berisi angka.',
         ],
     ];
 
@@ -108,7 +86,7 @@
     $finalType = $type !== 'text' ? $type : $vType ?? 'text';
     $finalHelperText = $helperText !== '' ? $helperText : $vHelperText;
     $finalPatternMessage =
-        $patternMessage !== 'Format tidak sesuai.' ? $patternMessage : $vPatternMsg ?? 'Format tidak sesuai.';
+    $patternMessage !== 'Format tidak sesuai.' ? $patternMessage : $vPatternMsg ?? 'Format tidak sesuai.';
 
 @endphp
 

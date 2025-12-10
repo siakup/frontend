@@ -18,4 +18,5 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/checkbox', [ComponentsDocumentationController::class, 'checkbox'])->name('components-documentation.checkbox');
     Route::get('/file', [ComponentsDocumentationController::class, 'file'])->name('components-documentation.file');
     Route::get('/modal', [ComponentsDocumentationController::class, 'modal'])->name('components-documentation.modal');
+    Route::get('/toast', [ComponentsDocumentationController::class, 'toast'])->name('components-documentation.toast');
 });
