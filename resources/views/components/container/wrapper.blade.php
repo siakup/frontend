@@ -25,6 +25,8 @@ $grid = [
     12 => 'grid-rows-12',
     13 => 'grid-rows-13',
     14 => 'grid-rows-14',
+    15 => 'grid-rows-15',
+    16 => 'grid-rows-16',
 ],
   "cols" => [
     1 => 'grid-cols-1',
@@ -41,8 +43,8 @@ $grid = [
     12 => 'grid-cols-12',
     13 => 'grid-cols-13',
     14 => 'grid-cols-14',
-    14 => 'grid-cols-15',
-    14 => 'grid-cols-16',
+    15 => 'grid-cols-15',
+    16 => 'grid-cols-16',
   ]
 ];
 
