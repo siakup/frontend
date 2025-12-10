@@ -20,7 +20,7 @@
 <div x-data="{ open: true }" x-show="open" x-transition:leave="transition-all ease-in duration-300"
     x-transition:leave-start="opacity-100 max-h-screen" x-transition:leave-end="opacity-0 max-h-0"
     {{ $attributes->merge(['class' => $dialogClass]) }}>
-    <x-icon :name="$iconName" />
+    <x-icon :name="$iconName" class="w-fit self-center" />
 
     <div class="grow">
         @if (isset($header))

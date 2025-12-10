@@ -14,7 +14,7 @@
     // background guide
     // 'transparent',
     // 'content-white',
-    // 'content-grey',
+    // 'content-gray',
     // 'content-disable-white',
     // 'disable-red-gradient',
     // 'red-gradient',

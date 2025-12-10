@@ -42,30 +42,6 @@ class ComponentsDocumentationController extends Controller
         return view('components-documentation.card');
     }
 
-    public function cardJadwalKuliah(Request $request)
-    {
-        $data1 = [
-            'mataKuliah' => 'Proyek Multi Disiplin',
-            'kode' => 'CS7',
-            'periode' => '2024',
-            'kodeRuangan' => '2705',
-            'date' => 'Senin, 17 Juli',
-            'startTime' => '10.00',
-            'endTime' => '11.40',
-        ];
-
-        $data2 = [
-            'mataKuliah' => 'Basis Data',
-            'kode' => 'CS7',
-            'periode' => '2024',
-            'kodeRuangan' => '2705',
-            'date' => 'Senin, 17 Juli',
-            'startTime' => '10.00',
-            'endTime' => '11.40',
-        ];
-
-        return view('components-documentation.card-jadwal-kuliah', get_defined_vars());
-    }
     public function quantity(Request $request)
     {
         return view('components-documentation.quantity');

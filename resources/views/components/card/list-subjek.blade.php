@@ -7,7 +7,8 @@
     'latest_chat_by' => '',
 ])
 
-<x-container.wrapper :rows="4" :gapY="1" :padding="'p-0'">
+{{-- Versi siakup mahasiswa cukup diubah saja dari mahasiswa jadi dosen dan tidak ada NIM --}}
+<x-container.wrapper :rows="4" :gapY="1" :padding="'p-0'" width="maxContent">
     <x-container.container class="row-start-1 row-end-2 flex flex-row items-center" :gap="'gap-2'">
         <x-typography :tag="'span'"
             class="bg-green-600 text-white rounded-xs h-6 w-6 p-1 flex justify-center items-center"
