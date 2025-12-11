@@ -74,4 +74,14 @@ class ComponentsDocumentationController extends Controller
   {
     return view('components-documentation.modal');
   }
+
+  public function toast(Request $request)
+  {
+    return view('components-documentation.toast');
+  }
+
+  public function calendar(Request $request)
+  {
+    return view('components-documentation.calendar');
+  }
 }
