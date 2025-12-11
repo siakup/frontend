@@ -5,12 +5,16 @@
 <script src="{{ asset('js/controllers/rpsDeskripsiUmum.js') }}" defer></script>
 
 @section('content')
-    <x-container :variant="'content-wrapper'">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-button.back class="ml-2" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
-        <div class="flex flex-col gap-0">
+    <x-container.wrapper :rows="15" :gapY="4">
+        <x-container.container class="row-start-1 row-end-2">
+            <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
+        </x-container.container>
+        <x-container.container class="row-start-2 row-end-3">
+            <x-button.back class="ml-2" href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
+        </x-container.container>
+        <x-container.container class="row-start-3 row-end-4 flex-col">
             @include('rps.layout.navbar-rps')
-            <x-container x-data="deskripsiUmum()" variant="content-under-navbar">
+            <x-container.container x-data="deskripsiUmum()" background="content-under-navbar">
                 <x-typography variant="body-medium-bold">Informasi RPS</x-typography>
                 <x-form.input-container labelClass="w-50">
                     <x-slot name="label">Periode</x-slot>
@@ -114,7 +118,8 @@
                     <x-slot name="label"></x-slot>
                     <x-slot name="input">
                         <x-dialog variant="warning">
-                            <x-typography variant="body-medium-regular">Tim pengajar bisa lebih dari satu</x-typography>
+                            <x-typography variant="body-medium-regular">Tim pengajar bisa lebih dari
+                                satu</x-typography>
                         </x-dialog>
                     </x-slot>
                 </x-form.input-container>
@@ -150,10 +155,10 @@
                     <x-button.primary x-bind:disabled="isDisabled"
                         x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
                 </div>
-            </x-container>
-        </div>
+            </x-container.container>
+        </x-container.container>
 
-    </x-container>
+    </x-container.wrapper>
 
     <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
         cancelText="Cek Kembali" :redirectConfirm="route('rps.capaian-pembelajaran')">
