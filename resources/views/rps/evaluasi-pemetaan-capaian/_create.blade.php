@@ -1,24 +1,16 @@
-<script>
-    function createEvaluasi() {
-        return {
-            cpl: '',
-        }
-    }
-</script>
-
-<div x-data="createEvaluasi()">
+<div x-data="{cpl: '',}">
     <x-modal.container id="create-evaluasi-pemetaan" maxWidth="6xl">
         <x-slot name="header" class="items-center bg-[#F5F5F5]">
-            <x-container variant="flat" class="w-full relative flex items-center justify-center">
+            <x-container.container class="w-full relative flex items-center justify-center">
                 <x-typography variant="heading-h5">Tambah Pemetaan Konten Perkuliahan Dengan Capaian
                     Lulusan</x-typography>
                 <button x-on:click.stop="close()" class="right-0">
                     <x-icon :name="'close-cancel/black-24'"></x-icon>
                 </button>
-            </x-container>
+            </x-container.container>
         </x-slot>
-        <x-container class="content-wrapper">
-            <x-container>
+        <x-container.container class="flex-col" :gap="'gap-3'">
+            <x-container.container :background="'content-white'" :padding="'py-3 px-5'">
                 <x-form.input-container>
                     <x-slot name="label">Capaian Pembelajaran Lulusan</x-slot>
                     <x-slot name="input">
@@ -89,7 +81,7 @@
                     </x-table.body>
                 </x-table.index>
             </template>
-        </x-container>
+        </x-container.container>
 
         <x-slot name="footer" class="flex justify-end gap-3">
             <x-button.secondary x-bind:disabled="isDisabled"
