@@ -25,8 +25,6 @@
             10 => 'grid-rows-10',
             11 => 'grid-rows-11',
             12 => 'grid-rows-12',
-            13 => 'grid-rows-13',
-            14 => 'grid-rows-14',
         ],
         'cols' => [
             1 => 'grid-cols-1',
@@ -41,10 +39,6 @@
             10 => 'grid-cols-10',
             11 => 'grid-cols-11',
             12 => 'grid-cols-12',
-            13 => 'grid-cols-13',
-            14 => 'grid-cols-14',
-            15 => 'grid-cols-15',
-            16 => 'grid-cols-16',
         ],
     ];
 
@@ -59,7 +53,6 @@
             7 => 'gap-x-7',
             8 => 'gap-x-8',
             9 => 'gap-x-9',
-            10 => 'gap-x-10',
         ],
         'y' => [
             1 => 'gap-y-1',
@@ -71,29 +64,11 @@
             7 => 'gap-y-7',
             8 => 'gap-y-8',
             9 => 'gap-y-9',
-            9 => 'gap-y-10',
         ],
     ];
-
-    $widthSize = [
-        'full' => 'w-full',
-        'maxContent' => 'w-max',
-        'auto' => 'w-auto',
-        'fitContent' => 'w-fit',
-    ];
-
-    $heightSize = [
-        'full' => 'h-full',
-        'maxContent' => 'h-max',
-        'auto' => 'h-auto',
-        'fitContent' => 'h-fit',
-    ];
-
-    $widthClass = $widthSize[$width] ?? 'w-full';
-    $heightClass = $heightSize[$height] ?? 'h-full';
 @endphp
 
 <div
-    {{ $attributes->merge(['class' => 'grid grid-rows-' . $rows . ' grid-cols-' . $cols . ' ' . $widthClass . ' ' . $heightClass . ' ' . $padding . ' gap-x-' . $gapX . ' gap-y-' . $gapY . ' items-' . $align . ' justify-' . $justify]) }}>
+    {{ $attributes->merge(['class' => 'grid grid-rows-' . $rows . ' grid-cols-' . $cols . ' w-full h-full ' . $padding . ' gap-x-' . $gapX . ' gap-y-' . $gapY . ' items-' . $align . ' justify-' . $justify]) }}>
     {{ $slot }}
 </div>
