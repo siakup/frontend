@@ -7,13 +7,22 @@
 </head>
 
 <body>
-  <x-container.wrapper :padding="'p-0'" :rows="12" class="h-full w-full" x-data="{}">
+  <x-container.wrapper
+    :padding="'p-0'"
+    rows="12"
+    class="h-full w-full"
+    x-data="{}"
+  >
 
-    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" class="row-start-1 row-end-3">
+    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'"
+    class="row-span-2"
+    >
       <x-header />
     </x-container.container>
 
-    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" class="row-start-3 row-end-13">
+    <x-container.container :rounded="'none'" :width="'full'" :height="'full'" :background="'transparent'" 
+    class="row-span-10"
+    >
         <x-container.wrapper :cols="12" :padding="'p-0'">
 
           <template x-if="$store.mainLayout.isOpen">
