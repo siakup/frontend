@@ -11,6 +11,20 @@
 ])
 
 @php
+    // background guide
+    // 'transparent',
+    // 'content-white',
+    // 'content-gray',
+    // 'content-disable-white',
+    // 'disable-red-gradient',
+    // 'red-gradient',
+    // 'green-gradient',
+    // 'yellow-gradient',
+    // 'blue-gradient',
+    // 'disable-blue',
+    // 'content-sender',
+    // 'content-receiver',
+
     $widthSize = [
         'full' => 'w-full',
         'maxContent' => 'w-max',

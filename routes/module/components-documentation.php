@@ -12,11 +12,11 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/button', [ComponentsDocumentationController::class, 'button'])->name('components-documentation.button');
     Route::get('/quantity', [ComponentsDocumentationController::class, 'quantity'])->name('components-documentation.quantity');
     Route::get('/card', [ComponentsDocumentationController::class, 'card'])->name('components-documentation.card');
-    Route::get('/card/jadwal-kuliah', [ComponentsDocumentationController::class, 'cardJadwalKuliah'])->name('components-documentation.card.jadwal-kuliah');
     Route::get('/breadcrumb', [ComponentsDocumentationController::class, 'breadcrumb'])->name('components-documentation.breadcrumb');
     Route::get('/tab', [ComponentsDocumentationController::class, 'tab'])->name('components-documentation.tab');
     Route::get('/input', [ComponentsDocumentationController::class, 'input'])->name('components-documentation.input');
     Route::get('/checkbox', [ComponentsDocumentationController::class, 'checkbox'])->name('components-documentation.checkbox');
     Route::get('/file', [ComponentsDocumentationController::class, 'file'])->name('components-documentation.file');
     Route::get('/modal', [ComponentsDocumentationController::class, 'modal'])->name('components-documentation.modal');
+    Route::get('/sort', [ComponentsDocumentationController::class, 'sort'])->name('components-documentation.button.sort');
 });

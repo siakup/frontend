@@ -11,12 +11,13 @@
     </script>
 @endsection
 
-<div x-data="periodeAkademik()">
+<div x-data="periodeAkademik()" class="w-full">
     <x-form.dropdown 
         variant="gray" 
         :buttonId="$buttonId" 
         :dropdownId="$dropdownId" 
         dropdownItem="dataPeriode"
+        dropdownContainerClass="w-full"
         label="-Pilih Periode Akademik-"
         x-show="!loading"
         x-model="{{ $attributes->get('x-model') }}"

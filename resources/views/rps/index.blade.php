@@ -5,59 +5,56 @@
 <script src="{{ asset('js/controllers/rps.js') }}" defer></script>
 
 @section('content')
-
-    <x-container.container variant="content-wrapper">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-container.container variant="content" class="ml-3" x-data="rps()">
-            <x-container.container variant="content-wrapper" class="mb-5">
-                <x-form.input-container labelClass="w-50">
-                    <x-slot name="label">Periode Akademik</x-slot>
-                    <x-slot name="input">
-                        <x-dropdown.periode-akademik x-model="periode"></x-dropdown.periode-akademik>
-                    </x-slot>
-                </x-form.input-container>
-                {{-- <x-form.input-container labelClass="w-50">
-                    <x-slot name="label">Periode</x-slot>
-                    <x-slot name="input">
-                        <x-form.dropdown variant="gray" buttonId="dropdownPeriodeRpsButton"
-                            dropdownId="dropdownPeriodeRpsList" label="-Pilih Periode Akademik-" :dropdownItem="$periodeList"
-                            x-model="periode" />
-                    </x-slot>
-                </x-form.input-container> --}}
-                <x-form.input-container labelClass="w-50">
-                    <x-slot name="label">Program Studi</x-slot>
-                    <x-slot name="input">
-                        <x-form.dropdown variant="gray" buttonId="dropdownProdiButton" dropdownId="dropdownProdiList"
-                            label="-Pilih Program Studi-" :dropdownItem="$prodiList" buttonStyleClass="text-sm" x-model="prodi" />
-                    </x-slot>
-                </x-form.input-container>
-                <x-form.input-container labelClass="w-50" inputClass="flex flex-row gap-3">
-                    <x-slot name="label">Mata Kuliah</x-slot>
-                    <x-slot name="input">
-                        <x-form.dropdown variant="gray" buttonId="dropdownMatkulButton" dropdownId="dropdownMatkulList"
-                            label="-Pilih Mata Kuliah-" :dropdownItem="$matkulList" buttonStyleClass="text-sm"
-                            dropdownContainerClass="w-full" x-model="mata_kuliah" />
-                        <x-button.primary>Cari</x-button.primary>
-                    </x-slot>
-                </x-form.input-container>
+    <div x-data="rps()">
+        <x-container.wrapper :gapY="4" :rows="15">
+            <x-container.container class="row-start-1 row-end-2">
+                <x-typography variant="body-large-semibold">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
             </x-container.container>
-            <x-dialog variant="warning" isCloseable>
-                <x-slot name="header">Catatan!</x-slot>
-                Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah) <br> <br>
-                *Dosen harus merubah periode <b>(sesuai dengan periode yang sedang berjalan atau periode selanjutnya. <br>
-                    Tidak muncul pilihan periode yg sama dengan RPS yang di salin sebelumnya)</b>
-            </x-dialog>
-            <x-table.index>
-                <x-table.head>
-                    <x-table.row>
-                        <x-table.header-cell>No</x-table.header-cell>
-                        <x-table.header-cell>Mata Kuliah</x-table.header-cell>
-                        <x-table.header-cell>Dosen Pengampu</x-table.header-cell>
-                        <x-table.header-cell>Review Status</x-table.header-cell>
-                        <x-table.header-cell>Status</x-table.header-cell>
-                        <x-table.header-cell>Tanggal Upload</x-table.header-cell>
-                        <x-table.header-cell>Status</x-table.header-cell>
-                    </x-table.row>
+            <x-container.container :background="'content-white'" :padding="'p-5'" class="row-start-2 row-end-16 flex-col"
+                :gap="'gap-5'">
+                <x-container.wrapper :rows="3" height="fitContent" :gapY="3" :padding="'p-0'">
+                    <x-form.input-container>
+                        <x-slot name="label">Periode Akademik</x-slot>
+                        <x-slot name="input">
+                            <x-dropdown.periode-akademik x-model="periode"></x-dropdown.periode-akademik>
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container>
+                        <x-slot name="label">Program Studi</x-slot>
+                        <x-slot name="input">
+                            <x-form.dropdown variant="gray" buttonId="dropdownProdiButton" dropdownId="dropdownProdiList"
+                                dropdownContainerClass="w-full" label="-Pilih Program Studi-" :dropdownItem="$prodiList"
+                                x-model="prodi" />
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container inputClass="flex flex-row gap-3">
+                        <x-slot name="label">Mata Kuliah</x-slot>
+                        <x-slot name="input">
+                            <x-form.dropdown variant="gray" buttonId="dropdownMatkulButton" dropdownId="dropdownMatkulList"
+                                label="-Pilih Mata Kuliah-" :dropdownItem="$matkulList" dropdownContainerClass="w-full"
+                                x-model="mata_kuliah" />
+                            <x-button variant="primary">Cari</x-button>
+                        </x-slot>
+                    </x-form.input-container>
+                </x-container.wrapper>
+                <x-dialog variant="warning" isCloseable>
+                    <x-slot name="header">Catatan!</x-slot>
+                    Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah) <br> <br>
+                    *Dosen harus merubah periode <b>(sesuai dengan periode yang sedang berjalan atau periode selanjutnya.
+                        <br>
+                        Tidak muncul pilihan periode yg sama dengan RPS yang di salin sebelumnya)</b>
+                </x-dialog>
+                <x-table.index>
+                    <x-table.head>
+                        <x-table.row>
+                            <x-table.header-cell>No</x-table.header-cell>
+                            <x-table.header-cell>Mata Kuliah</x-table.header-cell>
+                            <x-table.header-cell>Dosen Pengampu</x-table.header-cell>
+                            <x-table.header-cell>Review Status</x-table.header-cell>
+                            <x-table.header-cell>Status</x-table.header-cell>
+                            <x-table.header-cell>Tanggal Upload</x-table.header-cell>
+                            <x-table.header-cell>Status</x-table.header-cell>
+                        </x-table.row>
                     </x-table.head>
 
                     <x-table.body>
@@ -90,16 +87,16 @@
                             </x-table.row>
                         @endforeach
                     </x-table.body>
-            </x-table.index>
+                </x-table.index>
 
-            <div class="flex mt-5 justify-end gap-2">
-                <x-button.secondary iconPosition="right" :icon="'upload/red-16'">
-                    Unggah RPS
-                </x-button.secondary>
-                <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
-            </div>
-        </x-container.container>
-    </x-container.container>
-    <x-pagination></x-pagination>
+                <div class="flex mt-5 justify-end gap-2">
+                    <x-button.secondary iconPosition="right" :icon="'upload/red-16'">
+                        Unggah RPS
+                    </x-button.secondary>
+                    <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
+                </div>
+            </x-container.container>
+        </x-container.wrapper>
+    </div>
 
 @endsection
