@@ -76,4 +76,9 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.modal');
     }
+
+    public function sort(Request $request)
+    {
+        return view('components-documentation.sort');
+    }
 }

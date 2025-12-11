@@ -1,0 +1,4 @@
+@layer utilities {
+    .sort {@apply absolute bg-white border border-gray-300 rounded-md flex-col items-start max-h-50 overflow-y-auto z-10 w-max right-0;}
+    .sort-option {@apply px-3 py-2 cursor-pointer hover:bg-red-400 hover:text-white transition-[background] duration-100 flex justify-between items-center text-sm w-full;}
+}
