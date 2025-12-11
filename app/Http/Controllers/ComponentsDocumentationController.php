@@ -26,59 +26,52 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dialog');
     }
-
-    public function typography(Request $request)
-    {
-        return view('components-documentation.typography');
+    
+    public function typography(Request $request) {
+      return view('components-documentation.typography');
     }
 
-    public function button(Request $request)
-    {
-        return view('components-documentation.button');
+    public function button(Request $request) {
+      return view('components-documentation.button');
     }
 
-    public function card(Request $request)
-    {
-        return view('components-documentation.card');
-    }
+  public function card(Request $request)
+  {
+    return view('components-documentation.card');
+  }
 
-    public function quantity(Request $request)
-    {
-        return view('components-documentation.quantity');
-    }
+  public function quantity(Request $request)
+  {
+    return view('components-documentation.quantity');
+  }
 
-    public function breadcrumb(Request $request)
-    {
-        return view('components-documentation.breadcrumb');
-    }
+  public function breadcrumb(Request $request)
+  {
+    return view('components-documentation.breadcrumb');
+  }
 
-    public function tab(Request $request)
-    {
-        return view('components-documentation.tab');
-    }
+  public function tab(Request $request)
+  {
+    return view('components-documentation.tab');
+  }
 
-    public function input(Request $request)
-    {
-        return view('components-documentation.input');
-    }
+  public function input(Request $request)
+  {
+    return view('components-documentation.input');
+  }
 
-    public function checkbox(Request $request)
-    {
-        return view('components-documentation.checkbox');
-    }
+  public function checkbox(Request $request)
+  {
+    return view('components-documentation.checkbox');
+  }
 
-    public function file(Request $request)
-    {
-        return view('components-documentation.file');
-    }
+  public function file(Request $request)
+  {
+    return view('components-documentation.file');
+  }
 
-    public function modal(Request $request)
-    {
-        return view('components-documentation.modal');
-    }
-
-    public function sort(Request $request)
-    {
-        return view('components-documentation.sort');
-    }
+  public function modal(Request $request)
+  {
+    return view('components-documentation.modal');
+  }
 }
