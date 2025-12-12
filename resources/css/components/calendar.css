@@ -1,0 +1,50 @@
+
+@layer components {
+    .calendar-header-wrapper {
+        @apply flex items-center justify-between px-5 py-4 bg-gradient-to-r from-gray-50 to-gray-200;
+    }
+
+    .calendar-control-group {
+        @apply flex items-center gap-5;
+    }
+
+    .calendar-title-h2 {
+        @apply text-xl font-bold text-gray-800;
+    }
+    
+    .calendar-title-h3 {
+        @apply text-lg font-normal text-gray-800;
+    }
+
+    .calendar-today-btn {
+        @apply border border-red-400 text-red-400 rounded-sm py-2 px-4 text-sm font-medium hover:bg-gray-100;
+    }
+
+    .calendar-nav-btn {
+        @apply border border-gray-300 bg-white rounded-full w-6 h-6 flex items-center justify-center text-gray-800 hover:bg-gray-100;
+    }
+
+    .calendar-filter-group {
+        @apply flex gap-5;
+    }
+
+    .calendar-search-wrapper {
+        @apply border border-gray-500 rounded-sm p-2 text-sm outline-none flex gap-2;
+    }
+
+    .calendar-search-input {
+        @apply text-sm outline-none w-full;
+    }
+
+    .calendar-view-wrapper {
+        @apply flex border border-red-400 rounded-lg overflow-hidden;
+    }
+
+    .calendar-view-btn {
+        @apply text-red-400 px-3 py-2 text-sm;
+    }
+    
+    .calendar-view-btn.active {
+        @apply bg-red-400 text-white;
+    }
+}

@@ -19,4 +19,6 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/file', [ComponentsDocumentationController::class, 'file'])->name('components-documentation.file');
     Route::get('/modal', [ComponentsDocumentationController::class, 'modal'])->name('components-documentation.modal');
     Route::get('/sort', [ComponentsDocumentationController::class, 'sort'])->name('components-documentation.button.sort');
+    Route::get('/toast', [ComponentsDocumentationController::class, 'toast'])->name('components-documentation.toast');
+    Route::get('/calendar', [ComponentsDocumentationController::class, 'calendar'])->name('components-documentation.calendar');
 });
