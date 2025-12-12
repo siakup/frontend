@@ -3,7 +3,7 @@
 @section('title', 'Tab Component Documentation')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <x-container.wrapper :rows="12">
         @php
             $currentRoute = \Route::currentRouteName();
 
@@ -34,7 +34,7 @@
                 ],
             ];
         @endphp
-        <x-container class="flex flex-col gap-8 p-6 bg-white border border-gray-200 mt-6" borderRadius="rounded-lg">
+        <x-container.container class="row-span-12 flex-col" :background="'content-white'" :padding="'p-5'" :gap="'gap-3'">
 
             <x-typography variant="body-medium-semibold">1. Varian: Underline</x-typography>
             <x-tab :tabItems="$tabDemoItems" variant="underline" container-class="shadow-sm" />
@@ -72,6 +72,6 @@
                     border-color-active="border-green-800"
                 /&gt;</pre>
             </div>
-        </x-container>
-    </x-container>
+        </x-container.container>
+    </x-container.wrapper>
 @endsection

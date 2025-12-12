@@ -8,10 +8,10 @@
 ])
 
 @php
-    $baseLinkClasses = "flex items-center transition-all duration-200 hover:shadow-sm";
+    $baseLinkClasses = "items-center transition-all duration-200 hover:shadow-sm";
       
     if ($variant === 'underline') {
-        $containerClasses = "grid grid-flow-col auto-cols-max gap-0 mt-4 relative -bottom-px z-20 " . $containerClass;
+        $containerClasses = "grid grid-flow-col auto-cols-max gap-0 mt-4 relative -bottom-px z-20" . $containerClass;
         $activeClasses = $bgActive.' rounded-t-[10px] '.$textColorActive.' font-bold border border-red-200 border-b-white';
         $inactiveClasses = 'text-gray-600 hover:text-red-400';
         $itemClasses = 'py-2.5 px-8 ' . $baseLinkClasses;
