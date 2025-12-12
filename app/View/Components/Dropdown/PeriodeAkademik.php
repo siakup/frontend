@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\View\Component;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Http;
+use App\Endpoint\PeriodAcademicService;
 
 class PeriodeAkademik extends Component
 {
@@ -17,15 +18,24 @@ class PeriodeAkademik extends Component
     public function __construct()
     {
         // fetch
-        $response = Http::get('http://127.0.0.1:8004/api/period/list')->json();
+        $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
+        $responsePeriode = getCurl($urlPeriode, null, getHeaders());
+        if (!isset($responsePeriode->data) || !isset($responsePeriode->success) || !$responsePeriode->success || count($responsePeriode->data) == 0) {
+            throw new \Exception(
+                json_encode([
+                    'message' => 'Periode belum ditambahkan!',
+                    'system_error' => $responsePeriode,
+                ]),
+            );
+        }
 
-        $items = $response['data'] ?? [];
+        $items = $responsePeriode->data ?? [];
 
         $cleaned = [];
 
         foreach ($items as $item) {
             // Tentukan label semester
-            switch ($item['semester']) {
+            switch ($item->semester) {
                 case 1:
                     $semesterLabel = 'Ganjil';
                     break;
@@ -36,14 +46,14 @@ class PeriodeAkademik extends Component
                     $semesterLabel = 'Pendek';
                     break;
                 default:
-                    $semesterLabel = 'Semester ' . $item['semester'];
+                    $semesterLabel = 'Semester ' . $item->semester;
             }
 
             // Gabungkan ke dalam label
-            $label = $item['tahun'] . ' - ' . $semesterLabel;
+            $label = $item->tahun . ' - ' . $semesterLabel;
 
             // Format final
-            $cleaned[$label] = $item['id'];
+            $cleaned[$label] = $item->id;
         }
 
         // Simpan ke komponen
