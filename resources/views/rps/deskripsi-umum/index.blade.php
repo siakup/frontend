@@ -39,43 +39,43 @@
                     </x-slot>
                 </x-form.input-container>
                 <x-container.wrapper :cols="2" :rows="2" :padding="'p-0'" :gapX="10" :gapY="5">
-                    <x-container.wrapper :padding="'p-0'" :cols="12" :align="'center'" :justify="'center'">
-                        <div class="col-start-1 col-end-5">
+                    <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
+                        <div class="col-start-1 col-end-7">
                             <label>
                                 <x-typography :variant="'body-small-semibold'">Bobot (SKS)</x-typography>
                             </label>
                         </div>
-                        <div class="col-start-6 col-end-13 items-center">
+                        <div class="col-start-7 col-end-14 items-center">
                             <x-form.input disabled type="number" name="bobot" x-model="bobot"></x-form.input>
                         </div>
                     </x-container.wrapper>
-                    <x-container.wrapper :padding="'p-0'" :cols="12" :align="'center'" :justify="'center'">
-                        <div class="col-start-1 col-end-5">
+                    <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
+                        <div class="col-start-1 col-end-7">
                             <label flex items-center>
                                 <x-typography :variant="'body-small-semibold'">Semester</x-typography>
                             </label>
                         </div>
-                        <div class="col-start-6 col-end-13 items-center">
+                        <div class="col-start-7 col-end-14 items-center">
                             <x-form.input disabled name="semester" x-model="semester"></x-form.input>
                         </div>
                     </x-container.wrapper>
-                    <x-container.wrapper :padding="'p-0'" :cols="12" :align="'center'" :justify="'center'">
-                        <div class="col-start-1 col-end-5">
+                    <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
+                        <div class="col-start-1 col-end-7">
                             <label flex items-center>
                                 <x-typography :variant="'body-small-semibold'">Rumpun MK</x-typography>
                             </label>
                         </div>
-                        <div class="col-start-6 col-end-13 items-center">
+                        <div class="col-start-7 col-end-14 items-center">
                             <x-form.input disabled name="rumpun_mk" x-model="rumpun_mk"></x-form.input>
                         </div>
                     </x-container.wrapper>
-                    <x-container.wrapper :padding="'p-0'" :cols="12" :align="'center'" :justify="'center'">
-                        <div class="col-start-1 col-end-5">
+                    <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
+                        <div class="col-start-1 col-end-7">
                             <label flex items-center>
                                 <x-typography :variant="'body-small-semibold'">Level Program</x-typography>
                             </label>
                         </div>
-                        <div class="col-start-6 col-end-13 items-center">
+                        <div class="col-start-7 col-end-14 items-center">
                             <x-form.input disabled name="level_program" x-model="level_program"></x-form.input>
                         </div>
                     </x-container.wrapper>
@@ -133,8 +133,7 @@
                     <x-slot name="label"></x-slot>
                     <x-slot name="input">
                         <x-dialog variant="warning">
-                            <x-typography variant="body-medium-regular">Tim pengajar bisa lebih dari
-                                satu</x-typography>
+                            Tim pengajar bisa lebih dari satu
                         </x-dialog>
                     </x-slot>
                 </x-form.input-container>
@@ -160,7 +159,7 @@
                     <x-slot name="label"></x-slot>
                     <x-slot name="input">
                         <x-dialog variant="warning">
-                            <x-typography variant="body-medium-regular">Bisa kosong (tidak ada MK prasyarat)</x-typography>
+                            Bisa kosong (tidak ada MK prasyarat)
                         </x-dialog>
                     </x-slot>
                 </x-form.input-container>

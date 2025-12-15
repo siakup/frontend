@@ -13,4 +13,11 @@
     .card-jadwal .time.active { @apply text-white; }
 
     .card-jadwal-popup { @apply absolute z-1000 shadow-high bg-disable-gray w-xs rounded-md max-h-56 left-1/2 -translate-x-1/2 top-5; }
+
+    .card-status-mahasiswa { @apply flex flex-row w-max h-max;}
+    .card-status-mahasiswa.data { @apply flex flex-row gap-1.5 px-5 py-2 bg-white w-max rounded-l-md items-center;}
+    .card-status-mahasiswa.status { @apply rounded-r-md px-5 py-3 w-max h-full flex items-center;}
+    .card-status-mahasiswa.status.aktif { @apply bg-green-400 text-gray-800 text-base;}
+    .card-status-mahasiswa.status.lulus { @apply bg-blue-500 text-gray-50 text-[15px];}
+    .card-status-mahasiswa.status.dropout { @apply bg-red-500 text-gray-50 text-xs;}
 }

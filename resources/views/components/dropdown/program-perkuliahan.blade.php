@@ -12,11 +12,10 @@
 
 <x-form.dropdown 
     variant="{{ $variant }}" 
-    :buttonId="'buttonPeriode'" 
-    :dropdownId="'dropdownPeriode'" 
+    :buttonId="'buttonProgramPerkuliahan'" 
+    :dropdownId="'dropdownProgramPerkuliahan'" 
     :dropdownItem="$options" 
-    dropdownContainerClass="{{ $width }}" 
-    label="-Pilih Periode Akademik-" 
+    dropdownContainerClass="{{ $width }}"
+    label="-Pilih Program Perkuliahan-" 
     x-model="{{ $attributes->get('x-model') }}" 
 />
-
