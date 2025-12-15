@@ -5,5 +5,5 @@
     .dropdown-option { @apply absolute top-full bg-white border border-gray-300 rounded-md flex-col items-start max-h-50 overflow-y-auto z-10; }
     .dropdown-option-gray { @apply min-w-60 right-0; }
     .dropdown-option-red { @apply w-full right-0 left-0; }
-    .dropdown-option-item { @apply px-3 py-2 cursor-pointer hover:bg-gray-200 transition-[background] duration-200 flex justify-between items-center text-sm w-full; }
+    .dropdown-option-item { @apply px-3 py-2 cursor-pointer hover:bg-red-500 hover:text-gray-50 transition-[background] duration-200 flex justify-between items-center text-sm w-full; }
 }

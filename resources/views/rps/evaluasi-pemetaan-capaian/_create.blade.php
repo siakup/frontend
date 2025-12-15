@@ -1,7 +1,7 @@
 <div x-data="{cpl: '',}">
     <x-modal.container id="create-evaluasi-pemetaan" maxWidth="6xl">
-        <x-slot name="header" class="items-center bg-[#F5F5F5]">
-            <x-container.container class="w-full relative flex items-center justify-center">
+        <x-slot name="header" class="items-center bg-gray-200">
+            <x-container.container class="relative items-center justify-center">
                 <x-typography variant="heading-h5">Tambah Pemetaan Konten Perkuliahan Dengan Capaian
                     Lulusan</x-typography>
                 <button x-on:click.stop="close()" class="right-0">
@@ -14,8 +14,7 @@
                 <x-form.input-container>
                     <x-slot name="label">Capaian Pembelajaran Lulusan</x-slot>
                     <x-slot name="input">
-                        <x-form.dropdown variant="gray" buttonId="dropdownCplButton" dropdownId="dropdownCplList"
-                            label="-Pilih CPL-" :dropdownItem="$cplList" x-model="cpl" />
+                        <x-dropdown.cpl x-model="cpl"></x-dropdown.cpl>
                     </x-slot>
                 </x-form.input-container>
             </x-container>

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Sort')
+@section('title', 'Button: Sort & Filter')
 
 @php
     $filterList = [
@@ -31,17 +31,25 @@
 @endphp
 
 @section('content')
-    <x-container.wrapper :gapY="4" :rows="12">
-        <x-container.container class="row-start-1 row-end-2">
-            <x-typography variant="body-large-semibold">Button (Sort dan Filter)</x-typography>
-        </x-container.container>
-        <x-container.container :background="'content-white'" :radius="'md'" :padding="'p-4'" :gap="'gap-5'"
-            class="row-start-2 row-end-13 flex-row gap-5 justify-start">
-            <x-typography variant="body-medium-regular">Klik pada button untuk memunculkan option</x-typography>
+    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{ filter: '', sort: '' }">
+        <x-typography variant="body-large-semibold">Button (Sort dan Filter)</x-typography>
+        <x-container.container :background="'content-white'" :radius="'md'" :padding="'p-4'" :gap="'gap-5'" class="flex-col">
+            <x-typography variant="body-medium-semibold">1. Button Filter</x-typography>
+            <div class="flex flex-col items-center gap-2">
+                <x-button.sort :options="$filterList" :type="'filter'" x-model="filter" />
+                <span class="text-xs" x-text="'Value: ' + filter"></span>
+                <pre class="bg-gray-900 text-gray-300 p-4 rounded-lg text-xs w-full overflow-x-auto">
+                &lt;x-button.sort :options="$filterList" :type="'filter'" x-model="filter" /&gt;</pre>
+            </div>
+            <hr>
 
-            {{-- type: untuk menentukan apakah filter atau sort --}}
-            <x-button.sort :options="$filterList" :type="'filter'" x-model="filter"></x-button.sort>
-            <x-button.sort :options="$sortList" :type="'sort'" x-model="sort"></x-button.sort>
+            <x-typography variant="body-medium-semibold">2. Button Sort</x-typography>
+            <div class="flex flex-col items-center gap-2">
+                <x-button.sort :options="$sortList" :type="'sort'" x-model="sort"></x-button.sort>
+                <span class="text-xs" x-text="'Value: ' + sort"></span>
+                <pre class="bg-gray-900 text-gray-300 p-4 rounded-lg text-xs w-full overflow-x-auto">
+                &lt;x-button.sort :options="$sortList" :type="'sort'" x-model="sort" /&gt;</pre>
+            </div>
         </x-container.container>
-    </x-container.wrapper>
+    </div>
 @endsection
