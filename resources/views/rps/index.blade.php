@@ -2,10 +2,8 @@
 
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
-<script src="{{ asset('js/controllers/rps.js') }}" defer></script>
-
 @section('content')
-    <div x-data="rps()">
+    <div x-data="{periode: '', prodi: '', mata_kuliah: ''}">
         <x-container.wrapper :gapY="4" :rows="15">
             <x-container.container class="row-start-1 row-end-2">
                 <x-typography variant="body-large-semibold">Buat RPS (Rencana Pembelajaran Semester)</x-typography>

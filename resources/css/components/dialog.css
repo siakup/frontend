@@ -1,5 +1,5 @@
 @layer utilities {
-    .dialog-base { @apply p-4 border rounded-sm flex flex-row gap-4 text-left; }
+    .dialog-base { @apply p-4 border rounded-sm flex flex-row gap-4 text-left w-full h-max; }
 
     .warning { @apply bg-yellow-50 border-yellow-500; }
     .danger { @apply bg-disable-red border-red-400; }

@@ -238,7 +238,10 @@
     </div>
 
     {{-- Helper / Error Message --}}
-    <div class="input-helper" :class="hasError ? 'input-helper-error' : 'input-helper-normal'">
-        <span x-text="message"></span>
-    </div>
+    @if ($helperText !== '')
+        <div class="input-helper" :class="hasError ? 'input-helper-error' : 'input-helper-normal'">
+            <span x-text="message"></span>
+        </div>
+    @endif
+
 </div>
