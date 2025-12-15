@@ -7,9 +7,9 @@
 
 @php
     $listStatus = [
-        'aktif' => ['text' => 'Mahasiswa Aktif', 'style' => 'bg-green-400 text-gray-800 text-base'],
-        'lulus' => ['text' => 'Mahasiswa Lulus', 'style' => 'bg-blue-500 text-gray-50 text-[15px]'],
-        'dropout' => ['text' => 'Mahasiswa Drop Out', 'style' => 'bg-red-500 text-gray-50 text-xs'],
+        'aktif' => ['text' => 'Mahasiswa Aktif', 'style' => 'aktif'],
+        'lulus' => ['text' => 'Mahasiswa Lulus', 'style' => 'lulus'],
+        'dropout' => ['text' => 'Mahasiswa Drop Out', 'style' => 'dropout'],
     ];
 
     $style = $listStatus[$status]['style'];
@@ -17,12 +17,12 @@
     $icon = "avatar/$gender/4-32";
 @endphp
 
-<div class="flex flex-row w-max h-max">
-    <div class="flex flex-row gap-1.5 px-5 py-2 bg-white w-max rounded-l-md items-center">
+<div class="card-status-mahasiswa">
+    <div class="card-status-mahasiswa data">
         <x-icon :name="$icon" class="w-fit h-fit"/>
         <x-typography :variant="'body-medium-regular'">{{ $nama }} ({{ $nim }})</x-typography>
     </div>
-    <div class="rounded-r-md px-5 py-3 w-max h-full flex items-center {{ $style }}">
+    <div class="card-status-mahasiswa status {{ $style }}">
         {{ $text }}
     </div>
 </div>
