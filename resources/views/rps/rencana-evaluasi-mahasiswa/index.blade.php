@@ -3,12 +3,12 @@
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <div class="flex flex-col gap-4 p-4 w-full h-full">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
         <div x-data="{ rencanaList: @js($rencanaList ?? []) }" class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
-            <x-container variant="content-under-navbar">
+            <div class="content-under-navbar rounded-md">
                 <x-typography variant="body-medium-bold">Rencana Evaluasi Mahasiswa</x-typography>
                 @if ($rencanaList)
                     <x-table.index>
@@ -24,14 +24,14 @@
                         <x-table.body>
                             @foreach ($rencanaList as $index => $rencana)
                                 <x-table.row>
-                                    <x-table.cell >{{ $rencana['bentuk_ujian'] }}</x-table.cell>
-                                    <x-table.cell >{{ $rencana['judul_evaluasi'] }}</x-table.cell>
-                                    <x-table.cell  class="whitespace-pre-line">
+                                    <x-table.cell>{{ $rencana['bentuk_ujian'] }}</x-table.cell>
+                                    <x-table.cell>{{ $rencana['judul_evaluasi'] }}</x-table.cell>
+                                    <x-table.cell class="whitespace-pre-line">
                                         @foreach ($rencana['sub_cpmk'] as $sub_cpmk)
                                             {{ $sub_cpmk }}
                                         @endforeach
                                     </x-table.cell>
-                                    <x-table.cell 
+                                    <x-table.cell
                                         class="whitespace-pre-line">{{ $rencana['metode_pengerjaan'] }}</x-table.cell>
                                     <x-table.cell>
                                         <div class="flex flex-nowrap gap-3">
@@ -39,13 +39,13 @@
                                                 x-on:click="$dispatch('open-modal', {id: 'view-rencana-evaluasi'})">
                                                 Lihat
                                             </x-button.base>
-                                            <x-button.base :icon="'edit/red-16'"  iconPosition="left" sizeText="caption-regular"
+                                            <x-button.base :icon="'edit/red-16'" iconPosition="left" sizeText="caption-regular"
                                                 buttonClass="text-red-500" :href="route('rps.rencana-evaluasi-mahasiswa.edit', [
                                                     'id' => $rencana['id'],
                                                 ])">
                                                 Ubah
                                             </x-button.base>
-                                            <x-button.base :icon="'delete/grey-16'"  iconPosition="left" sizeText="caption-regular"
+                                            <x-button.base :icon="'delete/grey-16'" iconPosition="left" sizeText="caption-regular"
                                                 buttonClass="text-gray-600"
                                                 x-on:click="$dispatch('open-modal', {id: 'delete-rencana-evaluasi'})">
                                                 Hapus
@@ -57,26 +57,24 @@
                         </x-table.body>
                     </x-table.index>
                 @else
-                    <x-container variant="content-grey" class="h-22 flex items-center justify-center"
-                        borderRadius="rounded-xl">
+                    <div class="content-grey rounded-md p-5 flex items-center justify-center" borderRadius="rounded-xl">
                         <x-typography variant="body-small-bold">Belum Ada Rencana Evaluasi Mahasiswa, Silahkan Tambah
                             Rencana Evaluasi Terlebih Dahulu</x-typography>
-                    </x-container>
+                    </div>
                 @endif
 
                 <div class="flex justify-end">
-                    <x-button.primary :href="route('rps.rencana-evaluasi-mahasiswa.create')">Tambah Rencana Evaluasi</x-button.primary>
+                    <x-button variant="primary" :href="route('rps.rencana-evaluasi-mahasiswa.create')">Tambah Rencana Evaluasi</x-button>
                 </div>
                 <div class="flex mt-5 justify-end gap-2">
-                    <x-button.secondary x-bind:disabled="!rencanaList || rencanaList.length === 0"
-                        x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Kembali</x-button.secondary>
-                    <x-button.primary x-bind:disabled="!rencanaList || rencanaList.length === 0"
-                        x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
+                    <x-button variant="secondary" x-bind:disabled="!rencanaList || rencanaList.length === 0"
+                        x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Kembali</x-button>
+                    <x-button variant="primary" x-bind:disabled="!rencanaList || rencanaList.length === 0"
+                        x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button>
                 </div>
-
-            </x-container>
+            </div>
         </div>
-    </x-container>
+    </div>
 
     @include('rps.rencana-evaluasi-mahasiswa._view')
     @include('rps.rencana-evaluasi-mahasiswa._delete')

@@ -2,19 +2,13 @@
 
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
-<script src="{{ asset('js/controllers/rpsDeskripsiUmum.js') }}" defer></script>
-
 @section('content')
-    <x-container.wrapper :rows="15" :gapY="4">
-        <x-container.container class="row-start-1 row-end-2">
-            <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        </x-container.container>
-        <x-container.container class="row-start-2 row-end-3">
-            <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
-        </x-container.container>
-        <x-container.container class="row-start-3 row-end-4 flex-col">
+    <div class="flex flex-col gap-4 p-4 w-full h-full">
+        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
+        <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
+        <div class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
-            <x-container.container x-data="window.CreateDeskripsiUmum.deskripsiUmum()" :background="'content-under-navbar'" :radius="'b-lg'">
+            <div x-data="window.CreateDeskripsiUmum.deskripsiUmum()" class="content-under-navbar rounded-b-md">
                 <x-typography variant="body-medium-bold">Informasi RPS</x-typography>
                 <x-form.input-container>
                     <x-slot name="label">Periode</x-slot>
@@ -38,7 +32,8 @@
                             x-model="mata_kuliah" />
                     </x-slot>
                 </x-form.input-container>
-                <x-container.wrapper :cols="2" :rows="2" :padding="'p-0'" :gapX="10" :gapY="5">
+                <x-container.wrapper :cols="2" :rows="2" :padding="'p-0'" :gapX="10"
+                    :gapY="5">
                     <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
                         <div class="col-start-1 col-end-7">
                             <label>
@@ -176,10 +171,10 @@
                     <x-button.primary x-bind:disabled="isDisabled"
                         x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
                 </div>
-            </x-container.container>
-        </x-container.container>
+            </div>
+        </div>
 
-    </x-container.wrapper>
+    </div>
 
     <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
         cancelText="Cek Kembali" :redirectConfirm="route('rps.capaian-pembelajaran')">
