@@ -3,12 +3,12 @@
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <div class="flex flex-col gap-4 p-4 w-full h-full">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
-        <x-container variant="flat" class="flex flex-col gap-0">
+        <div class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
-            <x-container variant="content-under-navbar" x-data="{ rencanaPerkuliahan: @js($rencanaPerkuliahan ?? []) }">
+            <div class="content-under-navbar" x-data="{ rencanaPerkuliahan: @js($rencanaPerkuliahan ?? []) }">
                 <x-typography variant="body-medium-bold">Rencana Perkuliahan</x-typography>
                 @if ($rencanaPerkuliahan)
                     <x-table.index>
@@ -83,10 +83,10 @@
                         </x-table.body>
                     </x-table.index>
                 @else
-                    <x-container variant="content-grey" class="flex items-center justify-center">
+                    <div class="content-grey rounded-md p-5 flex items-center justify-center">
                         <x-typography variant="body-small-bold">Belum Ada Rencana Perkuliahan, Silahkan Tambah Rencana
                             Perkuliahan Terlebih Dahulu</x-typography>
-                    </x-container>
+                    </div>
                 @endif
                 <div class="flex justify-end">
                     <x-button.primary :href="route('rps.rencana-perkuliahan.create')">Tambah Rencana Perkuliahan</x-button.primary>
@@ -103,9 +103,9 @@
                         Simpan
                     </x-button.primary>
                 </div>
-            </x-container>
-        </x-container>
-    </x-container>
+            </div>
+        </div>
+    </div>
 
 
     <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
@@ -121,22 +121,10 @@
     <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali" cancelText="Tidak"
         :redirectConfirm="route('rps.komponen-penilaian')">
         <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
-<<<<<<< HEAD
-
-        <x-container.container variant="content-wrapper" class="bg-[#FFFBEB] border-[1px] border-[#FDD835] rounded-lg py-3 mt-4">
-            <div class="flex gap-4">
-                <x-icon iconUrl="{{ asset('assets/icon-caution-warning.svg') }}"/>
-                <div class="flex flex-col text-left">
-                    <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                    <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali nanti.</p>
-            </div>
-        </x-container>
-=======
         <x-dialog variant="warning">
             <x-slot name="header">Perhatian!</x-slot>
             Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
             nanti.
         </x-dialog>
->>>>>>> d965f5f35489ca988f9a23e75a3072665d01481a
     </x-modal.confirmation>
 @endsection
