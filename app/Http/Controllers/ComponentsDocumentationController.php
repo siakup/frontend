@@ -96,4 +96,8 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dropdown');
     }
+    public function border(Request $request)
+    {
+        return view('components-documentation.border');
+    }
 }
