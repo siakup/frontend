@@ -20,14 +20,6 @@ class PeriodeAkademik extends Component
         // fetch
         $urlPeriode = PeriodAcademicService::getInstance()->getListAllPeriode();
         $responsePeriode = getCurl($urlPeriode, null, getHeaders());
-        if (!isset($responsePeriode->data) || !isset($responsePeriode->success) || !$responsePeriode->success || count($responsePeriode->data) == 0) {
-            throw new \Exception(
-                json_encode([
-                    'message' => 'Periode belum ditambahkan!',
-                    'system_error' => $responsePeriode,
-                ]),
-            );
-        }
 
         $items = $responsePeriode->data ?? [];
 

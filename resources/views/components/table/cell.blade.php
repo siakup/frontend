@@ -11,7 +11,7 @@
 <td 
   x-data="{
     variants: {
-      default: 'border-r border-gray-400 last:border-r-0 p-6',
+      default: 'border-r border-gray-400 last:border-r-0 p-5',
       old: 'py-4 px-2 border-b-gray-400',
     },
     variantColors: {

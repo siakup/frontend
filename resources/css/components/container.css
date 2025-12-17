@@ -11,6 +11,7 @@
   .content-receiver { @apply bg-blue-50 border border-gray-400 rounded-tl-none flex; }
   .disable-red-gradient { @apply bg-gradient-to-r from-white to-disable-red flex; }
   .red-gradient { @apply bg-gradient-to-r from-white via-white to-red-50 flex; }
+  .white-red-gradient { @apply bg-gradient-to-r from-disable-red via-white to-white flex; }
   .green-gradient { @apply bg-gradient-to-r from-white to-green-400 flex; }
   .blue-gradient { @apply bg-gradient-to-r from-white to-blue-50 flex; }
   .yellow-gradient { @apply bg-gradient-to-r from-white to-yellow-100 flex; }

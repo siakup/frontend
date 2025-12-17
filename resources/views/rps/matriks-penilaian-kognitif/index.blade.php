@@ -3,14 +3,12 @@
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <div class="flex flex-col gap-4 p-4 w-full h-full">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
-
-        <x-container variant="flat" class="flex flex-col gap-0">
+        <div class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
-
-            <x-container variant="content-under-navbar" x-data="{ matriksList: @js($matriksList ?? []) }">
+            <div class="content-under-navbar rounded-md" x-data="{ matriksList: @js($matriksList ?? []) }">
                 <x-typography variant="body-medium-bold">Matriks Penilaian Kognitif</x-typography>
                 @if ($matriksList)
                     <x-table.index>
@@ -44,29 +42,28 @@
                         </x-table.body>
                     </x-table.index>
                 @else
-                    <x-container variant="content-grey" class="h-22 flex items-center justify-center">
+                    <div class="content-grey rounded-md p-5 flex items-center justify-center">
                         <x-typography variant="body-small-bold">Belum Ada Matriks Penilaian Kognitif, Silahkan Tambah
                             Matriks Penilaian Terlebih Dahulu</x-typography>
-                    </x-container>
+                    </div>
                 @endif
 
-                <x-container variant="flat" class="flex justify-end">
-                    <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-matriks-penilaian'})">Tambah Matriks
-                        Penilaian</x-button.primary>
-                </x-container>
+                <div class="flex justify-end">
+                    <x-button variant="primary" x-on:click="$dispatch('open-modal', {id: 'create-matriks-penilaian'})">Tambah Matriks
+                        Penilaian</x-button>
+                </div>
 
-                <x-container variant="flat" class="flex justify-end py-5 gap-2.5">
-                    <x-button.secondary class="w-38!" x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">
+                <div class="flex justify-end py-5 gap-2.5">
+                    <x-button variant="secondary" class="w-38!" x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">
                         Kembali
-                    </x-button.secondary>
-                    <x-button.primary class="w-38!" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">
+                    </x-button>
+                    <x-button variant="primary" class="w-38!" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">
                         Simpan
-                    </x-button.primary>
-                </x-container>
-
-            </x-container>
-        </x-container>
-    </x-container>
+                    </x-button>
+                </div>
+            </div>
+        </div>
+    </div>
     @include('rps.matriks-penilaian-kognitif._modal-create')
     @include('rps.matriks-penilaian-kognitif._modal-edit')
     @include('rps.matriks-penilaian-kognitif._modal-delete')
