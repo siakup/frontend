@@ -15,17 +15,17 @@
         </x-container.container>
 
         {{-- --- SIDEBAR & CONTENT --- --}}
-        <x-container.container height="full" width="full" radius="none">
+        <x-container.container height="screen" width="full" radius="none" class="h-screen">
 
             <template x-if="$store.mainLayout.isOpen">
                 <x-container.wrapper cols="2" height="full">
 
-                    <x-container.container col="1" radius="none" height="fit" width="fit"
+                    <x-container.container col="1" radius="none" height="full" width="fit"
                         background="bg-white" class="border-r border-r-gray-400">
                         <x-menu />
                     </x-container.container>
 
-                    <x-container.container col="1">
+                    <x-container.container col="1" height="full" width="full">
                         {{ $slot }}
                     </x-container.container>
 

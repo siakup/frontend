@@ -14,7 +14,8 @@
   }
 @endphp
 
-<x-container.wrapper :padding="'p-0'" :cols="9" :align="'center'" :justify="'center'" class="{{ $containerClass }}">
+<x-container.wrapper :padding="'p-0'" :cols="9" :align="'center'" :justify="'center'"
+    class="{{ $containerClass }}">
 
   <x-container.container class="{{ $labelWidth }}">
     <label 

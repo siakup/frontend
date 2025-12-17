@@ -1,18 +1,58 @@
-<x-container.container :background="'bg-white'" :radius="'none'" class="w-full h-full border-r border-r-gray-400">
-  <x-container.wrapper :padding="'p-0'" :rows="12">
+<div class="grid grid-rows-[1fr_auto] h-full w-full">
 
-    <x-container.container :background="'transparent'" :radius="'none'" class="row-span-11 overflow-scroll scroll-hide">
-      <x-menu.container :variant="'main'">
-        <x-menu.item
-          :label="'Beranda'"
-          :haveIcon="true"
-          :iconInactive="asset('assets/icons/home/black-24.svg')"
-          :iconActive="asset('assets/icons/home/red-24.svg')"
-          :routeName="'home'"
-          :routeQuery="'home'"
-          :variant="'parent'"
-        />
-        {{-- <x-menu.item
+    <x-container.container background="transparent" width="full" height="full" radius="none"
+        class="overflow-y-auto scroll-hidden">
+        <x-menu.container :variant="'main'">
+            <x-menu.item :label="'Beranda'" :haveIcon="true" :iconInactive="asset('assets/icons/home/black-24.svg')" :iconActive="asset('assets/icons/home/red-24.svg')" :routeName="'home'"
+                :routeQuery="'home'" :variant="'parent'" />
+
+            <x-menu.item :label="'Konfigurasi'" :haveIcon="true" :iconInactive="asset('assets/icons/admin/black-24.svg')" :iconActive="asset('assets/icons/admin/red-24.svg')" :routeName="''"
+                :variant="'parent'" :routeChild="['users*', 'roles*', 'academics*']">
+                <x-menu.container :variant="'submenu'" :routeChild="['users*', 'roles*', 'academics*']">
+                    <x-menu.item :label="'Manajemen Pengguna'" :routeName="'users.index'" :routeQuery="'users*'" :variant="'child'" />
+
+                    <x-menu.item :label="'Akademik'" :routeName="'academics-periode.index'" :routeQuery="'academics*'" :variant="'child'" />
+                </x-menu.container>
+            </x-menu.item>
+            <x-menu.item :label="'Kalender Akademik'" :haveIcon="true" :iconInactive="asset('assets/icons/admin/black-24.svg')" :iconActive="asset('assets/icons/admin/red-24.svg')" :routeName="'calendar.index'"
+                :routeQuery="'calendar*'" :variant="'parent'" />
+            <x-menu.item :label="'Kurikulum'" :haveIcon="true" :iconInactive="asset('assets/icons/curriculum/outline-black-24.svg')" :iconActive="asset('assets/icons/curriculum/outline-red-24.svg')" :routeName="'curriculum.list'"
+                :routeQuery="'curriculums*'" :variant="'parent'" />
+            <x-menu.item :label="'Persiapan Perkuliahan'" :haveIcon="true" :iconInactive="asset('assets/icons/admin/black-24.svg')" :iconActive="asset('assets/icons/admin/red-24.svg')" :routeName="''"
+                :variant="'parent'" :routeChild="['lecture-preparation*']">
+                <x-menu.container :variant="'submenu'" :routeChild="['lecture-preparation*']">
+                    <x-menu.item :label="'Jadwal Kuliah'" :routeName="'academics.schedule.prodi-schedule.index'" :routeQuery="'lecture-preparation/schedule*'" :variant="'child'" />
+                    <x-menu.item :label="'Auto Assign Peserta Kelas'" :routeName="'academics.auto-assign.index'" :routeQuery="'lecture-preparation/auto-assign*'" :variant="'child'" />
+                    <x-menu.item :label="'Pemetaan CPL'" :routeName="'cpl-mapping.index'" :routeQuery="'lecture-preparation/cpl-mapping*'" :variant="'child'" />
+                </x-menu.container>
+            </x-menu.item>
+            <x-menu.item :label="'Mata Kuliah'" :haveIcon="true" :iconInactive="asset('assets/icons/course/outline-black-24.svg')" :iconActive="asset('assets/icons/course/outline-red-24.svg')" :routeName="'study.index'"
+                :routeQuery="'courses*'" :variant="'parent'" />
+
+            <x-menu.item :label="'Kelompok Perwalian'" :haveIcon="true" :iconInactive="asset('assets/icons/advisory/black-24.svg')" :iconActive="asset('assets/icons/advisory/red-24.svg')" :routeName="'tutelage-group.list-student'"
+                :routeQuery="'tutelage-group*'" :variant="'parent'" />
+            <x-menu.item :label="'RPS (Rencana Pembelajaran Semester)'" :haveIcon="true" :iconInactive="asset('assets/icons/curriculum/outline-black-24.svg')" :iconActive="asset('assets/icons/curriculum/outline-red-24.svg')" :routeName="'rps.index'"
+                :routeQuery="'rps*'" :variant="'parent'" />
+
+        </x-menu.container>
+    </x-container.container>
+
+    <x-container.container background="transparent" height="fit" width="full" radius="none"
+        class="py-5 px-3 text-gray-800">
+        <x-container.wrapper rows="2">
+            <x-container.container row="1" background="transparent" radius="none">
+                <x-typography variant="caption-regular">Copyright © 2025 Universitas Pertamina.</x-typography>
+            </x-container.container>
+
+            <x-container.container row="1" background="transparent" radius="none">
+                <x-typography variant="caption-regular">All Rights Reserved.</x-typography>
+            </x-container.container>
+        </x-container.wrapper>
+    </x-container.container>
+
+</div>
+
+{{-- <x-menu.item
           :label="'Profil'"
           :haveIcon="true"
           :icon="asset('assets/base/icon-profile.svg')"
@@ -36,100 +76,7 @@
           :routeQuery="'home'"
           :variant="'parent'"
         /> --}}
-        <x-menu.item
-          :label="'Konfigurasi'"
-          :haveIcon="true"
-          :iconInactive="asset('assets/icons/admin/black-24.svg')"
-          :iconActive="asset('assets/icons/admin/red-24.svg')"
-          :routeName="''"
-          :variant="'parent'"
-          :routeChild="['users*', 'roles*', 'academics*']"
-        >
-          <x-menu.container 
-            :variant="'submenu'"
-            :routeChild="['users*', 'roles*', 'academics*']"
-          >
-            <x-menu.item 
-              :label="'Manajemen Pengguna'"
-              :routeName="'users.index'"
-              :routeQuery="'users*'"
-              :variant="'child'"
-            />
-            {{-- <x-menu.item 
-              :label="'Manajemen Peran'"
-              :routeName="'roles.index'"
-              :routeQuery="'roles*'"
-              :variant="'child'"
-            /> --}}
-            <x-menu.item 
-              :label="'Akademik'"
-              :routeName="'academics-periode.index'"
-              :routeQuery="'academics*'"
-              :variant="'child'"
-            />
-          </x-menu.container>
-        </x-menu.item>
-        <x-menu.item
-          :label="'Kalender Akademik'"
-          :haveIcon="true"
-          :iconInactive="asset('assets/icons/admin/black-24.svg')"
-          :iconActive="asset('assets/icons/admin/red-24.svg')"
-          :routeName="'calendar.index'"
-          :routeQuery="'calendar*'"
-          :variant="'parent'"
-        />
-        <x-menu.item
-          :label="'Kurikulum'"
-          :haveIcon="true"
-          :iconInactive="asset('assets/icons/curriculum/outline-black-24.svg')"
-          :iconActive="asset('assets/icons/curriculum/outline-red-24.svg')"
-          :routeName="'curriculum.list'"
-          :routeQuery="'curriculums*'"
-          :variant="'parent'"
-        />
-        <x-menu.item
-          :label="'Persiapan Perkuliahan'"
-          :haveIcon="true"
-          :iconInactive="asset('assets/icons/admin/black-24.svg')"
-          :iconActive="asset('assets/icons/admin/red-24.svg')"
-          :routeName="''"
-          :variant="'parent'"
-          :routeChild="['lecture-preparation*']"
-        >
-          <x-menu.container 
-            :variant="'submenu'"
-            :routeChild="['lecture-preparation*']"
-          >
-            <x-menu.item
-              :label="'Jadwal Kuliah'"
-              :routeName="'academics.schedule.prodi-schedule.index'"
-              :routeQuery="'lecture-preparation/schedule*'"
-              :variant="'child'"
-            />
-            <x-menu.item
-              :label="'Auto Assign Peserta Kelas'"
-              :routeName="'academics.auto-assign.index'"
-              :routeQuery="'lecture-preparation/auto-assign*'"
-              :variant="'child'"
-            />
-            <x-menu.item
-              :label="'Pemetaan CPL'"
-              :routeName="'cpl-mapping.index'"
-              :routeQuery="'lecture-preparation/cpl-mapping*'"
-              :variant="'child'"
-            />
-          </x-menu.container>
-        </x-menu.item>
-        <x-menu.item
-          :label="'Mata Kuliah'"
-          :haveIcon="true"
-          :iconInactive="asset('assets/icons/course/outline-black-24.svg')"
-          :iconActive="asset('assets/icons/course/outline-red-24.svg')"
-          :routeName="'study.index'"
-          :routeQuery="'courses*'"
-          :variant="'parent'"
-        />
-        {{-- <x-menu.item
+{{-- <x-menu.item
           :label="'Manajemen Staf Pengajar'"
           :haveIcon="true"
           :icon="asset('assets/base/icon-prodi.svg')"
@@ -211,22 +158,3 @@
           :routeQuery="'home'"
           :variant="'parent'"
         /> --}}
-      </x-menu.container>
-    </x-container.container>
-
-    <x-container.container :background="'transparent'" :radius="'none'" class="row-span-1 text-gray-800">
-      <x-container.wrapper :rows="2" :gapY="4">
-
-        <x-container.container :background="'transparent'" :radius="'none'" class="row-span-1">
-          <x-typography :variant="'caption-regular'">Copyright © 2025 Universitas Pertamina.</x-typography>
-        </x-container.container>
-
-        <x-container.container :background="'transparent'" :radius="'none'" class="row-span-1">
-          <x-typography :variant="'caption-regular'">All Rights Reserved.</x-typography>
-        </x-container.container>
-
-      </x-container.wrapper>
-    </x-container.container>
-
-  </x-wrapper>
-</x-container>
