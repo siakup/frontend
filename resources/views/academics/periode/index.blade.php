@@ -44,8 +44,8 @@
                 <x-filter-button />
               </x-container.container>
 
-            </x-container.wrapper>
-          </x-container.container>
+                        </x-container.wrapper>
+                    </x-container.container>
 
           <x-container.container row="4" col="1" height="max" >
 
