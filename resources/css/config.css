@@ -1,112 +1,120 @@
 @import "tailwindcss";
 
 @theme {
+    /* === Font === */
+    --font-sans: "Poppins", "Instrument Sans", ui-sans-serif, system-ui,
+        sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 
-  /* === Font === */
-  --font-sans: 'Poppins', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Segoe UI Symbol', 'Noto Color Emoji';
+    /* === Red (SIUP Red) === */
+    --color-red-50: #fbdadb;
+    --color-red-100: #f7b6b8;
+    --color-red-200: #f39194;
+    --color-red-300: #ef6c70;
+    --color-red-400: #eb474d;
+    --color-red-500: #e62129;
+    --color-red-600: #ca161c;
+    --color-red-700: #a51217;
+    --color-red-800: #810e12;
+    --color-red-900: #5c0a0d;
 
-  /* === Red (SIUP Red) === */
-  --color-red-50: #FBDADB;
-  --color-red-100: #F7B6B8;
-  --color-red-200: #F39194;
-  --color-red-300: #EF6C70;
-  --color-red-400: #EB474D;
-  --color-red-500: #E62129;
-  --color-red-600: #CA161C;
-  --color-red-700: #A51217;
-  --color-red-800: #810E12;
-  --color-red-900: #5C0A0D;
+    /* === Green Pear === */
+    --color-green-50: #fafbee;
+    --color-green-100: #eff4cd;
+    --color-green-200: #e5edab;
+    --color-green-300: #dbe58a;
+    --color-green-400: #d0de68;
+    --color-green-500: #c2d43d;
+    --color-green-600: #b6c92c;
+    --color-green-700: #98a725;
+    --color-green-800: #7a861d;
+    --color-green-900: #5b6416;
 
-  /* === Green Pear === */
-  --color-green-50: #FAFBEE;
-  --color-green-100: #EFF4CD;
-  --color-green-200: #E5EDAB;
-  --color-green-300: #DBE58A;
-  --color-green-400: #D0DE68;
-  --color-green-500: #C2D43D;
-  --color-green-600: #B6C92C;
-  --color-green-700: #98A725;
-  --color-green-800: #7A861D;
-  --color-green-900: #5B6416;
+    /* === Honolulu Blue === */
+    --color-blue-50: #99d8ff;
+    --color-blue-100: #70c8ff;
+    --color-blue-200: #47b9ff;
+    --color-blue-300: #1fa9ff;
+    --color-blue-400: #0097f5;
+    --color-blue-500: #0076be;
+    --color-blue-600: #0065a3;
+    --color-blue-700: #004b7a;
+    --color-blue-800: #003252;
+    --color-blue-900: #001929;
 
-  /* === Honolulu Blue === */
-  --color-blue-50: #99D8FF;
-  --color-blue-100: #70C8FF;
-  --color-blue-200: #47B9FF;
-  --color-blue-300: #1FA9FF;
-  --color-blue-400: #0097F5;
-  --color-blue-500: #0076BE;
-  --color-blue-600: #0065A3;
-  --color-blue-700: #004B7A;
-  --color-blue-800: #003252;
-  --color-blue-900: #001929;
+    /* === Beaver === */
+    --color-beaver-50: #e5e1dc;
+    --color-beaver-100: #d4cdc4;
+    --color-beaver-200: #c2b9ad;
+    --color-beaver-300: #b1a595;
+    --color-beaver-400: #a0917e;
+    --color-beaver-500: #8a7a65;
+    --color-beaver-600: #756857;
+    --color-beaver-700: #5e5345;
+    --color-beaver-800: #463e34;
+    --color-beaver-900: #2f2a23;
 
-  /* === Beaver === */
-  --color-beaver-50: #E5E1DC;
-  --color-beaver-100: #D4CDC4;
-  --color-beaver-200: #C2B9AD;
-  --color-beaver-300: #B1A595;
-  --color-beaver-400: #A0917E;
-  --color-beaver-500: #8A7A65;
-  --color-beaver-600: #756857;
-  --color-beaver-700: #5E5345;
-  --color-beaver-800: #463E34;
-  --color-beaver-900: #2F2A23;
+    /* === Neutral Gray === */
+    --color-gray-50: #ffffff;
+    --color-gray-100: #fafafa;
+    --color-gray-200: #f5f5f5;
+    --color-gray-300: #e8e8e8;
+    --color-gray-400: #d9d9d9;
+    --color-gray-500: #bfbfbf;
+    --color-gray-600: #8c8c8c;
+    --color-gray-700: #595959;
+    --color-gray-800: #262626;
+    --color-gray-900: #1c1c1c;
 
-  /* === Neutral Gray === */
-  --color-gray-50: #FFFFFF;
-  --color-gray-100: #FAFAFA;
-  --color-gray-200: #F5F5F5;
-  --color-gray-300: #E8E8E8;
-  --color-gray-400: #D9D9D9;
-  --color-gray-500: #BFBFBF;
-  --color-gray-600: #8C8C8C;
-  --color-gray-700: #595959;
-  --color-gray-800: #262626;
-  --color-gray-900: #1C1C1C;
+    /* === Yellow === */
+    --color-yellow-50: #fffbeb;
+    --color-yellow-100: #fef3c0;
+    --color-yellow-400: #fde05d;
+    --color-yellow-500: #fdd835;
+    --color-yellow-600: #e6c530;
 
-  /* === Yellow === */
-  --color-yellow-50: #FFFBEB;
-  --color-yellow-100: #FEF3C0;
-  --color-yellow-400: #FDE05D;
-  --color-yellow-500: #FDD835;
-  --color-yellow-600: #E6C530;
+    /* === Crayola === */
+    --color-crayola-500: #f5a623;
 
-  /* === Crayola === */
-  --color-crayola-500: #F5A623;
+    /* === Disable === */
+    --color-disable-red: #fbe8e6;
+    --color-disable-blue: #e9edf4;
+    --color-disable-white: #f5f5f5;
+    --color-disable-yellow: #fffbeb;
+    --color-disable-gray: #e8e8e8;
 
-   /* === Disable === */
-   --color-disable-red: #FBE8E6;
-   --color-disable-blue: #E9EDF4;
-   --color-disable-white: #F5F5F5;
-   --color-disable-yellow: #FFFBEB;
-   --color-disable-gray: #E8E8E8;
+    /* shadow */
+    --shadow-high: 0px 16px 36px 0px rgba(60, 65, 82, 0.1);
+    --shadow-high-inverse: 0px -16px 36px 0px rgba(60, 65, 82, 0.1);
+    --shadow-medium: 0px 8px 24px 0px rgba(60, 65, 82, 0.15);
+    --shadow-medium-inverse: 0px -8px 24px 0px rgba(60, 65, 82, 0.15);
+    --shadow-low: 0px 4px 8px 0px rgba(60, 65, 82, 0.2);
+    --shadow-low-inverse: 0px -4px 8px 0px rgba(60, 65, 82, 0.2);
 
-   /* shadow */
-   --shadow-high: 0 16 36 0 rgba(60, 65, 82, 0.1);
-   --shadow-high-inverse: 0 -16 36 0 rgba(60, 65, 82, 0.1);
-   --shadow-medium: 0 8 24 0 rgba(60, 65, 82, 0.1);
-   --shadow-medium-inverse: 0 -8 24 0 rgba(60, 65, 82, 0.1);
-   --shadow-low: 0 4 8 0 rgba(60, 65, 82, 0.1);
-   --shadow-low-inverse: 0 -4 8 0 rgba(60, 65, 82, 0.1);
+    /* radius */
+    --radius-xs: 4px;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
 
-   /* radius */
-   --radius-xs: 4px;
-   --radius-sm: 8px;
-   --radius-md: 12px;
-   --radius-lg: 20px;
+    /* spacing */
+    --spacing: 4px;
 
-   /* spacing */
-   --spacing: 4px;
+    --spacing-1: calc(var(--spacing) * 1); /* 4px */
+    --spacing-2: calc(var(--spacing) * 2); /* 8px */
+    --spacing-2_5: calc(var(--spacing) * 2.5); /* 10px */
+    --spacing-3: calc(var(--spacing) * 3); /* 12px */
+    --spacing-4: calc(var(--spacing) * 4); /* 16px */
+    --spacing-5: calc(var(--spacing) * 5); /* 20px */
+    --spacing-6: calc(var(--spacing) * 6); /* 24px */
+    --spacing-7: calc(var(--spacing) * 7); /* 28px */
 
-   /* --breakpoint-2xl: ...px */
-   --breakpoint-xl: 1440px;
-   /* --breakpoint-lg: ...px */
-   /* --breakpoint-md: ...px */
-   /* --breakpoint-sm: ...px */
+    /* --breakpoint-2xl: ...px */
+    --breakpoint-xl: 1440px;
+    /* --breakpoint-lg: ...px */
+    /* --breakpoint-md: ...px */
+    /* --breakpoint-sm: ...px */
 
-
-   --filter-white: brightness(0) invert(100%);
-   --filter-gray: brightness(0) invert(54%);
+    --filter-white: brightness(0) invert(100%);
+    --filter-gray: brightness(0) invert(54%);
 }

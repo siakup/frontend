@@ -100,4 +100,8 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.border');
     }
+    public function shadow(Request $request)
+    {
+        return view('components-documentation.shadow');
+    }
 }

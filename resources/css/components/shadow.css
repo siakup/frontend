@@ -1,8 +1,25 @@
 @layer utilities {
-  .shadow-high { box-shadow: 0px 16px 36px 0px rgba(60, 65, 82, 0.1); }
-  .shadow-high-inverse { box-shadow: 0px -16px 36px 0px rgba(60, 65, 82, 0.1); }
-  .shadow-medium { box-shadow: 0px 8px 24px 0px rgba(60, 65, 82, 0.1); }
-  .shadow-medium-inverse { box-shadow: 0px -8px 24px 0px rgba(60, 65, 82, 0.1); }
-  .shadow-low { box-shadow: 0px 4px 8px 0px rgba(60, 65, 82, 0.1); }
-  .shadow-low-inverse { box-shadow: 0px -4px 8px 0px rgba(60, 65, 82, 0.1); };
+    .shadow-low {
+        box-shadow: var(--shadow-low);
+    }
+
+    .shadow-low-inverse {
+        box-shadow: var(--shadow-low-inverse);
+    }
+
+    .shadow-medium {
+        box-shadow: var(--shadow-medium);
+    }
+
+    .shadow-medium-inverse {
+        box-shadow: var(--shadow-medium-inverse);
+    }
+
+    .shadow-high {
+        box-shadow: var(--shadow-high);
+    }
+
+    .shadow-high-inverse {
+        box-shadow: var(--shadow-high-inverse);
+    }
 }
