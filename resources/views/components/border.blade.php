@@ -1,19 +1,26 @@
 @props([
-    'variant' => 'solid', // Tipe garis: solid | dashed | dotted | double | hidden
-    'radius' => 'md', // Radius border: sm | md | lg | none
-    'color' => 'gray-300', // Warna border
-    'width' => '1', // Lebar border (px)
-    'inherit' => true, // Apakah mengikuti radius parent
+    'radius' => 'md', // xs | sm | md | lg
+    'width' => 1, // number
+    'color' => 'gray-300',
+    'variant' => 'solid', // solid | dashed | dotted | double | none | hidden
 ])
 
 @php
-    $inheritClass = $inherit ? 'rounded-inherit' : '';
-    $borderVariantStyle = $variant === 'solid' ? 'border-style: solid;' : "border-style: {$variant}";
-    $borderColorStyle = $color ? "border-color: var(--color-{$color})" : '';
-    $borderWidthStyle = $width ? "border-width: {$width}px" : '';
+    $radiusClass = match ($radius) {
+        'xs' => 'rounded-xs',
+        'sm' => 'rounded-sm',
+        'md' => 'rounded-md',
+        'lg' => 'rounded-lg',
+        default => 'rounded-md',
+    };
+
+    $borderWidth = $width === 1 ? 'border' : "border border-{$width}";
+
+    $colorBorder = "border-{$color}";
+
+    $borderStyle = "border-{$variant}";
 @endphp
 
-<div {{ $attributes->merge(['style' => "{$borderColorStyle}; {$borderWidthStyle}; {$borderVariantStyle}"]) }}
-    {{ $attributes->merge(['class' => "rounded-{$radius} {$inheritClass}"]) }}>
+<div {{ $attributes->merge(['class' => "{$radiusClass} {$borderWidth} {$borderStyle} {$colorBorder}"]) }}>
     {{ $slot }}
 </div>
