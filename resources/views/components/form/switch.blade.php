@@ -1,8 +1,8 @@
 @props([
     'name' => '',
     'value' => false,
-    'externalOnLabel' => 'Aktif',
-    'externalOffLabel' => 'Tidak Aktif',
+    'externalOnLabel' => '',
+    'externalOffLabel' => '',
     'disabled' => false,
     'alpineModel' => null,
 ])
@@ -26,8 +26,8 @@
             class="absolute inline-block h-5 w-5 rounded-full shadow-sm transition-all duration-200 ease-in-out"></span>
 
         <!-- Internal Labels -->
-        <span x-show="!on" class="absolute right-2 text-xs font-medium text-gray-600">OFF</span>
-        <span x-show="on" class="absolute left-2 text-xs font-medium text-black">ON</span>
+        <span x-show="!on" class="absolute right-2 text-xs font-bold text-gray-600">OFF</span>
+        <span x-show="on" class="absolute left-2 text-xs font-bold text-black">ON</span>
     </button>
 
     <!-- External Label -->
