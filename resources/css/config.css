@@ -91,23 +91,39 @@
     --shadow-low: 0px 4px 8px 0px rgba(60, 65, 82, 0.2);
     --shadow-low-inverse: 0px -4px 8px 0px rgba(60, 65, 82, 0.2);
 
+    /* border */
     /* radius */
     --radius-xs: 4px;
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 20px;
+    /* width */
+    --border: 1px;
+    --border-2: calc(var(--border) * 2);
+    --border-3: calc(var(--border) * 3);
+    --border-4: calc(var(--border) * 4);
+    --border-5: calc(var(--border) * 5);
+    --border-6: calc(var(--border) * 6);
+    --border-7: calc(var(--border) * 7);
+    /* style */
+    --border-solid: solid;
+    --border-dashed: dashed;
+    --border-dotted: dotted;
+    --border-double: double;
+    --border-hidden: hidden;
+    --border-none: none;
 
     /* spacing */
     --spacing: 4px;
 
-    --spacing-1: calc(var(--spacing) * 1); /* 4px */
-    --spacing-2: calc(var(--spacing) * 2); /* 8px */
-    --spacing-2_5: calc(var(--spacing) * 2.5); /* 10px */
-    --spacing-3: calc(var(--spacing) * 3); /* 12px */
-    --spacing-4: calc(var(--spacing) * 4); /* 16px */
-    --spacing-5: calc(var(--spacing) * 5); /* 20px */
-    --spacing-6: calc(var(--spacing) * 6); /* 24px */
-    --spacing-7: calc(var(--spacing) * 7); /* 28px */
+    --spacing-1x: calc(var(--spacing) * 1); /* 4px */
+    --spacing-2x: calc(var(--spacing) * 2); /* 8px */
+    --spacing-2\.5x: calc(var(--spacing) * 2.5); /* 10px */
+    --spacing-3x: calc(var(--spacing) * 3); /* 12px */
+    --spacing-4x: calc(var(--spacing) * 4); /* 16px */
+    --spacing-5x: calc(var(--spacing) * 5); /* 20px */
+    --spacing-6x: calc(var(--spacing) * 6); /* 24px */
+    --spacing-7x: calc(var(--spacing) * 7); /* 28px */
 
     /* --breakpoint-2xl: ...px */
     --breakpoint-xl: 1440px;
