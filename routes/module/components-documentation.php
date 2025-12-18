@@ -25,4 +25,5 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/border', [ComponentsDocumentationController::class, 'border'])->name('components-documentation.border');
     Route::get('/shadow', [ComponentsDocumentationController::class, 'shadow'])->name('components-documentation.shadow');
     Route::get('/spacing', [ComponentsDocumentationController::class, 'spacing'])->name('components-documentation.spacing');
+    Route::get('/bubble-chat', [ComponentsDocumentationController::class, 'bubbleChat'])->name('components-documentation.bubble-chat');
 });
