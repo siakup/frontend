@@ -21,5 +21,7 @@ use Illuminate\Support\Facades\Route;
         });
         Route::get('/', action: [TutelageGroupController::class, 'index'])->name('tutelage-group');
         Route::get('/create', action: [TutelageGroupController::class, 'create'])->name('tutelage-group.create');
+        Route::get('/copy/{id}', action: [TutelageGroupController::class, 'copy'])->name('tutelage-group.copy');
+        Route::get('/edit/{id}', action: [TutelageGroupController::class, 'edit'])->name('tutelage-group.edit');
     });
 // });

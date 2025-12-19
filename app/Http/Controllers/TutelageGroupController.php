@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Nette\Utils\Json;
 
 class TutelageGroupController extends Controller
 {
@@ -68,7 +69,7 @@ class TutelageGroupController extends Controller
         ];
 
         $data = json_decode(json_encode($data), false);
-         for ($i = 1; $i < 10; $i++) {
+        for ($i = 1; $i < 10; $i++) {
             $perwalian[$i] = $data;
         }
 
@@ -78,25 +79,83 @@ class TutelageGroupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function copy(Request $request, $id)
     {
-        //
+        $lectureName = 'Meredita Susanty';
+        $periode = 3;
+        $major = 4;
+        $data = [
+            'nim' => '105220055',
+            'tahun_masuk' => '2020',
+            'nama' => 'BENI ANDRIANSYAH',
+            'institusi' => 'Ilmu Komputer',
+        ];
+
+        $data = json_decode(json_encode($data), false);
+        for ($i = 1; $i < 10; $i++) {
+            $perwalian[$i] = $data;
+        }
+
+        return view('tutelage.academic-staff.copy', get_defined_vars());
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
+    public function show(string $id) {
+        
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $lectureName = 'Meredita Susanty';
+        $periode = 3;
+        $major = 4;
+        $dataMahasiswa = [
+            'nim' => '105220055',
+            'tahun_masuk' => '2020',
+            'nama' => 'BENI ANDRIANSYAH',
+            'institusi' => 'Ilmu Komputer',
+        ];
+
+        $dataMahasiswa = json_decode(json_encode($dataMahasiswa), false);
+        for ($i = 1; $i < 10; $i++) {
+            $perwalian[$i] = $dataMahasiswa;
+        }
+
+        $dosenWali = [
+            [
+                'id' => 1,
+                'nip'=> '20201002',
+                'nama' => 'Urip Teguh',
+                'jumlah_bimbingan' => 31,
+                'institusi' => 'Ilmu Komputer',
+                'jenjang_pendidikan'=> 'S1 Reguler'
+            ],
+            [
+                'id' => 2,
+                'nip'=> '20201002',
+                'nama' => 'Intan Oktafiani',
+                'jumlah_bimbingan' => 31,
+                'institusi' => 'Ilmu Komputer',
+                'jenjang_pendidikan'=> 'Master'
+            ],
+            [
+                'id' => 3,
+                'nip'=> '20201002',
+                'nama' => 'Ade Hodijah',
+                'jumlah_bimbingan' => 31,
+                'institusi' => 'Ilmu Komputer',
+                'jenjang_pendidikan'=> 'S1 Reguler'
+            ],
+        ];
+
+        $dosenWali = json_decode(json_encode($dosenWali), false);
+
+        return view('tutelage.academic-staff.edit', get_defined_vars());
     }
 
     /**

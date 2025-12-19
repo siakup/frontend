@@ -2,27 +2,40 @@
 
 @section('title', 'Kelompok Perwalian')
 
+@section('javascript')
+    <script type="module">
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('index', {
+                lecturer: '',
+                periode: '',
+                major: '',
+                data: @json($perwalian),
+            });
+        });
+    </script>
+@endsection
+
 @section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{ periode: '', lecturer: '', major: '' }">
+    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{}">
         <x-typography variant="body-large-semibold">Kelompok Perwalian</x-typography>
         <div class="content-white p-5 flex-col gap-5 rounded-md w-full h-full">
             <div class="flex flex-col gap-5">
                 <x-form.input-container>
                     <x-slot name="label">Periode Akademik</x-slot>
                     <x-slot name="input">
-                        <x-dropdown.periode-akademik x-model="periode"></x-dropdown.periode-akademik>
+                        <x-dropdown.periode-akademik x-model="$store.index.periode"></x-dropdown.periode-akademik>
                     </x-slot>
                 </x-form.input-container>
                 <x-form.input-container>
                     <x-slot name="label">Program Studi</x-slot>
                     <x-slot name="input">
-                        <x-dropdown.major x-model="major"></x-dropdown.major>
+                        <x-dropdown.major x-model="$store.index.major"></x-dropdown.major>
                     </x-slot>
                 </x-form.input-container>
                 <x-form.input-container inputClass="flex flex-row gap-3">
                     <x-slot name="label">Dosen Perkuliahan</x-slot>
                     <x-slot name="input">
-                        <x-dropdown.lecturer x-model="lecturer"></x-dropdown.lecturer>
+                        <x-dropdown.lecturer x-model="$store.index.lecturer"></x-dropdown.lecturer>
                         <x-button variant="primary" buttonClass="min-w-40!">Cari</x-button>
                     </x-slot>
                 </x-form.input-container>
@@ -74,7 +87,7 @@
                                         Akhiri
                                     </x-button.base>
                                     <x-button.base :icon="'edit/red-16'" iconPosition="left" class="text-red-500"
-                                        sizeText="caption-regular">
+                                        sizeText="caption-regular" :href="route('tutelage-group.edit', $data->id)" >
                                         Ubah
                                     </x-button.base>
                                     <x-button.base :icon="'delete/grey-16'" iconPosition="left" class="text-gray-600"
@@ -85,7 +98,8 @@
                                 </div>
                             </x-table.cell>
                             <x-table.cell>
-                                <x-button.base :icon="'copy/black-16'" iconPosition="left" sizeText="caption-regular">
+                                <x-button.base :icon="'copy/black-16'" iconPosition="left" sizeText="caption-regular"
+                                    :href="route('tutelage-group.copy', $data->id)">
                                     Salin
                                 </x-button.base>
                             </x-table.cell>
@@ -98,6 +112,7 @@
                 <x-button variant="primary" :href="route('tutelage-group.create')">Tambah Kelompok Perwalian</x-button>
             </div>
         </div>
+        <x-pagination :storeName="'index'" :storeKey="'data'" :responseKeyData="'data'" :requestRoute="route('tutelage-group')"></x-pagination>
     </div>
     <x-toast />
     <x-modal.tutelage.end />
