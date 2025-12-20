@@ -96,4 +96,9 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dropdown');
     }
+
+    public function accordion(Request $request)
+    {
+        return view('components-documentation.accordion');
+    }
 }
