@@ -101,4 +101,9 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.accordion');
     }
+
+    public function indicator(Request $request)
+    {
+        return view('components-documentation.indicator');
+    }
 }
