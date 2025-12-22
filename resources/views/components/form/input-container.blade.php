@@ -1,8 +1,18 @@
-@props(['containerClass' => '', 'labelClass' => '', 'inputClass' => '', 'labelWrap' => false])
+@props(['containerClass' => '', 'labelClass' => '', 'inputClass' => '', 'labelWrap' => false, 'fullWidth' => true,])
+
+@php
+  if($fullWidth) {
+    $labelWidth = 'col-start-1 col-end-2';
+    $inputWidth = 'col-start-3 col-end-10';
+  } else {
+    $labelWidth = 'col-start-1 col-end-3';
+    $inputWidth = 'col-start-5 col-end-10';
+  };
+@endphp
 
 <x-container.wrapper :padding="'p-0'" :cols="9" :align="'center'" :justify="'center'" class="{{ $containerClass }}">
 
-  <x-container.container class="col-start-1 col-end-2">
+  <x-container.container class="{{ $labelWidth }}">
     <label 
         {{ $attributes->merge([
             'class' => "text-gray-800 text-sm font-semibold flex items-center " 
@@ -15,7 +25,7 @@
     </label>
   </x-container.container>
 
-  <x-container.container :height="'maxContent'" class="col-start-3 col-end-10 items-center {{ $inputClass }}">
+  <x-container.container :height="'maxContent'" class="{{ $inputWidth }} items-center {{ $inputClass }}">
       {{ $input }}
   </x-container.container>
 

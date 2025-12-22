@@ -142,7 +142,7 @@
           :haveIcon="true"
           :iconInactive="asset('assets/icons/advisory/black-24.svg')"
           :iconActive="asset('assets/icons/advisory/red-24.svg')"
-          :routeName="'tutelage-group.list-student'"
+          :routeName="'tutelage-group'"
           :routeQuery="'tutelage-group*'"
           :variant="'parent'"
         />

@@ -12,7 +12,7 @@
     x-init="{{ $attributes->get('x-init') }}"
     class="w-full"
   >
-    <template x-if="pagination !== null">
+    {{-- <template x-if="pagination !== null"> --}}
       <div 
         x-data="{
           key: '',
@@ -139,5 +139,5 @@
               </div>
           </div>
       </div>
-    </template>
+    {{-- </template> --}}
   </div>
