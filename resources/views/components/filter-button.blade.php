@@ -46,7 +46,7 @@
 <div class="relative">
     <button class="flex items-center gap-[8px] px-[16px] py-[8px] bg-transparent border-[1px] border-solid border-[#E62129] rounded-lg cursor-pointer text-[#E62129]" id="sortButton" onclick="dropdownButtonHandleClick(this, event)">
         <span id="sortLabel">Urutkan</span>
-        <img src="{{ asset('assets/icon-filter.svg') }}" alt="Filter">
+        <img src="{{ asset('assets/icons/filter/red-16.svg') }}" alt="Filter">
     </button>
     <div id="sortDropdown" class="bg-white border-[1px] border-[#DDD] rounded-md w-[226px] p-1 flex-col items-start max-h-[200px] overflow-y-auto z-999 absolute top-[100%] right-0 h-max hidden">
         <div class="px-[12px] py-[8px] cursor-pointer transition-[background] duration-200 hover:bg-[#FBE8E6] w-full text-sm" data-sort="active" onclick="optionButtonHandleClick(this)">Aktif</div>

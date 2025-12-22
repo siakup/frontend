@@ -72,7 +72,7 @@
 
             <x-table.index :variant="'old'">
               <x-table.head :variant="'old'">
-                <x-table.row :variant="'old'">
+                <x-table.row :variant="'old'" class="!bg-transparent">
                   <x-table.header-cell :variant="'old'">Tahun</x-table.header-cell>
                   <x-table.header-cell :variant="'old'">Semester</x-table.header-cell>
                   <x-table.header-cell :variant="'old'">Tahun Akademik</x-table.header-cell>
