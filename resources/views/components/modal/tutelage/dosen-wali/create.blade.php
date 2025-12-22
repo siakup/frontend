@@ -1,7 +1,22 @@
 @props([
     'data' => null,
 ])
-<div x-data="{ tahun: 2021, nama: '', nip: '', selectAll: false }">
+
+<script type="module">
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('createDosen', {
+            tahun: 2021,
+            nama: '',
+            nip: '',
+            data: @json($data),
+            count: {{ count($data) }},
+        });
+
+        Alpine.data('createDosenWali', window.DosenWali.createDosenWali);
+    });
+</script>
+
+<div x-data="createDosenWali($store.createDosen.count, $store.createDosen.data)">
     <x-modal.container id="create-dosen-wali" maxWidth="6xl">
         <x-slot name="header" class="items-center bg-gray-200">
             <div class="modal-header-wrapper">
@@ -15,13 +30,13 @@
             <x-form.input-container>
                 <x-slot name="label">Nomor Induk</x-slot>
                 <x-slot name="input">
-                    <x-form.input name="nip" x-model="nip" placeholder="Masukkan Nomor Induk" />
+                    <x-form.input name="nip" x-model="$store.createDosen.nip" placeholder="Masukkan Nomor Induk" />
                 </x-slot>
             </x-form.input-container>
             <x-form.input-container inputClass="flex flex-row gap-3">
                 <x-slot name="label">Nama Lengkap Dosen</x-slot>
                 <x-slot name="input">
-                    <x-form.input name="nama" x-model="nama" placeholder="Masukkan Nama Lengkap Dosen" />
+                    <x-form.input name="nama" x-model="$store.createDosen.nama" placeholder="Masukkan Nama Lengkap Dosen" />
                     <x-button variant="primary" buttonClass="min-w-40!">Cari</x-button>
                 </x-slot>
             </x-form.input-container>
@@ -35,7 +50,7 @@
                     <x-table.row>
                         <x-table.header-cell class="w-13">
                             <x-form.checklist id="select-all" label="" value="" name="select-all"
-                                containerClass="inline-flex" x-model="selectAll" />
+                                containerClass="inline-flex" x-model="selectAll" x-on:change="toggleAll()"/>
                         </x-table.header-cell>
                         <x-table.header-cell>Nomor Induk</x-table.header-cell>
                         <x-table.header-cell>Nama Dosen</x-table.header-cell>
@@ -48,7 +63,7 @@
                         <x-table.row>
                             <x-table.cell>
                                 <x-form.checklist id="{{ $index }}" name="select" x-model="selected"
-                                    containerClass="inline-flex" :value="$index" />
+                                    containerClass="inline-flex" :value="$index" x-on:change="selectAll = selected.length === {{ count($data) }}" />
                             </x-table.cell>
                             <x-table.cell>{{ $list->nip }}</x-table.cell>
                             <x-table.cell>{{ $list->nama }}</x-table.cell>

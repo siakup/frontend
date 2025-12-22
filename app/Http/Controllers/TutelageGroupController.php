@@ -49,7 +49,7 @@ class TutelageGroupController extends Controller
         $data->status_cuti = $collection->pluck('status_cuti')->implode('<br>');
         $data->status_kosong = $collection->pluck('status_kosong')->implode('<br>');
 
-        for ($i = 1; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $perwalian[$i] = $data;
         }
 
@@ -69,7 +69,7 @@ class TutelageGroupController extends Controller
         ];
 
         $data = json_decode(json_encode($data), false);
-        for ($i = 1; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $perwalian[$i] = $data;
         }
 
@@ -92,7 +92,7 @@ class TutelageGroupController extends Controller
         ];
 
         $data = json_decode(json_encode($data), false);
-        for ($i = 1; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $perwalian[$i] = $data;
         }
 

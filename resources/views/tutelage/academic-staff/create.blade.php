@@ -6,9 +6,9 @@
     <script type="module">
         document.addEventListener('alpine:init', () => {
             Alpine.store('create', {
-                lecturer: @js($lecturer) ?? '',
-                periode: @js($periode) ?? '',
-                major: @js($major) ?? '',
+                lecturer: '',
+                periode: '',
+                major: '',
                 data: @json($perwalian),
                 status: false,
             });
@@ -77,7 +77,7 @@
                 <x-table.body>
                     @foreach ($perwalian as $index => $data)
                         <x-table.row :odd="$index % 2 === 0">
-                            <x-table.cell> {{ $index }}</x-table.cell>
+                            <x-table.cell> {{ $index + 1 }}</x-table.cell>
                             <x-table.cell> {{ $data->nim }}</x-table.cell>
                             <x-table.cell> {{ $data->tahun_masuk }}</x-table.cell>
                             <x-table.cell> {{ $data->nama }}</x-table.cell>
@@ -96,7 +96,6 @@
                 <x-button variant="primary" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button>
             </div>
         </div>
-        <x-pagination :storeName="'create'" :storeKey="'data'" :responseKeyData="'data'" :requestRoute="route('tutelage-group.create')"></x-pagination>
     </div>
     <x-modal.tutelage.mahasiswa-bimbingan.create :data="$perwalian" />
     <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan"

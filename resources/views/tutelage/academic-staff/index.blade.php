@@ -112,7 +112,6 @@
                 <x-button variant="primary" :href="route('tutelage-group.create')">Tambah Kelompok Perwalian</x-button>
             </div>
         </div>
-        <x-pagination :storeName="'index'" :storeKey="'data'" :responseKeyData="'data'" :requestRoute="route('tutelage-group')"></x-pagination>
     </div>
     <x-toast />
     <x-modal.tutelage.end />

@@ -1,6 +1,6 @@
 @props([
     'variant' => 'gray',
-    'label' => '-Pilih Tahun Masuk-',
+    'label' => '',
 ])
 
 @php
@@ -13,8 +13,8 @@
 
 <x-form.dropdown 
     variant="{{ $variant }}" 
-    :buttonId="'buttonTahunMasuk'" 
-    :dropdownId="'dropdownTahunMasuk'" 
+    :buttonId="'buttonKehadiran'" 
+    :dropdownId="'dropdownKehadiran'" 
     :dropdownItem="$options" 
     dropdownContainerClass="{{ $width }}"
     label="{{ $label }}" 
