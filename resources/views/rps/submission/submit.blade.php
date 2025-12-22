@@ -3,14 +3,14 @@
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
-    <x-container variant="content-wrapper" class="gap-2!">
+    <div class="flex flex-col gap-4 p-4 w-full h-full">
         <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
         <x-button.back href="{{ route('rps.submission') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
-        <x-container class="flex flex-col gap-5">
-            <x-container variant="flat" class="flex flex-row gap-2.5">
+        <div class="content-white flex-col gap-5 p-5 rounded-md">
+            <div class="flex flex-row gap-2.5">
                 <x-typography variant="heading-h5">Submit RPS</x-typography>
                 <x-icon :name="'exclamation-mark/black-16'"></x-icon>
-            </x-container>
+            </div>
             {{-- Tabel 1 --}}
             <x-table.index>
                 <x-table.head>
@@ -131,7 +131,7 @@
             </x-table.index>
 
             {{-- Tabel 2 --}}
-            <x-table.index :isHaveTitle="true" :colorTypeTableTitle="'light-red-white-gradient'">
+            <x-table.index :isHaveTitle="true" :colorTypeTableTitle="'white-red-gradient'">
                 <x-slot name="tableTitleSlot">
                     <x-typography variant="body-medium-bold">Tabel Rencana Perkuliahan</x-typography>
                 </x-slot>
@@ -205,7 +205,7 @@
             </x-table.index>
 
             {{-- Tabel 3 --}}
-            <x-table.index :isHaveTitle="true" :colorTypeTableTitle="'light-red-white-gradient'">
+            <x-table.index :isHaveTitle="true" :colorTypeTableTitle="'white-red-gradient'">
                 <x-slot name="tableTitleSlot">
                     <x-typography variant="body-medium-bold">Tabel Matriks Penilaian Kognitif</x-typography>
                 </x-slot>
@@ -226,7 +226,7 @@
             </x-table.index>
 
             {{-- Tabel 4 --}}
-            <x-table.index :isHaveTitle="true" :colorTypeTableTitle="'light-red-white-gradient'">
+            <x-table.index :isHaveTitle="true" :colorTypeTableTitle="'white-red-gradient'">
                 <x-slot name="tableTitleSlot">
                     <x-typography variant="body-medium-bold">Tabel Evaluasi Pemetaan Konten Perkuliahan dengan Capaian
                         Lulusan</x-typography>
@@ -274,56 +274,102 @@
                 </x-table.body>
             </x-table.index>
 
-            {{-- Tabel  --}}
-            <x-table.index :isHaveTitle="true" :colorTypeTableTitle="'light-red-white-gradient'">
-                <x-slot name="tableTitleSlot">
-                    <x-typography variant="body-medium-bold">Rencana Evaluasi Mahasiswa</x-typography>
-                </x-slot>
-                <x-table.head>
-                    <x-table.row>
-                        <x-table.header-cell colspan="7">Rencana Pembelajaran Semester</x-table.header-cell>
-                    </x-table.row>
-                </x-table.head>
-                <x-table.body>
-                    <x-table.row>
-                        <x-table.cell> <b>Mata Kuliah</b></x-table.cell>
-                        <x-table.cell colspan="6">Termodinamika Teknik Kimia 2</x-table.cell>
-                    </x-table.row>
-                    <x-table.row>
-                        <x-table.cell><b>Kode</b></x-table.cell>
-                        <x-table.cell colspan="2">23219</x-table.cell>
-                        <x-table.cell>Bobot</x-table.cell>
-                        <x-table.cell>3</x-table.cell>
-                        <x-table.cell>Semester</x-table.cell>
-                        <x-table.cell>4</x-table.cell>
-                    </x-table.row>
-                    <x-table.row>
-                        <x-table.cell>Dosen Pengampu</x-table.cell>
-                        <x-table.cell colspan="6">Eddy Bambang Soewono</x-table.cell>
-                    </x-table.row>
-                    <x-table.row>
-                        <x-table.cell>Bentuk Evaluasi</x-table.cell>
-                        <x-table.cell colspan="6">Tugas</x-table.cell>
-                    </x-table.row>
-                    <x-table.row>
-                        <x-table.cell>Judul Evaluasi</x-table.cell>
-                        <x-table.cell colspan="6">Tugas</x-table.cell>
-                    </x-table.row>
-                    <x-table.row>
-                        <x-table.cell>Sub-CPMK</x-table.cell>
-                        <x-table.cell colspan="6">CPMK 1, CPMK 2</x-table.cell>
-                    </x-table.row>
-                    <x-table.row>
-                        <x-table.cell>Deskripsi Evaluasi</x-table.cell>
-                        <x-table.cell colspan="6">Kuis diberikan agar mahasiswa dapat melatih kemampuan penyelesaian
-                            masalah secara matematis dan menerapkan konsep sains yang telah dipelajari.</x-table.cell>
-                    </x-table.row>
-                    <x-table.row>
-                        <x-table.cell>Metode Pengerjaan Evaluasi</x-table.cell>
-                        <x-table.cell colspan="6">CPMK 1, CPMK 2</x-table.cell>
-                    </x-table.row>
-                </x-table.body>
-            </x-table.index>
-        </x-container>
-    </x-container>
+            {{-- Tabel Rencana Evaluasi Mahasiswa --}}
+            @for ($i = 0; $i < 3; $i++)
+                <x-table.index :isHaveTitle="true" :colorTypeTableTitle="'white-red-gradient'">
+                    <x-slot name="tableTitleSlot">
+                        <x-typography variant="body-medium-bold">Rencana Evaluasi Mahasiswa</x-typography>
+                    </x-slot>
+                    <x-table.head>
+                        <x-table.row>
+                            <x-table.header-cell colspan="7">Rencana Pembelajaran Semester</x-table.header-cell>
+                        </x-table.row>
+                    </x-table.head>
+                    <x-table.body>
+                        <x-table.row>
+                            <x-table.cell> <b>Mata Kuliah</b></x-table.cell>
+                            <x-table.cell colspan="6">Termodinamika Teknik Kimia 2</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell><b>Kode</b></x-table.cell>
+                            <x-table.cell colspan="2">23219</x-table.cell>
+                            <x-table.cell>Bobot</x-table.cell>
+                            <x-table.cell>3</x-table.cell>
+                            <x-table.cell>Semester</x-table.cell>
+                            <x-table.cell>4</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Dosen Pengampu</b> </x-table.cell>
+                            <x-table.cell colspan="6">Eddy Bambang Soewono</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Bentuk Evaluasi</b> </x-table.cell>
+                            <x-table.cell colspan="6">Tugas</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Judul Evaluasi</b> </x-table.cell>
+                            <x-table.cell colspan="6">Tugas</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Sub-CPMK</b> </x-table.cell>
+                            <x-table.cell colspan="6">CPMK 1, CPMK 2</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Deskripsi Evaluasi</b> </x-table.cell>
+                            <x-table.cell colspan="6" position="left">Kuis diberikan agar mahasiswa dapat melatih
+                                kemampuan
+                                penyelesaian
+                                masalah secara matematis dan menerapkan konsep sains yang telah dipelajari.</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Metode Pengerjaan Evaluasi</b> </x-table.cell>
+                            <x-table.cell colspan="6" position="left">Kuis menggunakan media e-learning</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Bentuk dan Format Luaran</b> </x-table.cell>
+                            <x-table.cell colspan="6" position="left">Lembar jawaban tertulis maupun digital pada
+                                e-learning</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Indikator, Kriteria Dan Bobot Penilaian</b> </x-table.cell>
+                            <x-table.cell colspan="6" position="left">Kemampuan menjawab soal yang diberikan dengan tepat
+                                (Bobot 100%)</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Jadwal Pelaksanaan</b> </x-table.cell>
+                            <x-table.cell colspan="3">UTS</x-table.cell>
+                            <x-table.cell colspan="3">Minggu ke-8</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Lainnya</b> </x-table.cell>
+                            <x-table.cell colspan="6" position="left">Bobot penilaian ujian ini adalah 25% dari 100%
+                                penilaian mata kuliah ini.</x-table.cell>
+                        </x-table.row>
+                        <x-table.row>
+                            <x-table.cell> <b>Daftar Rujukan</b> </x-table.cell>
+                            <x-table.cell colspan="6" position="left"></x-table.cell>
+                        </x-table.row>
+                    </x-table.body>
+                </x-table.index>
+            @endfor
+
+            <div class="flex justify-end gap-5">
+                <x-button.secondary x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">
+                    Batal
+                </x-button.secondary>
+                <x-button.primary x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">
+                    Simpan RPS
+                </x-button.primary>
+            </div>
+        </div>
+    </div>
+
+    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Submit Sekarang"
+        cancelText="Tidak, Kembali" :redirectConfirm="route('rps.index')">
+        <p>Apakah Anda yakin untuk submit RPS ini?</p>
+    </x-modal.confirmation>
+    <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan" cancelText="Tidak, Kembali"
+        :redirectConfirm="route('rps.submission')">
+        <p>Apakah Anda yakin ingin membatalkan submit RPS ini?</p>
+    </x-modal.confirmation>
 @endsection

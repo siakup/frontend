@@ -11,20 +11,20 @@
 <td 
   x-data="{
     variants: {
-      default: 'border-r border-gray-400 last:border-r-0 p-6',
+      default: 'border-r border-gray-400 last:border-r-0',
       old: 'py-4 px-2 border-b-gray-400',
     },
     variantColors: {
       default: {
-        default: 'bg-transparent',
+        default: 'bg-transparent font-normal p-4',
         old: ''
       },
       odd: {
-        default: 'bg-disable-white w-7/10',
+        default: 'bg-disable-white w-7/10 font-semibold px-5 py-2',
         old: ''
       },
       even: {
-        default: 'bg-white w-7/10',
+        default: 'bg-white w-7/10 font-semibold px-5 py-2',
         old: ''
       }
     },

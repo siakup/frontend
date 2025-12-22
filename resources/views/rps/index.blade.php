@@ -3,14 +3,11 @@
 @section('title', 'RPS (Rencana Pembelajaran Semester)')
 
 @section('content')
-    <div x-data="{periode: '', prodi: '', mata_kuliah: ''}">
-        <x-container.wrapper :gapY="4" :rows="15">
-            <x-container.container class="row-start-1 row-end-2">
-                <x-typography variant="body-large-semibold">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-            </x-container.container>
-            <x-container.container :background="'content-white'" :padding="'p-5'" class="row-start-2 row-end-16 flex-col"
-                :gap="'gap-5'">
-                <x-container.wrapper :rows="3" height="fitContent" :gapY="3" :padding="'p-0'">
+    <div x-data="{ periode: '', prodi: '', mata_kuliah: '' }">
+        <div class="flex flex-col gap-4 p-4 w-full h-full">
+            <x-typography variant="body-large-semibold">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
+            <div class="content-white p-5 flex-col gap-5 rounded-md">
+                <div class="flex flex-col gap-5">
                     <x-form.input-container>
                         <x-slot name="label">Periode Akademik</x-slot>
                         <x-slot name="input">
@@ -34,7 +31,7 @@
                             <x-button variant="primary">Cari</x-button>
                         </x-slot>
                     </x-form.input-container>
-                </x-container.wrapper>
+                </div>
                 <x-dialog variant="warning" isCloseable>
                     <x-slot name="header">Catatan!</x-slot>
                     Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah) <br> <br>
@@ -93,8 +90,8 @@
                     </x-button.secondary>
                     <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
                 </div>
-            </x-container.container>
-        </x-container.wrapper>
+            </div>
+        </div>
     </div>
 
 @endsection

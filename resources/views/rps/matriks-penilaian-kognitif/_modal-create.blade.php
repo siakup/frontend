@@ -2,17 +2,17 @@
 
 <div x-data="matriksPenilaian()">
     <x-modal.container id="create-matriks-penilaian" maxWidth="6xl">
-        <x-slot name="header" class="items-center bg-[#F5F5F5]">
-            <div class="w-full relative flex items-center justify-center">
+        <x-slot name="header" class="items-center bg-gray-200">
+            <div class="modal-header-wrapper">
                 <x-typography variant="heading-h5">Tambah Matriks Penilaian Kognitif</x-typography>
                 <button x-on:click.stop="close()"
-                    class="text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0">
-                    <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="h-[24px] w-[24px]"/>
+                    class="modal-close-btn">
+                    <x-icon :name="'close-cancel/black-24'"></x-icon>
                 </button>
             </div>
         </x-slot>
-        <x-container.container class="!rounded-lg">
-            <x-form.input-container labelClass="w-[200px]">
+        <div class="content-white flex-col p-4 gap-4 rounded-md">
+            <x-form.input-container >
                 <x-slot name="label">Range Nilai</x-slot>
                 <x-slot name="input">
                     <x-form.input 
@@ -20,10 +20,9 @@
                         placeholder="Contoh: 30  < X <= 40"
                         x-model="nilai"
                     />
-
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-[200px] self-start">
+            <x-form.input-container labelClass="self-start">
                 <x-slot name="label">Kualitas Jawaban</x-slot>
                 <x-slot name="input">
                     <x-form.textarea
@@ -34,11 +33,10 @@
                     />
                 </x-slot>
             </x-form.input-container>
-
-        </x-container>
-        <x-slot name="footer" class="flex justify-end gap-3">
-            <x-button.secondary x-bind:disabled="isDisabled" x-on:click="$dispatch('close-modal', { id: 'create-matriks-penilaian' })">Batal</x-button.secondary>
-            <x-button.primary 
+        </div>
+        <x-slot name="footer" class="modal-footer-wrapper">
+            <x-button variant="secondary" x-bind:disabled="isDisabled" x-on:click="$dispatch('close-modal', { id: 'create-matriks-penilaian' })">Batal</x-button>
+            <x-button variant="primary" 
                 x-bind:disabled="isDisabled"
                 x-on:click="
                     $dispatch('close-modal', { id: 'create-matriks-penilaian' });
@@ -46,7 +44,7 @@
                 "
             >
                 Simpan
-            </x-button.primary>
+            </x-button>
         </x-slot>
     </x-modal.container>
 </div>

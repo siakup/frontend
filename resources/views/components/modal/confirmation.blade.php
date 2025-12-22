@@ -20,7 +20,7 @@
                 x-on:click.stop="$dispatch('close-modal', { id: '{{ $id }}' })"
                 class="modal-close-btn"
             >
-                <x-icon :name="$iconUrl" class="w-[32px] h-[32px]" />
+                <x-icon :name="$iconUrl" class="w-8 h-8" />
             </button>
         </div>
     </x-slot>
@@ -33,15 +33,17 @@
     <!-- Footer -->
     <x-slot name="footer">
         <div class="modal-footer-wrapper">
-            <x-button.secondary 
-                :label="$cancelText" 
-                class="modal-btn-action" 
+            <x-button
+                :label="$cancelText"
+                variant="secondary" 
+                buttonClass="modal-btn-action" 
                 x-on:click.stop="$dispatch('close-modal', { id: '{{ $id }}' })" 
             />
             
-            <x-button.primary 
-                :label="$confirmText" 
-                class="modal-btn-action" 
+            <x-button 
+                :label="$confirmText"
+                variant="primary" 
+                buttonClass="modal-btn-action"
                 :href="$redirectConfirm"
                 x-on:click.stop="
                     $dispatch('close-modal', { id: '{{ $id }}' });
