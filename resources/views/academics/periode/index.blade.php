@@ -21,7 +21,6 @@
 
 @section('content')
   <x-container.wrapper :padding="'p-0'" :rows="6" x-data="listPeriode({{ json_encode(route('academics-periode.index')) }})">
-    
     <x-container.container :background="'transparent'" class="row-start-1 row-end-2">
       <x-tab 
         :tabItems="[
@@ -39,7 +38,7 @@
       />
     </x-container.container>
 
-    <x-container.container :background="'transparent'" :height="'maxContent'" class="row-start-2 row-end-6">
+    <x-container.container :background="'transparent'" :height="'maxContent'" class="row-start-2 row-end-6 col-start-1 col-end-4">
       <x-container.container :background="'bg-white'" :class="'rounded-tl-none border-t border-t-red-500'">
         <x-container.wrapper :rows="5" :gapY="4">
 

@@ -30,8 +30,118 @@ class AcademicController extends Controller
 
             $params = compact('search', 'sort', 'page', 'limit');
 
-            $url = PeriodAcademicService::getInstance()->getListAllPeriode();
-            $response = getCurl($url, $params, getHeaders());
+            // $url = PeriodAcademicService::getInstance()->getListAllPeriode();
+            // $response = getCurl($url, $params, getHeaders());
+
+            // --- DUMMY DATA START ---
+            $response = (object) [
+                'success' => true,
+                'data' => [
+                    (object) [
+                        'id' => 1,
+                        'tahun' => '2023',
+                        'semester' => 3,
+                        'is_active' => 1,
+                        'tanggal_mulai' => '2023-09-01',
+                        'tanggal_selesai' => '2024-01-31',
+                    ],
+                    (object) [
+                        'id' => 2,
+                        'tahun' => '2024',
+                        'semester' => 2, // 2 = Genap
+                        'is_active' => 0,
+                        'tanggal_mulai' => '2024-02-01',
+                        'tanggal_selesai' => '2024-06-30',
+                    ],
+                    (object) [
+                        'id' => 1,
+                        'nama_periode' => '2023/2024 Ganjil',
+                        'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
+                        'is_active' => 1,
+                        'tanggal_mulai' => '2023-09-01',
+                        'tanggal_selesai' => '2024-01-31',
+                    ],
+                    (object) [
+                        'id' => 2,
+                        'nama_periode' => '2023/2024 Genap',
+                        'semester' => 2, // 2 = Genap
+                        'is_active' => 0,
+                        'tanggal_mulai' => '2024-02-01',
+                        'tanggal_selesai' => '2024-06-30',
+                    ],
+                    (object) [
+                        'id' => 1,
+                        'nama_periode' => '2023/2024 Ganjil',
+                        'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
+                        'is_active' => 1,
+                        'tanggal_mulai' => '2023-09-01',
+                        'tanggal_selesai' => '2024-01-31',
+                    ],
+                    // (object) [
+                    //     'id' => 2,
+                    //     'nama_periode' => '2023/2024 Genap',
+                    //     'semester' => 2, // 2 = Genap
+                    //     'is_active' => 0,
+                    //     'tanggal_mulai' => '2024-02-01',
+                    //     'tanggal_selesai' => '2024-06-30',
+                    // ],
+                    // (object) [
+                    //     'id' => 1,
+                    //     'nama_periode' => '2023/2024 Ganjil',
+                    //     'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
+                    //     'is_active' => 1,
+                    //     'tanggal_mulai' => '2023-09-01',
+                    //     'tanggal_selesai' => '2024-01-31',
+                    // ],
+                    // (object) [
+                    //     'id' => 2,
+                    //     'nama_periode' => '2023/2024 Genap',
+                    //     'semester' => 2, // 2 = Genap
+                    //     'is_active' => 0,
+                    //     'tanggal_mulai' => '2024-02-01',
+                    //     'tanggal_selesai' => '2024-06-30',
+                    // ],
+                    // (object) [
+                    //     'id' => 1,
+                    //     'nama_periode' => '2023/2024 Ganjil',
+                    //     'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
+                    //     'is_active' => 1,
+                    //     'tanggal_mulai' => '2023-09-01',
+                    //     'tanggal_selesai' => '2024-01-31',
+                    // ],
+                    // (object) [
+                    //     'id' => 2,
+                    //     'nama_periode' => '2023/2024 Genap',
+                    //     'semester' => 2, // 2 = Genap
+                    //     'is_active' => 0,
+                    //     'tanggal_mulai' => '2024-02-01',
+                    //     'tanggal_selesai' => '2024-06-30',
+                    // ],
+                    // (object) [
+                    //     'id' => 1,
+                    //     'nama_periode' => '2023/2024 Ganjil',
+                    //     'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
+                    //     'is_active' => 1,
+                    //     'tanggal_mulai' => '2023-09-01',
+                    //     'tanggal_selesai' => '2024-01-31',
+                    // ],
+                    // (object) [
+                    //     'id' => 2,
+                    //     'nama_periode' => '2023/2024 Genap',
+                    //     'semester' => 2, // 2 = Genap
+                    //     'is_active' => 0,
+                    //     'tanggal_mulai' => '2024-02-01',
+                    //     'tanggal_selesai' => '2024-06-30',
+                    // ],
+                ],
+                'pagination' => (object) [
+                    'current_page' => 1,
+                    'from' => 1,
+                    'total' => 2,
+                    'per_page' => 10,
+                ]
+            ];
+            // --- DUMMY DATA END ---
 
             $pagination = [
               'currentPage' => $response->pagination->current_page,
@@ -41,7 +151,7 @@ class AcademicController extends Controller
             ];
 
             if (! isset($response->success) || ! $response->success) {
-                throw new \Exception($response);
+                // throw new \Exception($response);
             }
 
             if ($request->ajax()) {
@@ -76,9 +186,10 @@ class AcademicController extends Controller
                 return $this->errorResponse($decoded->message ?? 'Gagal mengambil Data periode akademik');
             }
 
-            return redirect()
-                ->route('home')
-                ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman periode akademik']);
+            dd($err);
+            // return redirect()
+            //     ->route('home')
+            //     ->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman periode akademik']);
         }
     }
 

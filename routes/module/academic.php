@@ -3,7 +3,7 @@
 use App\Http\Controllers\AcademicController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'academics'], function () {
         Route::group(['prefix' => 'periode'], function () {
             Route::get('/', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');
@@ -15,7 +15,7 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/{id}', [AcademicController::class, 'periodeEdit'])->name('academics-periode.edit');
                 Route::put('/{id}', [AcademicController::class, 'periodeUpdate'])->name('academics-periode.update');
             });
-        });
+        }); 
 
         Route::group(['prefix' => 'event'], function () {
             Route::get('/', [AcademicController::class, 'indexEvent'])->name('academics-event.index');
@@ -35,4 +35,4 @@ Route::group(['middleware' => ['auth']], function () {
             Route::delete('/{id}', [AcademicController::class, 'eventDelete'])->name('academics-event.delete');
         });
     });
-});
+// });
