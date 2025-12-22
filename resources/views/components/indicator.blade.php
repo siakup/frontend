@@ -34,26 +34,43 @@
 
     $style = $variants[$variant] ?? $variants['sks'];
 
-    // Monochrome
+    // Monochrome Logic
     if ($isCompleted) {
         $style['bg'] = '#565656';
         $style['barProgress'] = '#9CA3AF';
     }
 @endphp
 
-<div class="relative w-full overflow-clip rounded-2xl p-4 flex items-center gap-3" 
-     style="background-color: {{ $style['bg'] }};">
+<x-container.container 
+    background="transparent" 
+    radius="2xl" 
+    padding="p-3" 
+    gap="gap-3" 
+    class="relative overflow-clip flex items-center" 
+    style="background-color: {{ $style['bg'] }};"
+>
     
     {{-- Background Shape --}}
     <img src="{{ $style['bgShape'] }}" 
          class="absolute top-0 right-0 h-full w-auto pointer-events-none" 
          alt="pattern">
 
-    {{-- Info + Bar + Counter --}}
-    <div class="flex-grow flex items-center gap-3 w-full">
+    {{-- Main Content Wrapper --}}
+    <x-container.container 
+        background="transparent" 
+        padding="p-0" 
+        gap="gap-3"
+        class="flex-grow flex items-center justify-start z-10"
+    >
         
-        {{-- Icon dan label --}}
-        <div class="flex items-center gap-1 min-w-max shrink-0">
+        {{-- Icon & Label Box --}}
+        <x-container.container 
+            background="transparent" 
+            padding="p-0" 
+            gap="gap-1" 
+            class="flex items-center min-w-max shrink-0" 
+            width="fitContent"
+        >
             <div class="w-6 h-6 flex items-center justify-center">
                 @if ($isCompleted && $variant === 'sks')
                     <img src="{{ $style['iconNonActive'] }}" class="w-full h-full object-contain" alt="{{ $style['label'] }}">
@@ -61,51 +78,65 @@
                     <img src="{{ $style['icon'] }}" class="w-full h-full object-contain" alt="{{ $style['label'] }}">
                 @endif
             </div>
-            <span class="font-bold text-xl text-white leading-none">
+            <x-typography variant="body-large-bold" class="text-white leading-none">
                 {{ $style['label'] }}
-            </span>
-        </div>
+            </x-typography>
+        </x-container.container>
 
         {{-- Bar Progress --}}
-        <div class="flex-grow w-full">
+        <x-container.container 
+            background="transparent"
+            padding="p-0"
+            width="full"
+            class="flex-grow"
+        >
             <div class="h-2 w-full rounded-full relative overflow-hidden"
                  style="background-color: {{ $style['barTrack'] }};">
                 <div class="h-full rounded-full"
                      style="width: {{ $percentage }}%; background-color: {{ $style['barProgress'] }};">
                 </div>
             </div>
-        </div>
+        </x-container.container>
 
-        {{-- Counter --}}
-        <div class="min-w-max shrink-0">
+        {{-- Counter Box --}}
+        <x-container.container 
+            background="transparent" 
+            padding="p-0" 
+            width="fitContent"
+            class="min-w-max shrink-0"
+        >
             @if ($isCompleted && $variant === 'sks')
-                <span class="font-bold text-xl text-white leading-none">
+                <x-typography variant="body-large-bold" class="text-white leading-none">
                     Terpenuhi
-                </span>
-                
+                </x-typography>
             @else
-                <span class="font-bold text-xl text-white leading-none">
+                <x-typography variant="body-large-bold" class="text-white leading-none">
                     {{ $currentValue }}/{{ $totalValue }}
-                </span>
+                </x-typography>
             @endif
+        </x-container.container>
 
-        </div>
+    </x-container.container>
 
-    </div>
-
-    {{-- Semester Badge--}}
+    {{-- Semester Badge --}}
     @if($semester)
-        <div class="z-10 bg-white px-3 py-1 rounded-full flex items-center justify-center shrink-0">
+        <x-container.container 
+            background="bg-white" 
+            radius="full" 
+            padding="px-3 py-1" 
+            width="fitContent"
+            class="z-10 flex items-center justify-center shrink-0"
+        >
             @if ($isCompleted)
-                <span class="text-sm font-medium" style="color: {{ $style['bg'] }};">
+                <x-typography variant="body-small-semibold" style="color: {{ $style['bg'] }};">
                     Semester {{ $semester }}
-                </span>
+                </x-typography>
             @else
-                <span class="text-sm font-medium" style="color: {{ $style['textSemester'] }};">
+                <x-typography variant="body-small-semibold" style="color: {{ $style['textSemester'] }};">
                     Semester {{ $semester }}
-                </span>
+                </x-typography>
             @endif
-        </div>
+        </x-container.container>
     @endif
 
-</div>
+</x-container.container>
