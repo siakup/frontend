@@ -63,49 +63,59 @@
 
                     <x-container.container :background="'transparent'" :height="'max'" class="row-start-3 row-end-8">
 
-                        <x-table.index :variant="'old'">
-                            <x-table.head :variant="'old'">
-                                <x-table.row :variant="'old'">
-                                    <x-table.header-cell :variant="'old'">Tahun</x-table.header-cell>
-                                    <x-table.header-cell :variant="'old'">Semester</x-table.header-cell>
-                                    <x-table.header-cell :variant="'old'">Tahun Akademik</x-table.header-cell>
-                                    <x-table.header-cell :variant="'old'">Status</x-table.header-cell>
-                                    <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
-                                </x-table.row>
-                            </x-table.head>
-                            <x-table.body>
-                                <template x-if="!$store.listPage.periode || $store.listPage.periode.length == 0">
-                                    @include('academics.periode.error-filter')
-                                </template>
-                                <template x-if="$store.listPage.periode && $store.listPage.periode.length > 0">
-                                    <template x-for="periode in $store.listPage.periode">
-                                        <x-table.row :variant="'old'">
-                                            <x-table.cell :variant="'old'" x-text="periode.tahun"></x-table.cell>
-                                            <x-table.cell :variant="'old'"
-                                                x-text="$store.listPage.namaSemester[periode.semester] ?? 'Tidak Diketahui'"></x-table.cell>
-                                            <x-table.cell :variant="'old'"
-                                                x-text="periode.tahun+'/'+(periode.tahun+1)"></x-table.cell>
-                                            <x-table.cell :variant="'old'">
-                                                <template x-if="periode.status == 'active'">
-                                                    <x-badge variant="green-filled">Aktif</x-badge>
-                                                </template>
-                                                <template x-if="periode.status != 'active'">
-                                                    <x-badge variant="green-bordered">Tidak Aktif</x-badge>
-                                                </template>
-                                            </x-table.cell>
-                                            <x-table.cell :variant="'old'"
-                                                class="flex items-center justify-center gap-6 center">
-                                                <x-button :variant="'text-link'" :icon="'search/black-16'" :size="'sm'"
-                                                    class="!text-black" {{-- onclick="onClickDetailPeriodeAcademic(this, '{{ route('academics-periode.detail') }}')" 
-                          data-periode-akademik="{{ $periode->id }}" --}}>
-                                                    Lihat
-                                                </x-button>
-                                                <x-button :variant="'text-link'" :icon="'edit/red-16'" :size="'sm'"
-                                                    class="text-red-500" {{-- href="{{ route('academics-periode.edit', ['id' => $periode->id]) }}" --}}>
-                                                    Ubah
-                                                </x-button>
-                                                <x-button.base :icon="'delete/grey-16'" class="text-gray-600" :size="'sm'"
-                                                    {{-- onclick="
+            <x-table.index :variant="'old'">
+              <x-table.head :variant="'old'">
+                <x-table.row :variant="'old'" class="!bg-transparent">
+                  <x-table.header-cell :variant="'old'">Tahun</x-table.header-cell>
+                  <x-table.header-cell :variant="'old'">Semester</x-table.header-cell>
+                  <x-table.header-cell :variant="'old'">Tahun Akademik</x-table.header-cell>
+                  <x-table.header-cell :variant="'old'">Status</x-table.header-cell>
+                  <x-table.header-cell :variant="'old'">Aksi</x-table.header-cell>
+                </x-table.row>
+              </x-table.head>
+              <x-table.body>
+                <template x-if="!$store.listPage.periode || $store.listPage.periode.length == 0">
+                  @include('academics.periode.error-filter')
+                </template>
+                <template x-if="$store.listPage.periode && $store.listPage.periode.length > 0">
+                  <template x-for="periode in $store.listPage.periode">
+                    <x-table.row :variant="'old'">
+                      <x-table.cell :variant="'old'" x-text="periode.tahun"></x-table.cell>
+                      <x-table.cell :variant="'old'" x-text="$store.listPage.namaSemester[periode.semester] ?? 'Tidak Diketahui'"></x-table.cell>
+                      <x-table.cell :variant="'old'" x-text="periode.tahun+'/'+(periode.tahun+1)"></x-table.cell>
+                      <x-table.cell :variant="'old'">
+                        <template x-if="periode.status == 'active'">
+                          <x-badge variant="green-filled">Aktif</x-badge>
+                        </template>
+                        <template x-if="periode.status != 'active'">
+                          <x-badge variant="green-bordered">Tidak Aktif</x-badge>
+                        </template>
+                      </x-table.cell>
+                      <x-table.cell :variant="'old'" class="flex items-center justify-center gap-6 center">
+                        <x-button
+                          :variant="'text-link'"
+                          :icon="'search/black-16'"
+                          :size="'sm'"
+                          class="!text-black"
+                          {{-- onclick="onClickDetailPeriodeAcademic(this, '{{ route('academics-periode.detail') }}')" 
+                          data-periode-akademik="{{ $periode->id }}" --}}
+                        >
+                          Lihat
+                        </x-button>
+                        <x-button
+                          :variant="'text-link'"
+                          :icon="'edit/red-16'"
+                          :size="'sm'"
+                          class="text-red-500"
+                          {{-- href="{{ route('academics-periode.edit', ['id' => $periode->id]) }}" --}}
+                        >
+                          Ubah
+                        </x-button>
+                        <x-button.base
+                          :icon="'delete/grey-16'"
+                          class="text-gray-600"
+                          :size="'sm'"
+                          {{-- onclick="
                             document.getElementById('modalKonfirmasiHapus').setAttribute('data-id', {{$periode->id}});
                             document.getElementById('modalKonfirmasiHapus').classList.add('flex');
                             document.getElementById('modalKonfirmasiHapus').classList.remove('hidden');
