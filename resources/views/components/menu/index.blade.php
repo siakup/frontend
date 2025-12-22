@@ -1,4 +1,4 @@
-<x-container.container :background="'bg-white'" :radius="'none'" class="w-full h-full border-r border-r-gray-400">
+<x-container.container :background="'bg-white'" :radius="'none'" class="w-full h-full border-r border-r-gray-400 refactor-sidebar">
   <x-container.wrapper :padding="'p-0'" :rows="12">
 
     <x-container.container :background="'transparent'" :radius="'none'" class="row-span-11 overflow-scroll">

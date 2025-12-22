@@ -1,0 +1,149 @@
+@layer components {
+    /* Root Container */
+    .input-refactor-root {
+        @apply w-full flex flex-col gap-2;
+    }
+
+    /* Label */
+    .input-refactor-label {
+        @apply block text-sm font-semibold text-[#262626];
+    }
+
+    .input-refactor-label-error {
+        @apply !text-red-500;
+    }
+
+    /* Input Group Container */
+    .input-refactor-group {
+        @apply flex items-stretch w-full border rounded-lg transition-all duration-200 overflow-hidden;
+    }
+
+    /* Size Variants */
+    .input-refactor-group-sm {
+        @apply text-xs;
+    }
+
+    .input-refactor-group-md {
+        @apply text-sm;
+    }
+
+    .input-refactor-group-lg {
+        @apply text-base;
+    }
+
+    /* State Variants */
+    .input-refactor-group-normal {
+        @apply bg-white border-gray-300 hover:border-[#BFBFBF] focus-within:border-[#BFBFBF] focus-within:ring-1 focus-within:ring-[#8B5CF6];
+    }
+
+    .input-refactor-group-error {
+        @apply !border-red-500 focus-within:!border-red-500 focus-within:ring-1 focus-within:ring-red-500;
+    }
+
+    .input-refactor-group-disabled {
+        @apply bg-gray-100 border-gray-300 cursor-not-allowed opacity-75;
+    }
+
+    /* Prefix Container */
+    .input-refactor-prefix {
+        @apply flex items-center px-3 bg-gray-100 border-r border-gray-300 text-gray-600 font-medium;
+    }
+
+    .input-refactor-prefix-sm {
+        @apply px-2 text-xs;
+    }
+
+    .input-refactor-prefix-md {
+        @apply px-2.5 text-sm;
+    }
+
+    .input-refactor-prefix-lg {
+        @apply px-3 text-base;
+    }
+
+    /* Input Element */
+    .input-refactor-element {
+        @apply flex-1 w-full border-none focus:ring-0 bg-transparent outline-none text-gray-700 placeholder-gray-400;
+    }
+
+    .input-refactor-element-sm {
+        @apply py-1.5 px-2 text-xs;
+    }
+
+    .input-refactor-element-md {
+        @apply py-2 px-2.5 text-sm;
+    }
+
+    .input-refactor-element-lg {
+        @apply py-2.5 px-3 text-base;
+    }
+
+    .input-refactor-element-error {
+        @apply text-red-600 placeholder-red-300;
+    }
+
+    .input-refactor-element-disabled {
+        @apply cursor-not-allowed text-gray-500;
+    }
+
+    /* Icon Containers */
+    .input-refactor-icon-left {
+        @apply flex items-center justify-center px-3 text-gray-500;
+    }
+
+    .input-refactor-icon-right {
+        @apply flex items-center justify-center px-3 text-gray-500;
+    }
+
+    /* Clear Button */
+    .input-refactor-clear {
+        @apply flex items-center justify-center px-2 cursor-pointer text-gray-400 hover:text-gray-600 transition-colors;
+    }
+
+    .input-refactor-clear-sm {
+        @apply px-1.5;
+    }
+
+    .input-refactor-clear-md {
+        @apply px-2;
+    }
+
+    .input-refactor-clear-lg {
+        @apply px-2.5;
+    }
+
+    /* Suffix Container */
+    .input-refactor-suffix {
+        @apply flex items-center px-3 bg-gray-100 border-l border-gray-300 text-gray-600 font-medium;
+    }
+
+    .input-refactor-suffix-sm {
+        @apply px-2 text-xs;
+    }
+
+    .input-refactor-suffix-md {
+        @apply px-2.5 text-sm;
+    }
+
+    .input-refactor-suffix-lg {
+        @apply px-3 text-base;
+    }
+
+    /* Error Icon */
+    .input-refactor-icon-error {
+        @apply flex items-center justify-center px-2 text-red-500;
+    }
+
+    /* Helper Text */
+    .input-refactor-helper {
+        @apply text-xs font-medium transition-colors duration-200 min-h-[1rem];
+    }
+
+    .input-refactor-helper-normal {
+        @apply text-gray-500;
+    }
+
+    .input-refactor-helper-error {
+        @apply text-red-500;
+    }
+}

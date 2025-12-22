@@ -1,0 +1,11 @@
+@layer components {
+  .refactor-sidebar {
+    @apply bg-white border border-gray-300 overflow-auto;
+    width: 294px;
+    max-height: 855px;
+  }
+
+  .refactor-sidebar .menu-inner { 
+    @apply p-4; 
+  }
+}

@@ -55,6 +55,16 @@ class ComponentsDocumentationController extends Controller
     return view('components-documentation.input');
   }
 
+  public function inputRefactor(Request $request)
+  {
+    return view('components-documentation.input-refactor');
+  }
+
+  public function textareaRefactor(Request $request)
+  {
+    return view('components-documentation.textarea-refactor');
+  }
+
   public function checkbox(Request $request)
   {
     return view('components-documentation.checkbox');
@@ -68,5 +78,10 @@ class ComponentsDocumentationController extends Controller
   public function modal(Request $request)
   {
     return view('components-documentation.modal');
+  }
+
+  public function pagination(Request $request)
+  {
+    return view('components-documentation.pagination');
   }
 }

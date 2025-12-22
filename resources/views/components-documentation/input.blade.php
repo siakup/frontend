@@ -3,7 +3,7 @@
 @section('title', 'Input Form Documentation')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="body-large-semibold">Komponen Input Form</x-typography>
         <div x-data="{
             form: {
@@ -18,7 +18,7 @@
                 manual_regex: ''
             }
         }">
-            <x-container class="flex flex-col gap-10 p-6 bg-white border border-gray-200" borderRadius="rounded-lg">
+            <x-container  class="flex flex-col gap-10 p-6 bg-white border border-gray-200" borderRadius="rounded-lg">
 
                 <div>
                     <x-typography variant="body-medium-semibold" class="mb-4">1. Penggunaan Dasar</x-typography>
@@ -173,5 +173,5 @@
 
             </x-container>
         </div>
-    </x-container>
+    </x-container.container>
 @endsection

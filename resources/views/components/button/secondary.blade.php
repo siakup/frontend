@@ -19,7 +19,7 @@
     <button type="{{ $type }}" @if ($wireClick) wire:click="{{ $wireClick }}" @endif
         @if ($href) onclick="window.location.href='{{ $href }}'" @endif
         {{ $attributes->merge([
-            'class' => "inline-flex w-fit w-max justify-center items-center gap-1 px-4 py-2 rounded-sm bg-white border border-[#E62129] text-[#E62129] hover:bg-[#FBDADB] active:bg-[#F7B6B8] cursor-pointer disabled:border-[#E8E8E8] disabled:text-[#8C8C8C] disabled:bg-white disabled:cursor-not-allowed {$class}",
+            'class' => "inline-flex w-fit w-max justify-center items-center gap-1 px-4 py-2 rounded-lg bg-white border border-red-600 text-red-600 hover:bg-red-50 active:bg-red-100 cursor-pointer disabled:border-gray-300 disabled:text-gray-400 disabled:bg-white disabled:cursor-not-allowed {$class}",
         ]) }}>
         @if ($icon && $iconPosition === 'left')
             <x-icon :name="$icon" />

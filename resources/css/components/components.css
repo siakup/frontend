@@ -10,3 +10,9 @@
 @import './tab.css';
 @import './modal.css';
 @import './file.css';
+
+/* Refactored Components */
+@import '../refactor/input.css';
+@import '../refactor/textarea.css';
+@import '../refactor/pagination.css';
+@import '../refactor/sidebar.css';

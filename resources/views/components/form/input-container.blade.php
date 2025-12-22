@@ -5,8 +5,8 @@
   <x-container.container class="col-start-1 col-end-2">
     <label 
         {{ $attributes->merge([
-            'class' => "text-[#262626] text-sm font-semibold flex items-center gap-2 flex-shrink-0 " 
-                      . ($labelWrap ? 'whitespace-normal' : 'whitespace-nowrap') 
+            'class' => "input-container-label " 
+                      . ($labelWrap ? 'input-container-label-wrap' : 'input-container-label-nowrap') 
                       . " $labelClass"
         ]) }}
         for="{{ $attributes->get('for') }}"

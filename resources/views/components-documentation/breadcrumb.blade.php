@@ -3,7 +3,7 @@
 @section('title', 'Breadcrumb Documentation')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <x-container.container variant="content-wrapper">
         <x-typography variant="body-large-semibold">Komponen Breadcrumb</x-typography>
 
         <div class="mb-8">
