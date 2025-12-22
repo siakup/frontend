@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Table Documentation')
+@section('title', 'Quantity Documentation')
 
 @section('css')
   <link rel="stylesheet" href="{{ asset('css/plugins/flatpckr.css') }}" />

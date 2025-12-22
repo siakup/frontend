@@ -46,9 +46,16 @@
       <x-icon :name="'circle-remove/red-16'" />
     </template>
   </div>
+  <style>
+    .no-spinners::-webkit-inner-spin-button,
+    .no-spinners::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
   <input 
     type="number" 
-    class="appearance-none focus:outline-none border-none focus:border-none text-center caption [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" 
+    class="no-spinners appearance-none focus:outline-none border-none focus:border-none text-center caption [-moz-appearance:textfield]" 
     x-bind:class="{
       'text-gray-800': !disabled,
       'text-gray-500': disabled
