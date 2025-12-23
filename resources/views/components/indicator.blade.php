@@ -13,21 +13,21 @@
         'sks'=> [
             'label' => 'SKS',
             'text' => 'text-white',
-            'textSemester' => '#E64325',
-            'bg' => '#0076BE', 
-            'barTrack' => '#FFFFFF70',
-            'barProgress' => '#EF1C25',
+            'textSemester' => 'var(--color-red-500)',
+            'bg' => 'var(--color-blue-500)', 
+            'barTrack' => 'var(--color-gray-300)',
+            'barProgress' => 'var(--color-red-500)',
             'bgShape'=> asset('assets/images/grey-pattern.svg'),
-            'icon' => asset('assets/icons/bolt/green-16.svg'), 
-            'iconNonActive' => asset('assets/icons/bolt/grey-16.svg'),
+            // 'icon' => 'bolt/green-16', 
+            // 'iconNonActive' => 'bolt/green-16',
         ],
         'absensi'=>[
             'label' => 'Absensi',
             'text' => 'text-white',
-            'bg' => '#EB474D',
-            'barTrack' => '#FFFFFF80',
-            'barProgress' => '#0076BE',
-            'icon' => asset('assets/icons/calendar/white-16.svg'),
+            'bg' => 'var(--color-red-400)',
+            'barTrack' => 'var(--color-gray-300)',
+            'barProgress' => 'var(--color-blue-500)',
+            // 'icon' => 'calendar/white-16',
             'bgShape'=> asset('assets/images/grey-pattern.svg'),
         ]
     ];
@@ -36,107 +36,227 @@
 
     // Monochrome Logic
     if ($isCompleted) {
-        $style['bg'] = '#565656';
-        $style['barProgress'] = '#9CA3AF';
+        $style['bg'] = 'var(--color-gray-700)';
+        $style['barProgress'] = 'var(--color-gray-500)';
     }
 @endphp
 
-<x-container.container 
-    background="transparent" 
-    radius="2xl" 
-    padding="p-3" 
-    gap="gap-3" 
-    class="relative overflow-clip flex items-center" 
-    style="background-color: {{ $style['bg'] }};"
+@if ($variant === 'sks')
+    @if ($isCompleted)
+        <x-container.wrapper cols="4" padding="p-3" class="bg-gray-600 rounded-lg" width="auto" height="auto">
+            {{-- icon dan label --}}
+            <x-container.container col="2" class="items-center">
+                <x-container.wrapper cols="1">
+                    <x-container.container row="1" class="justify-center">
+                        <x-icon name="bolt/grey-16"></x-icon>
+                    </x-container.container>
+                </x-container.wrapper>
+                <x-container.wrapper cols="1">
+                    <x-container.container row="1" class="justify-center items-center">
+                        <x-typography variant="body-large-bold" class="text-white">
+                            {{ $style['label'] }}
+                        </x-typography>
+                    </x-container.container>
+                </x-container.wrapper>
+            </x-container.container>
+            {{-- bar Progress --}}
+            <x-container.container col="1" class="justify-center items-center" width="full" padding="p-0">
+                <div class="h-2 w-full rounded-full relative overflow-hidden"
+                    style="background-color: {{ $style['barTrack'] }};">
+                    <div class="h-full rounded-full"
+                        style="width: {{ $percentage }}%; background-color: {{ $style['barProgress'] }};">
+                    </div>
+                </div>
+            </x-container.container>
+            {{-- counter --}}
+            <x-container.container col="1" class="items-center justify-center" >
+                <x-typography variant="body-large-bold" class="text-white">
+                    {{ $currentValue }}/{{ $totalValue }}
+                </x-typography>
+            </x-container.container>
+            {{-- pill --}}
+            <x-container.container col="1" padding="p-0" class="items-center justify-center">
+                <x-badge variant="red-monochrome" size="md" border="pill" class="!bg-white" style="background-color: white !important;">
+                    @if($semester)
+                        <x-typography variant="body-small-semibold" class="whitespace-nowrap !text-gray-500">
+                            Semester {{ $semester }}
+                        </x-typography>
+                    @endif
+                </x-badge>
+            </x-container.container>
+        </x-container.wrapper>
+    @else
+        <x-container.wrapper cols="4" padding="p-3" class="bg-blue-500 rounded-lg" width="auto" height="auto">
+            {{-- icon dan label --}}
+            <x-container.container col="2" class="items-center">
+                <x-container.wrapper cols="1">
+                    <x-container.container row="1" class="justify-center">
+                        <x-icon name="bolt/green-16"></x-icon>
+                    </x-container.container>
+                </x-container.wrapper>
+                <x-container.wrapper cols="1">
+                    <x-container.container row="1" class="justify-center items-center">
+                        <x-typography variant="body-large-bold" class="text-white">
+                            {{ $style['label'] }}
+                        </x-typography>
+                    </x-container.container>
+                </x-container.wrapper>
+            </x-container.container>
+            {{-- bar Progress --}}
+            <x-container.container col="1" class="justify-center items-center" width="full" padding="p-0">
+                <div class="h-2 w-full rounded-full relative overflow-hidden"
+                    style="background-color: {{ $style['barTrack'] }};">
+                    <div class="h-full rounded-full"
+                        style="width: {{ $percentage }}%; background-color: {{ $style['barProgress'] }};">
+                    </div>
+                </div>
+            </x-container.container>
+            {{-- counter --}}
+            <x-container.container col="1" class="items-center justify-center" >
+                <x-typography variant="body-large-bold" class="text-white">
+                    {{ $currentValue }}/{{ $totalValue }}
+                </x-typography>
+            </x-container.container>
+            {{-- pill --}}
+            <x-container.container col="1" padding="p-0" class="items-center justify-center">
+                <x-badge variant="red-monochrome" size="md" border="pill" class="!bg-white" style="background-color: white !important;">
+                    @if($semester)
+                        <x-typography variant="body-small-semibold" class="!text-gray-500">
+                            Semester {{ $semester }}
+                        </x-typography>
+                    @endif
+                </x-badge>
+            </x-container.container>
+        </x-container.wrapper>
+    @endif
+@else
+    @if ($isCompleted)
+        
+    @else
+        
+    @endif
+@endif
+{{-- <x-container.wrapper 
+    cols="5" 
+    width="fitContent" 
+    gapY="0" 
+    gapX="2" 
+    padding="p-2" 
+    class="relative overflow-hidden shrink-0 items-center justify-center !grid-cols-[min-content_min-content_1fr_min-content_min-content]"
+    style="background-color: {{ $style['bg'] }}; border-radius:;" 
 >
     
-    {{-- Background Shape --}}
+    Background Shape
     <img src="{{ $style['bgShape'] }}" 
          class="absolute top-0 right-0 h-full w-auto pointer-events-none" 
          alt="pattern">
 
-    {{-- Main Content Wrapper --}}
-    <x-container.container 
-        background="transparent" 
-        padding="p-0" 
-        gap="gap-3"
-        class="flex-grow flex items-center justify-start z-10"
-    >
-        
-        {{-- Icon & Label Box --}}
-        <x-container.container 
-            background="transparent" 
+    Icon
+    <x-container.container col="1" class="items-center justify-center" padding="p-0" width="fitContent">
+         <x-container.container 
+            width="fitContent" 
             padding="p-0" 
-            gap="gap-1" 
-            class="flex items-center min-w-max shrink-0" 
-            width="fitContent"
-        >
-            <div class="w-6 h-6 flex items-center justify-center">
-                @if ($isCompleted && $variant === 'sks')
-                    <img src="{{ $style['iconNonActive'] }}" class="w-full h-full object-contain" alt="{{ $style['label'] }}">
-                @else
-                    <img src="{{ $style['icon'] }}" class="w-full h-full object-contain" alt="{{ $style['label'] }}">
-                @endif
-            </div>
-            <x-typography variant="body-large-bold" class="text-white leading-none">
-                {{ $style['label'] }}
-            </x-typography>
-        </x-container.container>
-
-        {{-- Bar Progress --}}
-        <x-container.container 
-            background="transparent"
-            padding="p-0"
-            width="full"
-            class="flex-grow"
-        >
-            <div class="h-2 w-full rounded-full relative overflow-hidden"
-                 style="background-color: {{ $style['barTrack'] }};">
-                <div class="h-full rounded-full"
-                     style="width: {{ $percentage }}%; background-color: {{ $style['barProgress'] }};">
-                </div>
-            </div>
-        </x-container.container>
-
-        {{-- Counter Box --}}
-        <x-container.container 
-            background="transparent" 
-            padding="p-0" 
-            width="fitContent"
-            class="min-w-max shrink-0"
+            gap="gap-0"
+            class="w-6 h-6 flex items-center justify-center"
         >
             @if ($isCompleted && $variant === 'sks')
-                <x-typography variant="body-large-bold" class="text-white leading-none">
-                    Terpenuhi
-                </x-typography>
+                 <x-icon name="{{ $style['iconNonActive'] }}" class="w-full h-full object-contain" alt="{{ $style['label'] }}" />
             @else
-                <x-typography variant="body-large-bold" class="text-white leading-none">
-                    {{ $currentValue }}/{{ $totalValue }}
-                </x-typography>
+                 <x-icon name="{{ $style['icon'] }}" class="w-full h-full object-contain" alt="{{ $style['label'] }}" />
             @endif
         </x-container.container>
-
     </x-container.container>
 
-    {{-- Semester Badge --}}
-    @if($semester)
-        <x-container.container 
-            background="bg-white" 
-            radius="full" 
-            padding="px-3 py-1" 
-            width="fitContent"
-            class="z-10 flex items-center justify-center shrink-0"
-        >
-            @if ($isCompleted)
-                <x-typography variant="body-small-semibold" style="color: {{ $style['bg'] }};">
-                    Semester {{ $semester }}
-                </x-typography>
-            @else
-                <x-typography variant="body-small-semibold" style="color: {{ $style['textSemester'] }};">
-                    Semester {{ $semester }}
-                </x-typography>
-            @endif
-        </x-container.container>
-    @endif
+    Col 2: Label
+    <x-container.container col="1" class="items-center justify-center" padding="p-0" width="fitContent">
+        <x-typography variant="body-large-bold" class="text-white whitespace-nowrap">
+            {{ $style['label'] }}
+        </x-typography>
+    </x-container.container>
 
-</x-container.container>
+    Col 3: Progress Bar
+    <x-container.container col="1" class="justify-center items-center" width="full" padding="p-0">
+        <div class="h-2 w-full rounded-full relative overflow-hidden"
+            style="background-color: {{ $style['barTrack'] }};">
+            <div class="h-full rounded-full"
+                style="width: {{ $percentage }}%; background-color: {{ $style['barProgress'] }};">
+            </div>
+        </div>
+    </x-container.container>
+
+    Col 4: Counter
+    <x-container.container col="1" class="items-center justify-center" padding="p-0" width="fitContent">
+         @if ($isCompleted && $variant === 'sks')
+            <x-typography variant="body-large-bold" class="text-white leading-none whitespace-nowrap">
+                Terpenuhi
+            </x-typography>
+        @else
+            <x-typography variant="body-large-bold" class="text-white leading-none whitespace-nowrap">
+                {{ $currentValue }}/{{ $totalValue }}
+            </x-typography>
+        @endif
+    </x-container.container>
+
+    Col 5: Badge
+    <x-container.container col="1" padding="p-0" class="items-center justify-center" width="fitContent">
+        @if($semester)
+            <x-container.container 
+                background="bg-white" 
+                radius="full" 
+                padding="px-3 py-1" 
+                width="fitContent"
+                class="z-10 flex items-center justify-center shrink-0"
+            >
+                 @if ($isCompleted)
+                    <x-typography variant="body-small-semibold" style="color: {{ $style['bg'] }};" class="whitespace-nowrap">
+                        Semester {{ $semester }}
+                    </x-typography>
+                @else
+                    <x-typography variant="body-small-semibold" style="color: {{ $style['textSemester'] }};" class="whitespace-nowrap">
+                        Semester {{ $semester }}
+                    </x-typography>
+                @endif
+            </x-container.container>
+        @endif
+    </x-container.container>
+
+</x-container.wrapper> 
+--}}
+
+
+
+
+{{-- KODE REFERENSI
+
+
+<x-container.wrapper cols="5" class="bg-blue-500 rounded-lg" width="fit" height="auto" ...(background)...>
+    <x-container.container col="1" class="items-center justify-center" padding="p-4">
+        <x-icon name="bolt/grey-12">
+        </x-icon>
+    </x-container.container>
+    <x-container.container col="1" class="items-center justify-center">
+        <x-typography variant="body-large-bold" class="text-white">
+            {{ $style['label'] }}
+        </x-typography>
+    </x-container.container>
+    <x-container.container col="1" class="justify-center items-center" width="full">
+        <div class="h-2 w-full rounded-full relative overflow-hidden"
+            style="background-color: {{ $style['barTrack'] }};">
+            <div class="h-full rounded-full"
+                style="width: {{ $percentage }}%; background-color: {{ $style['barProgress'] }};">
+            </div>
+        </div>
+    </x-container.container>
+    <x-container.container col="1" class="items-center justify-center">
+        <x-typography variant="body-large-bold" class="text-white">
+            {{ $currentValue }}/{{ $totalValue }}
+        </x-typography>
+    </x-container.container>
+    <x-container.container col="1" padding="p-0" class="items-center justify-center">
+        <x-badge variant="red-monochrome" size="md" border="pill" class="!bg-white">Label</x-badge>
+    </x-container.container>
+</x-container.wrapper>
+
+
+
+--}}
