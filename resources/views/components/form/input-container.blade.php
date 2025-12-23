@@ -1,4 +1,4 @@
-@props(['containerClass' => '', 'labelClass' => '', 'inputClass' => '', 'labelWrap' => false, 'fullWidth' => true,])
+@props(['containerClass' => '', 'labelClass' => '', 'inputClass' => '', 'labelWrap' => false, 'fullWidth' => true, 'half' => false,])
 
 @php
   if($fullWidth) {
@@ -8,6 +8,10 @@
     $labelWidth = 'col-start-1 col-end-3';
     $inputWidth = 'col-start-5 col-end-10';
   };
+  if($half){
+    $labelWidth = 'col-start-2 col-end-4';
+    $inputWidth = 'col-start-5 col-end-10';
+  }
 @endphp
 
 <x-container.wrapper :padding="'p-0'" :cols="9" :align="'center'" :justify="'center'" class="{{ $containerClass }}">

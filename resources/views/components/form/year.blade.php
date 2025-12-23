@@ -9,11 +9,11 @@
     if (yearDropdown.classList.contains('flex')) {
       yearDropdown.classList.add('hidden');
       yearDropdown.classList.remove('flex');
-      element.querySelector('img').src = "{{ asset('assets/base/icon-calendar.svg') }}"
+      element.querySelector('img').src = "{{ asset('assets/icons/schedule/black-24.svg') }}"
     } else {
       yearDropdown.classList.add("flex");
       yearDropdown.classList.remove("hidden");
-      element.querySelector('img').src = "{{ asset('assets/active/icon-calendar.svg') }}"
+      element.querySelector('img').src = "{{ asset('assets/icons/schedule/red-24.svg') }}"
     }
   }
 
@@ -25,7 +25,7 @@
     if(year == null && yearDropdown.classList.contains('flex')) {
       yearDropdown.classList.add("hidden");
       yearDropdown.classList.remove("flex");
-      yearInput.querySelector('img').src = "{{ asset('assets/base/icon-calendar.svg') }}"
+      yearInput.querySelector('img').src = "{{ asset('assets/icons/schedule/black-24.svg') }}"
     }
   });
 
@@ -62,7 +62,7 @@
       placeholder="Tahun" 
       readonly 
     />
-    <img src="{{ asset('assets/base/icon-calendar.svg') }}" alt="Icon Calendar">
+    <img src="{{ asset('assets/icons/schedule/black-24.svg') }}" alt="Icon Calendar">
     <span class="bg-[#E8E8E8] rounded-tr-2xl rounded-br-2xl py-2.25 px-3 text-[#8C8C8C] border-l-[1px] border-l-[#D9D9D9] ml-3">Years</span>
   </div>
   <div id="Year-dropdown" class="h-[236px] w-[240px] overflow-scroll border-[1px] border-[#D9D9D9] rounded-lg self-end absolute top-11.25 bg-white hidden flex-col">

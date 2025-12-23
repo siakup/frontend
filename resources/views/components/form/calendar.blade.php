@@ -4,7 +4,7 @@
     value: @js($value),
     onInput: @js($attributes->get('oninput')),
     active: false,
-    icon: this.active ? '{{ asset('assets/icons/schedule/red-20.svg') }}' : '{{ asset('assets/icons/schedule/grey-20.svg') }}'
+    icon: this.active ? '{{ asset('assets/icons/schedule/red-24.svg') }}' : '{{ asset('assets/icons/schedule/grey-24.svg') }}'
   }"
   class="border border-gray-500 flex items-center justify-between rounded-md w-full text-gray-800 py-2 px-4"
   x-on:click="$refs.input.focus()"
@@ -14,17 +14,17 @@
   <input 
     type="text"
     id="{{$attributes->get('id')}}" 
-    class="{{ $attributes->get('class') }}bg-white outline-none border-none" 
+    class="{{ $attributes->get('class') }}transparent outline-none w-full" 
     name="{{ $attributes->get('name') }}"
     value="{{ $value ?? '' }}"
     placeholder="{{ $placeholder }}"
     x-ref="input"
     x-on:focus="active = true"
     x-on:blur="active = false"
-    onfocus="this.nextElementSibling.src = '{{ asset('assets/icons/schedule/red-20.svg') }}'"
-    onblur="this.nextElementSibling.src = '{{ asset('assets/icons/schedule/grey-20.svg') }}'"
+    onfocus="this.nextElementSibling.src = '{{ asset('assets/icons/schedule/red-24.svg') }}'"
+    onblur="this.nextElementSibling.src = '{{ asset('assets/icons/schedule/grey-24.svg') }}'"
     oninput="{{$attributes->get('oninput')}}"
     x-model="value"
   />
-  <img src="{{ asset('assets/icons/schedule/grey-20.svg') }}" alt="Icon Calendar" class="me-2.5">
+  <img src="{{ asset('assets/icons/schedule/grey-24.svg') }}" alt="Icon Calendar" class="me-2.5">
 </div>

@@ -54,6 +54,9 @@
         </label>
     @endif
 
+    <div class="mt-1 ml-1 text-xs font-medium transition-colors duration-200 min-h-[1.25rem]">
+    </div>
+
     <div class="flex flex-wrap gap-y-4 gap-x-8 w-full items-center {{ $inputClass }}">
         @foreach($options as $option)
             <div class="flex items-center gap-2 cursor-pointer group">
