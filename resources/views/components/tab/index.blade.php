@@ -13,9 +13,14 @@
       
     if ($variant === 'underline') {
         $containerClasses = "w-full flex items-end border-b border-red-500 " . $containerClass;
-        $activeClasses = $bgActive.' rounded-t-xl '.$textColorActive.' font-bold border '.$borderColorActive.' border-b-0 -mb-px';
-        $inactiveClasses = 'text-gray-400 hover:text-gray-600 border border-transparent border-b-0 mb-px';
+        $activeClasses = $bgActive . ' rounded-t-[10px] ' . $textColorActive . ' font-bold border border-red-200 border-b-white -mb-1';
+        $inactiveClasses = 'text-gray-600 hover:text-red-400 border border-transparent border-b-0 mb-px';
         $itemClasses = 'px-6 py-2.5 text-center inline-flex ' . $baseLinkClasses;
+
+        /*$containerClasses = 'grid grid-flow-col gap-0 relative -bottom-px z-20' . $containerClass;
+        $activeClasses = $bgActive . ' rounded-t-[10px] ' . $textColorActive . ' font-bold border border-red-200 border-b-white';
+        $inactiveClasses = 'text-gray-600 hover:text-red-400';
+        $itemClasses = 'py-2.5 px-8 ' . $baseLinkClasses;*/
 
     } elseif ($variant === 'boxed') {
         $containerClasses = 'grid grid-flow-col gap-3 mt-4 z-20 ' . $containerClass;

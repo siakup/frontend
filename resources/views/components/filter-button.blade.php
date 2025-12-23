@@ -44,7 +44,7 @@
 </script>
 
 <div class="relative">
-    <button class="flex items-center gap-[8px] px-[16px] py-[8px] bg-transparent border-[1px] border-solid border-[#E62129] rounded-lg cursor-pointer text-[#E62129]" id="sortButton" onclick="dropdownButtonHandleClick(this, event)">
+    <button class="flex items-center gap-[8px] px-[16px] py-[8px] bg-transparent border-[1px] border-solid border-[#E62129] rounded-md cursor-pointer text-[#E62129]" id="sortButton" onclick="dropdownButtonHandleClick(this, event)">
         <span id="sortLabel">Urutkan</span>
         <img src="{{ asset('assets/icons/filter/red-16.svg') }}" alt="Filter">
     </button>
