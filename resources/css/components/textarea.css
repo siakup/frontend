@@ -1,5 +1,24 @@
 @layer utilities {
-    .textarea { @apply w-full pe-10 box-border ps-3 text-sm pt-3 border border-gray-400 rounded-sm leading-5 focus:outline-none disabled:bg-gray-200 disabled:text-gray-600 disabled:cursor-not-allowed; }
+    .textarea { @apply w-full pr-10 box-border ps-3 text-sm pt-3 border border-gray-400 rounded-sm leading-5 transition-all duration-200 focus:outline-none disabled:bg-gray-200 disabled:text-gray-600 disabled:cursor-not-allowed; }
     .textarea-helper { @apply flex flex-row items-center text-xs text-gray-600; }
     .textarea-maxchar { @apply ml-auto right-0 text-gray-600; }
+    .textarea-container { @apply flex flex-col gap-2 flex-1; }
+    
+    /* State-based styles moved here */
+    .textarea.state-error { @apply border-red-500; }
+    .textarea.state-disabled { @apply bg-gray-200 border-gray-300 text-gray-600 cursor-not-allowed; }
+
+    .textarea:not(:disabled):not(.state-error):hover { @apply border-gray-500; }
+    .textarea:not(:disabled):hover::placeholder { @apply text-gray-500; }
+    
+
+    .textarea:not(.state-error):focus { @apply border-gray-400 ring-1 ring-gray-400; }
+    .textarea:not(.state-error):focus::placeholder { @apply text-gray-500; }
+    .textarea.state-error:focus { @apply ring-1 ring-red-500; }
+
+    .textarea-container .textarea-label { @apply text-gray-900; }
+    .textarea-container .textarea-helper-text { @apply text-gray-600; }
+
+    .textarea-container.state-error .textarea-label { @apply text-red-500; }
+    .textarea-container.state-error .textarea-helper-text { @apply text-red-500; }
 }

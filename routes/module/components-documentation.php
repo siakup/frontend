@@ -16,6 +16,7 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/input', [ComponentsDocumentationController::class, 'input'])->name('components-documentation.input');
     Route::get('/input-refactor', [ComponentsDocumentationController::class, 'inputRefactor'])->name('components-documentation.input-refactor');
     Route::get('/textarea-refactor', [ComponentsDocumentationController::class, 'textareaRefactor'])->name('components-documentation.textarea-refactor');
+    Route::get('/textarea', [ComponentsDocumentationController::class, 'textarea'])->name('components-documentation.textarea');
     Route::get('/checkbox', [ComponentsDocumentationController::class, 'checkbox'])->name('components-documentation.checkbox');
     Route::get('/file', [ComponentsDocumentationController::class, 'file'])->name('components-documentation.file');
     Route::get('/modal', [ComponentsDocumentationController::class, 'modal'])->name('components-documentation.modal');

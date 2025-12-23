@@ -60,9 +60,9 @@ class ComponentsDocumentationController extends Controller
     return view('components-documentation.input-refactor');
   }
 
-  public function textareaRefactor(Request $request)
+  public function textarea(Request $request)
   {
-    return view('components-documentation.textarea-refactor');
+    return view('components-documentation.textarea');
   }
 
   public function checkbox(Request $request)

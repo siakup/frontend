@@ -3,25 +3,26 @@
 @section('title', 'Textarea Refactor Documentation')
 
 @section('content')
-    <x-container variant="content-wrapper">
-        <div class="mb-6">
-            <x-typography variant="body-large-semibold">Komponen Textarea - Refactored Version</x-typography>
-            <p class="text-sm text-gray-600 mt-2">
-                Komponen textarea yang sudah direfactor sesuai Figma dengan state management, label, resizer control, helper text, dan word counter.
-            </p>
-        </div>
+    <x-container.wrapper>
+        <x-container.container>
+            <div class="mb-6">
+                <x-typography variant="body-large-semibold">Komponen Textarea - Refactored Version</x-typography>
+                <p class="text-sm text-gray-600 mt-2">
+                    Komponen textarea yang sudah direfactor sesuai Figma dengan state management, label, resizer control, helper text, dan character counter.
+                </p>
+            </div>
 
-        <div x-data="{
-            form: {
-                demo1: '',
-                demo2: '',
-                demo3: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                demo4: '',
-                demo5: '',
-                demo6: ''
-            }
-        }">
-            <x-container class="flex flex-col gap-10 p-6 bg-white border border-gray-200" borderRadius="rounded-lg">
+            <div x-data="{
+                form: {
+                    demo1: '',
+                    demo2: '',
+                    demo3: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                    demo4: '',
+                    demo5: '',
+                    demo6: ''
+                }
+            }">
+                <x-container.wrapper rows="5" class="gap-10">
 
                 {{-- Demo 1: Basic States --}}
                 <div>
@@ -49,7 +50,7 @@
 
                         {{-- Hover State --}}
                         <div>
-                            <p class="text-sm font-medium mb-2">Hover State </p>
+                            <p class="text-sm font-medium mb-2">Hover State (Purple Border)</p>
                             <x-form.refactor.textarea 
                                 name="demo2"
                                 label="Label"
@@ -124,8 +125,6 @@
                     </div>
                 </div>
 
-                <hr class="border-gray-200">
-
                 {{-- Demo 2: Resizer Options --}}
                 <div>
                     <x-typography variant="body-medium-semibold" class="mb-4">
@@ -155,8 +154,6 @@
                         </div>
                     </div>
                 </div>
-
-                <hr class="border-gray-200">
 
                 {{-- Demo 3: Helper & Counter Options --}}
                 <div>
@@ -216,8 +213,6 @@
                     </div>
                 </div>
 
-                <hr class="border-gray-200">
-
                 {{-- Demo 4: Label Options --}}
                 <div>
                     <x-typography variant="body-medium-semibold" class="mb-4">
@@ -246,8 +241,51 @@
                         </div>
                     </div>
                 </div>
-                <hr class="border-gray-200">
-            </x-container>
-        </div>
-    </x-container>
+
+                {{-- Demo 5: Usage Guide --}}
+                <div>
+                    <x-typography variant="body-medium-semibold" class="mb-4">
+                        5. Cara Penggunaan
+                    </x-typography>
+                    <pre class="bg-gray-900 text-gray-300 p-4 rounded-lg text-xs overflow-x-auto">
+&lt;x-form.refactor.textarea 
+    name="description"
+    label="Label"
+    placeholder="Placeholder"
+    :showLabel="true"
+    :resizer="true"
+    :helperContainer="true"
+    :showHelperText="true"
+    helperText="Helper text"
+    :wordCounter="true"
+    :maxChar="200"
+    x-model="form.description"
+/&gt;
+
+&lt;!-- Props Available: --&gt;
+- name: string (default: 'textarea')
+- label: string (default: 'Label')
+- showLabel: boolean (default: true) - show/hide label
+- placeholder: string (default: 'Placeholder')
+- value: string (default: '')
+- rows: number (default: 4)
+- resizer: boolean (default: true) - allow vertical resize
+- helperContainer: boolean (default: true) - show helper/counter container
+- helperText: string (default: '') - helper text message
+- showHelperText: boolean (default: true) - show/hide helper text
+- wordCounter: boolean (default: true) - show character counter
+- maxChar: number (default: null) - max characters (null = unlimited)
+- required: boolean (default: false)
+- disabled: boolean (default: false)
+- error: string (default: null) - error message (shows error state)
+- state: string (default: 'default') - 'default'|'error'|'disabled'
+- class: string - additional CSS classes
+
+Note: Clear button (X) automatically appears when textarea has content</pre>
+                </div>
+
+                </x-container.wrapper>
+            </div>
+        </x-container.container>
+    </x-container.wrapper>
 @endsection
