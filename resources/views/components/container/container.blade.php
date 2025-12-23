@@ -32,22 +32,35 @@
 
     $resolve = fn($value, $map) => $value !== null && isset($map[$value]) ? $map[$value] : null;
 
+    use App\Helpers\Components\Utilities;
+
     $classes = collect([
-        $resolve($row, $gridMap['row']),
-        $resolve($col, $gridMap['col']),
-
+        $class,
         $background,
-        "rounded-$radius",
-
         $resolve($width, $widthMap),
         $resolve($height, $heightMap),
-
+        ...Utilities::resolve($attributes),
+        "rounded-{$radius}",
         $padding,
         $gap,
-        $class,
-    ])
-        ->filter()
-        ->implode(' ');
+    ])->filter()->unique()->implode(' ');
+
+    // $classes = collect([
+    //     $resolve($row, $gridMap['row']),
+    //     $resolve($col, $gridMap['col']),
+
+    //     $background,
+    //     "rounded-$radius",
+
+    //     $resolve($width, $widthMap),
+    //     $resolve($height, $heightMap),
+
+    //     $padding,
+    //     $gap,
+    //     $class,
+    // ])
+    //     ->filter()
+    //     ->implode(' ');
 @endphp
 
 <div {{ $attributes->merge(['class' => $classes]) }}>
