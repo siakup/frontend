@@ -38,14 +38,14 @@
       />
     </x-container.container>
 
-    <x-container.container :background="'bg-white'" :padding="'p-0'" :height="'maxContent'" class="rounded-t-none" >
+    <x-container.container :background="'bg-white'" :padding="'p-0'" :height="'maxContent'" class="rounded-t-none border-x border-b border-gray-400" >
       <x-container.wrapper class="grid grid-rows-[auto_1fr]" :gapY="4">
 
-        <x-container.container :background="'transparent'" :height="'maxContent'" class="row-start-1 row-end-2 justify-end">
+        <x-container.container :background="'transparent'" :height="'maxContent'" class="justify-end">
           <x-button.primary :href="route('academics-periode.create')" class="self-end">Tambah Periode Akademik</x-button.primary>
         </x-container.container>
 
-        <x-container.container :background="'content-white'" :padding="'p-0'" :height="'maxContent'" class="'row-start-2 row-end-3 justify-between items-center'">
+        <x-container.container :background="'content-white'" :padding="'p-0'" :height="'maxContent'" class="'justify-between items-center'">
           <x-container.wrapper :cols="2">
 
             <x-container.container :background="'transparent'" class="col-start-1 col-end-2">
@@ -67,7 +67,7 @@
           </x-container.wrapper>
         </x-container.container>
 
-        <x-container.container :background="'transparent'" :height="'maxContent'" class="row-start-3 row-end-6">
+        <x-container.container :background="'transparent'" :height="'maxContent'" >
 
           <x-table.index :variant="'old'">
             <x-table.head :variant="'old'">
