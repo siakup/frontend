@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\TutelageController;
+use App\Http\Controllers\TutelageGroupController;
+use App\Http\Controllers\TutelageSessionController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth']], function () {
+// Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'tutelage-group'], function () {
         Route::group(['prefix' => 'student-list'], function () {
             Route::get('/', action: [TutelageController::class, 'listStudent'])->name('tutelage-group.list-student');
@@ -18,5 +20,14 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::get('/message/{id}', action: [TutelageController::class, 'addMessage'])->name('tutelage-group.student-list.message.add');
             });
         });
+        Route::get('/', action: [TutelageGroupController::class, 'index'])->name('tutelage-group');
+        Route::get('/create', action: [TutelageGroupController::class, 'create'])->name('tutelage-group.create');
+        Route::get('/copy/{id}', action: [TutelageGroupController::class, 'copy'])->name('tutelage-group.copy');
+        Route::get('/edit/{id}', action: [TutelageGroupController::class, 'edit'])->name('tutelage-group.edit');
+
+        Route::group(['prefix' => 'tutelage-session'], function () {
+            Route::get('/', action: [TutelageSessionController::class, 'index'])->name('tutelage-group.session.index');
+            Route::get('/create', action: [TutelageSessionController::class, 'create'])->name('tutelage-group.session.create');
+        });
     });
-});
+// });

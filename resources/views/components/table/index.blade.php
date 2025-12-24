@@ -10,8 +10,8 @@
 <div x-data="{
     variants: {
         default: {
-            divClass: ({{ json_encode($isRoundedTop) }} ? '!rounded-t-lg ' : '!rounded-t-none ') +
-                ({{ json_encode($isRoundedBottom) }} ? '!rounded-b-lg ' : '!rounded-b-none') +
+            divClass: ({{ json_encode($isRoundedTop) }} ? '!rounded-t-md ' : '!rounded-t-none ') +
+                ({{ json_encode($isRoundedBottom) }} ? '!rounded-b-md ' : '!rounded-b-none') +
                 ({{ json_encode($isBordered) }} ? 'border border-gray-400 ' : ''),
             tableClass: 'border-separate border-spacing-0'
         },

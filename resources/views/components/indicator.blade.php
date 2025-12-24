@@ -12,100 +12,106 @@
     $variants = [
         'sks'=> [
             'label' => 'SKS',
-            'text' => 'text-white',
-            'textSemester' => '#E64325',
-            'bg' => '#0076BE', 
-            'barTrack' => '#FFFFFF70',
-            'barProgress' => '#EF1C25',
-            'bgShape'=> asset('assets/images/grey-pattern.svg'),
-            'icon' => asset('assets/icons/bolt/green-16.svg'), 
-            'iconNonActive' => asset('assets/icons/bolt/grey-16.svg'),
+            'primaryColor' => 'var(--color-blue-500)',
+            'secondaryColor' => 'var(--color-red-500)',
+            'barColor' => 'var(--color-gray-300)',
+            'cols' => $semester ? 12 : 8,
+            'colOfLabel' => 1,
         ],
         'absensi'=>[
             'label' => 'Absensi',
-            'text' => 'text-white',
-            'bg' => '#EB474D',
-            'barTrack' => '#FFFFFF80',
-            'barProgress' => '#0076BE',
-            'icon' => asset('assets/icons/calendar/white-16.svg'),
-            'bgShape'=> asset('assets/images/grey-pattern.svg'),
+            'primaryColor' => 'var(--color-red-400)',
+            'secondaryColor' => 'var(--color-blue-500)',
+            'barColor' => 'var(--color-gray-300)',
+            'cols' => 9,
+            'colOfLabel' => 2,
         ]
     ];
 
+
+    // Fallback
     $style = $variants[$variant] ?? $variants['sks'];
 
-    // Monochrome
+    // Disabled styles
     if ($isCompleted) {
-        $style['bg'] = '#565656';
-        $style['barProgress'] = '#9CA3AF';
+        $style['primaryColor'] = 'var(--color-gray-700)';
+        $style['secondaryColor'] = 'var(--color-gray-600)';
     }
 @endphp
 
-<div class="relative w-full overflow-clip rounded-2xl p-4 flex items-center gap-3" 
-     style="background-color: {{ $style['bg'] }};">
-    
-    {{-- Background Shape --}}
-    <img src="{{ $style['bgShape'] }}" 
-         class="absolute top-0 right-0 h-full w-auto pointer-events-none" 
-         alt="pattern">
 
-    {{-- Info + Bar + Counter --}}
-    <div class="flex-grow flex items-center gap-3 w-full">
-        
-        {{-- Icon dan label --}}
-        <div class="flex items-center gap-1 min-w-max shrink-0">
-            <div class="w-6 h-6 flex items-center justify-center">
-                @if ($isCompleted && $variant === 'sks')
-                    <img src="{{ $style['iconNonActive'] }}" class="w-full h-full object-contain" alt="{{ $style['label'] }}">
+<x-container.wrapper
+    cols="1"
+    class="rounded-lg overflow-hidden"
+    style="background-color: {{ $style['primaryColor'] }}; background-image: url('{{ asset('assets/images/grey-pattern.svg') }}'); background-repeat: no-repeat; background-position: 100% 0;"
+    width="full"
+>
+    <x-container.container col="1" padding="px-4 py-3" >
+        <x-container.wrapper cols="{{ $style['cols'] }}" gap="5" items="center">
+
+            {{-- Icon --}}
+            <x-container.container col="1" class="items-center justify-center" height="fit">
+                @if ($variant === 'sks')
+                    @if ($isCompleted)
+                        <x-icon name="bolt/grey-16"></x-icon>
+                    @else
+                        <x-icon name="bolt/green-16"></x-icon>
+                    @endif
                 @else
-                    <img src="{{ $style['icon'] }}" class="w-full h-full object-contain" alt="{{ $style['label'] }}">
+                    <x-icon name="calendar/white-16"></x-icon>
                 @endif
-            </div>
-            <span class="font-bold text-xl text-white leading-none">
-                {{ $style['label'] }}
-            </span>
-        </div>
-
-        {{-- Bar Progress --}}
-        <div class="flex-grow w-full">
-            <div class="h-2 w-full rounded-full relative overflow-hidden"
-                 style="background-color: {{ $style['barTrack'] }};">
-                <div class="h-full rounded-full"
-                     style="width: {{ $percentage }}%; background-color: {{ $style['barProgress'] }};">
-                </div>
-            </div>
-        </div>
-
-        {{-- Counter --}}
-        <div class="min-w-max shrink-0">
-            @if ($isCompleted && $variant === 'sks')
-                <span class="font-bold text-xl text-white leading-none">
-                    Terpenuhi
-                </span>
-                
-            @else
-                <span class="font-bold text-xl text-white leading-none">
-                    {{ $currentValue }}/{{ $totalValue }}
-                </span>
+            </x-container.container>
+            
+            {{-- Label --}}
+            <x-container.container col="{{ $style['colOfLabel'] }}" class="items-center justify-center">
+                <x-typography variant="body-medium-bold" class="text-white">
+                    {{ $style['label'] }}
+                </x-typography>
+            </x-container.container>
+            
+            {{-- Progress Bar --}}
+            <x-container.container col="4" class="items-center justify-center">
+                <x-container.container width="full" radius="full" class="h-2" style="background-color: {{ $style['barColor'] }};">
+                    <x-container.container height="full" radius="full" style="width: {{ $percentage }}%; background-color: {{ $style['secondaryColor'] }};"></x-container.container>
+                </x-container.container>
+            </x-container.container>
+            
+            {{-- Counter --}}
+            <x-container.container col="2" class="items-center justify-center">
+                <x-typography variant="body-medium-bold" class="text-white">
+                    @if($isCompleted && $variant === 'sks')
+                        Terpenuhi
+                    @else
+                        {{ $currentValue }}/{{ $totalValue }}
+                    @endif
+                </x-typography>
+            </x-container.container>
+            
+            {{-- Badge Semester --}}
+            @if($semester)
+                <x-container.container col="4" class="items-center justify-center">
+                        <x-badge
+                            variant="red-monochrome"
+                            size="md"
+                            border="pill"
+                            style="background-color: white !important; padding: 0 !important;"
+                        >
+                        <x-typography 
+                            variant="body-small-semibold"
+                            class="px-6 py-0 whitespace-nowrap"
+                            style="color: {{ $style['secondaryColor'] }}; overflow: hidden; text-overflow: ellipsis;"
+                        >
+                            Semester {{ $semester }}
+                        </x-typography>
+                    </x-badge>
+                </x-container.container>
             @endif
+        </x-container.wrapper>
+    </x-container.container>
+</x-container.wrapper>
 
-        </div>
 
-    </div>
-
-    {{-- Semester Badge--}}
-    @if($semester)
-        <div class="z-10 bg-white px-3 py-1 rounded-full flex items-center justify-center shrink-0">
-            @if ($isCompleted)
-                <span class="text-sm font-medium" style="color: {{ $style['bg'] }};">
-                    Semester {{ $semester }}
-                </span>
-            @else
-                <span class="text-sm font-medium" style="color: {{ $style['textSemester'] }};">
-                    Semester {{ $semester }}
-                </span>
-            @endif
-        </div>
-    @endif
-
-</div>
+{{-- 
+1 1 4 2 4
+1 2 4 2
+--}}
