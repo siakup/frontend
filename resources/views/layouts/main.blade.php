@@ -22,7 +22,7 @@
             </x-container.container>
           </template>
           
-          <x-container.container :width="'full'" :height="'full'" :rounded="'none'" :rounded="'none'" :background="'transparent'" class="overflow-scroll" x-bind:class="$store.mainLayout.isOpen ? 'col-start-4 col-span-9' : 'col-start-1 col-span-12'">
+          <x-container.container :width="'full'" :height="'full'" :rounded="'none'" :rounded="'none'" :background="'transparent'" class="overflow-auto" x-bind:class="$store.mainLayout.isOpen ? 'col-start-4 col-span-9' : 'col-start-1 col-span-12'">
               <x-container.wrapper :rows="16">
 
                 <x-container.container :width="'full'" :height="'maxContent'" :background="'transparent'" :rounded="'none'" class="row-start-1 row-span-1">
