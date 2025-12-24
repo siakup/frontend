@@ -12,16 +12,14 @@ class Menu
                 'url' => '/home',
                 'parent' => null,
                 'isExpandable' => false,
-                'children' => [
-
-                ],
+                'children' => [],
             ],
             'component-documentation' => [
-              'name' => 'Component Development Documentation Page',
-              'url' => '/components-documentation/*',
-              'parent' => null,
-              'isExpandable' => false,
-              'children' => []
+                'name' => 'Component Development Documentation Page',
+                'url' => '/components-documentation/*',
+                'parent' => null,
+                'isExpandable' => false,
+                'children' => [],
             ],
             'konfigurasi' => [
                 'name' => 'Konfigurasi',
@@ -345,75 +343,82 @@ class Menu
                     ],
                 ],
             ],
-            'tutelage-group-student-list' => [
+            'tutelage-group' => [
                 'name' => 'Kelompok Perwalian',
-                'url' => '/tutelage-group/student-list',
-                'parent' => 'tutelage-group.index',
+                'url' => '/tutelage-group',
+                'parent' => 'tutelage-group',
                 'isExpandable' => true,
                 'children' => [
+                    'tutelage-group-create' => [
+                        'name' => 'Tambah Kelompok Perwalian',
+                        'url' => '/tutelage-group/create',
+                        'parent' => 'tutelage-group.',
+                        'isExpandable' => true,
+                        'children' => [],
+                    ],
+                    'tutelage-group-copy' => [
+                        'name' => 'Salin Kelompok Perwalian',
+                        'url' => '/tutelage-group/copy/*',
+                        'parent' => 'tutelage-group.',
+                        'isExpandable' => true,
+                        'children' => [],
+                    ],
+                    'tutelage-group-edit' => [
+                        'name' => 'Ubah Kelompok Perwalian',
+                        'url' => '/tutelage-group/edit/*',
+                        'parent' => 'tutelage-group.',
+                        'isExpandable' => true,
+                        'children' => [],
+                    ],
                     'tutelage-group-student-list-krs' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/krs/*',
                         'parent' => 'tutelage-group.student-list.detail-krs',
                         'isExpandable' => true,
-                        'children' => [
-
-                        ],
+                        'children' => [],
                     ],
                     'tutelage-group-student-list-student-data' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/student-data/*',
                         'parent' => 'tutelage-group.student-list.detail-student-data',
                         'isExpandable' => true,
-                        'children' => [
-
-                        ],
+                        'children' => [],
                     ],
                     'tutelage-group-student-list-transkrip-resmi' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/transkrip-resmi/*',
                         'parent' => 'tutelage-group.student-list.detail-transkrip-resmi',
                         'isExpandable' => true,
-                        'children' => [
-
-                        ],
+                        'children' => [],
                     ],
                     'tutelage-group-student-list-transkrip-historis' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/transkrip-historis/*',
                         'parent' => 'tutelage-group.student-list.detail-transkrip-historis',
                         'isExpandable' => true,
-                        'children' => [
-
-                        ],
+                        'children' => [],
                     ],
                     'tutelage-group-student-list-transkrip-kurikulum' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/transkrip-kurikulum/*',
                         'parent' => 'tutelage-group.student-list.detail-transkrip-kurikulum',
                         'isExpandable' => true,
-                        'children' => [
-
-                        ],
+                        'children' => [],
                     ],
                     'tutelage-group-student-list-transkrip-pem' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/transkrip-pem/*',
                         'parent' => 'tutelage-group.student-list.detail-transkrip-pem',
                         'isExpandable' => true,
-                        'children' => [
-
-                        ],
+                        'children' => [],
                     ],
                     'tutelage-group-student-list-message' => [
-                      'name' => 'Pesan untuk Mahasiswa',
-                      'url' => '/tutelage-group/student-list/detail/message/*',
-                      'parent' => 'tutelage-group.student-list.message.add',
-                      'isExpandable' => false,
-                      'children' => [
-                        
-                      ]
-                    ]
+                        'name' => 'Pesan untuk Mahasiswa',
+                        'url' => '/tutelage-group/student-list/detail/message/*',
+                        'parent' => 'tutelage-group.student-list.message.add',
+                        'isExpandable' => false,
+                        'children' => [],
+                    ],
                 ],
             ],
             'rps' => [
@@ -452,7 +457,6 @@ class Menu
                                 'parent' => 'rps.rencana-evaluasi-mahasiswa.index',
                                 'isExpandable' => false,
                             ],
-
                         ],
                     ],
                 ],
@@ -537,7 +541,7 @@ class Menu
 
         $currentPath = '';
         foreach ($segments as $segment) {
-            $currentPath .= '/'.$segment;
+            $currentPath .= '/' . $segment;
             $menuChain = $findMenuByPath($menus, $currentPath);
 
             if ($menuChain !== null) {
@@ -551,11 +555,11 @@ class Menu
                         }
                     }
 
-                    if (! $exists) {
+                    if (!$exists) {
                         $breadcrumbs[] = [
                             'name' => $menuItem['name'],
                             'url' => $menuItem['url'],
-                            'active' => ($currentPath === '/'.$path && $index === count($menuChain) - 1),
+                            'active' => $currentPath === '/' . $path && $index === count($menuChain) - 1,
                         ];
                     }
                 }
@@ -571,7 +575,7 @@ class Menu
                     $seg = $currentSegments[$i] ?? $seg; // replace * dengan segment asli
                 }
             }
-            $crumb['url'] = '/'.implode('/', $urlSegments);
+            $crumb['url'] = '/' . implode('/', $urlSegments);
         }
         unset($crumb);
 

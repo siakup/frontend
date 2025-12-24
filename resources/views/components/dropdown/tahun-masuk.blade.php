@@ -1,5 +1,6 @@
 @props([
     'variant' => 'gray',
+    'label' => '-Pilih Tahun Masuk-',
 ])
 
 @php
@@ -16,6 +17,6 @@
     :dropdownId="'dropdownTahunMasuk'" 
     :dropdownItem="$options" 
     dropdownContainerClass="{{ $width }}"
-    label="-Pilih Tahun Masuk-" 
+    label="{{ $label }}" 
     x-model="{{ $attributes->get('x-model') }}" 
 />

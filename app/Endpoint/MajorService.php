@@ -2,7 +2,7 @@
 
 namespace App\Endpoint;
 
-class LectureService
+class MajorService
 {
     private static $instance = null;
 
@@ -17,11 +17,11 @@ class LectureService
 
     private function url()
     {
-        return config('endpoint.lecture.url').'/api/courses';
+        return config('endpoint.users.url').'/api/institutions';
     }
 
-    public function getMataKuliah()
+    public function getList()
     {
-        return $this->url().'/';
+        return $this->url().'/list';
     }
 }
