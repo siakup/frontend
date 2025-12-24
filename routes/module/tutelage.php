@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
         Route::group(['prefix' => 'tutelage-session'], function () {
             Route::get('/', action: [TutelageSessionController::class, 'index'])->name('tutelage-group.session.index');
             Route::get('/create', action: [TutelageSessionController::class, 'create'])->name('tutelage-group.session.create');
+            Route::get('/edit/{id}', action: [TutelageSessionController::class, 'edit'])->name('tutelage-group.session.edit');
         });
     });
 // });
