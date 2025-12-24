@@ -26,7 +26,8 @@
                     </x-container.container>
 
                     <x-container.container col="1">
-                        {{ $slot }}
+                        {{-- {{ $slot }} --}}
+                        @yield('content')
                     </x-container.container>
 
                 </x-container.wrapper>
@@ -37,7 +38,8 @@
                 <x-container.wrapper height="full">
 
                     <x-container.container col="1">
-                        {{ $slot }}
+                        {{-- {{ $slot }} --}}
+                        @yield('content')
                     </x-container.container>
 
                 </x-container.wrapper>

@@ -17,7 +17,7 @@
         </x-container.container>
 
         <x-container.container col="1">
-            <x-container.wrapper cols="2">
+            <x-container.wrapper cols="2" gap="5">
                 <x-container.container col="1">
                     <x-container.wrapper rows="7" class="gap-6">
                         <x-container.container row="1">
@@ -39,8 +39,7 @@
                             <x-indicator variant="sks" :currentValue="144" :totalValue="144" semester="8" />
                         </x-container.container>
                         <x-container.container row="1">
-                            <x-indicator variant="sks" :currentValue="144" :totalValue="144" semester="8"
-                                isCompleted="true" />
+                            <x-indicator variant="sks" :currentValue="144" :totalValue="144" semester="8" isCompleted="true" />
                         </x-container.container>
                     </x-container.wrapper>
                 </x-container.container>
