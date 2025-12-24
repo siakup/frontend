@@ -7,29 +7,33 @@
 </head>
 
 <body>
-    <div class="grid grid-rows-[auto,1fr] w-screen h-auto" x-data="{}">
+    <div class="h-full">
+        <div class="grid grid-rows-[auto_1fr] w-screen h-full" x-data="{}">
 
-        {{-- --- NAVBAR --- --}}
-        <x-container.container row="1" height="auto" width="full" background="red-gradient" radius="none">
-            <x-header />
-        </x-container.container>
+            {{-- --- NAVBAR --- --}}
+            <x-container.container row="1" height="fit" width="full" background="red-gradient" radius="none">
+                <x-header />
+            </x-container.container>
 
-        {{-- --- SIDEBAR & CONTENT --- --}}
-        <x-container.container height="screen" width="full" radius="none" class="h-screen">
+            {{-- --- SIDEBAR & CONTENT --- --}}
+            {{-- <x-container.container height="full" width="full" radius="none"> --}}
 
             <template x-if="$store.mainLayout.isOpen">
-                <x-container.wrapper cols="2" height="full">
+                {{-- <x-container.wrapper cols="12" height="full"> --}}
 
-                    <x-container.container col="1" radius="none" height="full" width="fit"
-                        background="bg-white" class="border-r border-r-gray-400">
+                <div class="grid grid-cols-[auto_1fr] h-screen w-full">
+                    <x-container.container radius="none" height="full" width="full" background="bg-white"
+                        class="border-r border-r-gray-400">
                         <x-menu />
                     </x-container.container>
 
-                    <x-container.container col="1" height="full" width="full">
+                    <x-container.container height="full" width="full" class="overflow-auto">
                         {{ $slot }}
                     </x-container.container>
+                </div>
 
-                </x-container.wrapper>
+
+                {{-- </x-container.wrapper> --}}
             </template>
 
             <template x-if="!$store.mainLayout.isOpen">
@@ -42,8 +46,10 @@
 
                 </x-container.wrapper>
             </template>
-        </x-container.container>
+            {{-- </x-container.container> --}}
+        </div>
     </div>
+
 
 
 
