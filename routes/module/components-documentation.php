@@ -22,4 +22,6 @@ Route::group(['prefix' => 'components-documentation'], function () {
     Route::get('/toast', [ComponentsDocumentationController::class, 'toast'])->name('components-documentation.toast');
     Route::get('/calendar', [ComponentsDocumentationController::class, 'calendar'])->name('components-documentation.calendar');
     Route::get('/dropdown', [ComponentsDocumentationController::class, 'dropdown'])->name('components-documentation.dropdown');
+    Route::get('/accordion', [ComponentsDocumentationController::class, 'accordion'])->name('components-documentation.accordion');
+    Route::get('/indicator', [ComponentsDocumentationController::class, 'indicator'])->name('components-documentation.indicator');
 });
