@@ -2,7 +2,7 @@
     'title' => null,
 ])
 
-<div class="flex flex-col gap-4 p-4 h-full">
+<div class="flex flex-col gap-4 p-4 flex-1">
 
     {{-- PAGE HEADER --}}
     @if ($title)
