@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <div class="h-full">
+    {{-- <div class="h-dvh"> --}}
         <div class="grid grid-rows-[auto_1fr] w-screen h-full" x-data="{}">
 
             {{-- --- NAVBAR --- --}}
@@ -16,27 +16,27 @@
             </x-container.container>
 
             {{-- --- SIDEBAR & CONTENT --- --}}
-            {{-- <x-container.container height="full" width="full" radius="none"> --}}
+            <x-container.container background="bg-transparent" height="full" width="full" radius="none" class="overflow-auto">
 
-            <template x-if="$store.mainLayout.isOpen">
-                {{-- <x-container.wrapper cols="12" height="full"> --}}
+                <template x-if="$store.mainLayout.isOpen">
+                    {{-- <x-container.wrapper cols="12" height="full"> --}}
 
-                <div class="grid grid-cols-[auto_1fr] h-screen w-full">
-                    <x-container.container radius="none" height="full" width="full" background="bg-white"
-                        class="border-r border-r-gray-400">
-                        <x-menu />
-                    </x-container.container>
+                    <div class="grid grid-cols-[auto_1fr] h-full w-full">
+                        <x-container.container radius="none" height="full" width="full" background="bg-white"
+                            class="border-r border-r-gray-400">
+                            <x-menu />
+                        </x-container.container>
 
-                    <x-container.container height="full" width="full" class="overflow-auto">
-                        {{ $slot }}
-                    </x-container.container>
-                </div>
+                        <x-container.container radius="none" background="bg-transparent" height="full" width="full" class="overflow-auto overscroll-contain">
+                            {{ $slot }}
+                        </x-container.container>
+                    </div>
 
 
-                {{-- </x-container.wrapper> --}}
-            </template>
+                    {{-- </x-container.wrapper> --}}
+                </template>
 
-            <template x-if="!$store.mainLayout.isOpen">
+                <template x-if="!$store.mainLayout.isOpen">
 
                 <x-container.wrapper height="full">
 
@@ -48,7 +48,7 @@
             </template>
             {{-- </x-container.container> --}}
         </div>
-    </div>
+    {{-- </div> --}}
 
 
 

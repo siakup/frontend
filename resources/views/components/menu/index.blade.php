@@ -84,7 +84,7 @@
           :routeQuery="'lectures*'"
           :variant="'parent'"
         /> --}}
-        <x-menu.item
+        {{-- <x-menu.item
           :label="'Kelompok Perwalian'"
           :haveIcon="true"
           :iconInactive="asset('assets/icons/advisory/black-24.svg')"
@@ -101,7 +101,7 @@
           :routeName="'rps.index'"
           :routeQuery="'rps*'"
           :variant="'parent'"
-        />
+        /> --}}
         {{-- <x-menu.item
           :label="'Penelitian'"
           :haveIcon="true"
