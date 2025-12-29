@@ -1,6 +1,7 @@
 @import "./container.css";
-@import "./border.css";
 @import "./shadow.css";
+@import "./border.css";
+@import "./spacing.css";
 @import "./tooltip.css";
 @import "./dialog.css";
 @import "./badge.css";

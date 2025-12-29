@@ -92,15 +92,34 @@
     --shadow-medium-inverse: 0px -8px 24px 0px rgba(60, 65, 82, 0.15);
     --shadow-high-inverse: 0px -16px 36px 0px rgba(60, 65, 82, 0.1);
 
+    /* Border */
     /* radius */
     --radius-xs: 4px;
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 20px;
+    /* width */
+    --border: 1px;
+    --border-2: calc(var(--border) * 2);
+    --border-3: calc(var(--border) * 3);
+    --border-4: calc(var(--border) * 4);
+    --border-5: calc(var(--border) * 5);
+    --border-6: calc(var(--border) * 6);
+    --border-7: calc(var(--border) * 7);
+    /* style */
+    --border-solid: solid;
+    --border-dashed: dashed;
+    --border-dotted: dotted;
+    --border-double: double;
+    --border-hidden: hidden;
+    --border-none: none;
 
     /* spacing */
     --spacing: 4px;
+
+    /* Spacing scale 1–12 */
     --spacing-1: calc(var(--spacing) * 1); /* 4px */
+    --spacing-2: calc(var(--spacing) * 2); /* 8px */
     --spacing-2: calc(var(--spacing) * 2); /* 8px */
     --spacing-2_5: calc(var(--spacing) * 2.5); /* 10px */
     --spacing-3: calc(var(--spacing) * 3); /* 12px */
@@ -111,6 +130,8 @@
     --spacing-8: calc(var(--spacing) * 8); /* 32px */
     --spacing-9: calc(var(--spacing) * 9); /* 36px */
     --spacing-10: calc(var(--spacing) * 10); /* 40px */
+    --spacing-11: calc(var(--spacing) * 11); /* 44px */
+    --spacing-12: calc(var(--spacing) * 12); /* 48px */
 
     /* --breakpoint-2xl: ...px */
     --breakpoint-xl: 1440px;

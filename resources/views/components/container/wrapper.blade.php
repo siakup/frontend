@@ -70,6 +70,8 @@
         return $map[$value] ?? null;
     };
 
+    use App\Helpers\Components\Utilities;
+
     $classes = collect([
         'grid',
 
@@ -110,11 +112,21 @@
         $resolve($attributes->get('md:height'), $heightMap),
         $resolve($attributes->get('lg:height'), $heightMap),
         $resolve($attributes->get('xl:height'), $heightMap),
+        ...Utilities::resolve($attributes),
     ])
         ->filter()
         ->implode(' ');
 @endphp
 
-<div {{ $attributes->merge(['class' => $classes]) }}>
+<div {{ $attributes->except([
+        'rows', 'cols',
+        'gap', 'gapX', 'gapY',
+        'padding', 'px', 'py', 'pt', 'pb', 'pl', 'pr',
+        'margin', 'marginX', 'marginY', 'mt', 'mb', 'ml', 'mr',
+        'spaceX', 'spaceY',
+        'shadow',
+        'radius',
+        'border', 'borderWidth', 'borderColor',
+    ])->merge(['class' => $classes]) }}>
     {{ $slot }}
 </div>

@@ -1,9 +1,6 @@
 @props([
     'class' => '',
     'background' => 'transparent',
-    'radius' => 'md', // sm | md | lg
-    'padding' => null,
-    'gap' => 'gap-0',
     'height' => null, // full|max|auto|fit
     'width' => null, // full|max|auto|fit
     'row' => null,
@@ -35,34 +32,25 @@
     use App\Helpers\Components\Utilities;
 
     $classes = collect([
-        $class,
+        $resolve($row, $gridMap['row']),
+        $resolve($col, $gridMap['col']),
         $background,
         $resolve($width, $widthMap),
         $resolve($height, $heightMap),
+        $class,
         ...Utilities::resolve($attributes),
-        "rounded-{$radius}",
-        $padding,
-        $gap,
     ])->filter()->unique()->implode(' ');
-
-    // $classes = collect([
-    //     $resolve($row, $gridMap['row']),
-    //     $resolve($col, $gridMap['col']),
-
-    //     $background,
-    //     "rounded-$radius",
-
-    //     $resolve($width, $widthMap),
-    //     $resolve($height, $heightMap),
-
-    //     $padding,
-    //     $gap,
-    //     $class,
-    // ])
-    //     ->filter()
-    //     ->implode(' ');
 @endphp
 
-<div {{ $attributes->merge(['class' => $classes]) }}>
+<div {{ $attributes->except([
+        'rows', 'cols',
+        'gap', 'gapX', 'gapY',
+        'padding', 'px', 'py', 'pt', 'pb', 'pl', 'pr',
+        'margin', 'marginX', 'marginY', 'mt', 'mb', 'ml', 'mr',
+        'spaceX', 'spaceY',
+        'shadow',
+        'radius',
+        'border', 'borderWidth', 'borderColor',
+    ])->merge(['class' => $classes]) }}>
     {{ $slot }}
 </div>
