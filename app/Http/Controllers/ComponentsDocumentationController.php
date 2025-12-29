@@ -108,4 +108,8 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.border');
     }
+    public function bubbleChat(Request $request)
+    {
+        return view('components-documentation.bubble-chat');
+    }
 }
