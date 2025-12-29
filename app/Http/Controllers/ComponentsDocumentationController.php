@@ -96,4 +96,16 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dropdown');
     }
+    public function shadow(Request $request)
+    {
+        return view('components-documentation.shadow');
+    }
+    public function spacing(Request $request)
+    {
+        return view('components-documentation.spacing');
+    }
+    public function border(Request $request)
+    {
+        return view('components-documentation.border');
+    }
 }
