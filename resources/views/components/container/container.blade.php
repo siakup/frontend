@@ -1,47 +1,55 @@
-{{-- resources\views\components\container.blade.php --}}
-
 @props([
     'class' => '',
     'background' => 'transparent',
-    'radius' => 'md', //ada sm, md, dan lg
-    'padding' => 'p-0',
+    'radius' => 'md', // sm | md | lg
+    'padding' => null,
     'gap' => 'gap-0',
-    'height' => 'full',
-    'width' => 'full'
+    'height' => null, // full|max|auto|fit
+    'width' => null, // full|max|auto|fit
+    'row' => null,
+    'col' => null,
 ])
 
 @php
-    // background guide
-    // 'transparent',
-    // 'content-white',
-    // 'content-gray',
-    // 'content-disable-white',
-    // 'disable-red-gradient',
-    // 'red-gradient',
-    // 'green-gradient',
-    // 'yellow-gradient',
-    // 'blue-gradient',
-    // 'disable-blue',
-    // 'content-sender',
-    // 'content-receiver',
-
-    $widthSize = [
-      'full' => 'w-full',
-      'maxContent' => 'w-max',
-      'auto' => 'w-auto',
-      'fitContent' => 'w-fit'
+    $widthMap = [
+        'full' => 'w-full',
+        'max' => 'w-max',
+        'auto' => 'w-auto',
+        'fit' => 'w-fit',
     ];
 
-    $heightSize = [
-      'full' => 'h-full',
-      'maxContent' => 'h-max',
-      'auto' => 'h-auto',
-      'fitContent' => 'h-fit'
+    $heightMap = [
+        'full' => 'h-full',
+        'max' => 'h-max',
+        'auto' => 'h-auto',
+        'fit' => 'h-fit',
     ];
 
-    $containerClass = "{$background} {$class} rounded-{$radius} {$widthSize[$width]} {$heightSize[$height]} {$padding} {$gap}";
+    $gridMap = [
+        'row' => array_combine(range(1, 12), array_map(fn($i) => "row-span-$i", range(1, 12))),
+        'col' => array_combine(range(1, 12), array_map(fn($i) => "col-span-$i", range(1, 12))),
+    ];
+
+    $resolve = fn($value, $map) => $value !== null && isset($map[$value]) ? $map[$value] : null;
+
+    $classes = collect([
+        $resolve($row, $gridMap['row']),
+        $resolve($col, $gridMap['col']),
+
+        $background,
+        "rounded-$radius",
+
+        $resolve($width, $widthMap),
+        $resolve($height, $heightMap),
+
+        $padding,
+        $gap,
+        $class,
+    ])
+        ->filter()
+        ->implode(' ');
 @endphp
 
-<div {{ $attributes->merge(['class' => $containerClass]) }}>
+<div {{ $attributes->merge(['class' => $classes]) }}>
     {{ $slot }}
 </div>
