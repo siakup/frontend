@@ -34,13 +34,3 @@
       </x-container.wrapper>
     </x-layouts.content>
 </x-layouts.main>
-
-{{-- @section('css')
-  <link rel="stylesheet" href="{{ asset('css/plugins/flatpckr.css') }}" />
-@endsection
-
-@section('content')
-
-  
-
-@endsection --}}
