@@ -84,7 +84,7 @@
                 </div>
             </div>
             <div class="flex justify-end">
-                <x-button variant="primary" :icon="'message/white-20'">Tambah Catatan Perwalian</x-button>
+                <x-button variant="primary" :icon="'message/white-20'" x-on:click="$dispatch('open-modal', {id: 'create-catatan-perwalian'})">Tambah Catatan Perwalian</x-button>
             </div>
             <x-typography variant="body-medium-bold">Daftar Peserta</x-typography>
             <x-table.index>
@@ -123,4 +123,5 @@
         </div>
     </div>
     <x-modal.preview cancelText="Kembali" :file="'files/rps.pdf'" />
+    <x-modal.tutelage.catatan-perwalian.create :dataPerwalian="$data" />
 @endsection

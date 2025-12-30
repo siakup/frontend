@@ -43,7 +43,8 @@
                                 <x-table.cell> {{ $data->jumlah_peserta }}</x-table.cell>
                                 <x-table.cell>
                                     <div class="flex-nowrap inline-flex gap-3">
-                                        <x-button.base :icon="'search/black-16'" iconPosition="left" sizeText="caption-regular">
+                                        <x-button.base :icon="'search/black-16'" iconPosition="left" sizeText="caption-regular"
+                                        :href="route('tutelage-group.session.detail', $data->id)">
                                             Lihat
                                         </x-button.base>
                                         <x-button.base :icon="'edit/red-16'" iconPosition="left" class="text-red-500"

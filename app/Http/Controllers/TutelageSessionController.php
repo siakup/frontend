@@ -69,7 +69,28 @@ class TutelageSessionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = [
+            'kelompok_perwalian' => 'Teuku Muhammad Roffi',
+            'dosen_wali' => 'Teuku Muhammad Roffi',
+            'jenjang' => '2024/2025',
+            'periode_akademik' => '2023 - Ganjil',
+            'sesi' => 'Perwalian I Semester Ganjil',
+        ];
+
+        $data = json_decode(json_encode($data), false);
+
+        $daftarPeserta = [
+            'nim' => '105220055',
+            'nama' => 'BENI ANDRIANSYAH',
+            'kehadiran' => 'Hadir',
+            'lembar_kendali' => 'Lembar_Kendali_105220055'
+        ];
+
+        $daftarPeserta = json_decode(json_encode($daftarPeserta), false);
+        for ($i = 0; $i < 10; $i++) {
+            $dataPeserta[$i] = $daftarPeserta;
+        }
+        return view('tutelage.lecturer.tutelage-session.detail', get_defined_vars());
     }
 
     /**
@@ -82,6 +103,7 @@ class TutelageSessionController extends Controller
             'dosen_wali' => 'Teuku Muhammad Roffi',
             'jenjang' => '2024/2025',
             'periode_akademik' => '2023 - Ganjil',
+            'sesi' => 'Perwalian I Semester Ganjil',
         ];
 
         $data = json_decode(json_encode($data), false);

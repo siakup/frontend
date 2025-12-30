@@ -370,6 +370,13 @@ class Menu
                         'isExpandable' => true,
                         'children' => [],
                     ],
+                    'tutelage-group-detail-sesi' => [
+                        'name' => 'Detail Sesi Perwalian',
+                        'url' => '/tutelage-group/tutelage-session/*',
+                        'parent' => 'tutelage-group.tutelage-session',
+                        'isExpandable' => true,
+                        'children' => [],
+                    ],
                     'tutelage-group-student-list-krs' => [
                         'name' => 'Detail Kartu Mahasiswa',
                         'url' => '/tutelage-group/student-list/detail/krs/*',
