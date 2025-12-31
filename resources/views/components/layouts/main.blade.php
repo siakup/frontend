@@ -37,7 +37,7 @@
                 <x-container.wrapper height="full">
 
                     <x-container.container col="1">
-                        {{ $slot }}
+                        {{ $slot}}
                     </x-container.container>
 
                 </x-container.wrapper>

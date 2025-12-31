@@ -47,7 +47,7 @@
 
 
 
-    {{-- <x-container.container col="1">
+    <!-- {{-- <x-container.container col="1">
 
             <x-container.wrapper row="">
                 <x-container.container>
@@ -85,7 +85,7 @@
                 </x-container.container>
 
             </x-container.wrapper>
-        </x-container.container> --}}
+        </x-container.container> --}} -->
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('js') }}"></script>

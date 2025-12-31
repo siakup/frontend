@@ -1,23 +1,36 @@
-@props(['containerClass' => '', 'labelClass' => '', 'inputClass' => '', 'labelWrap' => false, 'fullWidth' => true, 'half' => false,])
+@props([
+  'containerClass' => '', 
+  'labelClass' => '', 
+  'inputClass' => '', 
+  'labelWrap' => false, 
+  'fullWidth' => true, 
+  'half' => false,
+])
 
 @php
   if($fullWidth) {
-    $labelWidth = 'col-start-1 col-end-2';
-    $inputWidth = 'col-start-3 col-end-10';
+    $labelWidth = 2;
+    $inputWidth = 7;
+    $gapWidth = 2;
   } else {
-    $labelWidth = 'col-start-1 col-end-3';
-    $inputWidth = 'col-start-5 col-end-10';
+    $labelWidth = 2;
+    $inputWidth = 5;
+    $gapWidth = 2;
   };
   if($half){
-    $labelWidth = 'col-start-2 col-end-4';
-    $inputWidth = 'col-start-5 col-end-10';
+    $labelWidth = 2;
+    $inputWidth = 5;
+    $gapWidth = 2;
   }
 @endphp
 
-<x-container.wrapper :padding="'p-0'" :cols="9" :align="'center'" :justify="'center'"
+<x-container.wrapper cols="9" items="center" justify="center"
     class="{{ $containerClass }}">
 
-  <x-container.container class="{{ $labelWidth }}">
+  <x-container.container col="{{ $gapWidth }}">
+  </x-container.container>
+
+  <x-container.container col="{{ $labelWidth }}">
     <label 
         {{ $attributes->merge([
             'class' => "text-gray-800 text-sm font-semibold flex items-center " 
@@ -30,7 +43,10 @@
     </label>
   </x-container.container>
 
-  <x-container.container :height="'maxContent'" class="{{ $inputWidth }} items-center {{ $inputClass }}">
+  <x-container.container col="{{ $gapWidth }}">
+  </x-container.container>
+
+  <x-container.container height="max" class="{{ $inputWidth }} items-center {{ $inputClass }}">
       {{ $input }}
   </x-container.container>
 

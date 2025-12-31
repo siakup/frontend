@@ -7,7 +7,7 @@
     'gapY' => null,
 
     'items' => 'start',
-    'justify' => 'start',
+    'justify' => 'start',   
 
     'width' => null,
     'height' => null,
