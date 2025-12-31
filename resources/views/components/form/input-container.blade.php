@@ -10,10 +10,10 @@
   };
 @endphp
 
-<x-container.wrapper :padding="'p-0'" :cols="9" :align="'center'" :justify="'center'"
+<x-container.wrapper :cols="9" items="center" :justify="'center'"
     class="{{ $containerClass }}">
 
-    <x-container.container class="col-start-1 col-end-2">
+    <x-container.container class="{{ $labelWidth }}">
         <label
             {{ $attributes->merge([
                 'class' =>
@@ -24,7 +24,7 @@
         </label>
     </x-container.container>
 
-    <x-container.container :height="'max'" class="col-start-3 col-end-10 items-center {{ $inputClass }}">
+    <x-container.container :height="'max'" class="{{ $inputWidth }} items-center {{ $inputClass }}">
         {{ $input }}
     </x-container.container>
 
