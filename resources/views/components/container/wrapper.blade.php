@@ -39,7 +39,7 @@
 ])
 
 @php
-    $rowsMap = array_combine(range(1, 12), array_map(fn($i) => "grid-rows-$i", range(1, 12)));
+    $rowsMap = array_combine(range(1, 12), array_map(fn($i) => "grid-rows-[repeat($i, 1fr)]", range(1, 12)));
 
     $colsMap = array_combine(range(1, 12), array_map(fn($i) => "grid-cols-$i", range(1, 12)));
 

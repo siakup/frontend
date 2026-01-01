@@ -46,7 +46,7 @@
 
                 </x-container.wrapper>
             </template>
-            {{-- </x-container.container> --}}
+            </x-container.container>
         </div>
     {{-- </div> --}}
 

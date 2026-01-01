@@ -41,7 +41,7 @@ class AcademicController extends Controller
                         'id' => 1,
                         'tahun' => '2023',
                         'semester' => 3,
-                        'is_active' => 1,
+                        'status' => 'active',
                         'tanggal_mulai' => '2023-09-01',
                         'tanggal_selesai' => '2024-01-31',
                     ],
@@ -77,62 +77,62 @@ class AcademicController extends Controller
                         'tanggal_mulai' => '2023-09-01',
                         'tanggal_selesai' => '2024-01-31',
                     ],
-                    // (object) [
-                    //     'id' => 2,
-                    //     'nama_periode' => '2023/2024 Genap',
-                    //     'semester' => 2, // 2 = Genap
-                    //     'is_active' => 0,
-                    //     'tanggal_mulai' => '2024-02-01',
-                    //     'tanggal_selesai' => '2024-06-30',
-                    // ],
-                    // (object) [
-                    //     'id' => 1,
-                    //     'nama_periode' => '2023/2024 Ganjil',
-                    //     'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
-                    //     'is_active' => 1,
-                    //     'tanggal_mulai' => '2023-09-01',
-                    //     'tanggal_selesai' => '2024-01-31',
-                    // ],
-                    // (object) [
-                    //     'id' => 2,
-                    //     'nama_periode' => '2023/2024 Genap',
-                    //     'semester' => 2, // 2 = Genap
-                    //     'is_active' => 0,
-                    //     'tanggal_mulai' => '2024-02-01',
-                    //     'tanggal_selesai' => '2024-06-30',
-                    // ],
-                    // (object) [
-                    //     'id' => 1,
-                    //     'nama_periode' => '2023/2024 Ganjil',
-                    //     'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
-                    //     'is_active' => 1,
-                    //     'tanggal_mulai' => '2023-09-01',
-                    //     'tanggal_selesai' => '2024-01-31',
-                    // ],
-                    // (object) [
-                    //     'id' => 2,
-                    //     'nama_periode' => '2023/2024 Genap',
-                    //     'semester' => 2, // 2 = Genap
-                    //     'is_active' => 0,
-                    //     'tanggal_mulai' => '2024-02-01',
-                    //     'tanggal_selesai' => '2024-06-30',
-                    // ],
-                    // (object) [
-                    //     'id' => 1,
-                    //     'nama_periode' => '2023/2024 Ganjil',
-                    //     'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
-                    //     'is_active' => 1,
-                    //     'tanggal_mulai' => '2023-09-01',
-                    //     'tanggal_selesai' => '2024-01-31',
-                    // ],
-                    // (object) [
-                    //     'id' => 2,
-                    //     'nama_periode' => '2023/2024 Genap',
-                    //     'semester' => 2, // 2 = Genap
-                    //     'is_active' => 0,
-                    //     'tanggal_mulai' => '2024-02-01',
-                    //     'tanggal_selesai' => '2024-06-30',
-                    // ],
+                    (object) [
+                        'id' => 2,
+                        'nama_periode' => '2023/2024 Genap',
+                        'semester' => 2, // 2 = Genap
+                        'is_active' => 0,
+                        'tanggal_mulai' => '2024-02-01',
+                        'tanggal_selesai' => '2024-06-30',
+                    ],
+                    (object) [
+                        'id' => 1,
+                        'nama_periode' => '2023/2024 Ganjil',
+                        'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
+                        'is_active' => 1,
+                        'tanggal_mulai' => '2023-09-01',
+                        'tanggal_selesai' => '2024-01-31',
+                    ],
+                    (object) [
+                        'id' => 2,
+                        'nama_periode' => '2023/2024 Genap',
+                        'semester' => 2, // 2 = Genap
+                        'is_active' => 0,
+                        'tanggal_mulai' => '2024-02-01',
+                        'tanggal_selesai' => '2024-06-30',
+                    ],
+                    (object) [
+                        'id' => 1,
+                        'nama_periode' => '2023/2024 Ganjil',
+                        'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
+                        'is_active' => 1,
+                        'tanggal_mulai' => '2023-09-01',
+                        'tanggal_selesai' => '2024-01-31',
+                    ],
+                    (object) [
+                        'id' => 2,
+                        'nama_periode' => '2023/2024 Genap',
+                        'semester' => 2, // 2 = Genap
+                        'is_active' => 0,
+                        'tanggal_mulai' => '2024-02-01',
+                        'tanggal_selesai' => '2024-06-30',
+                    ],
+                    (object) [
+                        'id' => 1,
+                        'nama_periode' => '2023/2024 Ganjil',
+                        'semester' => 1, // 1 = Ganjil (Sesuai array $namaSemester di bawah)
+                        'is_active' => 1,
+                        'tanggal_mulai' => '2023-09-01',
+                        'tanggal_selesai' => '2024-01-31',
+                    ],
+                    (object) [
+                        'id' => 2,
+                        'nama_periode' => '2023/2024 Genap',
+                        'semester' => 2, // 2 = Genap
+                        'is_active' => 0,
+                        'tanggal_mulai' => '2024-02-01',
+                        'tanggal_selesai' => '2024-06-30',
+                    ],
                 ],
                 'pagination' => (object) [
                     'current_page' => 1,

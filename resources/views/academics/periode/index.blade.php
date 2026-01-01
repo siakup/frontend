@@ -1,7 +1,12 @@
 <x-layouts.main>
-  <x-layouts.content title="Periode Akademik">
-    <x-container.wrapper cols="1" rows="6" height="fit" width="full">
-      <x-container.container row="1" col="1" height="max">
+  <x-layouts.content>
+    <x-container.wrapper cols="1" rows="4" height="fit" width="full">
+
+      <x-container.container row="1" padding="py-4">
+        <x-breadcrumb/>
+      </x-container.container>
+
+      <x-container.container row="1" col="1" padding="pt-4" height="max">
         <x-tab 
           :tabItems="[
             (object)[
@@ -18,17 +23,17 @@
         />
       </x-container.container>
 
-      <x-container.container row="4" padding="p-4" background="bg-white" height="max" radius="b-md">
-        <x-container.wrapper rows="6" cols="1" gapY="4">
+      <x-container.container row="1" padding="p-4" background="bg-white" height="max" radius="b-md">
+        <x-container.wrapper rows="3" cols="1" gapY="4">
 
           <x-container.container row="1" height="max" class="justify-end">
             <x-button.primary :href="route('academics-periode.create')" class="self-end">Tambah Periode Akademik</x-button.primary>
           </x-container.container>
 
           <x-container.container row="1" col="1" height="max" padding="p-4" class="border border-gray-400">
-            <x-container.wrapper cols="2" justify="between" items="center">
+            <x-container.wrapper cols="2" width="full">
 
-              <x-container.container col="1" height="max" width="full">
+              <x-container.container col="1">
                 <x-form.search
                   :value="''"
                   :placeholder="'Tahun/Semester/Tahun Akademik/Status'"
@@ -40,14 +45,14 @@
                 />
               </x-container.container>
 
-              <x-container.container class="justify-end">
+              <x-container.container col="1" class="justify-end">
                 <x-filter-button />
               </x-container.container>
 
                         </x-container.wrapper>
                     </x-container.container>
 
-          <x-container.container row="4" col="1" height="max" >
+          <x-container.container row="1" col="1" height="max">
 
             <x-table.index :variant="'old'">
               <x-table.head :variant="'old'">
@@ -60,10 +65,15 @@
                 </x-table.row>
               </x-table.head>
               <x-table.body>
-                <template x-if="!$store.listPage.periode || $store.listPage.periode.length == 0">
+                <template x-if="$store.listPage.isLoading">
+                  <x-table.row :variant="'old'">
+                    <x-table.cell colspan="5" :variant="'old'" class="text-center py-4">Sedang memuat data...</x-table.cell>
+                  </x-table.row>
+                </template>
+                <template x-if="!$store.listPage.isLoading && (!$store.listPage.periode || $store.listPage.periode.length == 0)">
                   @include('academics.periode.error-filter')
                 </template>
-                <template x-if="$store.listPage.periode && $store.listPage.periode.length > 0">
+                <template x-if="!$store.listPage.isLoading && ($store.listPage.periode && $store.listPage.periode.length > 0)">
                   <template x-for="periode in $store.listPage.periode">
                     <x-table.row :variant="'old'">
                       <x-table.cell :variant="'old'" x-text="periode.tahun"></x-table.cell>
@@ -163,4 +173,8 @@
           'route' => route('academics-periode.index'),
       ])
   </x-layouts.content>
+
+  @section('javascript')
+    <script src="{{ asset('js/custom/periode-index.js') }}"></script>
+  @endsection
 </x-layouts.main>
