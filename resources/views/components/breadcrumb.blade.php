@@ -1,7 +1,11 @@
+@props([
+    'path' => null,
+])
+
 @php
     use App\Helpers\Menu;
 
-    $breadcrumbs = Menu::getBreadcrumbs(Request::path());
+    $breadcrumbs = Menu::getBreadcrumbs($path ?? Request::path());
     $full = $breadcrumbs;
 
     if (count($breadcrumbs) > 4) {

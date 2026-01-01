@@ -1,21 +1,14 @@
 @props(['containerClass' => '', 'labelClass' => '', 'inputClass' => '', 'labelWrap' => false])
 
-<x-container.wrapper :padding="'p-0'" :cols="9" :align="'center'" :justify="'center'" class="{{ $containerClass }}">
+<x-container.wrapper cols="12" width="full" justify="between" items="center" class="whitespace-nowrap {{ $containerClass }}">
 
-  <x-container.container class="col-start-1 col-end-2">
-    <label 
-        {{ $attributes->merge([
-            'class' => "text-gray-800 text-sm font-semibold flex items-center " 
-                      . ($labelWrap ? '' : 'flex-shrink-0') 
-                      . " $labelClass"
-        ]) }}
-        for="{{ $attributes->get('for') }}"
-    >
+  <x-container.container col="3" class=" {{ $labelClass }} ">
+    <label class="text-gray-800 text-sm font-semibold">
         {{ $label }}
     </label>
   </x-container.container>
 
-  <x-container.container :height="'maxContent'" class="col-start-3 col-end-10 items-center {{ $inputClass }}">
+  <x-container.container col="9" width="full" class="{{ $inputClass }}">
       {{ $input }}
   </x-container.container>
 

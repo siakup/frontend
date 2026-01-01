@@ -1,6 +1,6 @@
 <x-layouts.main>
   <x-layouts.content>
-    <x-container.wrapper cols="1" rows="4" height="fit" width="full">
+    <x-container.wrapper cols="1" rows="4" height="full" width="full">
 
       <x-container.container row="1" padding="py-4">
         <x-breadcrumb/>
@@ -24,7 +24,7 @@
       </x-container.container>
 
       <x-container.container row="1" padding="p-4" background="bg-white" height="max" radius="b-md">
-        <x-container.wrapper rows="3" cols="1" gapY="4">
+        <x-container.wrapper rows="3" cols="1" gapY="4" width="full">
 
           <x-container.container row="1" height="max" class="justify-end">
             <x-button.primary :href="route('academics-periode.create')" class="self-end">Tambah Periode Akademik</x-button.primary>

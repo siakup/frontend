@@ -1,5 +1,4 @@
 <x-layouts.main>
-  <x-layouts.title title="Periode Akademik" />
   @section('css')
       <link rel="stylesheet" href="{{ asset('css/plugins/flatpckr.css') }}" />
   @endsection
@@ -10,7 +9,12 @@
   @endsection
 
   <x-layouts.content>
-    <x-container.wrapper rows="3" cols="1">
+    <x-container.wrapper width="full" height="full" rows="4" cols="1">
+
+      <x-container.container row="1" height="max" padding="py-4">
+        <x-breadcrumb path="academics/periode"/>
+      </x-container.container>
+
       <x-container.container row="1" height="max" padding="py-4">
         <x-typography :variant="'body-large-semibold'">Tambah Periode Akademik</x-typography>
       </x-container.container>
@@ -20,51 +24,50 @@
         <form action="{{ route('academics-periode.store') }}" method="POST">
       </x-container.container>
 
-      <x-container.container row="1" height="max" padding="p-4" background="bg-white" class="border border-gray-400">
+      <x-container.container row="1" height="full" width="full" padding="p-4" background="bg-white" class="border border-gray-400">
         @csrf
-        <x-container.wrapper gapY="4" rows="2">
+        <x-container.wrapper gapY="4" rows="8" width="full" height="full" justify="stretch">
 
-          <x-container.container row="1" height="full" width="full" class="">
+          <x-container.container row="1">
             <x-typography :variant="'body-medium-bold'">Buat Periode Akademik</x-typography>
           </x-container.container>
             
           <x-container.container row="1">
-            <input type="hidden" id="user_id" value="" />
-            <x-form.input-container class="min-w-[150px]" id="year">
+            <x-form.input-container id="year">
               <x-slot name="label">Tahun</x-slot>
               <x-slot name="input">
-                <x-form.year
-                  :id="'Year-Input'"
-                  :name="'year'"
-                  onclick="
-                    const value = this.getAttribute('data-year');
-                    document.getElementById('tahun_akademik').value = `${value}/${+value + 1}`;
-                    updateNewStateButton()
-                  "
-                />
+                  <x-form.year
+                    :id="'Year-Input'"
+                    :name="'year'"
+                    onclick="
+                      const value = this.getAttribute('data-year');
+                      document.getElementById('tahun_akademik').value = `${value}/${+value + 1}`;
+                      updateNewStateButton()
+                    "
+                  />
               </x-slot>
             </x-form.input-container>
           </x-container.container>
 
-          <x-container.container row="1" col="1" class="">
-            <x-form.input-container class="min-w-[150px]" id="semester">
+          <x-container.container row="1">
+            <x-form.input-container id="semester">
               <x-slot name="label">Semester</x-slot>
               <x-slot name="input">
-                <x-form.checkbox 
-                  :name="'semester'"
-                  onchange="updateNewStateButton()"
-                  :options="[
-                    ['label' => 'Ganjil','value' => 1],
-                    ['label' => 'Genap','value' => 2],
-                    ['label' => 'Pendek','value' => 3],
-                  ]"
-                />
+                  <x-form.checkbox 
+                    :name="'semester'"
+                    onchange="updateNewStateButton()"
+                    :options="[
+                      ['label' => 'Ganjil','value' => 1],
+                      ['label' => 'Genap','value' => 2],
+                      ['label' => 'Pendek','value' => 3],
+                    ]"
+                  />
               </x-slot>
             </x-form.input-container>
           </x-container.container>
 
-          <x-container.container class="col-start-1 col-end-6">
-            <x-form.input-container class="min-w-[150px]" id="semester">
+          <x-container.container row="1" class="">
+            <x-form.input-container id="tahun-akademik">
               <x-slot name="label">Tahun Akademik</x-slot>
               <x-slot name="input">
                 <x-container.container :variant="'content-wrapper'" :class="'flex justify-between w-full !p-0'">
@@ -82,26 +85,32 @@
             </x-form.input-container>
           </x-container.container>
 
-          <x-container.container class="col-start-1 col-end-6">
+          <x-container.container row="1" class="">
+            <x-container.wrapper cols="2" width="full">
 
-            <x-form.input-container class="min-w-[150px]" id="semester" :fullWidth="false">
-              <x-slot name="label">Tanggal Mulai</x-slot>
-              <x-slot name="input">
-                <x-form.calendar id="tanggal-mulai" name="tanggal_mulai" oninput="updateNewStateButton()" />
-              </x-slot>
-            </x-form.input-container>
+              <x-container.container>
+                <x-form.input-container inputClass="w-fit col-start-7" id="tanggal-mulai">
+                  <x-slot name="label">Tanggal Mulai</x-slot>
+                  <x-slot name="input">
+                    <x-form.calendar id="tanggal-mulai" name="tanggal_mulai" oninput="updateNewStateButton()" />
+                  </x-slot>
+                </x-form.input-container>
+              </x-container.container>
+      
+              <x-container.container>
+                <x-form.input-container labelClass="col-start-2" inputClass="w-fit col-start-7" id="tanggal-akhir">
+                  <x-slot name="label">Tanggal Berakhir</x-slot>
+                  <x-slot name="input">
+                    <x-form.calendar id="tanggal-akhir" name="tanggal_akhir" oninput="updateNewStateButton()" />
+                  </x-slot>
+                </x-form.input-container>
+              </x-container.container>
 
-            <x-form.input-container id="semester" :half="true">
-              <x-slot name="label">Tanggal Berakhir</x-slot>
-              <x-slot name="input">
-                <x-form.calendar id="tanggal-akhir" name="tanggal_akhir" oninput="updateNewStateButton()" />
-              </x-slot>
-            </x-form.input-container>
-
+            </x-container.wrapper>
           </x-container.container>
 
-          <x-container.container class="col-start-1 col-end-6">
-            <x-form.input-container class="min-w-[150px]" id="semester">
+          <x-container.container row="1" class="">
+            <x-form.input-container  id="semester">
               <x-slot name="label">Deskripsi</x-slot>
               <x-slot name="input">
                 <x-form.textarea
@@ -115,8 +124,8 @@
             </x-form.input-container>
           </x-container.container>
 
-          <x-container.container class="col-start-1 col-end-6">
-            <x-form.input-container class="min-w-[150px]" id="semester">
+          <x-container.container row="1" class="">
+            <x-form.input-container  id="semester">
               <x-slot name="label">Status</x-slot>
               <x-slot name="input">
               <x-form.toggle :id="'academic-periode-status'"/>
@@ -124,21 +133,21 @@
             </x-form.input-container>
           </x-container.container>
 
-          <x-container.container :variant="'content-wrapper'" class="col-start-4 col-end-6 justify-end">
-            <x-container.wrapper :cols="'2'" :padding="'p-0'" :gapX="'4'">
+          <x-container.container row="1" class="justify-end">
+            <x-container.wrapper cols="2" gapX="4">
 
-              <x-container.container class="col-start-1 col-end-2">
-                <x-button.secondary :href="route('academics-periode.index')" class="!w-full">Batal</x-button.secondary>
+              <x-container.container>
+                <x-button.secondary href="route('academics-periode.index')" class="!w-full px-12">Batal</x-button.secondary>
               </x-container.container>
 
-              <x-container.container class="col-start-2 col-end-3">
+              <x-container.container class="">
                 <x-button.primary 
                   onclick="
                     document.getElementById('modalKonfirmasiSimpan').classList.add('flex');
                     document.getElementById('modalKonfirmasiSimpan').classList.remove('hidden');
                   " 
                   id="btnSimpan" 
-                  class="!w-full"
+                  class="!w-full px-12"
                   disabled
                 >
                   Simpan
