@@ -11,7 +11,7 @@
         <x-layouts.title :text="$title" />
     @endif
 
-    @if ($buttonBack)
+    @if ($buttonBack !== '')
         <x-button.back :href="$href">{{ $buttonBack }}</x-button.back>
     @endif
 

@@ -370,6 +370,20 @@ class Menu
                         'isExpandable' => true,
                         'children' => [],
                     ],
+                    'tutelage-group-create-sesi' => [
+                        'name' => 'Tambah Sesi Perwalian',
+                        'url' => '/tutelage-group/tutelage-session/create',
+                        'parent' => 'tutelage-group.tutelage-session',
+                        'isExpandable' => true,
+                        'children' => [],
+                    ],
+                    'tutelage-group-edit-sesi' => [
+                        'name' => 'Ubah Sesi Perwalian',
+                        'url' => '/tutelage-group/tutelage-session/edit/*',
+                        'parent' => 'tutelage-group.tutelage-session',
+                        'isExpandable' => true,
+                        'children' => [],
+                    ],
                     'tutelage-group-detail-sesi' => [
                         'name' => 'Detail Sesi Perwalian',
                         'url' => '/tutelage-group/tutelage-session/*',

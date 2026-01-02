@@ -1,11 +1,7 @@
-@extends('layouts.main')
+<x-layouts.main>
+    @section('title', 'Detail Sesi Perwalian')
+    <x-layouts.content title="Detail Sesi Perwalian - Nama Dosen" buttonBack="Kelompok Perwalian" :href="route('tutelage-group.session.index')">
 
-@section('title', 'Detail Sesi Perwalian')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full">
-        <x-typography variant="body-large-semibold">Detail Sesi Perwalian - Nama Dosen</x-typography>
-        <x-button.back :href="route('tutelage-group.session.index')">Kelompok Perwalian</x-button.back>
         <div class="content-white flex-col gap-5 p-5 rounded-md w-full h-full">
             <x-typography variant="body-large-bold">Detail Sesi Perwalian</x-typography>
             <x-table.index>
@@ -66,7 +62,8 @@
                             </x-table.cell>
                             <x-table.cell>
                                 <x-button.base :icon="'registration/blue-16'" sizeText="caption-regular"
-                                    class="text-blue-500 hover:underline" x-on:click="$dispatch('open-modal', {id: 'preview-file'})">
+                                    class="text-blue-500 hover:underline"
+                                    x-on:click="$dispatch('open-modal', {id: 'preview-file'})">
                                     {{ $daftarPeserta->lembar_kendali }}
                                 </x-button.base>
                             </x-table.cell>
@@ -78,6 +75,9 @@
                 <x-button variant="secondary">Kembali</x-button>
             </div>
         </div>
-    </div>
-    <x-modal.preview cancelText="Kembali" confirmText="Unduh Lembar Kendali" :file="'files/rps.pdf'" />
-@endsection
+
+    </x-layouts.content>
+    @section('modals')
+        <x-modal.preview cancelText="Kembali" confirmText="Unduh Lembar Kendali" :file="'files/rps.pdf'" />
+    @endsection
+</x-layouts.main>
