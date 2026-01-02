@@ -1,6 +1,4 @@
-<script src="{{ asset('js/controllers/rpsCpmk.js') }}" defer></script>
-
-<div x-data="cpmk()">
+<div x-data="{kode: '', deskripsi: ''}">
     <x-modal.container id="create-cpmk" maxWidth="6xl">
         <x-slot name="header" class="items-center bg-gray-200">
             <div class="w-full relative flex items-center justify-center">
@@ -10,14 +8,14 @@
                 </button>
             </div>
         </x-slot>
-        <x-container.container>
-            <x-form.input-container labelClass="w-50">
+        <x-container.container class="flex-col" gap="gap-5">
+            <x-form.input-container>
                 <x-slot name="label">Kode</x-slot>
                 <x-slot name="input">
                     <x-form.input name="kode" placeholder="Tulis Kode" x-model="kode" :showRemoveIcon="true" />
                 </x-slot>
             </x-form.input-container>
-            <x-form.input-container labelClass="w-50">
+            <x-form.input-container>
                 <x-slot name="label">Deskripsi</x-slot>
                 <x-slot name="input">
                     <x-form.textarea placeholder="Tulis Deskripsi" id="deskripsi_cpmk" :maxChar="100" rows="5"
@@ -26,8 +24,8 @@
             </x-form.input-container>
         </x-container.container>
         <x-slot name="footer" class="flex justify-end gap-3">
-            <x-button.secondary x-bind:disabled="isDisabled" x-data x-on:click="close()">Batal</x-button.secondary>
-            <x-button.primary x-bind:disabled="isDisabled"
+            <x-button.secondary x-data x-on:click="close()">Batal</x-button.secondary>
+            <x-button.primary
                 x-on:click="
                     $dispatch('close-modal', { id: 'create-cpmk' });
                     $dispatch('open-modal', { id: 'save-confirmation' });

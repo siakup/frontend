@@ -1,26 +1,20 @@
-@extends('layouts.main')
-
-@section('title', 'Kelompok Perwalian')
-
-@section('javascript')
-    <script type="module">
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('create', {
-                dosen: @js($lectureName),
-                lecturer: '',
-                periode: '',
-                major: '',
-                data: @js($perwalian),
-                status: false,
+<x-layouts.main>
+    @section('title', 'Kelompok Perwalian')
+    @section('javascript')
+        <script type="module">
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('create', {
+                    dosen: @js($lectureName),
+                    lecturer: '',
+                    periode: '',
+                    major: '',
+                    data: @js($perwalian),
+                    status: false,
+                });
             });
-        });
-    </script>
-@endsection
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{}">
-        <x-typography variant="body-large-semibold">Ubah Kelompok Perwalian - <span x-text="$store.create.dosen">
-        </x-typography>
+        </script>
+    @endsection
+    <x-layouts.content title="Ubah Kelompok Perwalian - Nama Dosen">
         <div class="content-white p-5 flex-col gap-5 rounded-md w-full h-full">
             <div class="flex flex-col gap-5">
                 <x-form.input-container>
@@ -50,7 +44,8 @@
                                 x-on:click="$dispatch('open-modal', {id: 'create-dosen-wali'})">Tambah Dosen
                                 Wali</x-button>
                             <x-button variant="primary"
-                                x-on:click="$dispatch('open-modal', {id: 'create-mahasiswa-bimbingan'})">Tambah Mahasiswa
+                                x-on:click="$dispatch('open-modal', {id: 'create-mahasiswa-bimbingan'})">Tambah
+                                Mahasiswa
                                 Bimbingan</x-button>
                         </div>
                     </x-slot>
@@ -63,13 +58,13 @@
                         <li>Kelompok perwalian harus memiliki minimal 1 peserta</li>
                         <li>Tidak diperbolehkan ada mahasiswa yang tidak memiliki dosen wali</li>
                         <li>1 Dosen wali hanya memiliki 1 kelompok perwalian pada suatu periode akademik tertentu</li>
-                        <li>1 Mahasiswa hanya boleh masuk dalam 1 kelompok perwalian pada suatu periode akademik tertentu
+                        <li>1 Mahasiswa hanya boleh masuk dalam 1 kelompok perwalian pada suatu periode akademik
+                            tertentu
                         </li>
                     </ul>
                 </div>
             </x-dialog>
 
-            {{-- Tabel --}}
             <x-table.index>
                 <x-table.head>
                     <x-table.row>
@@ -129,11 +124,14 @@
             </div>
         </div>
         <x-pagination :storeName="'create'" :storeKey="'data'" :responseKeyData="'data'" :requestRoute="route('tutelage-group.edit', $id)"></x-pagination>
-    </div>
-    <x-modal.tutelage.dosen-wali.create :data="$dosenWali" />
-    <x-modal.tutelage.mahasiswa-bimbingan.create :data="$perwalian" />
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan"
-        cancelText="Tidak, Kembali">
-        <p>Apakah Anda yakin ingin menyimpan perubahan kelompok perwalian<span x-text="$store.create.lecturer">?</p>
-    </x-modal.confirmation>
-@endsection
+
+    </x-layouts.content>
+    @section('modals')
+        <x-modal.tutelage.dosen-wali.create :data="$dosenWali" />
+        <x-modal.tutelage.mahasiswa-bimbingan.create :data="$perwalian" />
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan"
+            cancelText="Tidak, Kembali">
+            <p>Apakah Anda yakin ingin menyimpan perubahan kelompok perwalian<span x-text="$store.create.lecturer">?</p>
+        </x-modal.confirmation>
+    @endsection
+</x-layouts.main>

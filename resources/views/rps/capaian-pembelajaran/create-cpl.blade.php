@@ -1,25 +1,21 @@
-@extends('layouts.main')
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    @section('javascript')
+        <script type="module">
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('listCpl', window.CplController.listCpl);
+            });
+        </script>
+    @endsection
 
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
-
-@section('javascript')
-    <script type="module">
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('listCpl', window.CplController.listCpl);
-        });
-    </script>
-@endsection
-
-@section('content')
-    <x-container :variant="'content-wrapper'" class="mb-5">
-        <x-typography variant="heading-h6">Capaian Pembelajaran Lulusan</x-typography>
-        <x-button.back href="{{ route('rps.capaian-pembelajaran') }}">Buat RPS (Rencana Pembelajaran
-            Semester)</x-button.back>
+    <x-layouts.content title="Capaian Pembelajaran Lulusan" buttonBack="Buat RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.capaian-pembelajaran')">
         <div x-data="listCpl({{ count($cplList) }}, @js($cplList))">
-            <x-container variant="disable-red-gradient">
+            <x-container.container background="disable-red-gradient-inverse" padding="p-5" width="full" height="full"
+                radius="t-md">
                 <x-typography variant="body-medium-bold">Capaian Pembelajaran Lulusan</x-typography>
-            </x-container>
-            <x-container class="rounded-t-none!">
+            </x-container.container>
+            <x-container.container background="content-white" padding="p-5" radius="b-md" class="flex-col">
                 <x-table.index>
                     <x-table.head>
                         <x-table.row>
@@ -51,13 +47,7 @@
                     <x-button.primary x-bind:disabled="isDisabled"
                         x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
                 </div>
-            </x-container>
+            </x-container.container>
         </div>
-    </x-container>
-
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali">
-        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-    </x-modal.confirmation>
-
-@endsection
+    </x-layouts.content>
+</x-layouts.main>

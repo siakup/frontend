@@ -1,11 +1,6 @@
-@extends('layouts.main')
-
-@section('title', 'RPS (Rencana Pembelajaran Semester)')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full">
-        <x-typography variant="heading-h6">Capaian Pembelajaran Lulusan</x-typography>
-        <x-button.back href="{{ route('rps.rencana-perkuliahan') }}">Buat RPS (Rencana Pembelajaran Semester)</x-button.back>
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    <x-layouts.content title="Tambah Rencana Perkuliahan" buttonBack="Buat RPS (Rencana Pembelajaran Semester)" :href="route('rps.rencana-perkuliahan')">
         <div class="flex flex-col gap-0">
             <div class="white-red-gradient p-5 rounded-t-md border border-gray-400">
                 <x-typography variant="body-medium-bold">Tambah Rencana Perkuliahan</x-typography>
@@ -50,8 +45,8 @@
                                     Menit
                                 </div>
                             </div>
-                            <x-form.checklist x-model="diskusi_latihan" id="diskusi_latihan_on" value="diskusi_latihan_on"
-                                label="Diskusi dan Latihan (DL)" :name="'diskusi_latihan'" />
+                            <x-form.checklist x-model="diskusi_latihan" id="diskusi_latihan_on"
+                                value="diskusi_latihan_on" label="Diskusi dan Latihan (DL)" :name="'diskusi_latihan'" />
                             <div class="flex w-full">
                                 <x-form.input x-model="jumlah_waktu_diskusi" x-bind:disabled="!diskusi_latihan"
                                     name="jumlah_waktu_diskusi" placeholder="Contoh: 100" type="number" />
@@ -88,7 +83,7 @@
                     <x-slot name="input">
                         <div class="grid grid-cols-[1fr_3fr] gap-x-7 gap-y-5 items-center w-full h-full">
                             <x-form.checklist x-model="metode_tugas" id="metode_tugas" value="metode_tugas"
-                                        label="Tugas" :name="'metode_tugas'" />
+                                label="Tugas" :name="'metode_tugas'" />
                             <x-form.input x-bind:disabled="!metode_tugas" x-model="isian_tugas" name="isian_tugas"
                                 placeholder="Masukkan Nama Penilaian. Contoh: Tugas 1" />
                             <x-form.checklist x-model="metode_uts" id="metode_uts" value="metode_uts" label="UTS"
@@ -110,25 +105,13 @@
                 </div>
             </div>
         </div>
-    </div>
-
-
-
-
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali">
-        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-
-        <div
-            x-on:confirmed.window="
-            console.log('Data disimpan');
-            window.location.href = '/'; 
-        ">
-        </div>
-    </x-modal.confirmation>
-    <x-modal.confirmation id="batal-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan"
-        cancelText="Tidak, Kembali" :redirectConfirm="route('rps.rencana-perkuliahan')">
-        <p>Apakah Anda yakin ingin membatalkan pembuatan rencana perkuliahan ini?</p>
-    </x-modal.confirmation>
-
-@endsection
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali">
+            <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+        </x-modal.confirmation>
+        <x-modal.confirmation id="batal-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan"
+            cancelText="Tidak, Kembali" :redirectConfirm="route('rps.rencana-perkuliahan')">
+            <p>Apakah Anda yakin ingin membatalkan pembuatan rencana perkuliahan ini?</p>
+        </x-modal.confirmation>
+    </x-layouts.content>
+</x-layouts.main>
