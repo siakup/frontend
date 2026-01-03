@@ -1,11 +1,7 @@
-@extends('layouts.main')
-
-@section('title', 'RPS (Rencana Pembelajaran Semester)')
-
-@section('content')
-    <div x-data="{ periode: '', prodi: '', mata_kuliah: '' }">
-        <div class="flex flex-col gap-4 p-4 w-full h-full">
-            <x-typography variant="body-large-semibold">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    <x-layouts.content title="Buat RPS (Rencana Pembelajaran Semester)">
+        <div x-data="{ periode: '', prodi: '', mata_kuliah: '' }">
             <div class="content-white p-5 flex-col gap-5 rounded-md">
                 <div class="flex flex-col gap-5">
                     <x-form.input-container>
@@ -25,17 +21,19 @@
                     <x-form.input-container inputClass="flex flex-row gap-3">
                         <x-slot name="label">Mata Kuliah</x-slot>
                         <x-slot name="input">
-                            <x-form.dropdown variant="gray" buttonId="dropdownMatkulButton" dropdownId="dropdownMatkulList"
-                                label="-Pilih Mata Kuliah-" :dropdownItem="$matkulList" dropdownContainerClass="w-full"
-                                x-model="mata_kuliah" />
+                            <x-form.dropdown variant="gray" buttonId="dropdownMatkulButton"
+                                dropdownId="dropdownMatkulList" label="-Pilih Mata Kuliah-" :dropdownItem="$matkulList"
+                                dropdownContainerClass="w-full" x-model="mata_kuliah" />
                             <x-button variant="primary">Cari</x-button>
                         </x-slot>
                     </x-form.input-container>
                 </div>
                 <x-dialog variant="warning" isCloseable>
                     <x-slot name="header">Catatan!</x-slot>
-                    Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah) <br> <br>
-                    *Dosen harus merubah periode <b>(sesuai dengan periode yang sedang berjalan atau periode selanjutnya.
+                    Aksi Salin : Menyalin data RPS yang dipilih, akan ditambahkan ke row baru (paling bawah) <br>
+                    <br>
+                    *Dosen harus merubah periode <b>(sesuai dengan periode yang sedang berjalan atau periode
+                        selanjutnya.
                         <br>
                         Tidak muncul pilihan periode yg sama dengan RPS yang di salin sebelumnya)</b>
                 </x-dialog>
@@ -59,7 +57,8 @@
                                 <x-table.cell text_size="text-xs">{{ $rps['mata_kuliah'] }}</x-table.cell>
                                 <x-table.cell text_size="text-xs">{{ $rps['dosen'] }}</x-table.cell>
                                 <x-table.cell>
-                                    <x-button.link variant="caption-regular"> {{ $rps['review_status'] }}</x-button.link>
+                                    <x-button.link variant="caption-regular">
+                                        {{ $rps['review_status'] }}</x-button.link>
                                 </x-table.cell>
                                 <x-table.cell>
                                     @if ($rps['status'] === 'Finalized')
@@ -92,6 +91,5 @@
                 </div>
             </div>
         </div>
-    </div>
-
-@endsection
+    </x-layouts.content>
+</x-layouts.main>

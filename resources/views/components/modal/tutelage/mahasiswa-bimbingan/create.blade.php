@@ -5,7 +5,7 @@
 <script type="module">
     document.addEventListener('alpine:init', () => {
         Alpine.store('createMhs', {
-            tahun: 2021,
+            tahun: '2021',
             nama: '',
             nim: '',
             data: @json($data),
@@ -31,7 +31,7 @@
             <x-form.input-container>
                 <x-slot name="label">Tahun Masuk</x-slot>
                 <x-slot name="input">
-                    <x-form.input name="tahun" x-model="$store.createMhs.tahun" :disabled="true" />
+                    <x-form.input name="tahun" x-model="$store.createMhs.tahun"  />
                     {{-- kenapa harus dropdown??? --}}
                 </x-slot>
             </x-form.input-container>
@@ -85,5 +85,4 @@
             <x-button variant="primary">Simpan</x-button>
         </x-slot>
     </x-modal.container>
-
 </div>

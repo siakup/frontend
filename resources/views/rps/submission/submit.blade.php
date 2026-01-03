@@ -1,11 +1,8 @@
-@extends('layouts.main')
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    <x-layouts.content title="Buat RPS (Rencana Pembelajaran Semester)" buttonBack="RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.submission')">
 
-@section('title', 'RPS (Rencana Pembelajaran Semester)')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-button.back href="{{ route('rps.submission') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
         <div class="content-white flex-col gap-5 p-5 rounded-md">
             <div class="flex flex-row gap-2.5">
                 <x-typography variant="heading-h5">Submit RPS</x-typography>
@@ -319,11 +316,13 @@
                             <x-table.cell colspan="6" position="left">Kuis diberikan agar mahasiswa dapat melatih
                                 kemampuan
                                 penyelesaian
-                                masalah secara matematis dan menerapkan konsep sains yang telah dipelajari.</x-table.cell>
+                                masalah secara matematis dan menerapkan konsep sains yang telah
+                                dipelajari.</x-table.cell>
                         </x-table.row>
                         <x-table.row>
                             <x-table.cell> <b>Metode Pengerjaan Evaluasi</b> </x-table.cell>
-                            <x-table.cell colspan="6" position="left">Kuis menggunakan media e-learning</x-table.cell>
+                            <x-table.cell colspan="6" position="left">Kuis menggunakan media
+                                e-learning</x-table.cell>
                         </x-table.row>
                         <x-table.row>
                             <x-table.cell> <b>Bentuk dan Format Luaran</b> </x-table.cell>
@@ -332,7 +331,8 @@
                         </x-table.row>
                         <x-table.row>
                             <x-table.cell> <b>Indikator, Kriteria Dan Bobot Penilaian</b> </x-table.cell>
-                            <x-table.cell colspan="6" position="left">Kemampuan menjawab soal yang diberikan dengan tepat
+                            <x-table.cell colspan="6" position="left">Kemampuan menjawab soal yang diberikan dengan
+                                tepat
                                 (Bobot 100%)</x-table.cell>
                         </x-table.row>
                         <x-table.row>
@@ -342,7 +342,8 @@
                         </x-table.row>
                         <x-table.row>
                             <x-table.cell> <b>Lainnya</b> </x-table.cell>
-                            <x-table.cell colspan="6" position="left">Bobot penilaian ujian ini adalah 25% dari 100%
+                            <x-table.cell colspan="6" position="left">Bobot penilaian ujian ini adalah 25% dari
+                                100%
                                 penilaian mata kuliah ini.</x-table.cell>
                         </x-table.row>
                         <x-table.row>
@@ -362,14 +363,16 @@
                 </x-button.primary>
             </div>
         </div>
-    </div>
 
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Submit Sekarang"
-        cancelText="Tidak, Kembali" :redirectConfirm="route('rps.index')">
-        <p>Apakah Anda yakin untuk submit RPS ini?</p>
-    </x-modal.confirmation>
-    <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan" cancelText="Tidak, Kembali"
-        :redirectConfirm="route('rps.submission')">
-        <p>Apakah Anda yakin ingin membatalkan submit RPS ini?</p>
-    </x-modal.confirmation>
-@endsection
+    </x-layouts.content>
+    @section('modals')
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Submit Sekarang"
+            cancelText="Tidak, Kembali" :redirectConfirm="route('rps.index')">
+            <p>Apakah Anda yakin untuk submit RPS ini?</p>
+        </x-modal.confirmation>
+        <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Batalkan"
+            cancelText="Tidak, Kembali" :redirectConfirm="route('rps.submission')">
+            <p>Apakah Anda yakin ingin membatalkan submit RPS ini?</p>
+        </x-modal.confirmation>
+    @endsection
+</x-layouts.main>

@@ -1,0 +1,260 @@
+{{-- @extends('layouts.main')
+
+@section('title', 'Kelompok Perwalian')
+
+@section('javascript')
+    <script type="module">
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('edit', {
+                lecturer: 'Albert',
+                angkatan: '',
+                tanggal: '',
+                event_perwalian: '',
+                kehadiran: [],
+                tempat: '',
+            });
+        });
+    </script>
+@endsection
+
+@section('content')
+    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{}">
+        <x-typography variant="body-large-semibold">Ubah Sesi Perwalian - <span x-text="$store.edit.lecturer"></span></x-typography>
+        <x-button.back :href="route('tutelage-group.session.index')">Kelompok Perwalian</x-button.back>
+        <div class="content-white flex-col gap-5 p-5 rounded-md w-full h-full">
+            <x-typography variant="body-large-bold">Ubah Sesi Perwalian</x-typography>
+            <x-dialog>
+                <x-slot name="header">Perhatian!</x-slot>
+                Info panduan perwalian dapat anda unduh
+                <button class="link-blue" x-on:click="$dispatch('open-modal', {id: 'preview-file'})">di sini.</button>
+            </x-dialog>
+            <x-table.index>
+                <x-table.body>
+                    <x-table.row>
+                        <x-table.header-cell variantColor="odd" position="left">Kelompok Perwalian</x-table.header-cell>
+                        <x-table.cell variantColor="odd" position="left"
+                            text_size="text-sm">{{ $data->kelompok_perwalian }}</x-table.cell>
+                    </x-table.row>
+                    <x-table.row>
+                        <x-table.header-cell variantColor="even" position="left">Dosen Wali</x-table.header-cell>
+                        <x-table.cell variantColor="even" position="left"
+                            text_size="text-sm">{{ $data->dosen_wali }}</x-table.cell>
+                    </x-table.row>
+                    <x-table.row>
+                        <x-table.header-cell variantColor="odd" position="left">Jenjang / Semester</x-table.header-cell>
+                        <x-table.cell variantColor="odd" position="left"
+                            text_size="text-sm">{{ $data->jenjang }}</x-table.cell>
+                    </x-table.row>
+                    <x-table.row :last="true">
+                        <x-table.header-cell variantColor="even" position="left">Periode Akademik</x-table.header-cell>
+                        <x-table.cell variantColor="even" position="left"
+                            text_size="text-sm">{{ $data->periode_akademik }}</x-table.cell>
+                    </x-table.row>
+                </x-table.body>
+            </x-table.index>
+
+            <x-typography variant="body-medium-bold">Detail Sesi Perwalian Baru</x-typography>
+            <div class="content-white rounded-md p-5">
+                <div class="grid grid-cols-2 grid-rows-2 gap-5">
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Angkatan</x-slot>
+                        <x-slot name="input">
+                            <x-dropdown.tahun-masuk x-model="$store.edit.angkatan" label="-Pilih Angkatan-"></x-dropdown.tahun-masuk>
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Tanggal dan Waktu</x-slot>
+                        <x-slot name="input">
+                            <x-form.calendar id="create-sesi-perwalian" name="tanggal_sesi_perwalian" x-model="$store.edit.tanggal"
+                                oninput=""></x-form.calendar>
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Event Perwalian</x-slot>
+                        <x-slot name="input">
+                            <x-dropdown.event-perwalian x-model="$store.edit.event_perwalian"></x-dropdown.event-perwalian>
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Tempat</x-slot>
+                        <x-slot name="input">
+                            <x-form.input placeholder="Masukkan Tempat Perwalian" name="tempat" x-model="$store.edit.tempat"></x-form.input>
+                        </x-slot>
+                    </x-form.input-container>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <x-button variant="primary" :icon="'message/white-20'" x-on:click="$dispatch('open-modal', {id: 'create-catatan-perwalian'})">Tambah Catatan Perwalian</x-button>
+            </div>
+            <x-typography variant="body-medium-bold">Daftar Peserta</x-typography>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>NIM</x-table.header-cell>
+                        <x-table.header-cell>Nama Mahasiswa</x-table.header-cell>
+                        <x-table.header-cell>Institusi</x-table.header-cell>
+                        <x-table.header-cell>Kehadiran</x-table.header-cell>
+                        <x-table.header-cell>Catatan</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
+                <x-table.body>
+                    @foreach ($dataPeserta as $index => $daftarPeserta)
+                        <x-table.row>
+                            <x-table.cell> {{ $daftarPeserta->nim }}</x-table.cell>
+                            <x-table.cell> {{ $daftarPeserta->nama }}</x-table.cell>
+                            <x-table.cell> {{ $daftarPeserta->institusi }}</x-table.cell>
+                            <x-table.cell>
+                                <x-dropdown.kehadiran x-model="$store.edit.kehadiran[$index]"></x-dropdown.kehadiran>
+                            </x-table.cell>
+                            <x-table.cell>
+                                <x-button.base :icon="'registration/blue-16'" sizeText="caption-regular" class="text-blue-500 hover:underline">
+                                    Catatan Perwalian
+                                </x-button.base>
+                            </x-table.cell>
+                        </x-table.row>
+                    @endforeach
+                </x-table.body>
+            </x-table.index>
+            <div class="flex flex-row gap-5 justify-end">
+                <x-button variant="secondary">Batal</x-button>
+                <x-button variant="primary"
+                    x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button>
+            </div>
+        </div>
+    </div>
+    <x-modal.preview cancelText="Kembali" :file="'files/rps.pdf'" />
+    <x-modal.tutelage.catatan-perwalian.create :dataPerwalian="$data" />
+@endsection --}}
+
+<x-layouts.main>
+    @section('title', 'Sesi Perwalian')
+
+    @section('javascript')
+        <script type="module">
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('edit', {
+                    lecturer: 'Albert',
+                    angkatan: '',
+                    tanggal: '',
+                    event_perwalian: '',
+                    kehadiran: [],
+                    tempat: '',
+                });
+            });
+        </script>
+    @endsection
+    <x-layouts.content title="Ubah Sesi Perwalian - Nama Dosen" buttonBack="Kelompok Perwalian" :href="route('tutelage-group.session.index')">
+
+        <div class="content-white flex-col gap-5 p-5 rounded-md w-full h-full" x-data="{}">
+            <x-typography variant="body-large-bold">Ubah Sesi Perwalian</x-typography>
+            <x-dialog>
+                <x-slot name="header">Perhatian!</x-slot>
+                Info panduan perwalian dapat anda unduh
+                <button class="link-blue" x-on:click="$dispatch('open-modal', {id: 'preview-file'})">di sini.</button>
+            </x-dialog>
+            <x-table.index>
+                <x-table.body>
+                    <x-table.row>
+                        <x-table.header-cell variantColor="odd" position="left">Kelompok Perwalian</x-table.header-cell>
+                        <x-table.cell variantColor="odd" position="left"
+                            text_size="text-sm">{{ $data->kelompok_perwalian }}</x-table.cell>
+                    </x-table.row>
+                    <x-table.row>
+                        <x-table.header-cell variantColor="even" position="left">Dosen Wali</x-table.header-cell>
+                        <x-table.cell variantColor="even" position="left"
+                            text_size="text-sm">{{ $data->dosen_wali }}</x-table.cell>
+                    </x-table.row>
+                    <x-table.row>
+                        <x-table.header-cell variantColor="odd" position="left">Jenjang / Semester</x-table.header-cell>
+                        <x-table.cell variantColor="odd" position="left"
+                            text_size="text-sm">{{ $data->jenjang }}</x-table.cell>
+                    </x-table.row>
+                    <x-table.row :last="true">
+                        <x-table.header-cell variantColor="even" position="left">Periode Akademik</x-table.header-cell>
+                        <x-table.cell variantColor="even" position="left"
+                            text_size="text-sm">{{ $data->periode_akademik }}</x-table.cell>
+                    </x-table.row>
+                </x-table.body>
+            </x-table.index>
+
+            <x-typography variant="body-medium-bold">Detail Sesi Perwalian Baru</x-typography>
+            <div class="content-white rounded-md p-5">
+                <div class="grid grid-cols-2 grid-rows-2 gap-5">
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Angkatan</x-slot>
+                        <x-slot name="input">
+                            <x-dropdown.tahun-masuk x-model="$store.edit.angkatan"
+                                label="-Pilih Angkatan-"></x-dropdown.tahun-masuk>
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Tanggal dan Waktu</x-slot>
+                        <x-slot name="input">
+                            <x-form.calendar id="create-sesi-perwalian" name="tanggal_sesi_perwalian"
+                                x-model="$store.edit.tanggal" oninput=""></x-form.calendar>
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Event Perwalian</x-slot>
+                        <x-slot name="input">
+                            <x-dropdown.event-perwalian
+                                x-model="$store.edit.event_perwalian"></x-dropdown.event-perwalian>
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Tempat</x-slot>
+                        <x-slot name="input">
+                            <x-form.input placeholder="Masukkan Tempat Perwalian" name="tempat"
+                                x-model="$store.edit.tempat"></x-form.input>
+                        </x-slot>
+                    </x-form.input-container>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <x-button variant="primary" :icon="'message/white-20'"
+                    x-on:click="$dispatch('open-modal', {id: 'create-catatan-perwalian'})">Tambah Catatan
+                    Perwalian</x-button>
+            </div>
+            <x-typography variant="body-medium-bold">Daftar Peserta</x-typography>
+            <x-table.index>
+                <x-table.head>
+                    <x-table.row>
+                        <x-table.header-cell>NIM</x-table.header-cell>
+                        <x-table.header-cell>Nama Mahasiswa</x-table.header-cell>
+                        <x-table.header-cell>Institusi</x-table.header-cell>
+                        <x-table.header-cell>Kehadiran</x-table.header-cell>
+                        <x-table.header-cell>Catatan</x-table.header-cell>
+                    </x-table.row>
+                </x-table.head>
+                <x-table.body>
+                    @foreach ($dataPeserta as $index => $daftarPeserta)
+                        <x-table.row>
+                            <x-table.cell> {{ $daftarPeserta->nim }}</x-table.cell>
+                            <x-table.cell> {{ $daftarPeserta->nama }}</x-table.cell>
+                            <x-table.cell> {{ $daftarPeserta->institusi }}</x-table.cell>
+                            <x-table.cell>
+                                <x-dropdown.kehadiran x-model="$store.edit.kehadiran[$index]"></x-dropdown.kehadiran>
+                            </x-table.cell>
+                            <x-table.cell>
+                                <x-button.base :icon="'registration/blue-16'" sizeText="caption-regular"
+                                    class="text-blue-500 hover:underline">
+                                    Catatan Perwalian
+                                </x-button.base>
+                            </x-table.cell>
+                        </x-table.row>
+                    @endforeach
+                </x-table.body>
+            </x-table.index>
+            <div class="flex flex-row gap-5 justify-end">
+                <x-button variant="secondary">Batal</x-button>
+                <x-button variant="primary"
+                    x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button>
+            </div>
+        </div>
+
+    </x-layouts.content>
+    @section('modals')
+        <x-modal.preview cancelText="Kembali" :file="'files/rps.pdf'" />
+        <x-modal.tutelage.catatan-perwalian.create :dataPerwalian="$data" />
+    @endsection
+</x-layouts.main>

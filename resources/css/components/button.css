@@ -1,0 +1,3 @@
+@layer utilities {
+    .link-blue { @apply text-blue-500 font-bold underline cursor-pointer; }
+}

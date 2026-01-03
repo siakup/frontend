@@ -1,11 +1,7 @@
-@extends('layouts.main')
-
-@section('title', 'RPS (Rencana Pembelajaran Semester)')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    <x-layouts.content title="Buat RPS (Rencana Pembelajaran Semester)" buttonBack="RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.index')">
         <div class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
             <div class="content-under-navbar" x-data="{ rencanaPerkuliahan: @js($rencanaPerkuliahan ?? []) }">
@@ -105,26 +101,25 @@
                 </div>
             </div>
         </div>
-    </div>
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali" :redirectConfirm="route('rps.matriks-penilaian-kognitif')">
+            <p>Apakah Anda yakin ingin menyimpan <b>rencana perkuliahan</b>?</p>
+            <x-dialog variant="warning">
+                <x-slot name="header">Perhatian!</x-slot>
+                Seluruh perubahan pada halaman ini akan disimpan dan anda
+                secara otomatis dialihkan ke halaman berikutnya.
+            </x-dialog>
+        </x-modal.confirmation>
 
+        <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali"
+            cancelText="Tidak" :redirectConfirm="route('rps.komponen-penilaian')">
+            <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+            <x-dialog variant="warning">
+                <x-slot name="header">Perhatian!</x-slot>
+                Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
+                nanti.
+            </x-dialog>
+        </x-modal.confirmation>
 
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali" :redirectConfirm="route('rps.matriks-penilaian-kognitif')">
-        <p>Apakah Anda yakin ingin menyimpan <b>rencana perkuliahan</b>?</p>
-        <x-dialog variant="warning">
-            <x-slot name="header">Perhatian!</x-slot>
-            Seluruh perubahan pada halaman ini akan disimpan dan anda
-            secara otomatis dialihkan ke halaman berikutnya.
-        </x-dialog>
-    </x-modal.confirmation>
-
-    <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali" cancelText="Tidak"
-        :redirectConfirm="route('rps.komponen-penilaian')">
-        <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
-        <x-dialog variant="warning">
-            <x-slot name="header">Perhatian!</x-slot>
-            Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
-            nanti.
-        </x-dialog>
-    </x-modal.confirmation>
-@endsection
+    </x-layouts.content>
+</x-layouts.main>

@@ -13,7 +13,7 @@
 
 
     .input-group {
-        @apply flex items-center w-full border rounded-md transition-colors duration-200 overflow-hidden;
+        @apply flex items-center w-full border rounded-sm transition-colors duration-200 overflow-hidden;
     }
 
     .input-group-normal {
@@ -58,6 +58,6 @@
     }
 
     .input-suffix {
-        @apply z-10 border border-gray-500 rounded-r-md bg-gray-300 h-10.5 flex items-center justify-center text-gray-600 text-sm;
+        @apply z-10 border border-gray-500 rounded-r-sm bg-gray-300 h-10.5 flex items-center justify-center text-gray-600 text-sm;
     }
 }

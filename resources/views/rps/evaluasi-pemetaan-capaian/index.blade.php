@@ -1,21 +1,15 @@
-@extends('layouts.main')
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Dosen)')
+    <x-layouts.content title="Buat RPS (Rencana Pembelajaran Semester)" buttonBack="RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.index')">
 
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
-
-@section('content')
-    <x-container.wrapper :rows="15" :gapY="4">
-        <x-container.container class="row-start-1 row-end-2">
-            <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>
-        </x-container.container>
-        <x-container.container class="row-start-2 row-end-3">
-            <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
-        </x-container.container>
-        <x-container.container class="row-start-3 row-end-16 flex-col">
+        <div class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
             <x-container.container background="content-under-navbar" x-data>
                 <x-typography variant="body-medium-bold">Evaluasi Pemetaan Konten Perkuliahan Dengan Capaian
                     Lulusan</x-typography>
-                <x-typography variant="body-small-semibold" class="mt-4">Capaian Pembelajaran Lulusan (CPL)</x-typography>
+                <x-typography variant="body-small-semibold" class="mt-4">Capaian Pembelajaran Lulusan
+                    (CPL)</x-typography>
 
                 @if ($evaluasiList)
                     <x-table.index>
@@ -72,7 +66,8 @@
                                     <x-table.cell position="left">{{ $eval['deskripsi'] }}</x-table.cell>
                                     @if ($loop->first)
                                         <x-table.cell rowspan="{{ $loop->count }}"
-                                            class="bg-gray-400 font-semibold text-xs">Belum Ada Evaluasi Pemetaan, Silahkan
+                                            class="bg-gray-400 font-semibold text-xs">Belum Ada Evaluasi Pemetaan,
+                                            Silahkan
                                             Tambah Evaluasi Pemetaan Terlebih Dahulu</x-table.cell>
                                     @endif
                                 </x-table.row>
@@ -82,7 +77,8 @@
                 @endif
 
                 <div class="flex justify-end">
-                    <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-evaluasi-pemetaan'})">Tambah Evaluasi
+                    <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-evaluasi-pemetaan'})">Tambah
+                        Evaluasi
                         Pemetaan</x-button.primary>
                 </div>
                 <div class="flex mt-5 justify-end gap-2">
@@ -92,29 +88,29 @@
                         x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
                 </div>
             </x-container.container>
-        </x-container.container>
-    </x-container.wrapper>
+        </div>
+        @include('rps.evaluasi-pemetaan-capaian._create')
+    </x-layouts.content>
+    @section('modals')
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali" :redirectConfirm="route('rps.rencana-perkuliahan')">
+            <p>Apakah Anda yakin ingin menyimpan <b>komponen penilaian</b>?</p>
 
-    @include('rps.evaluasi-pemetaan-capaian._create')
+            <x-dialog>
+                <x-slot name="header">Perhatian!</x-slot>
+                Seluruh perubahan pada halaman ini akan disimpan dan anda
+                secara otomatis dialihkan ke halaman berikutnya.
+            </x-dialog>
+        </x-modal.confirmation>
 
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali" :redirectConfirm="route('rps.rencana-perkuliahan')">
-        <p>Apakah Anda yakin ingin menyimpan <b>komponen penilaian</b>?</p>
-
-        <x-dialog>
-            <x-slot name="header">Perhatian!</x-slot>
-            Seluruh perubahan pada halaman ini akan disimpan dan anda
-            secara otomatis dialihkan ke halaman berikutnya.
-        </x-dialog>
-    </x-modal.confirmation>
-
-    <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali" cancelText="Tidak"
-        :redirectConfirm="route('rps.capaian-pembelajaran')">
-        <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
-        <x-dialog>
-            <x-slot name="header">Perhatian!</x-slot>
-            Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
-            nanti.
-        </x-dialog>
-    </x-modal.confirmation>
-@endsection
+        <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali" cancelText="Tidak"
+            :redirectConfirm="route('rps.capaian-pembelajaran')">
+            <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+            <x-dialog>
+                <x-slot name="header">Perhatian!</x-slot>
+                Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
+                nanti.
+            </x-dialog>
+        </x-modal.confirmation>
+    @endsection
+</x-layouts.main>

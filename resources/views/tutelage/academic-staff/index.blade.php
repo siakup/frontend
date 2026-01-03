@@ -1,23 +1,20 @@
-@extends('layouts.main')
+<x-layouts.main>
+    @section('title', 'Kelompok Perwalian')
 
-@section('title', 'Kelompok Perwalian')
-
-@section('javascript')
-    <script type="module">
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('index', {
-                lecturer: '',
-                periode: '',
-                major: '',
-                data: @json($perwalian),
+    @section('javascript')
+        <script type="module">
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('index', {
+                    lecturer: '',
+                    periode: '',
+                    major: '',
+                    data: @json($perwalian),
+                });
             });
-        });
-    </script>
-@endsection
+        </script>
+    @endsection
+    <x-layouts.content title="Kelompok Perwalian">
 
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{}">
-        <x-typography variant="body-large-semibold">Kelompok Perwalian</x-typography>
         <div class="content-white p-5 flex-col gap-5 rounded-md w-full h-full">
             <div class="flex flex-col gap-5">
                 <x-form.input-container>
@@ -45,7 +42,6 @@
                 23 Mahasiswa belum memiliki <b>kelompok perwalian</b>
             </x-dialog>
 
-            {{-- Tabel --}}
             <x-table.index>
                 <x-table.head>
                     <x-table.row>
@@ -87,7 +83,7 @@
                                         Akhiri
                                     </x-button.base>
                                     <x-button.base :icon="'edit/red-16'" iconPosition="left" class="text-red-500"
-                                        sizeText="caption-regular" :href="route('tutelage-group.edit', $data->id)" >
+                                        sizeText="caption-regular" :href="route('tutelage-group.edit', $data->id)">
                                         Ubah
                                     </x-button.base>
                                     <x-button.base :icon="'delete/grey-16'" iconPosition="left" class="text-gray-600"
@@ -112,8 +108,10 @@
                 <x-button variant="primary" :href="route('tutelage-group.create')">Tambah Kelompok Perwalian</x-button>
             </div>
         </div>
-    </div>
-    <x-toast />
-    <x-modal.tutelage.end />
+        <x-toast />
+    </x-layouts.content>
+    @section('modals')
+        <x-modal.tutelage.end />
+    @endsection
 
-@endsection
+</x-layouts.main>

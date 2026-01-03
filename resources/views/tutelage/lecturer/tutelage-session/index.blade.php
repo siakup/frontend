@@ -1,18 +1,14 @@
-@extends('layouts.main')
-
-@section('title', 'Kelompok Perwalian')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{ periode: '' }">
-        <x-typography variant="body-large-semibold">Kelompok Perwalian</x-typography>
-        <div class="flex flex-col gap-0 h-full">
+<x-layouts.main>
+    @section('title', 'Kelompok Perwalian')
+    <x-layouts.content title="Kelompok Perwalian">
+        <div class="flex flex-col gap-0 h-full" x-data="{ periode: '' }">
             @include('tutelage.lecturer.layout.navbar')
             <div class="content-under-navbar h-full w-full rounded-md">
                 <x-typography variant="body-large-bold">Sesi Perwalian</x-typography>
                 <x-dialog>
                     <x-slot name="header">Perhatian!</x-slot>
-                    Info panduan perwalian dapat anda unduh 
-                    <button class="text-blue-500 font-bold underline cursor-pointer" x-on:click="$dispatch('open-modal', {id: 'preview-file'})">di sini.</button> 
+                    Info panduan perwalian dapat anda unduh
+                    <button class="link-blue" x-on:click="$dispatch('open-modal', {id: 'preview-file'})">di sini.</button>
                 </x-dialog>
                 <div class="content-white flex-row p-5 items-center justify-between rounded-md">
                     <div class="flex flex-row gap-5 items-center">
@@ -43,11 +39,12 @@
                                 <x-table.cell> {{ $data->jumlah_peserta }}</x-table.cell>
                                 <x-table.cell>
                                     <div class="flex-nowrap inline-flex gap-3">
-                                        <x-button.base :icon="'search/black-16'" iconPosition="left" sizeText="caption-regular">
+                                        <x-button.base :icon="'search/black-16'" iconPosition="left" sizeText="caption-regular"
+                                            :href="route('tutelage-group.session.detail', $data->id)">
                                             Lihat
                                         </x-button.base>
                                         <x-button.base :icon="'edit/red-16'" iconPosition="left" class="text-red-500"
-                                            sizeText="caption-regular">
+                                            sizeText="caption-regular" :href="route('tutelage-group.session.edit', $data->id)">
                                             Ubah
                                         </x-button.base>
                                         <x-button.base :icon="'delete/grey-16'" iconPosition="left" class="text-gray-600"
@@ -62,6 +59,9 @@
                 </x-table.index>
             </div>
         </div>
-    </div>
-    <x-modal.preview :file="'files/rps.pdf'"/>
-@endsection
+
+    </x-layouts.content>
+    @section('modals')
+        <x-modal.preview cancelText="Kembali" :file="'files/rps.pdf'" />
+    @endsection
+</x-layouts.main>

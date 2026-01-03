@@ -2,14 +2,13 @@
     <x-slot name="header" class="items-center bg-gray-200">
         <div class="w-full relative flex items-center justify-center">
             <x-typography variant="heading-h5">Lihat Rencana Evaluasi Mahasiswa</x-typography>
-            <button x-on:click.stop="close()"
-                class="absolute right-0">
-                <x-icon iconUrl="{{ asset('assets/base/icon-close-cancel.svg') }}" class="h-6 w-6"/>
-            </button>
+            <button x-on:click.stop="close()" class="cursor-pointer absolute right-0">
+                    <x-icon :name="'close-cancel/black-24'" />
+                </button>
         </div>
     </x-slot>
-    <x-container.container class="flex flex-col gap-3" borderRadius="rounded-xl">
-        <x-form.input-container labelClass="w-50">
+    <x-container.container class="flex-col gap-3">
+        <x-form.input-container>
             <x-slot name="label">Bentuk Ujian</x-slot>
             <x-slot name="input">
                 <x-form.dropdown
@@ -19,13 +18,11 @@
                     label="-Pilih Bentuk Ujian-"
                     :dropdownItem="$bentukUjian"
                     dropdownContainerClass="w-full"
-                    :imgSrc="asset('assets/icon-arrow-down-grey-20.svg')"
-                    :isIconCanRotate="true"
                     disabled
                 />
             </x-slot>
         </x-form.input-container>
-        <x-form.input-container labelClass="w-50">
+        <x-form.input-container>
             <x-slot name="label">Judul Evaluasi</x-slot>
             <x-slot name="input">
                 <x-form.input
@@ -35,7 +32,7 @@
                 />
             </x-slot>
         </x-form.input-container>
-        <x-form.input-container labelClass="w-50">
+        <x-form.input-container >
             <x-slot name="label">Sub CPMK</x-slot>
             <x-slot name="input">
                 <div class="flex flex-col gap-3">
@@ -51,7 +48,7 @@
                 </div>
             </x-slot>
         </x-form.input-container>
-        <x-form.input-container labelClass="w-50">
+        <x-form.input-container >
             <x-slot name="label">Deskripsi Evaluasi</x-slot>
             <x-slot name="input">
                 <x-form.textarea
@@ -63,7 +60,7 @@
                 />
             </x-slot>
         </x-form.input-container>
-        <x-form.input-container labelClass="w-50">
+        <x-form.input-container >
             <x-slot name="label">Metode Pengerjaan Evaluasi</x-slot>
             <x-slot name="input">
                 <x-form.textarea
@@ -75,7 +72,7 @@
                 />
             </x-slot>
         </x-form.input-container>
-        <x-form.input-container labelClass="w-50">
+        <x-form.input-container >
             <x-slot name="label">Bentuk dan Format Luaran</x-slot>
             <x-slot name="input">
                 <x-form.textarea
@@ -124,7 +121,7 @@
             </x-table.body>
         </x-table.index>
     </div>
-    <x-form.input-container labelClass="w-50">
+    <x-form.input-container >
         <x-slot name="label">Catatan dan Lainnya</x-slot>
         <x-slot name="input">
             <x-form.textarea
