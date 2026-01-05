@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BuddySettingsController;
 use App\Http\Controllers\TutelageController;
 use App\Http\Controllers\TutelageGroupController;
 use App\Http\Controllers\TutelageSessionController;
@@ -30,6 +31,10 @@ use Illuminate\Support\Facades\Route;
             Route::get('/create', action: [TutelageSessionController::class, 'create'])->name('tutelage-group.session.create');
             Route::get('/{id}', action: [TutelageSessionController::class, 'show'])->name('tutelage-group.session.detail');
             Route::get('/edit/{id}', action: [TutelageSessionController::class, 'edit'])->name('tutelage-group.session.edit');
+        });
+
+        Route::group(['prefix' => 'buddy-settings'], function () {
+            Route::get('/', action: [BuddySettingsController::class, 'index'])->name('tutelage-group.buddy.index');
         });
     });
 // });
