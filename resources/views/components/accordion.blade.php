@@ -7,41 +7,47 @@
 @php
   $variants = [
     'red-gradient' => [
-      'head' => 'bg-linear-to-r from-white to-red-100',
-      'text' => 'text-red-500',
-      'icon' => asset('assets/icons/arrow-down/red-16.svg'),
-      'closeRotateIcon' => '',
-      'openRotateIcon' => 'rotate-180'
+      'bg' => 'bg-linear-to-r from-white to-red-100',
+      'text' => 'text-red-500'
     ],
     'white-background' => [
-      'head' => 'bg-white',
-      'text' => 'black',
-      'icon' => asset('assets/icons/arrow-down/black-16.svg'),
-      'closeRotateIcon' => '',
-      'openRotateIcon' => 'rotate-180'
+      'bg' => '!bg-white',
+      'text' => 'text-gray-800'
     ]
   ]
 @endphp
 
-<div 
+<x-container.wrapper 
   x-data="{ open: {{ json_encode($isDefaultOpen) }} }"
-  {{ $attributes->merge(['class' => 'rounded-lg border border-[#E8E8E8] overflow-hidden'])}}
+  cols="1"
+  {{ $attributes->class(['rounded-lg border border-gray-300 overflow-hidden bg-white']) }}
 >
-  <button 
-    type="button"
+  <!-- Header container -->
+  <x-container.container 
     @click="open = !open"
-    class="w-full flex items-center justify-between gap-3 px-4 py-3 font-semibold {{$variants[$variant]['head']}}"
+    class="px-0 py-0 cursor-pointer w-full {{$variants[$variant]['bg']}}"
   >
-    <span class="text-[#262626]">{{$label}}</span>
-    <span class="inline-flex items-center gap-2 text-sm {{$variants[$variant]['text']}}">
-      <span x-text="open ? 'Tutup' : 'Buka'"></span>
-      <img src="{{ $variants[$variant]['icon'] }}"
-          alt="arrow"
-          class="transition-transform duration-200"
-          :class="open ? '{{$variants[$variant]['openRotateIcon']}}' : '{{$variants[$variant]['closeRotateIcon']}}'">
-    </span>
-  </button>
-  <div x-show="open" x-collapse>
+    <x-container.wrapper cols="2" width="full" items="center" class="px-4 py-3">
+      {{-- judul label --}}
+      <x-container.container class="min-w-0">
+        <x-typography variant="body-medium-semibold">{{$label}}</x-typography>
+      </x-container.container>
+      {{-- buka/tutup + arrow --}}
+      <x-container.container class="justify-end gap-2 {{$variants[$variant]['text']}}">
+        <x-typography variant="body-small-semibold" x-text="open ? 'Tutup' : 'Buka'"></x-typography>
+        <x-container.container class="items-center justify-center transition-transform duration-200" x-bind:class="{ 'rotate-180': open }">
+          @if($variant === 'red-gradient')
+            <x-icon name="arrow-down/red-16" alt="arrow"/>
+          @else
+            <x-icon name="arrow-down/black-16" alt="arrow"/>
+          @endif
+        </x-container.container>
+      </x-container.container>
+    </x-container.wrapper>
+  </x-container.container>
+
+  <!-- Content Container -->
+  <x-container.container x-show="open" x-collapse class="w-full px-4 py-3 !bg-white !text-gray-700">
     {{ $slot }}
-  </div>
-</div>
+  </x-container.container>
+</x-container.wrapper>
