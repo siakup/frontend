@@ -21,7 +21,7 @@
     }
 
     .input-group-error {
-        @apply !border-red-500 focus-within:!border-red-500 focus-within:ring-red-500;
+        @apply !border-red-500 focus-within: !border-red-500 focus-within:ring-red-500;
     }
 
     .input-group-disabled {
@@ -29,8 +29,7 @@
     }
 
     .input-element {
-        @apply w-full border-none focus:ring-0 bg-transparent px-3 py-2.5 outline-none text-sm text-gray-700 placeholder-gray-600 
-        disabled:cursor-not-allowed disabled:bg-disable-white disabled:border-gray-500;
+        @apply w-full border-none focus:ring-0 bg-transparent px-3 py-2.5 outline-none text-sm text-gray-700 placeholder-gray-600 disabled:cursor-not-allowed disabled:bg-disable-white disabled:border-gray-500;
     }
 
     .input-element-error {
@@ -38,7 +37,7 @@
     }
 
     .input-icon-remove {
-        @apply cursor-pointer text-gray-400 hover:text-gray-600 transition-colors;
+        @apply cursor-pointer text-gray-400 hover:text-gray-600 transition-colors pr-3;
     }
 
     .input-icon-error {
