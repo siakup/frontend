@@ -370,6 +370,13 @@ class Menu
                         'isExpandable' => true,
                         'children' => [],
                     ],
+                    'tutelage-group-material' => [
+                        'name' => 'Materi Perwalian',
+                        'url' => '/tutelage-group/material',
+                        'parent' => 'tutelage-group.',
+                        'isExpandable' => true,
+                        'children' => [],
+                    ],
                     'tutelage-group-create-sesi' => [
                         'name' => 'Tambah Sesi Perwalian',
                         'url' => '/tutelage-group/tutelage-session/create',
