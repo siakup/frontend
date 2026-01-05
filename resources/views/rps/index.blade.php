@@ -84,10 +84,10 @@
                 </x-table.index>
 
                 <div class="flex mt-5 justify-end gap-2">
-                    <x-button.secondary iconPosition="right" :icon="'upload/red-16'">
+                    <x-button variant="secondary" iconPosition="right" :icon="'upload/red-16'">
                         Unggah RPS
-                    </x-button.secondary>
-                    <x-button.primary :href="route('rps.deskripsi-umum')">Tambah RPS</x-button.primary>
+                    </x-button>
+                    <x-button variant="primary" :href="route('rps.deskripsi-umum')">Tambah RPS</x-button>
                 </div>
             </div>
         </div>
