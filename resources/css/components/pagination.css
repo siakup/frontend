@@ -1,0 +1,139 @@
+@layer utilities {
+
+  /* Main Container */
+  .pagination-container {
+    @apply flex flex-col gap-2 w-full;
+  }
+
+  /* Main Wrapper - holds all three parts */
+  .pagination-main-wrapper {
+    @apply flex flex-col gap-4 w-full;
+  }
+
+  @media (min-width: 640px) {
+    .pagination-main-wrapper {
+      @apply flex-row items-center justify-between;
+    }
+  }
+
+  /* Left Part - Per Page Select */
+  .pagination-left {
+    @apply flex items-center gap-3 whitespace-nowrap;
+  }
+
+  /* Force the component root to not take full width */
+  .pagination-left .input-root {
+    @apply w-auto !important;
+  }
+
+  .pagination-limit-select,
+  .paginate-limit-select {
+    @apply border border-gray-300 rounded-md bg-white transition-colors duration-200 overflow-hidden !w-16 flex-shrink-0 !important;
+  }
+
+  .pagination-limit-select input,
+  .paginate-limit-select input {
+    @apply font-semibold text-gray-700 py-2 !border-none !ring-0 !px-0;
+    text-align: center !important;
+    -moz-appearance: textfield;
+    appearance: none;
+  }
+
+  /* Hide Spin buttons */
+  .pagination-limit-select input::-webkit-outer-spin-button,
+  .pagination-limit-select input::-webkit-inner-spin-button,
+  .paginate-limit-select input::-webkit-outer-spin-button,
+  .paginate-limit-select input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .pagination-limit-select:focus,
+  .paginate-limit-select:focus {
+    @apply outline-none ring-1 ring-blue-500 border-blue-500;
+  }
+
+  /* Center Part - Result Text + Navigation */
+  .pagination-center {
+    @apply flex flex-col gap-4 w-full;
+  }
+
+  @media (min-width: 1024px) {
+    .pagination-center {
+      @apply flex-row flex-1 items-center gap-2;
+    }
+  }
+
+  .pagination-result-text {
+    @apply text-sm text-gray-700 whitespace-nowrap flex-shrink-0;
+  }
+
+  .pagination-pages {
+    @apply flex items-center gap-2 overflow-x-auto flex-shrink-0;
+    scrollbar-width: thin;
+  }
+
+  .pagination-pages::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .pagination-pages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+  }
+
+  /* Page Buttons */
+  .pagination-page-btn {
+    @apply h-9 w-9 p-0 rounded-md text-sm transition-colors duration-200 flex-shrink-0;
+  }
+
+  .pagination-page-btn-inactive {
+    @apply text-gray-600 bg-transparent border border-transparent;
+  }
+
+  .pagination-page-btn-inactive:hover {
+    @apply bg-gray-100;
+  }
+
+  .pagination-page-btn-active {
+    @apply bg-red-50 border border-error-500 text-error-500;
+  }
+
+  /* Navigation Buttons */
+  .pagination-nav-btn {
+    @apply h-9 rounded-md whitespace-nowrap flex-shrink-0;
+  }
+
+  /* Right Part - Search */
+  .pagination-search {
+    @apply flex items-center gap-4 flex-wrap relative;
+  }
+
+  .pagination-search-label {
+    @apply flex items-center gap-2 px-3 h-10 border border-error-500 rounded-lg bg-red-50 text-error-500 select-none whitespace-nowrap flex-shrink-0 relative z-10;
+  }
+
+  .pagination-search-input-wrapper {
+    @apply w-full relative z-0;
+  }
+
+  @media (min-width: 640px) {
+    .pagination-search-input-wrapper {
+      @apply w-48;
+    }
+  }
+
+  /* Documentation specific */
+  .pagination-docs-wrapper {
+    @apply p-4 overflow-y-auto;
+    height: calc(100vh - var(--header-height));
+  }
+
+  .pagination-docs-inner {
+    @apply h-full overflow-y-auto rounded-none bg-none;
+  }
+
+  .pagination-doc-demo-container {
+    @apply flex flex-col items-center gap-4 w-full;
+  }
+}
