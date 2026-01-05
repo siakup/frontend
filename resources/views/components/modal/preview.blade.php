@@ -5,6 +5,7 @@
     'redirectTo' => null,
 ])
 
+{{-- next saat sudah integrasi props diganti sama id, terus hit api untuk get file --}}
 <x-modal.container id="preview-file" maxWidth="5xl">
     <iframe src="{{ asset("$file") }}" class="w-full h-140" frameborder="0"></iframe>
     <x-slot name="footer">

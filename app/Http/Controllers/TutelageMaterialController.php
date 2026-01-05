@@ -4,35 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class BuddySettingsController extends Controller
+class TutelageMaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $dataMahasiswa = [
-            'Adinda' => 'adinda',
-            'Afyar' => 'afyar',
-            'Adi' => 'Adi',
-            'Mahesya' => 'mahesya',
-            'Alfien' => 'alfien',
-            'Fadel' => 'fadel',
+        $data = [
+            [
+                'id' => 1,
+                'periode' => '2023 - Ganjil',
+                'event' => 'Perwalian I',
+            ],
+            [
+                'id' => 2,
+                'periode' => '2023 - Ganjil',
+                'event' => 'Perwalian II',
+            ],
+            [
+                'id' => 3,
+                'periode' => '2023 - Genap',
+                'event' => 'Perwalian I',
+            ],
+            [
+                'id' => 4,
+                'periode' => '2023 - Genap',
+                'event' => 'Perwalian II',
+            ],
         ];
 
+        $materiPerwalian = json_decode(json_encode($data), false);
 
-        $daftarPeserta = [
-            'id' => 3,
-            'nim' => '105220055',
-            'nama' => 'BENI ANDRIANSYAH',
-            'institusi' => 'Ilmu Komputer',
-        ];
-
-        $daftarPeserta = json_decode(json_encode($daftarPeserta), false);
-        for ($i = 0; $i < 10; $i++) {
-            $dataPeserta[$i] = $daftarPeserta;
-        }
-        return view('tutelage.lecturer.buddy-settings.index', get_defined_vars());
+        return view('tutelage.material.index', get_defined_vars());
     }
 
     /**
