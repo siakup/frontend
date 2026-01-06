@@ -29,7 +29,7 @@
             <x-menu.item :label="'Mata Kuliah'" :haveIcon="true" :iconInactive="asset('assets/icons/course/outline-black-24.svg')" :iconActive="asset('assets/icons/course/outline-red-24.svg')" :routeName="'study.index'"
                 :routeQuery="'courses*'" :variant="'parent'" />
 
-            <x-menu.item :label="'Kelompok Perwalian'" :haveIcon="true" :iconInactive="asset('assets/icons/advisory/black-24.svg')" :iconActive="asset('assets/icons/advisory/red-24.svg')" :routeName="'tutelage-group.list-student'"
+            <x-menu.item :label="'Kelompok Perwalian'" :haveIcon="true" :iconInactive="asset('assets/icons/advisory/black-24.svg')" :iconActive="asset('assets/icons/advisory/red-24.svg')" :routeName="'tutelage-group'"
                 :routeQuery="'tutelage-group*'" :variant="'parent'" />
             <x-menu.item :label="'RPS (Rencana Pembelajaran Semester)'" :haveIcon="true" :iconInactive="asset('assets/icons/curriculum/outline-black-24.svg')" :iconActive="asset('assets/icons/curriculum/outline-red-24.svg')" :routeName="'rps.index'"
                 :routeQuery="'rps*'" :variant="'parent'" />
@@ -84,7 +84,7 @@
           :routeQuery="'lectures*'"
           :variant="'parent'"
         /> --}}
-        <x-menu.item
+        {{-- <x-menu.item
           :label="'Kelompok Perwalian'"
           :haveIcon="true"
           :iconInactive="asset('assets/icons/advisory/black-24.svg')"
@@ -101,7 +101,7 @@
           :routeName="'rps.index'"
           :routeQuery="'rps*'"
           :variant="'parent'"
-        />
+        /> --}}
         {{-- <x-menu.item
           :label="'Penelitian'"
           :haveIcon="true"

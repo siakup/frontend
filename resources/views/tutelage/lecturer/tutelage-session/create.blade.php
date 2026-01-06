@@ -1,12 +1,7 @@
-@extends('layouts.main')
-
-@section('title', 'Kelompok Perwalian')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{ angkatan: '', tanggal: '', event_perwalian: '', kehadiran: 'alpa' }">
-        <x-typography variant="body-large-semibold">Tambah Sesi Perwalian - Nama Dosen</x-typography>
-        <x-button.back :href="route('tutelage-group.session.index')">Kelompok Perwalian</x-button.back>
-        <div class="content-white flex-col gap-5 p-5 rounded-md w-full h-full">
+<x-layouts.main>
+    @section('title', 'Kelompok Perwalian')
+    <x-layouts.content title="Tambah Sesi Perwalian - Nama Dosen" buttonBack="Kelompok Perwalian" :href="route('tutelage-group.session.index')">
+        <div class="content-white flex-col gap-5 p-5 rounded-md w-full h-full" x-data="{ angkatan: '', tanggal: '', event_perwalian: '', kehadiran: 'alpa' }">
             <x-typography variant="body-large-bold">Tambah Sesi Perwalian</x-typography>
             <x-dialog>
                 <x-slot name="header">Perhatian!</x-slot>
@@ -44,7 +39,8 @@
                     <x-form.input-container :fullWidth="false">
                         <x-slot name="label">Angkatan</x-slot>
                         <x-slot name="input">
-                            <x-dropdown.tahun-masuk x-model="angkatan" label="-Pilih Angkatan-"></x-dropdown.tahun-masuk>
+                            <x-dropdown.tahun-masuk x-model="angkatan"
+                                label="-Pilih Angkatan-"></x-dropdown.tahun-masuk>
                         </x-slot>
                     </x-form.input-container>
                     <x-form.input-container :fullWidth="false">
@@ -79,13 +75,13 @@
                     </x-table.row>
                 </x-table.head>
                 <x-table.body>
-                    @foreach ($dataPeserta as $index => $daftarPeserta )
+                    @foreach ($dataPeserta as $index => $daftarPeserta)
                         <x-table.row>
                             <x-table.cell> {{ $daftarPeserta->nim }}</x-table.cell>
                             <x-table.cell> {{ $daftarPeserta->nama }}</x-table.cell>
                             <x-table.cell> {{ $daftarPeserta->institusi }}</x-table.cell>
                             <x-table.cell>
-                                <x-dropdown.kehadiran x-model="kehadiran" ></x-dropdown.kehadiran>
+                                <x-dropdown.kehadiran x-model="kehadiran"></x-dropdown.kehadiran>
                             </x-table.cell>
                         </x-table.row>
                     @endforeach
@@ -93,8 +89,10 @@
             </x-table.index>
             <div class="flex flex-row gap-5 justify-end">
                 <x-button variant="secondary">Batal</x-button>
-                <x-button variant="primary" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button>
+                <x-button variant="primary"
+                    x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button>
             </div>
         </div>
-    </div>
-@endsection
+    </x-layouts.content>
+
+</x-layouts.main>

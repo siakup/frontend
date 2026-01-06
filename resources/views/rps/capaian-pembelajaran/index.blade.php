@@ -1,18 +1,13 @@
-@extends('layouts.main')
-
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
-
-@section('content')
-    <x-container.wrapper :rows="15" :gapY="4">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Dosen)</x-typography>
-        <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
-        <x-container.container class="flex-col">
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    <x-layouts.content title="Buat RPS (Rencana Pembelajaran Semester)" buttonBack="RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.index')">
+        <x-container.container class="flex-col" radius="none">
             @include('rps.layout.navbar-rps')
             <x-container.container x-data :background="'content-under-navbar'">
                 <x-typography variant="body-medium-bold">Capaian Pembelajaran (CP)</x-typography>
-
-                {{-- Capaian Pembelajaran Lulusan --}}
-                <x-typography variant="body-small-semibold" class="mt-2">Capaian Pembelajaran Lulusan (CPL)</x-typography>
+                <x-typography variant="body-small-semibold" class="mt-2">Capaian Pembelajaran Lulusan
+                    (CPL)</x-typography>
                 <x-table.index>
                     <x-table.head>
                         <x-table.row>
@@ -34,7 +29,6 @@
                     <x-button.primary :href="route('rps.capaian-pembelajaran.create')">Tambah CPL</x-button.primary>
                 </div>
 
-                {{-- Capaian Pembelajaran Mata Kuliah --}}
                 <x-typography variant="body-small-semibold" class="mt-2">Capaian Pembelajaran Mata Kuliah
                     (CPMK)</x-typography>
                 <x-table.index>
@@ -66,13 +60,12 @@
                 </div>
             </x-container.container>
         </x-container.container>
-    </x-container.wrapper>
+        
 
-    @include('rps.capaian-pembelajaran._modal-create-cpmk')
-
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali" :redirectConfirm="route('rps.komponen-penilaian')">
-        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-    </x-modal.confirmation>
-
-@endsection
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali" :redirectConfirm="route('rps.komponen-penilaian')">
+            <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+        </x-modal.confirmation>
+        <x-modal.rps.cpl.create />
+    </x-layouts.content>
+</x-layouts.main>

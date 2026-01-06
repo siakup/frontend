@@ -1,11 +1,7 @@
-@extends('layouts.main')
-
-@section('title', 'RPS (Rencana Pembelajaran Semester)')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    <x-layouts.content title="Buat RPS (Rencana Pembelajaran Semester)" buttonBack="RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.index')">
         <div class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
             <div x-data="window.CreateDeskripsiUmum.deskripsiUmum()" class="content-under-navbar rounded-b-md">
@@ -28,52 +24,35 @@
                     <x-slot name="label">Mata Kuliah</x-slot>
                     <x-slot name="input">
                         <x-form.dropdown variant="gray" buttonId="dropdownMatkulButton" dropdownId="dropdownMatkulList"
-                            label="-Pilih Mata Kuliah-" :dropdownItem="$matkulList" dropdownContainerClass="w-full" :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')"
-                            x-model="mata_kuliah" />
+                            label="-Pilih Mata Kuliah-" :dropdownItem="$matkulList" dropdownContainerClass="w-full"
+                            :imgSrc="asset('assets/icons/arrow-down/grey-20.svg')" x-model="mata_kuliah" />
                     </x-slot>
                 </x-form.input-container>
-                <x-container.wrapper :cols="2" :rows="2" :padding="'p-0'" :gapX="10"
-                    :gapY="5">
-                    <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
-                        <div class="col-start-1 col-end-7">
-                            <label>
-                                <x-typography :variant="'body-small-semibold'">Bobot (SKS)</x-typography>
-                            </label>
-                        </div>
-                        <div class="col-start-7 col-end-14 items-center">
+                <x-container.wrapper :cols="2" :rows="2" :gapX="9" :gapY="5">
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Bobot (SKS)</x-slot>
+                        <x-slot name="input">
                             <x-form.input disabled type="number" name="bobot" x-model="bobot"></x-form.input>
-                        </div>
-                    </x-container.wrapper>
-                    <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
-                        <div class="col-start-1 col-end-7">
-                            <label flex items-center>
-                                <x-typography :variant="'body-small-semibold'">Semester</x-typography>
-                            </label>
-                        </div>
-                        <div class="col-start-7 col-end-14 items-center">
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Semester</x-slot>
+                        <x-slot name="input">
                             <x-form.input disabled name="semester" x-model="semester"></x-form.input>
-                        </div>
-                    </x-container.wrapper>
-                    <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
-                        <div class="col-start-1 col-end-7">
-                            <label flex items-center>
-                                <x-typography :variant="'body-small-semibold'">Rumpun MK</x-typography>
-                            </label>
-                        </div>
-                        <div class="col-start-7 col-end-14 items-center">
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Rumpun MK</x-slot>
+                        <x-slot name="input">
                             <x-form.input disabled name="rumpun_mk" x-model="rumpun_mk"></x-form.input>
-                        </div>
-                    </x-container.wrapper>
-                    <x-container.wrapper :padding="'p-0'" :cols="13" :align="'center'" :justify="'center'">
-                        <div class="col-start-1 col-end-7">
-                            <label flex items-center>
-                                <x-typography :variant="'body-small-semibold'">Level Program</x-typography>
-                            </label>
-                        </div>
-                        <div class="col-start-7 col-end-14 items-center">
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container :fullWidth="false">
+                        <x-slot name="label">Level Program</x-slot>
+                        <x-slot name="input">
                             <x-form.input disabled name="level_program" x-model="level_program"></x-form.input>
-                        </div>
-                    </x-container.wrapper>
+                        </x-slot>
+                    </x-form.input-container>
                 </x-container.wrapper>
                 <x-form.input-container>
                     <x-slot name="label">Deskripsi Singkat MK</x-slot>
@@ -173,11 +152,9 @@
                 </div>
             </div>
         </div>
-
-    </div>
-
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali" :redirectConfirm="route('rps.capaian-pembelajaran')">
-        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-    </x-modal.confirmation>
-@endsection
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali" :redirectConfirm="route('rps.capaian-pembelajaran')">
+            <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+        </x-modal.confirmation>
+    </x-layouts.content>
+</x-layouts.main>

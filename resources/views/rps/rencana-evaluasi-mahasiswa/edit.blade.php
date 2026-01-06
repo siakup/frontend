@@ -1,152 +1,149 @@
-@extends('layouts.main')
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Dosen)')
+    <x-layouts.content title="Ubah Rencana Evaluasi" buttonBack="Rencana Evaluasi Mahasiswa" :href="route('rps.rencana-evaluasi-mahasiswa')">
 
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
-
-{{-- <script src="{{ asset('js/controllers/rpsCpl.js') }}" defer></script> --}}
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full">
-        <x-typography variant="heading-h6">Ubah Rencana Evaluasi</x-typography>
-        <x-button.back href="{{ route('rps.rencana-evaluasi-mahasiswa') }}">Rencana Evaluasi
-            Mahasiswa</x-button.back>
         <div class="flex flex-col gap-0">
-            <div class="white-red-gradient p-5 rounded-t-md border border-gray-400">
+            <x-container.container background="disable-red-gradient-inverse" padding="p-5" radius="t-md">
                 <x-typography variant="body-medium-bold">Ubah Rencana Evaluasi</x-typography>
-            </div>
-            <div x-data="{ bentuk_ujian: '' }" class="flex flex-col gap-5 content-white rounded-b-md p-5">
-                <x-form.input-container>
-                    <x-slot name="label">Bentuk Ujian</x-slot>
-                    <x-slot name="input">
-                        <x-form.dropdown variant="gray" buttonId="dropdownUjianButton" dropdownId="dropdownUjianList"
-                            label="-Pilih Bentuk Ujian-" :dropdownItem="$bentukUjian" dropdownContainerClass="w-full"
-                            x-model="bentuk_ujian" />
-                    </x-slot>
-                </x-form.input-container>
-                <x-form.input-container>
-                    <x-slot name="label">Judul Evaluasi</x-slot>
-                    <x-slot name="input">
-                        <x-form.input name="judul_evaluasi" placeholder="Masukkan Judul Evaluasi" />
-                    </x-slot>
-                </x-form.input-container>
-                <x-form.input-container>
-                    <x-slot name="label">Sub CPMK</x-slot>
-                    <x-slot name="input">
-                        <div class="flex flex-col gap-2">
-                            @foreach ($subCpmk as $value => $label)
-                                <x-form.checklist id="{{ $value }}" value="{{ $value }}"
-                                    label="{{ $label }}" name="{{ $value }}" x-model="cpmk" />
-                            @endforeach
+                </x-container.containeriv>
+                <div x-data="{ bentuk_ujian: '', judul_evaluasi: '', deskripsi_evaluasi: '', metode_pengerjaan_evaluasi: '', cpmk: [], catatan: '', bentuk_format_luaran: ''  }" class="flex flex-col gap-5 content-white rounded-b-md p-5">
+                    <x-form.input-container>
+                        <x-slot name="label">Bentuk Ujian</x-slot>
+                        <x-slot name="input">
+                            <x-form.dropdown variant="gray" buttonId="dropdownUjianButton"
+                                dropdownId="dropdownUjianList" label="-Pilih Bentuk Ujian-" :dropdownItem="$bentukUjian"
+                                dropdownContainerClass="w-full" x-model="bentuk_ujian" />
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container>
+                        <x-slot name="label">Judul Evaluasi</x-slot>
+                        <x-slot name="input">
+                            <x-form.input name="judul_evaluasi" placeholder="Masukkan Judul Evaluasi"
+                                x-model="judul_evaluasi" />
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container>
+                        <x-slot name="label">Sub CPMK</x-slot>
+                        <x-slot name="input">
+                            <div class="flex flex-col gap-2">
+                                @foreach ($subCpmk as $value => $label)
+                                    <x-form.checklist id="{{ $value }}" value="{{ $value }}"
+                                        label="{{ $label }}" name="{{ $value }}" x-model="cpmk" />
+                                @endforeach
+                            </div>
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container>
+                        <x-slot name="label">Deskripsi Evaluasi</x-slot>
+                        <x-slot name="input">
+                            <x-form.textarea id="deskripsi_evaluasi" maxChar="100" rows="5"
+                                placeholder="Masukkan Deskripsi Evaluasi" x-model="deskripsi_evaluasi" />
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container>
+                        <x-slot name="label">Metode Pengerjaan Evaluasi</x-slot>
+                        <x-slot name="input">
+                            <x-form.textarea id="metode_pengerjaan_evaluasi" maxChar="100" rows="5"
+                                placeholder="Masukkan Metode Pengerjaan Evaluasi"
+                                x-model="metode_pengerjaan_evaluasi" />
+                        </x-slot>
+                    </x-form.input-container>
+                    <x-form.input-container>
+                        <x-slot name="label">Bentuk dan Format Luaran</x-slot>
+                        <x-slot name="input">
+                            <x-form.textarea id="bentuk_format_luaran" maxChar="100" rows="5"
+                                placeholder="Masukkan Bentuk dan Format Luaran" x-model="bentuk_format_luaran" />
+                        </x-slot>
+                    </x-form.input-container>
+
+                    <div class="flex flex-col gap-4 my-5">
+                        <x-typography variant="body-medium-bold">Indikator, Kriteria dan Bobot Penilaian</x-typography>
+                        <x-table.index>
+                            <x-table.head>
+                                <x-table.row>
+                                    <x-table.header-cell>Indikator dan Kriteria</x-table.header-cell>
+                                    <x-table.header-cell>Bobot</x-table.header-cell>
+                                    <x-table.header-cell>Aksi</x-table.header-cell>
+                                </x-table.row>
+                            </x-table.head>
+                            <x-table.body>
+                                @foreach ($indikatorList as $index => $indikator)
+                                    <x-table.row>
+                                        <x-table.cell>{{ $indikator['indikator'] }}</x-table.cell>
+                                        <x-table.cell>{{ $indikator['bobot'] }}</x-table.cell>
+                                        <x-table.cell>
+                                            <x-button.base :icon="'delete/grey-20'" iconPosition="left"
+                                                sizeText="caption-regular" buttonClass="text-gray-600"
+                                                x-on:click="$dispatch('open-modal', {id: 'delete-indikator'})">
+                                                Hapus
+                                            </x-button.base>
+                                        </x-table.cell>
+                                    </x-table.row>
+                                @endforeach
+                            </x-table.body>
+                        </x-table.index>
+                        <div class="flex justify-end">
+                            <x-button variant="primary"
+                                x-on:click="$dispatch('open-modal', {id: 'create-indikator'})">Tambah Indikator dan
+                                Kriteria</x-button>
                         </div>
-                    </x-slot>
-                </x-form.input-container>
-                <x-form.input-container>
-                    <x-slot name="label">Deskripsi Evaluasi</x-slot>
-                    <x-slot name="input">
-                        <x-form.textarea id="deskripsi_evaluasi" maxChar="100" rows="5"
-                            placeholder="Masukkan Deskripsi Evaluasi" />
-                    </x-slot>
-                </x-form.input-container>
-                <x-form.input-container>
-                    <x-slot name="label">Metode Pengerjaan Evaluasi</x-slot>
-                    <x-slot name="input">
-                        <x-form.textarea id="metode_pengerjaan_evaluasi" maxChar="100" rows="5"
-                            placeholder="Masukkan Metode Pengerjaan Evaluasi" />
-                    </x-slot>
-                </x-form.input-container>
-                <x-form.input-container>
-                    <x-slot name="label">Bentuk dan Format Luaran</x-slot>
-                    <x-slot name="input">
-                        <x-form.textarea id="bentuk_format_luaran" maxChar="100" rows="5"
-                            placeholder="Masukkan Bentuk dan Format Luaran" />
-                    </x-slot>
-                </x-form.input-container>
+                    </div>
 
-                <div class="flex flex-col gap-4 my-5">
-                    <x-typography variant="body-medium-bold">Indikator, Kriteria dan Bobot Penilaian</x-typography>
-                    <x-table.index>
-                        <x-table.head>
-                            <x-table.row>
-                                <x-table.header-cell>Indikator dan Kriteria</x-table.header-cell>
-                                <x-table.header-cell>Bobot</x-table.header-cell>
-                                <x-table.header-cell>Aksi</x-table.header-cell>
-                            </x-table.row>
-                        </x-table.head>
-                        <x-table.body>
-                            @foreach ($indikatorList as $index => $indikator)
+                    <div class="flex flex-col gap-4 my-5">
+                        <x-typography variant="body-medium-bold">Jadwal Pelaksanaan</x-typography>
+                        <x-table.index>
+                            <x-table.head>
                                 <x-table.row>
-                                    <x-table.cell>{{ $indikator['indikator'] }}</x-table.cell>
-                                    <x-table.cell>{{ $indikator['bobot'] }}</x-table.cell>
-                                    <x-table.cell>
-                                        <x-button.base :icon="'delete/grey-20'" iconPosition="left" sizeText="caption-regular"
-                                            buttonClass="text-gray-600"
-                                            x-on:click="$dispatch('open-modal', {id: 'delete-indikator'})">
-                                            Hapus
-                                        </x-button.base>
-                                    </x-table.cell>
+                                    <x-table.header-cell>Nama Kegiatan</x-table.header-cell>
+                                    <x-table.header-cell>Minggu ke-</x-table.header-cell>
+                                    <x-table.header-cell>Aksi</x-table.header-cell>
                                 </x-table.row>
-                            @endforeach
-                        </x-table.body>
-                    </x-table.index>
-                    <div class="flex justify-end">
-                        <x-button variant="primary" x-on:click="$dispatch('open-modal', {id: 'create-indikator'})">Tambah
-                            Indikator dan Kriteria</x-button>
+                            </x-table.head>
+                            <x-table.body>
+                                @foreach ($jadwalPelaksanaan as $index => $jadwal)
+                                    <x-table.row>
+                                        <x-table.cell>{{ $jadwal['nama_kegiatan'] }}</x-table.cell>
+                                        <x-table.cell>{{ $jadwal['minggu_ke'] }}</x-table.cell>
+                                        <x-table.cell>
+                                            <x-button.base :icon="'delete/grey-20'" iconPosition="left"
+                                                sizeText="caption-regular" buttonClass="text-gray-600"
+                                                x-on:click="$dispatch('open-modal', {id: 'delete-kegiatan'})">
+                                                Hapus
+                                            </x-button.base>
+                                        </x-table.cell>
+                                    </x-table.row>
+                                @endforeach
+                            </x-table.body>
+                        </x-table.index>
+                        <div class="flex justify-end">
+                            <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-kegiatan'})">Tambah
+                                Kegiatan</x-button.primary>
+                        </div>
+                    </div>
+                    <x-form.input-container>
+                        <x-slot name="label">Catatan dan Lainnya</x-slot>
+                        <x-slot name="input">
+                            <x-form.textarea id="catatan" maxChar="100" rows="5" x-model="catatan" />
+                        </x-slot>
+                    </x-form.input-container>
+                    <div class="flex mt-5 justify-end gap-2">
+                        <x-button.secondary
+                            x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Batal</x-button.secondary>
+                        <x-button.primary
+                            x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
                     </div>
                 </div>
-
-                <div class="flex flex-col gap-4 my-5">
-                    <x-typography variant="body-medium-bold">Jadwal Pelaksanaan</x-typography>
-                    <x-table.index>
-                        <x-table.head>
-                            <x-table.row>
-                                <x-table.header-cell>Nama Kegiatan</x-table.header-cell>
-                                <x-table.header-cell>Minggu ke-</x-table.header-cell>
-                                <x-table.header-cell>Aksi</x-table.header-cell>
-                            </x-table.row>
-                        </x-table.head>
-                        <x-table.body>
-                            @foreach ($jadwalPelaksanaan as $index => $jadwal)
-                                <x-table.row>
-                                    <x-table.cell>{{ $jadwal['nama_kegiatan'] }}</x-table.cell>
-                                    <x-table.cell>{{ $jadwal['minggu_ke'] }}</x-table.cell>
-                                    <x-table.cell>
-                                        <x-button.base :icon="'delete/grey-20'" iconPosition="left" sizeText="caption-regular"
-                                            buttonClass="text-gray-600"
-                                            x-on:click="$dispatch('open-modal', {id: 'delete-kegiatan'})">
-                                            Hapus
-                                        </x-button.base>
-                                    </x-table.cell>
-                                </x-table.row>
-                            @endforeach
-                        </x-table.body>
-                    </x-table.index>
-                    <div class="flex justify-end">
-                        <x-button.primary x-on:click="$dispatch('open-modal', {id: 'create-kegiatan'})">Tambah
-                            Kegiatan</x-button.primary>
-                    </div>
-                </div>
-                <x-form.input-container>
-                    <x-slot name="label">Catatan dan Lainnya</x-slot>
-                    <x-slot name="input">
-                        <x-form.textarea id="catatan" maxChar="100" rows="5" />
-                    </x-slot>
-                </x-form.input-container>
-                <div class="flex mt-5 justify-end gap-2">
-                    <x-button.secondary
-                        x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">Batal</x-button.secondary>
-                    <x-button.primary
-                        x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
-                </div>
-            </div>
         </div>
-    </div>
-    @include('rps.rencana-evaluasi-mahasiswa._create-indikator')
-    @include('rps.rencana-evaluasi-mahasiswa._create-kegiatan')
-    @include('rps.rencana-evaluasi-mahasiswa._delete-indikator')
-    @include('rps.rencana-evaluasi-mahasiswa._delete-kegiatan')
+        @include('rps.rencana-evaluasi-mahasiswa._create-indikator')
+        @include('rps.rencana-evaluasi-mahasiswa._create-kegiatan')
+        @include('rps.rencana-evaluasi-mahasiswa._delete-indikator')
+        @include('rps.rencana-evaluasi-mahasiswa._delete-kegiatan')
 
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali">
-        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-    </x-modal.confirmation>
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali">
+            <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+        </x-modal.confirmation>
 
-@endsection
+    </x-layouts.content>
+
+</x-layouts.main>

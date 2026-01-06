@@ -1,11 +1,7 @@
-@extends('layouts.main')
-
-@section('title', 'RPS (Rencana Pembelajaran Semester)')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    <x-layouts.content title="Buat RPS (Rencana Pembelajaran Semester)" buttonBack="RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.index')">
         <div class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
             <div x-data="{ komponenList: @js($komponenList ?? []) }" class="content-under-navbar">
@@ -31,7 +27,7 @@
                                         <x-table.cell>
                                             <div class="flex justify-center items-center">
                                                 @if ($nilaiCpmk)
-                                                    <x-icon name="tick/black-20"/>
+                                                    <x-icon name="tick/black-20" />
                                                 @endif
                                             </div>
                                         </x-table.cell>
@@ -41,10 +37,9 @@
                         </x-table.body>
                     </x-table.index>
                 @else
-                    <x-container.container variant="content-grey" class="!rounded-xl h-22 flex items-center justify-center">
+                    <x-container.container background="content-grey" class="h-22 flex items-center justify-center">
                         <x-typography variant="body-small-bold">Belum Ada Komponen Penilaian, Silahkan Tambah Komponen
-                            Terlebih
-                            Dahulu</x-typography>
+                            Terlebih Dahulu</x-typography>
                         </x-container>
                 @endif
                 <div class="flex justify-end">
@@ -59,32 +54,27 @@
                 </div>
             </div>
         </div>
-    </div>
-    @include('rps.komponen-penilaian._modal-create')
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali" :redirectConfirm="route('rps.rencana-perkuliahan')">
+            <p>Apakah Anda yakin ingin menyimpan <b>komponen penilaian</b>?</p>
 
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali" :redirectConfirm="route('rps.rencana-perkuliahan')">
-        <p>Apakah Anda yakin ingin menyimpan <b>komponen penilaian</b>?</p>
+            <x-dialog variant="warning">
+                <x-slot name="header">Perhatian!</x-slot>
+                Seluruh perubahan pada halaman ini akan disimpan dan anda secara otomatis dialihkan ke halaman
+                berikutnya.
+            </x-dialog>
+        </x-modal.confirmation>
 
-        <x-dialog variant="yellow-bordered">
-            <div class="flex flex-col text-left">
-                <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                <x-typography variant="body-small-regular">Seluruh perubahan pada halaman ini akan disimpan dan anda secara
-                    otomatis dialihkan ke halaman berikutnya.</x-typography>
-            </div>
-        </x-dialog>
-    </x-modal.confirmation>
+        <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali"
+            cancelText="Tidak" :redirectConfirm="route('rps.capaian-pembelajaran')">
+            <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
 
-    <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali" cancelText="Tidak"
-        :redirectConfirm="route('rps.capaian-pembelajaran')">
-        <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
-
-        <x-dialog variant="yellow-bordered">
-            <div class="flex flex-col text-left">
-                <x-typography variant="body-small-bold">Perhatian!</x-typography>
-                <p>Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
-                    nanti.</p>
-            </div>
-        </x-dialog>
-    </x-modal.confirmation>
-@endsection
+            <x-dialog variant="warning">
+                <x-slot name="header">Perhatian!</x-slot>
+                Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
+                nanti.
+            </x-dialog>
+        </x-modal.confirmation>
+        <x-modal.rps.assessment-components.create :komponenPenilaian="$komponenPenilaian" :cpmkList="$" />
+    </x-layouts.content>
+</x-layouts.main>

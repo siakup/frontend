@@ -19,7 +19,7 @@
   @endif
   {{ 
     $attributes->merge([
-      'class' => "inline-flex w-max justify-center items-center gap-1 py-2 rounded-lg cursor-pointer {$buttonClass}"
+      'class' => "inline-flex w-max justify-center items-center gap-1 py-2 rounded-lg cursor-pointer hover:underline {$buttonClass}"
     ]) 
   }}
 >

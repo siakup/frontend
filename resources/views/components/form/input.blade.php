@@ -225,7 +225,7 @@
             <button type="button" x-show="removeButton && !{{ $disabled ? 'true' : 'false' }}"
                 x-on:click="value = ''; removeButton = false; clientError = ''; serverError = '';"
                 class="input-icon-remove">
-                <x-icon :name="'multiplication-sign-circle/solid-grey-16'"></x-icon>
+                <x-icon :name="'multiplication-sign-circle/outline-grey-16'"></x-icon>
             </button>
         @endif
 

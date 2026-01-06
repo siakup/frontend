@@ -1,23 +1,17 @@
-@extends('layouts.main')
-
-@section('title', 'Kelompok Perwalian')
-
-@section('javascript')
-    <script type="module">
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('copy', {
-                dosen: @js($lectureName),
-                periode: @js($periode),
-                major: @js($major),
+<x-layouts.main>
+    @section('title', 'Kelompok Perwalian')
+    @section('javascript')
+        <script type="module">
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('copy', {
+                    dosen: @js($lectureName),
+                    periode: '',
+                    major: '',
+                });
             });
-        });
-    </script>
-@endsection
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{ status: false }">
-        <x-typography variant="body-large-semibold">Salin Kelompok Perwalian - <span x-text="$store.copy.dosen"></span>
-        </x-typography>
+        </script>
+    @endsection
+    <x-layouts.content title="Salin Kelompok Perwalian - Albert ">
         <div class="content-white p-5 flex-col gap-5 rounded-md w-full h-full">
             <div class="flex flex-col gap-5">
                 <x-form.input-container>
@@ -46,7 +40,6 @@
                 </x-form.input-container>
             </div>
 
-            {{-- Tabel --}}
             <x-table.index>
                 <x-table.head>
                     <x-table.row>
@@ -80,7 +73,8 @@
                 <x-button variant="primary">Salin</x-button>
             </div>
         </div>
+    </x-layouts.content>
+    @section('modals')
         <x-modal.tutelage.mahasiswa-bimbingan.create :data="$perwalian" />
-    </div>
-
-@endsection
+    @endsection
+</x-layouts.main>
