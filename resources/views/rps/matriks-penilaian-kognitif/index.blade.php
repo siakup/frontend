@@ -1,11 +1,7 @@
-@extends('layouts.main')
-
-@section('title', 'RPS (Rencana Pembelajaran Semester)')
-
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full">
-        <x-typography variant="heading-h6">Buat RPS (Rencana Pembelajaran Semester)</x-typography>
-        <x-button.back href="{{ route('rps.index') }}">RPS (Rencana Pembelajaran Semester)</x-button.back>
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')1
+    <x-layouts.content title="Buat RPS (Rencana Pembelajaran Semester)" buttonBack="RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.index')">
         <div class="flex flex-col gap-0">
             @include('rps.layout.navbar-rps')
             <div class="content-under-navbar rounded-md" x-data="{ matriksList: @js($matriksList ?? []) }">
@@ -26,12 +22,13 @@
                                     <x-table.cell position="left">{{ $matriks['jawaban'] }}</x-table.cell>
                                     <x-table.cell>
                                         <div class="flex flex-nowrap gap-3">
-                                            <x-button.base :icon="'edit/black-16'" iconPosition="left" sizeText="caption-regular"
+                                            <x-button.base :icon="'edit/black-16'" iconPosition="left"
+                                                sizeText="caption-regular"
                                                 x-on:click="$dispatch('open-modal', {id: 'edit-matriks-penilaian'})">
                                                 Ubah
                                             </x-button.base>
-                                            <x-button.base :icon="'delete/red-16'" iconPosition="left" sizeText="caption-regular"
-                                                class="text-red-500"
+                                            <x-button.base :icon="'delete/red-16'" iconPosition="left"
+                                                sizeText="caption-regular" class="text-red-500"
                                                 x-on:click="$dispatch('open-modal', {id: 'delete-matriks-penilaian'})">
                                                 Hapus
                                             </x-button.base>
@@ -49,42 +46,48 @@
                 @endif
 
                 <div class="flex justify-end">
-                    <x-button variant="primary" x-on:click="$dispatch('open-modal', {id: 'create-matriks-penilaian'})">Tambah Matriks
+                    <x-button variant="primary"
+                        x-on:click="$dispatch('open-modal', {id: 'create-matriks-penilaian'})">Tambah Matriks
                         Penilaian</x-button>
                 </div>
 
                 <div class="flex justify-end py-5 gap-2.5">
-                    <x-button variant="secondary" class="w-38!" x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">
+                    <x-button variant="secondary" class="w-38!"
+                        x-on:click="$dispatch('open-modal', {id: 'back-confirmation'})">
                         Kembali
                     </x-button>
-                    <x-button variant="primary" class="w-38!" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">
+                    <x-button variant="primary" class="w-38!"
+                        x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">
                         Simpan
                     </x-button>
                 </div>
             </div>
         </div>
-    </div>
-    @include('rps.matriks-penilaian-kognitif._modal-create')
-    @include('rps.matriks-penilaian-kognitif._modal-edit')
-    @include('rps.matriks-penilaian-kognitif._modal-delete')
+        @include('rps.matriks-penilaian-kognitif._modal-create')
+        @include('rps.matriks-penilaian-kognitif._modal-edit')
+        @include('rps.matriks-penilaian-kognitif._modal-delete')
 
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali">
-        <p>Apakah Anda yakin ingin menyimpan <b>matriks peniliaian kognitif</b>?</p>
-        <x-dialog>
-            <x-slot name="header">Perhatian!</x-slot>
-            Seluruh perubahan pada halaman ini akan disimpan dan anda
-            secara otomatis dialihkan ke halaman berikutnya.
-        </x-dialog>
-    </x-modal.confirmation>
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+            cancelText="Cek Kembali">
+            <p>Apakah Anda yakin ingin menyimpan <b>matriks peniliaian kognitif</b>?</p>
+            <x-dialog>
+                <x-slot name="header">Perhatian!</x-slot>
+                Seluruh perubahan pada halaman ini akan disimpan dan anda
+                secara otomatis dialihkan ke halaman berikutnya.
+            </x-dialog>
+        </x-modal.confirmation>
 
-    <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali" cancelText="Tidak"
-        :redirectConfirm="route('rps.rencana-perkuliahan')">
-        <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
-        <x-dialog>
-            <x-slot name="header">Perhatian!</x-slot>
-            Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
-            nanti.
-        </x-dialog>
-    </x-modal.confirmation>
-@endsection
+        <x-modal.confirmation id="back-confirmation" title="Tunggu Sebentar" confirmText="Ya, Kembali"
+            cancelText="Tidak" :redirectConfirm="route('rps.rencana-perkuliahan')">
+            <p>Apakah Anda yakin ingin kembali ke halaman sebelumnya?</p>
+            <x-dialog>
+                <x-slot name="header">Perhatian!</x-slot>
+                Seluruh perubahan pada halaman ini akan disimpan sebagai <b>draft</b> dan anda dapat mengubah kembali
+                nanti.
+            </x-dialog>
+        </x-modal.confirmation>
+
+
+    </x-layouts.content>
+
+</x-layouts.main>

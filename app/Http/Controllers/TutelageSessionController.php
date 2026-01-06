@@ -12,6 +12,7 @@ class TutelageSessionController extends Controller
     public function index()
     {
         $data = [
+            'id' => 3,
             'nama_event' => 'Perwalian I Semester Ganjil',
             'periode_akademik' => 'Ganjil 2022',
             'tanggal' => '2022-09-20',
@@ -42,6 +43,7 @@ class TutelageSessionController extends Controller
         $data = json_decode(json_encode($data), false);
 
         $daftarPeserta = [
+            'id' => 3,
             'nim' => '105220055',
             'nama' => 'BENI ANDRIANSYAH',
             'institusi' => 'Ilmu Komputer',
@@ -67,7 +69,28 @@ class TutelageSessionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = [
+            'kelompok_perwalian' => 'Teuku Muhammad Roffi',
+            'dosen_wali' => 'Teuku Muhammad Roffi',
+            'jenjang' => '2024/2025',
+            'periode_akademik' => '2023 - Ganjil',
+            'sesi' => 'Perwalian I Semester Ganjil',
+        ];
+
+        $data = json_decode(json_encode($data), false);
+
+        $daftarPeserta = [
+            'nim' => '105220055',
+            'nama' => 'BENI ANDRIANSYAH',
+            'kehadiran' => 'Hadir',
+            'lembar_kendali' => 'Lembar_Kendali_105220055'
+        ];
+
+        $daftarPeserta = json_decode(json_encode($daftarPeserta), false);
+        for ($i = 0; $i < 10; $i++) {
+            $dataPeserta[$i] = $daftarPeserta;
+        }
+        return view('tutelage.lecturer.tutelage-session.detail', get_defined_vars());
     }
 
     /**
@@ -75,7 +98,27 @@ class TutelageSessionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = [
+            'kelompok_perwalian' => 'Teuku Muhammad Roffi',
+            'dosen_wali' => 'Teuku Muhammad Roffi',
+            'jenjang' => '2024/2025',
+            'periode_akademik' => '2023 - Ganjil',
+            'sesi' => 'Perwalian I Semester Ganjil',
+        ];
+
+        $data = json_decode(json_encode($data), false);
+
+        $daftarPeserta = [
+            'nim' => '105220055',
+            'nama' => 'BENI ANDRIANSYAH',
+            'institusi' => 'Ilmu Komputer',
+        ];
+
+        $daftarPeserta = json_decode(json_encode($daftarPeserta), false);
+        for ($i = 1; $i < 6; $i++) {
+            $dataPeserta[$i] = $daftarPeserta;
+        }
+        return view('tutelage.lecturer.tutelage-session.edit', get_defined_vars());
     }
 
     /**

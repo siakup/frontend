@@ -21,7 +21,7 @@
                 <div class="flex w-full">
                     <x-form.input name="bobot_penilaian" placeholder="Contoh: 30.00" type="number" />
                     <div
-                        class="-ml-10 border border-gray-500 rounded-r-md bg-gray-300 w-10 h-10.5 flex items-center justify-center text-gray-600 text-sm">
+                        class="-ml-10 w-10 input-suffix">
                         %
                     </div>
                 </div>

@@ -12,8 +12,8 @@
         ],
         (object)[
             'title' => 'Pengaturan Buddy',
-            'routeName' => 'tutelage-group',
-            'routeQuery' => 'tutelage-group',
+            'routeName' => 'tutelage-group.buddy.index',
+            'routeQuery' => 'tutelage-group.buddy.index',
         ],
     ];
 @endphp

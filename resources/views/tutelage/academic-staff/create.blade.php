@@ -1,24 +1,20 @@
-@extends('layouts.main')
-
-@section('title', 'Kelompok Perwalian')
-
-@section('javascript')
-    <script type="module">
-        document.addEventListener('alpine:init', () => {
-            Alpine.store('create', {
-                lecturer: '',
-                periode: '',
-                major: '',
-                data: @json($perwalian),
-                status: false,
+<x-layouts.main>
+    @section('title', 'Kelompok Perwalian')
+    @section('javascript')
+        <script type="module">
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('create', {
+                    lecturer: '',
+                    periode: '',
+                    major: '',
+                    data: @json($perwalian),
+                    status: false,
+                });
             });
-        });
-    </script>
-@endsection
+        </script>
+    @endsection
+    <x-layouts.content title="Tambah Kelompok Perwalian">
 
-@section('content')
-    <div class="flex flex-col gap-4 p-4 w-full h-full" x-data="{}">
-        <x-typography variant="body-large-semibold">Tambah Kelompok Perwalian</x-typography>
         <div class="content-white p-5 flex-col gap-5 rounded-md w-full h-full">
             <div class="flex flex-col gap-5">
                 <x-form.input-container>
@@ -56,13 +52,13 @@
                         <li>Kelompok perwalian harus memiliki minimal 1 peserta</li>
                         <li>Tidak diperbolehkan ada mahasiswa yang tidak memiliki dosen wali</li>
                         <li>1 Dosen wali hanya memiliki 1 kelompok perwalian pada suatu periode akademik tertentu</li>
-                        <li>1 Mahasiswa hanya boleh masuk dalam 1 kelompok perwalian pada suatu periode akademik tertentu
+                        <li>1 Mahasiswa hanya boleh masuk dalam 1 kelompok perwalian pada suatu periode akademik
+                            tertentu
                         </li>
                     </ul>
                 </div>
             </x-dialog>
 
-            {{-- Tabel --}}
             <x-table.index>
                 <x-table.head>
                     <x-table.row>
@@ -86,20 +82,26 @@
                                 <x-button.base :icon="'delete/grey-16'" iconPosition="left" class="text-gray-600"
                                     sizeText="caption-regular">
                                     Hapus
-                                </x-button.base></x-table.cell>
+                                </x-button.base>
+                            </x-table.cell>
                         </x-table.row>
                     @endforeach
                 </x-table.body>
             </x-table.index>
             <div class="flex flex-row gap-5 justify-end">
                 <x-button variant="secondary">Batal</x-button>
-                <x-button variant="primary" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button>
+                <x-button variant="primary"
+                    x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button>
             </div>
         </div>
-    </div>
-    <x-modal.tutelage.mahasiswa-bimbingan.create :data="$perwalian" />
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan"
-        cancelText="Tidak, Kembali">
-        <p><span x-text="$store.create.lecturer"></span> sudah memiliki kelompok perwalian, apakah Anda akan menggabungkan peserta kelompok perwalian ini ke kelompok perwalian aktif yang berisi?</p>
-    </x-modal.confirmation>
-@endsection
+    </x-layouts.content>
+    @section('modals')
+        <x-modal.tutelage.mahasiswa-bimbingan.create :data="$perwalian" />
+        <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan"
+            cancelText="Tidak, Kembali">
+            <p><span x-text="$store.create.lecturer"></span> sudah memiliki kelompok perwalian, apakah Anda akan
+                menggabungkan peserta kelompok perwalian ini ke kelompok perwalian aktif yang berisi?</p>
+        </x-modal.confirmation>
+    @endsection
+
+</x-layouts.main>

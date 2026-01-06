@@ -96,6 +96,14 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dropdown');
     }
+    public function textarea(Request $request)
+    {
+        return view('components-documentation.textarea');
+    }
+    public function pagination(Request $request)
+    {
+        return view('components-documentation.pagination');
+    }
     public function shadow(Request $request)
     {
         return view('components-documentation.shadow');
