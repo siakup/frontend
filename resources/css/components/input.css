@@ -21,7 +21,7 @@
     }
 
     .input-group-error {
-        @apply !border-red-500 focus-within: !border-red-500 focus-within:ring-red-500;
+        @apply !border-red-500 focus-within:!border-red-500 focus-within:ring-red-500;
     }
 
     .input-group-disabled {

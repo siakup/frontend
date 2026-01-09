@@ -1,0 +1,69 @@
+@layer components {
+  .pagination-container {
+    @apply flex flex-col md:flex-row md:flex-nowrap flex-wrap items-center justify-between gap-4 w-full overflow-visible;
+  }
+
+  .pagination-per-page-wrapper {
+    @apply flex items-center overflow-visible px-1 h-10;
+    width: 316px;
+    gap: 12px;
+  }
+
+  .pagination-select {
+    @apply w-[72px] h-10 border bg-white border-gray-300 rounded-sm px-3 text-sm text-center focus:outline-none focus:ring-2 focus:ring-red-100 appearance-none cursor-pointer;
+  }
+
+  .pagination-info-wrapper {
+    @apply flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto min-w-0;
+  }
+
+  .pagination-info-text {
+    @apply text-sm text-gray-600;
+  }
+
+  .pagination-nav-wrapper {
+    @apply flex items-center gap-1 flex-wrap min-w-0;
+  }
+
+  .pagination-button {
+    @apply h-10 px-4 rounded-sm whitespace-nowrap border;
+  }
+
+  .pagination-button-active {
+    @apply bg-red-50 text-red-600 border-red-200;
+  }
+
+  .pagination-button-inactive {
+    @apply text-gray-500 hover:bg-gray-100 border-transparent;
+  }
+
+  .pagination-ellipsis {
+    @apply px-2 text-gray-500 text-sm;
+  }
+
+  .pagination-search-wrapper {
+    @apply ml-2 shrink-0;
+  }
+
+  .pagination-search-container {
+    @apply flex items-center rounded-sm border border-red-200 bg-white cursor-text;
+  }
+
+  .pagination-search-button {
+    @apply flex items-center justify-center gap-2 text-sm text-red-600 whitespace-nowrap border-r border-gray-200 bg-transparent h-full px-4 transition-colors hover:bg-red-50 cursor-pointer;
+    min-width: 168px;
+  }
+
+  .pagination-search-input {
+    @apply text-sm flex-1 min-w-0 px-3 h-full bg-transparent border-none focus:outline-none text-gray-700 placeholder-gray-400;
+  }
+
+  .pagination-search-clear {
+    @apply h-6 w-6 mr-3 text-sm text-gray-400 bg-transparent rounded-full flex items-center justify-center hover:bg-gray-100;
+  }
+
+  /* Navigation Buttons Override */
+  .pagination-nav-button {
+    @apply w-[168px] h-10 !rounded-sm px-0 py-0;
+  }
+}

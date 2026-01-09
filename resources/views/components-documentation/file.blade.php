@@ -3,7 +3,7 @@
 @section('title', 'File Upload Documentation')
 
 @section('content')
-    <x-container variant="content-wrapper">
+    <x-container.container  variant="content-wrapper">
         <x-typography variant="body-large-semibold">Komponen File Upload</x-typography>
 
         <div class="mb-8">
@@ -191,5 +191,5 @@
 
             </x-container>
         </div>
-    </x-container>
+    </x-container.container>
 @endsection
