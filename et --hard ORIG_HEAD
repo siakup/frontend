@@ -1,0 +1,253 @@
+[33mcommit 83a7f4e490d23449c342ff083cd964db5681a1a2[m[33m ([m[1;36mHEAD -> [m[1;32mperwalian[m[33m)[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Thu Dec 18 13:19:53 2025 +0700
+
+    feat: kelompok perwalian (staff), tambah perwalian, dropdown dosen, dropdown program studi
+
+[33mcommit b557e95bc70e61d6b87bfb56567fa0f94557d8b8[m[33m ([m[1;32mmain[m[33m)[m
+Merge: 9eb0ad2 ad80775
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Tue Dec 16 16:23:20 2025 +0700
+
+    Merge branch 'rps-dosen' of http://yuhuu.universitaspertamina.ac.id/siak/siakup/siakup
+
+[33mcommit ad807754d66a45e3e78b8c5c07bfbce8ee5679ca[m[33m ([m[1;31morigin/rps-dosen[m[33m, [m[1;32mrps-dosen[m[33m)[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Tue Dec 16 16:22:04 2025 +0700
+
+    fix dan refactor modul rps
+
+[33mcommit 9eb0ad2148ffd3c53d011bd6c6036089bcde3c69[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Merge: 168ae6f 8f85ae1
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Mon Dec 15 15:47:46 2025 +0700
+
+    Merge branch 'rps-dosen' into 'main'
+    
+    feat: dropdown cpl & program perkuliahan || refactor: komponen tab & dropdown, modul rps
+    
+    See merge request siak/siakup/siakup!135
+
+[33mcommit 8f85ae156a3867a30f905683bdce18687ba870e7[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Mon Dec 15 15:05:02 2025 +0700
+
+    feat: dropdown tahun masuk & refactor: dropdown (add variant red)
+
+[33mcommit 13ebe117294b4d324fa63e553981fbfc9a934d56[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Mon Dec 15 13:19:14 2025 +0700
+
+    feat: dropdown cpl & program perkuliahan || refactor: komponen tab & dropdown, modul rps
+
+[33mcommit 168ae6f5ae12cf6f1775b0bfca80f44c89a11ee9[m
+Merge: 50f9d67 840790b
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Mon Dec 15 09:04:34 2025 +0700
+
+    Merge branch 'rps-dosen' into 'main'
+    
+    refactor: rps deskripsi umum, form input, input container, dan dokumentasi tab...
+    
+    See merge request siak/siakup/siakup!134
+
+[33mcommit 840790b28482b50f3809371418727cbaef8cc26a[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Fri Dec 12 13:10:47 2025 +0700
+
+    refactor: komponen tab
+
+[33mcommit dcc3a1bf2881f7819e6a249e2ce59d3cb7f22d35[m
+Merge: 45a8611 50f9d67
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Fri Dec 12 11:36:10 2025 +0700
+
+    Merge branch 'main' of http://yuhuu.universitaspertamina.ac.id/siak/siakup/siakup into rps-dosen
+
+[33mcommit 45a8611446d2ba16f6f9e54bdaf5981015ffd748[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Fri Dec 12 11:35:59 2025 +0700
+
+    refactor: rps deskripsi umum, form input, input container, dan dokumentasi tab & input (wrapper dll)
+
+[33mcommit 50f9d676a88ac7884071b170f79a5ab0dc72a1ee[m
+Merge: 1d5ee9a 158cf88
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Thu Dec 11 21:18:33 2025 +0700
+
+    Merge branch 'rps-dosen' into 'main'
+    
+    feat dropdown periode akademik & refactor rps index
+    
+    See merge request siak/siakup/siakup!133
+
+[33mcommit 1d5ee9a929a35a2c713aad909f63d9e1fdd2e473[m
+Merge: dfe03d9 6d1cb2f
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Thu Dec 11 21:18:19 2025 +0700
+
+    Merge branch 'refaktor-komponen-kalender' into 'main'
+    
+    Refaktor Komponen Kalender
+    
+    See merge request siak/siakup/siakup!132
+
+[33mcommit 158cf889b4c9d989b6b678dfdbb6f348b1222267[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Thu Dec 11 14:53:07 2025 +0700
+
+    feat dropdown periode akademik & refactor rps index
+
+[33mcommit 6d1cb2f5daaf891d23b53d5ac0dd1a2898fc95d4[m
+Author: Nath. <adriankalalo654@gmail.com>
+Date:   Thu Dec 11 11:55:16 2025 +0700
+
+    Refaktor Komponen Toast
+
+[33mcommit 3cf3ce663f1fc6c8d334e624a75dfc96677b8bff[m
+Author: Nath. <adriankalalo654@gmail.com>
+Date:   Thu Dec 11 10:58:36 2025 +0700
+
+    Refaktor Komponen Kalender
+
+[33mcommit dfe03d9c542816c7afc974c0d3d9d454aef80a9d[m
+Merge: cd6c874 1dd6ddc
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Thu Dec 11 09:50:28 2025 +0700
+
+    Merge branch 'rps-dosen' into 'main'
+    
+    feat: button sort filter
+    
+    See merge request siak/siakup/siakup!131
+
+[33mcommit 1dd6ddcbce7d44c42c6f0f32eda0ed130f8b3119[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Wed Dec 10 16:59:24 2025 +0700
+
+    feat: button sort filter
+
+[33mcommit cd6c874126479caa7e04b908090ed0fe4eae6e65[m
+Merge: fd2bced 6017e40
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Wed Dec 10 11:04:08 2025 +0700
+
+    Merge branch 'rps-dosen' into 'main'
+    
+    feat: ilustrasi avatar dan card profile message dan status mahasiswa
+    
+    See merge request siak/siakup/siakup!130
+
+[33mcommit 6017e40c8d116ba076bda937e2e3181fb7fe8a0e[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Tue Dec 9 15:42:35 2025 +0700
+
+    feat: ilustrasi avatar dan card profile message
+
+[33mcommit fd2bced2cf67fe6db24a9f26eb08eb730a23cd42[m
+Merge: cd22e1e 92572d6
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Mon Dec 8 16:25:08 2025 +0700
+
+    Merge branch 'rps-dosen' into 'main'
+    
+    feat card jadwal kuliah dan mata kuliah
+    
+    See merge request siak/siakup/siakup!129
+
+[33mcommit 92572d668f4cc8eaad4120ae7b095e73d9a6b5b2[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Mon Dec 8 14:59:17 2025 +0700
+
+    feat: card list subjek
+
+[33mcommit b5ef244eee6ed568e364ff39ba0f568e28e43bfa[m
+Merge: 426e4a7 cd22e1e
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Mon Dec 8 10:00:00 2025 +0700
+
+    Merge branch 'main' of http://yuhuu.universitaspertamina.ac.id/siak/siakup/siakup into rps-dosen
+
+[33mcommit 426e4a729196a75ba97db71df42d949092b41d10[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Mon Dec 8 09:51:12 2025 +0700
+
+    feat: card mata kuliah & jadwal kuliah
+
+[33mcommit cd22e1e15158a4ae608ecc145ddbb4bc216ad90d[m
+Merge: d9da29e a893e17
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Mon Dec 8 09:19:29 2025 +0700
+
+    Merge branch 'new-update' into 'main'
+    
+    New update
+    
+    See merge request siak/siakup/siakup!128
+
+[33mcommit a893e17c0b9461f9fd17de2c87dd42c8e06c551d[m
+Merge: 2cc54fd d9da29e
+Author: Notevenmore <hafizsecond635@gmail.com>
+Date:   Fri Dec 5 16:39:48 2025 +0700
+
+    Resolve conflict
+
+[33mcommit 2cc54fd32461db7683096be66390be062dab1184[m
+Author: Notevenmore <hafizsecond635@gmail.com>
+Date:   Fri Dec 5 16:34:46 2025 +0700
+
+    Add Refactor for User Page
+
+[33mcommit d9da29e8c23ff298bc6d7db69821865e19af0c0a[m
+Merge: 4e44e84 94de45d
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Thu Dec 4 12:01:58 2025 +0700
+
+    Merge branch 'refactor-modal-input-upload-file' into 'main'
+    
+    Refactor Modal, Form input, upload file
+    
+    See merge request siak/siakup/siakup!127
+
+[33mcommit 94de45d1e169e9b76b19a06883cfb88ae3af39fd[m
+Author: Nath. <adriankalalo654@gmail.com>
+Date:   Thu Dec 4 10:31:40 2025 +0700
+
+    Refactor Modal, Form input, upload file
+
+[33mcommit f67cd46427ac03770ae7ea9b65f4a75127a2a25b[m
+Merge: e45d7ee 4e44e84
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Thu Dec 4 09:38:47 2025 +0700
+
+    Merge branch 'main' of http://yuhuu.universitaspertamina.ac.id/siak/siakup/siakup into rps-dosen
+
+[33mcommit e45d7ee472921660a3f230476dbfbc17bb8b885a[m
+Author: adindaraisa <adindazhr11@gmail.com>
+Date:   Thu Dec 4 09:15:59 2025 +0700
+
+    refactor rps dan feat komponen card mata kuliah
+
+[33mcommit 4e44e843cf501265a8bab98c8f1143665889e502[m
+Merge: da3ac6b 647139b
+Author: Luluk Eko Mawati <luluk.em@universitaspertamina.ac.id>
+Date:   Wed Dec 3 17:31:51 2025 +0700
+
+    Merge branch 'new-update' into 'main'
+    
+    New update
+    
+    See merge request siak/siakup/siakup!126
+
+[33mcommit 647139be1fd5d7595dd4f0995a1b956616a0891c[m
+Author: Notevenmore <hafizsecond635@gmail.com>
+Date:   Wed Dec 3 17:13:05 2025 +0700
+
+    Fix user create page
+
+[33mcommit b4933e559f06bb22675398dc3e123efb40a1faa6[m
+Merge: 6e1eabe da3ac6b
+Author: Notevenmore <hafizsecond635@gmail.com>
+Date:   Wed Dec 3 16:59:32 2025 +0700
+
+    resolve con

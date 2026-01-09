@@ -6,7 +6,7 @@
 @php
     [$dir, $align] = explode('-', $position);
 
-    $positionClass = "pos-$dir";
+    $positionClass = "base-$dir";
     $alignClass = in_array($dir, ['top', 'bottom']) ? "align-x-$align" : "align-y-$align";
 
     $arrowDir = "arrow-$dir";

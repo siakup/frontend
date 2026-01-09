@@ -43,5 +43,5 @@
     ];
 @endphp
 
-<x-tab :tabItems="$tabItems" />
+<x-tab :tabItems="$tabItems" :widthMax="true"/>
 

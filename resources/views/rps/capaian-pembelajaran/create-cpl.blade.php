@@ -1,25 +1,21 @@
-@extends('layouts.main')
+<x-layouts.main>
+    @section('title', 'RPS (Rencana Pembelajaran Semester)')
+    @section('javascript')
+        <script type="module">
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('listCpl', window.CplController.listCpl);
+            });
+        </script>
+    @endsection
 
-@section('title', 'RPS (Rencana Pembelajaran Dosen)')
-
-@section('javascript')
-    <script type="module">
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('listCpl', window.CplController.listCpl);
-        });
-    </script>
-@endsection
-
-@section('content')
-    <x-container :variant="'content-wrapper'" class="mb-5">
-        <x-typography variant="heading-h6">Capaian Pembelajaran Lulusan</x-typography>
-        <x-button.back href="{{ route('rps.capaian-pembelajaran') }}">Buat RPS (Rencana Pembelajaran
-            Semester)</x-button.back>
+    <x-layouts.content title="Capaian Pembelajaran Lulusan" buttonBack="Buat RPS (Rencana Pembelajaran Semester)"
+        :href="route('rps.capaian-pembelajaran')">
         <div x-data="listCpl({{ count($cplList) }}, @js($cplList))">
-            <x-container variant="disable-red-gradient">
+            <x-container.container background="disable-red-gradient-inverse" padding="p-5" width="full" height="full"
+                radius="t-md">
                 <x-typography variant="body-medium-bold">Capaian Pembelajaran Lulusan</x-typography>
-            </x-container>
-            <x-container class="rounded-t-none!">
+            </x-container.container>
+            <x-container.container background="content-white" padding="p-5" radius="b-md" class="flex-col">
                 <x-table.index>
                     <x-table.head>
                         <x-table.row>
@@ -32,73 +28,6 @@
                         </x-table.row>
                     </x-table.head>
 
-<<<<<<< HEAD
-    
-    <div class="cpl-head border border-gray-400 ml-3 grad-peach">
-        <x-typography variant="body-medium-bold">Capaian Pembelajaran Lulusan</x-typography>
-    </div>
-
-    <div x-data="cpl({{ count($cplList) }}, @js($cplList))">
-        <x-container.container variant="content" class="ml-3" borderRadius="rounded-b-3xl" >
-            <x-table.index>
-                <x-table.head>
-                    <x-table.row>
-                        <x-table.header-cell class="w-38">Kode</x-table.header-cell>
-                        <x-table.header-cell>Capaian</x-table.header-cell>
-                        <x-table.header-cell class="w-13">
-                            <x-form.checklist
-                                id="select-all"
-                                label=""
-                                value=""
-                                name="select-all"
-                                x-model="selectAll"
-                                x-on:change="toggleAll()"
-                                
-                            />
-                        </x-table.header-cell>
-                    </x-table.row>
-                </x-table.head>
-
-                <x-table.body>
-                    @foreach($cplList as $index => $cpl)
-                    <x-table.row :odd="$index % 2 === 0">
-                        <x-table.cell>{{ $cpl['kode'] }}</x-table.cell>
-                        <x-table.cell position="left">{{ $cpl['deskripsi']}}</x-table.cell>
-                        <x-table.cell>
-                            <x-form.checklist
-                                id="{{ $index }}"
-                                name="select"
-                                x-model="selected"
-                                :value="$index"
-                                x-on:change="selectAll = selected.length === {{ count($cplList) }}"
-                            />
-                        </x-table.cell>
-                    </x-table.row>
-                    @endforeach
-                </x-table.body>
-            </x-table.index>
-            <div class="flex mt-5 justify-end gap-2">
-                <x-button.secondary x-bind:disabled="isDisabled">Batal</x-button.secondary>
-                <x-button.primary x-bind:disabled="isDisabled" x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
-            </div>
-        </x-container>  
-    </div>
-    
-
-    <x-modal.confirmation 
-        id="save-confirmation" 
-        title="Tunggu Sebentar" 
-        confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali"
-    >
-        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-
-        <div
-            x-on:confirmed.window="
-            console.log('Data disimpan');
-            window.location.href = '/'; 
-        ">
-=======
                     <x-table.body>
                         @foreach ($cplList as $index => $cpl)
                             <x-table.row :odd="$index % 2 === 0">
@@ -118,14 +47,7 @@
                     <x-button.primary x-bind:disabled="isDisabled"
                         x-on:click="$dispatch('open-modal', {id: 'save-confirmation'})">Simpan</x-button.primary>
                 </div>
-            </x-container>
->>>>>>> d965f5f35489ca988f9a23e75a3072665d01481a
+            </x-container.container>
         </div>
-    </x-container>
-
-    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
-        cancelText="Cek Kembali">
-        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
-    </x-modal.confirmation>
-
-@endsection
+    </x-layouts.content>
+</x-layouts.main>

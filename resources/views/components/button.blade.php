@@ -8,6 +8,7 @@
     'size' => 'lg',
     'variant' => 'primary',
     'fileInput' => false,
+    'buttonClass' => '',
 ])
 
 @php
@@ -52,6 +53,7 @@
         'disabled:cursor-not-allowed disabled:text-gray-600',
         $variants[$variant] ?? '',
         $sizes[$size]['padding'] ?? '',
+        $buttonClass,
     ])->join(' ');
 @endphp
 

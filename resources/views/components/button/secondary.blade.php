@@ -1,5 +1,6 @@
 @props([
     'type' => 'button',
+    'id' => '',
     'label' => '',
     'icon' => null,
     'iconPosition' => 'left',
@@ -16,7 +17,7 @@
         <input type="file" class="hidden" {{ $attributes->except('class')->merge() }}>
     </label>
 @else
-    <button type="{{ $type }}" @if ($wireClick) wire:click="{{ $wireClick }}" @endif
+    <button type="{{ $type }}" id="{{ $id }}" @if ($wireClick) wire:click="{{ $wireClick }}" @endif
         @if ($href) onclick="window.location.href='{{ $href }}'" @endif
         {{ $attributes->merge([
             'class' => "inline-flex w-fit w-max justify-center items-center gap-1 px-4 py-2 rounded-lg bg-white border border-red-600 text-red-600 hover:bg-red-50 active:bg-red-100 cursor-pointer disabled:border-gray-300 disabled:text-gray-400 disabled:bg-white disabled:cursor-not-allowed {$class}",

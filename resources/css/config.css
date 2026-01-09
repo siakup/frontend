@@ -92,6 +92,7 @@
    --shadow-low-inverse: 0 -4 8 0 rgba(60, 65, 82, 0.1);
 
    /* radius */
+   --radius-xs: 4px;
    --radius-sm: 8px;
    --radius-md: 12px;
    --radius-lg: 20px;

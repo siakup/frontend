@@ -8,8 +8,8 @@
       'last' => $last ? 'border-b-none' : ''
     ],
     'old' => [
-      'other-class' => "items-center",
-      'odd' => '',
+      'other-class' => " items-center",
+      'odd' => $odd ? 'bg-gray-200' : 'bg-white',
       'last' => '',
     ],
   ]

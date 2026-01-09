@@ -50,12 +50,12 @@
 
     .modal-slot-header { @apply border-b border-[#d9d9d9] p-5 w-full; }
     .modal-slot-content { @apply p-5 sm:p-6 w-full; }
-    .modal-slot-footer { @apply p-5 w-full; }
+    .modal-slot-footer { @apply px-5 pb-5 w-full; }
 
     .modal-header-wrapper { @apply w-full relative flex items-center justify-center; }
     .modal-title { @apply w-full text-center text-gray-800; }
     .modal-close-btn { @apply text-gray-400 hover:text-gray-500 focus:outline-none absolute right-0 top-0 cursor-pointer transition-colors duration-200; }
-    .modal-body { @apply text-gray-700 text-center py-4; }
+    .modal-body { @apply text-gray-700 text-center; }
     .modal-footer-wrapper { @apply w-full flex justify-center gap-4; }
-    .modal-btn-action { @apply !w-full sm:!w-auto min-w-[120px]; }
+    .modal-btn-action { @apply  min-w-30! w-full!; }
 }

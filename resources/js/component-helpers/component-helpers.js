@@ -1,3 +1,7 @@
 import './api.js'
 import './fileRequest.js'
 import './formatter.js'
+import './form/textarea.js'
+import './docs/textarea.js'
+import './pagination/pagination.js'
+import './docs/pagination.js'

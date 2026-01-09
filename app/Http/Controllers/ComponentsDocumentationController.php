@@ -26,62 +26,83 @@ class ComponentsDocumentationController extends Controller
     {
         return view('components-documentation.dialog');
     }
-    
-    public function typography(Request $request) {
-      return view('components-documentation.typography');
+
+    public function typography(Request $request)
+    {
+        return view('components-documentation.typography');
     }
 
-    public function button(Request $request) {
-      return view('components-documentation.button');
+    public function button(Request $request)
+    {
+        return view('components-documentation.button');
     }
 
-  public function quantity(Request $request)
-  {
-    return view('components-documentation.quantity');
-  }
+    public function card(Request $request)
+    {
+        return view('components-documentation.card');
+    }
 
-  public function breadcrumb(Request $request)
-  {
-    return view('components-documentation.breadcrumb');
-  }
+    public function quantity(Request $request)
+    {
+        return view('components-documentation.quantity');
+    }
 
-  public function tab(Request $request)
-  {
-    return view('components-documentation.tab');
-  }
+    public function breadcrumb(Request $request)
+    {
+        return view('components-documentation.breadcrumb');
+    }
 
-  public function input(Request $request)
-  {
-    return view('components-documentation.input');
-  }
+    public function tab(Request $request)
+    {
+        return view('components-documentation.tab');
+    }
 
-  public function inputRefactor(Request $request)
-  {
-    return view('components-documentation.input-refactor');
-  }
+    public function input(Request $request)
+    {
+        return view('components-documentation.input');
+    }
 
-  public function textareaRefactor(Request $request)
-  {
-    return view('components-documentation.textarea-refactor');
-  }
+    public function checkbox(Request $request)
+    {
+        return view('components-documentation.checkbox');
+    }
 
-  public function checkbox(Request $request)
-  {
-    return view('components-documentation.checkbox');
-  }
+    public function file(Request $request)
+    {
+        return view('components-documentation.file');
+    }
 
-  public function file(Request $request)
-  {
-    return view('components-documentation.file');
-  }
+    public function modal(Request $request)
+    {
+        return view('components-documentation.modal');
+    }
 
-  public function modal(Request $request)
-  {
-    return view('components-documentation.modal');
-  }
+    public function toast(Request $request)
+    {
+        return view('components-documentation.toast');
+    }
 
-  public function pagination(Request $request)
-  {
-    return view('components-documentation.pagination');
-  }
+    public function calendar(Request $request)
+    {
+        return view('components-documentation.calendar');
+    }
+
+    public function sort(Request $request)
+    {
+        return view('components-documentation.sort');
+    }
+
+    public function dropdown(Request $request)
+    {
+        return view('components-documentation.dropdown');
+    }
+
+    public function textarea(Request $request)
+    {
+        return view('components-documentation.textarea');
+    }
+    public function pagination(Request $request)
+    {
+        return view('components-documentation.pagination');
+    }
 }

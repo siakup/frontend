@@ -1,0 +1,43 @@
+<div x-data="{kode: '', deskripsi: ''}">
+    <x-modal.container id="create-cpmk" maxWidth="6xl">
+        <x-slot name="header" class="items-center bg-gray-200">
+            <div class="w-full relative flex items-center justify-center">
+                <x-typography variant="heading-h5">Tambah Capaian Pembelajaran Mata Kuliah</x-typography>
+                <button x-on:click.stop="close()" class="cursor-pointer absolute right-0">
+                    <x-icon :name="'close-cancel/black-24'" />
+                </button>
+            </div>
+        </x-slot>
+        <x-container.container class="flex-col" gap="gap-5">
+            <x-form.input-container>
+                <x-slot name="label">Kode</x-slot>
+                <x-slot name="input">
+                    <x-form.input name="kode" placeholder="Tulis Kode" x-model="kode" :showRemoveIcon="true" />
+                </x-slot>
+            </x-form.input-container>
+            <x-form.input-container>
+                <x-slot name="label">Deskripsi</x-slot>
+                <x-slot name="input">
+                    <x-form.textarea placeholder="Tulis Deskripsi" id="deskripsi_cpmk" :maxChar="100" rows="5"
+                        x-model="deskripsi" />
+                </x-slot>
+            </x-form.input-container>
+        </x-container.container>
+        <x-slot name="footer" class="flex justify-end gap-3">
+            <x-button.secondary x-data x-on:click="close()">Batal</x-button.secondary>
+            <x-button.primary
+                x-on:click="
+                    $dispatch('close-modal', { id: 'create-cpmk' });
+                    $dispatch('open-modal', { id: 'save-confirmation' });
+                ">
+                Simpan
+            </x-button.primary>
+        </x-slot>
+
+    </x-modal.container>
+
+    <x-modal.confirmation id="save-confirmation" title="Tunggu Sebentar" confirmText="Ya, Simpan Sekarang"
+        cancelText="Cek Kembali">
+        <p>Apakah Anda yakin informasi yang ditambahkan sudah benar?</p>
+    </x-modal.confirmation>
+</div>
