@@ -33,34 +33,55 @@ class UserController extends Controller
             if (! $response || ! $response->success || ! isset($response->success)) {
                 throw new \Exception(json_encode($response));
             }
-            $data = json_decode(json_encode($response), true);
+
+            // Ensure data is always an array
+            $usersData = $response->data ?? [];
+            if (is_object($usersData)) {
+                $usersData = (array) $usersData;
+            }
+            if (! is_array($usersData)) {
+                $usersData = [];
+            }
 
             $pagination = [
-                'currentPage' => $response->pagination->current_page,
-                'from' => $response->pagination->from,
-                'last' => ceil($response->pagination->total / $response->pagination->per_page),
+                'currentPage' => $response->pagination->current_page ?? 1,
+                'from' => $response->pagination->from ?? 0,
+                'last' => isset($response->pagination->total, $response->pagination->per_page) 
+                    ? ceil($response->pagination->total / $response->pagination->per_page) 
+                    : 1,
                 'limit' => $limit,
             ];
 
             if ($request->ajax()) {
-                return $this->successResponse(['users' => $response->data, 'pagination' => $pagination], 'Berhasil mendapatkan data');
+                return $this->successResponse(['users' => $usersData, 'pagination' => $pagination], 'Berhasil mendapatkan data');
             }
+
+            // For non-AJAX requests, pass data directly as array
+            $response->data = $usersData;
 
             return view('users.index', get_defined_vars());
         } catch (\Throwable $err) {
-            $decoded = json_decode($err->getMessage());
-
+            // Fallback: render halaman dengan data kosong jika API tidak dapat diakses
             Log::error('Gagal memuat halaman kelola pengguna', [
                 'url' => $url ?? null,
                 'request_data' => $request->all(),
-                'response' => $decoded,
+                'response_raw' => $err->getMessage(),
             ]);
 
-            if ($request->ajax()) {
-                return $this->errorResponse($response->message);
-            }
+            $search = $search ?? null;
+            $sort = $sort ?? 'nama,asc';
+            $limit = $limit ?? 10;
+            $response = (object) [
+                'data' => [],
+            ];
+            $pagination = [
+                'currentPage' => 1,
+                'from' => 0,
+                'last' => 1,
+                'limit' => $limit,
+            ];
 
-            return redirect()->route('home')->withErrors(['error' => $decoded->message ?? 'Gagal memuat halaman kelola pengguna']);
+            return view('users.index', get_defined_vars());
         }
     }
 

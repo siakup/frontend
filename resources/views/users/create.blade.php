@@ -140,7 +140,7 @@
                                         <x-table.cell :variant="'old'" x-text="peran.peranName"></x-table.cell>
                                         <x-table.cell :variant="'old'" x-text="peran.institutionName"></x-table.cell>
                                         <x-table.cell :variant="'old'"
-                                            x-text="formatDateTime(peran.createdAt)"></x-table.cell>
+                                            x-text="window.formatter.formatDateTime(peran.createdAt)"></x-table.cell>
                                         <x-table.cell :variant="'old'">
                                             <x-container.container :variant="'content-wrapper'" class="w-full items-center">
                                                 <x-button :variant="'text-link'" :size="'sm'" :icon="'delete/grey-20'"

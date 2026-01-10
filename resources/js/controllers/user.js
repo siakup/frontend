@@ -24,9 +24,10 @@ class User {
             ...sortData,
             display: 'false'
           }, (response) => {
-            if (this.$store.listPage) {
-              this.$store.listPage.datas = Object.values(response.data.users);
-              this.$store.listPage.paginationData = response.data.pagination;
+            if (this.$store.listPage && response && response.data) {
+              const usersData = response.data.users || [];
+              this.$store.listPage.datas = Array.isArray(usersData) ? usersData : Object.values(usersData);
+              this.$store.listPage.paginationData = response.data.pagination || null;
             }
         });
       },
@@ -82,7 +83,7 @@ class User {
 
       checkValidity() {
         try {
-          return this.$store.createPage.nama == '' || this.$store.createpage.email == '' || this.$store.createPage.nomor_induk == '';
+          return this.$store.createPage.nama == '' || this.$store.createPage.email == '' || this.$store.createPage.nomor_induk == '';
         } catch (e) {}
       },
 

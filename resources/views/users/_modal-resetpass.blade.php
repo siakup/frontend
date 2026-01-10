@@ -118,7 +118,7 @@
         </x-container.container>
       </x-container.wrapper>
     </x-slot>
-  </x-modal.container-pure-js>
+  </x-modal.container>
 </div>
 
 <meta name="csrf-token" content="{{ csrf_token() }}">
