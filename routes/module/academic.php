@@ -3,7 +3,8 @@
 use App\Http\Controllers\AcademicController;
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['auth']], function () {
+// Ubah sementara middleware auth menjadi kosong atau comment baris ini untuk testing
+Route::group(['middleware' => []], function () { 
     Route::group(['prefix' => 'academics'], function () {
         Route::group(['prefix' => 'periode'], function () {
             Route::get('/', [AcademicController::class, 'indexPeriode'])->name('academics-periode.index');

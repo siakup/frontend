@@ -14,7 +14,7 @@
   <input 
     type="text"
     id="{{$attributes->get('id')}}" 
-    class="{{ $attributes->get('class') }}bg-white outline-none border-none" 
+    class="{{ $attributes->get('class') }} w-full bg-white outline-none border-none" 
     name="{{ $attributes->get('name') }}"
     value="{{ $value ?? '' }}"
     placeholder="{{ $placeholder }}"

@@ -82,8 +82,9 @@
         @endforeach
     </div>
 
-    <div class="mt-1 ml-1 text-xs font-medium transition-colors duration-200 min-h-[1.25rem]"
-         :class="hasError ? 'text-red-500' : 'text-gray-500'">
+    <div class="mt-1 ml-1 text-xs font-medium transition-colors duration-200"
+         :class="hasError ? 'text-red-500' : 'text-gray-500'"
+         x-show="message" style="display: none;">
         <span x-text="message"></span>
     </div>
 </div>

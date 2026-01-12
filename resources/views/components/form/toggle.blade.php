@@ -14,7 +14,7 @@
 @endphp
 
 <div 
-  class="flex items-center gap-3 m-2"
+  class="flex items-center gap-3"
   x-data="{
     value: @js($value),
     variant: @js($variant),
