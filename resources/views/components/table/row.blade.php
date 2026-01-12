@@ -9,7 +9,7 @@
     ],
     'old' => [
       'other-class' => " items-center",
-      'odd' => $odd ? 'bg-gray-200' : 'bg-white',
+      'odd' => $odd ? 'bg-gray-200' : 'bg-transparent',
       'last' => '',
     ],
   ]

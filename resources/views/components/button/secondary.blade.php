@@ -12,7 +12,7 @@
 
 @if ($isUsedWithLabelTagForFileInput)
     <label
-        class="{{ $attributes->has('class') ? $attributes->get('class') : '' }} {{ $class }} inline-flex w-fit min-w-37.75 justify-center items-center gap-1 px-4 py-2 rounded-lg bg-white border border-red-500 text-red-500 hover:bg-red-50 active:bg-red-100 cursor-pointer disabled:border-gray-600 disabled:text-gray-600">
+        class="{{ $attributes->has('class') ? $attributes->get('class') : '' }} {{ $class }} inline-flex w-full min-w-37.75 justify-center items-center gap-1 px-4 py-2 rounded-md bg-white border border-red-500 text-red-500 hover:bg-red-50 active:bg-red-100 cursor-pointer disabled:border-gray-600 disabled:text-gray-600">
         {{ $slot }}
         <input type="file" class="hidden" {{ $attributes->except('class')->merge() }}>
     </label>
@@ -20,7 +20,7 @@
     <button type="{{ $type }}" id="{{ $id }}" @if ($wireClick) wire:click="{{ $wireClick }}" @endif
         @if ($href) onclick="window.location.href='{{ $href }}'" @endif
         {{ $attributes->merge([
-            'class' => "inline-flex w-fit w-max justify-center items-center gap-1 px-4 py-2 rounded-lg bg-white border border-red-600 text-red-600 hover:bg-red-50 active:bg-red-100 cursor-pointer disabled:border-gray-300 disabled:text-gray-400 disabled:bg-white disabled:cursor-not-allowed {$class}",
+            'class' => "inline-flex w-full justify-center items-center gap-1 px-4 py-2 rounded-md bg-white border border-red-600 text-red-600 hover:bg-red-50 active:bg-red-100 cursor-pointer disabled:border-gray-300 disabled:text-gray-400 disabled:bg-white disabled:cursor-not-allowed {$class}",
         ]) }}>
         @if ($icon && $iconPosition === 'left')
             <x-icon :name="$icon" />

@@ -96,7 +96,7 @@
 </script>
 
 <div class="{{ $inputParentClass }}">
-  <div class="relative flex items-center px-[12px] py-[8px] border-[1px] border-solid border-[#D9D9D9] rounded-lg w-full {{ $attributes->has('readonly') ? 'border-[#E8E8E8] bg-[#F5F5F5] cursor-not-allowed' : '' }}">
+  <div class="relative flex items-center px-[12px] py-[8px] border-[1px] border-solid border-[#D9D9D9] rounded-md w-full {{ $attributes->has('readonly') ? 'border-[#E8E8E8] bg-[#F5F5F5] cursor-not-allowed' : '' }}">
       <input 
         type="text" 
         placeholder="{{$placeholder}}" 
@@ -118,7 +118,7 @@
         autocomplete="off"
         value="{{ $search }}"
       />
-      <img src="{{ asset('assets/search-left.svg') }}" alt="search" class="search-icon-right absolute right-3 w-6 h-6 pointer-events-none filter invert-[46%] sepia-[9%] saturate-[316%] hue-rotate-[182deg] brightness-[94%] contrast-[90%]" />
-      <div class="search-dropdown rounded-lg overflow-hidden" id="searchDropdown"></div>
+      <img src="{{ asset('assets/icons/search-2/grey-20.svg') }}" alt="search" class="search-icon-right absolute right-3 w-6 h-6 pointer-events-none filter invert-[46%] sepia-[9%] saturate-[316%] hue-rotate-[182deg] brightness-[94%] contrast-[90%]" />
+      <div class="search-dropdown rounded-md overflow-hidden" id="searchDropdown"></div>
   </div>
 </div>

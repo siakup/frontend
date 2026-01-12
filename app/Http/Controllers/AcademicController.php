@@ -30,8 +30,59 @@ class AcademicController extends Controller
 
             $params = compact('search', 'sort', 'page', 'limit');
 
-            $url = PeriodAcademicService::getInstance()->getListAllPeriode();
-            $response = getCurl($url, $params, getHeaders());
+            // $url = PeriodAcademicService::getInstance()->getListAllPeriode();
+            // $response = getCurl($url, $params, getHeaders());
+
+            // MOCK DATA: Bypass API call sementara agar view bisa tampil tanpa login/koneksi backend
+            $dummyData = [
+                (object) [
+                    'id' => 1,
+                    'tahun' => 2024,
+                    'semester' => 1, // Ganjil
+                    'status' => 'active',
+                    'tanggal_mulai' => '2024-08-01',
+                    'tanggal_akhir' => '2024-12-31',
+                    'deskripsi' => 'Semester Ganjil TA 2024/2025',
+                ],
+                (object) [
+                    'id' => 2,
+                    'tahun' => 2023,
+                    'semester' => 2, // Genap
+                    'status' => 'inactive',
+                    'tanggal_mulai' => '2024-01-01',
+                    'tanggal_akhir' => '2024-06-30',
+                    'deskripsi' => 'Semester Genap TA 2023/2024',
+                ],
+                (object) [
+                    'id' => 3,
+                    'tahun' => 2023,
+                    'semester' => 1, // Ganjil
+                    'status' => 'inactive',
+                    'tanggal_mulai' => '2023-08-01',
+                    'tanggal_akhir' => '2023-12-31',
+                    'deskripsi' => 'Semester Ganjil TA 2023/2024',
+                ],
+                (object) [
+                    'id' => 4,
+                    'tahun' => 2022,
+                    'semester' => 3, // Pendek
+                    'status' => 'inactive',
+                    'tanggal_mulai' => '2023-07-01',
+                    'tanggal_akhir' => '2023-08-31',
+                    'deskripsi' => 'Semester Pendek TA 2022/2023',
+                ],
+            ];
+
+            $response = (object) [
+                'success' => true,
+                'data' => $dummyData,
+                'pagination' => (object) [
+                    'current_page' => 1,
+                    'from' => 1,
+                    'total' => count($dummyData),
+                    'per_page' => 10
+                ]
+            ];
 
             $pagination = [
               'currentPage' => $response->pagination->current_page,
@@ -283,8 +334,53 @@ class AcademicController extends Controller
                 'limit' => $limit,
             ];
 
-            $url = EventAcademicService::getInstance()->baseEventURL();
-            $response = getCurl($url, $params, getHeaders());
+            // $url = EventAcademicService::getInstance()->baseEventURL();
+            // $response = getCurl($url, $params, getHeaders());
+            // $data = json_decode(json_encode($response), true);
+
+            // MOCK DATA: Bypass API call sementara
+            $event = [
+                [
+                    'id' => 1,
+                    'nama_event' => 'Pengisian KRS Semester Ganjil',
+                    'nilai_on' => 'true',
+                    'irs_on' => 'true',
+                    'lulus_on' => 'true',
+                    'registrasi_on' => 'false',
+                    'yudisium_on' => 'false',
+                    'survei_on' => 'false',
+                    'dosen_on' => 'false',
+                    'status' => 'active',
+                    'tanggal_mulai' => '2024-08-01',
+                    'tanggal_akhir' => '2024-08-14',
+                ],
+                [
+                    'id' => 2,
+                    'nama_event' => 'Input Nilai Akhir',
+                    'nilai_on' => 'false',
+                    'irs_on' => 'false',
+                    'lulus_on' => 'false',
+                    'registrasi_on' => 'true',
+                    'yudisium_on' => 'true',
+                    'survei_on' => 'true',
+                    'dosen_on' => 'true',
+                    'status' => 'inactive',
+                    'tanggal_mulai' => '2024-12-01',
+                    'tanggal_akhir' => '2024-12-14',
+                ],
+            ];
+
+            $response = (object) [
+                'success' => true,
+                'data' => $event,
+                'pagination' => (object) [
+                    'current_page' => 1,
+                    'from' => 1,
+                    'last_page' => 1,
+                    'per_page' => 10,
+                    'total' => count($event)
+                ]
+            ];
             $data = json_decode(json_encode($response), true);
 
             if (! isset($response->success) || ! $response->success) {
