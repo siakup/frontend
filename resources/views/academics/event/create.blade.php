@@ -1,19 +1,19 @@
 <x-layouts.main>
   <x-layouts.content title="Tambah Event Akademik">
-    <x-container.wrapper>
+    <x-container.wrapper width="full" height="full" cols="1">
 
-      <x-container.container padding="py-4">
+      <x-container.container padding="py-4" width="full">
         <x-button.back :href="route('academics-event.index')">Event Akademik</x-button.back>
       </x-container.container>
 
-      <x-container.container padding="p-4" background="content-white">
+      <x-container.container padding="p-4" background="content-white" width="full">
         <x-container.wrapper gapY="4" cols="1" class="grid grid-rows-[auto_1fr]" height="fit" width="full">
 
-          <x-container.container >
+          <x-container.container width="full">
             <x-typography :variant="'body-medium-bold'">Tambah Event Akademik</x-typography>
           </x-container.container>
 
-          <x-container.container>
+          <x-container.container width="full">
             <input type="hidden" id="user_id" value="">
             <x-form.input-container class="" id="name-container">
               <x-slot name="label">Nama Event</x-slot>
